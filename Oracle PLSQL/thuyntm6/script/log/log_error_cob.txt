@@ -1,0 +1,232 @@
+ALTER DATABASE RECOVER  managed standby database cancel  
+ORA-16136 signalled during: ALTER DATABASE RECOVER  managed standby database cancel  ...
+alter database convert to snapshot standby
+Thu Jul 06 02:34:50 2017
+Allocated 255012672 bytes in shared pool for flashback generation buffer
+Created guaranteed restore point SNAPSHOT_STANDBY_REQUIRED_07/06/2017 02:34:29
+Killing 11 processes with pids 12255732,29295548,20906440,10159238,27197830,11731488,14156118,25362594,21431034,21102860,16384812 (all RFS) in order
+ to disallow current and future RFS connections. Requested by OS process 15730394
+Created guaranteed restore point SNAPSHOT_STANDBY_REQUIRED_07/06/2017 02:34:50
+All dispatchers and shared servers shutdown
+CLOSE: killing server sessions.
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+Active process 19137728 user 'grid' program 'oracle@t24db04'
+CLOSE: all sessions shutdown successfully.
+Thu Jul 06 02:34:56 2017
+SMON: disabling cache recovery
+Thu Jul 06 02:35:02 2017
+Begin: Standby Redo Logfile archival
+End: Standby Redo Logfile archival
+RESETLOGS after complete recovery through change 10562002977223
+Resetting resetlogs activation ID 2244155501 (0x85c3186d)
+Online log +COBR14_DR/cobr14dr/onlinelog/group_15.469.943155355: Thread 1 Group 15 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_15.444.943155389: Thread 1 Group 15 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_16.474.943155417: Thread 1 Group 16 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_16.457.943155435: Thread 1 Group 16 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_17.404.943156203: Thread 1 Group 17 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_17.663.943156211: Thread 1 Group 17 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_18.477.943156219: Thread 1 Group 18 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_18.333.943156227: Thread 1 Group 18 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_25.476.943156235: Thread 2 Group 25 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_25.550.943156243: Thread 2 Group 25 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_26.479.943156251: Thread 2 Group 26 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_26.426.943156261: Thread 2 Group 26 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_27.480.943156267: Thread 2 Group 27 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_27.756.943156277: Thread 2 Group 27 was previously cleared
+Online log +COBR14_DR/cobr14dr/onlinelog/group_28.481.943156285: Thread 2 Group 28 was previously cleared
+Online log +RECOCOBR14_DR/cobr14dr/onlinelog/group_28.364.943156293: Thread 2 Group 28 was previously cleared
+Standby became primary SCN: 10562002977221
+Thu Jul 06 02:35:03 2017
+Setting recovery target incarnation to 61
+AUDIT_TRAIL initialization parameter is changed back to its original value as specified in the parameter file.
+CONVERT TO SNAPSHOT STANDBY: Complete - Database mounted as snapshot standby
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc  (incident=75145226):
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145226/cobr14dr_ora_15730394_i75145226.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Drop guaranteed restore point 
+Guaranteed restore point  dropped
+Thu Jul 06 02:35:06 2017
+Dumping diagnostic data in directory=[cdmp_20170706023506], requested by (instance=1, osid=15730394), summary=[incident=75145226].
+Thu Jul 06 02:35:06 2017
+Sweep [inc][75145226]: completed
+Sweep [inc2][75145226]: completed
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Dumping diagnostic data in directory=[cdmp_20170706023510], requested by (instance=1, osid=15730394), summary=[abnormal process termination].
+Thu Jul 06 02:35:13 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Dumping diagnostic data in directory=[cdmp_20170706023515], requested by (instance=1, osid=15730394), summary=[abnormal process termination].
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Thu Jul 06 02:35:20 2017
+Dumping diagnostic data in directory=[cdmp_20170706023520], requested by (instance=1, osid=15730394), summary=[abnormal process termination].
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Dumping diagnostic data in directory=[cdmp_20170706023525], requested by (instance=1, osid=15730394), summary=[abnormal process termination].
+Thu Jul 06 02:35:27 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Thu Jul 06 02:35:42 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_15730394.trc:
+ORA-00060: deadlock detected while waiting for resource
+ORA-00600: internal error code, arguments: [krsa_geq_rel.2], [], [], [], [], [], [], [], [], [], [], []
+Thu Jul 06 02:35:55 2017
+ARC0: Becoming the 'no SRL' ARCH
+Thu Jul 06 02:35:57 2017
+ARC1: Becoming the 'no SRL' ARCH
+Thu Jul 06 02:36:02 2017
+idle dispatcher 'D000' terminated, pid = (34, 1)
+Thu Jul 06 02:40:02 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_16384872.trc  (incident=75145162):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145162/cobr14dr_rfs_16384872_i75145162.trc
+Thu Jul 06 02:40:04 2017
+Dumping diagnostic data in directory=[cdmp_20170706024004], requested by (instance=1, osid=16384872), summary=[incident=75145162].
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Thu Jul 06 02:40:06 2017
+Sweep [inc][75145162]: completed
+Sweep [inc2][75145162]: completed
+Thu Jul 06 02:40:40 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_8980224.trc  (incident=75145163):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145163/cobr14dr_rfs_8980224_i75145163.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Thu Jul 06 02:40:43 2017
+Dumping diagnostic data in directory=[cdmp_20170706024043], requested by (instance=1, osid=8980224), summary=[incident=75145163].
+Thu Jul 06 02:40:47 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_19137548.trc  (incident=75145164):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145164/cobr14dr_rfs_19137548_i75145164.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Dumping diagnostic data in directory=[cdmp_20170706024050], requested by (instance=1, osid=19137548), summary=[incident=75145164].
+Thu Jul 06 02:41:06 2017
+Sweep [inc][75145164]: completed
+Sweep [inc][75145163]: completed
+Sweep [inc2][75145164]: completed
+Sweep [inc2][75145163]: completed
+Thu Jul 06 02:45:06 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_17695032.trc  (incident=75145165):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145165/cobr14dr_rfs_17695032_i75145165.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Thu Jul 06 02:45:08 2017
+Dumping diagnostic data in directory=[cdmp_20170706024508], requested by (instance=1, osid=17695032), summary=[incident=75145165].
+Thu Jul 06 02:45:09 2017
+Sweep [inc][75145165]: completed
+Sweep [inc2][75145165]: completed
+Thu Jul 06 02:45:43 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_7340530.trc  (incident=75145166):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75145166/cobr14dr_rfs_7340530_i75145166.trc
+Thu Jul 06 02:45:45 2017
+Dumping diagnostic data in directory=[cdmp_20170706024545], requested by (instance=1, osid=7340530), summary=[incident=75145166].
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Thu Jul 06 02:45:50 2017
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_rfs_12060262.trc  (incident=75145167):
+ORA-00600: internal error code, arguments: [krsh_ssby_get_pic.1], [0], [], [], [], [], [], [], [], [], [], []
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Thu Jul 06 02:46:09 2017
+Sweep [inc][75145167]: completed
+Sweep [inc][75145166]: completed
+Sweep [inc2][75145166]: completed
+Thu Jul 06 02:48:58 2017
+Shutting down instance (immediate)
+Shutting down instance: further logons disabled
+Stopping background process MMNL
+Stopping background process MMON
+License high water mark = 161
+All dispatchers and shared servers shutdown
+ALTER DATABASE CLOSE NORMAL
+ORA-1109 signalled during: ALTER DATABASE CLOSE NORMAL...
+ALTER DATABASE DISMOUNT
+Shutting down archive processes
+Archiving is disabled
+Thu Jul 06 02:49:00 2017
+Thu Jul 06 02:49:00 2017
+ARCH shutting downARCH shutting down
+
+Thu Jul 06 02:49:00 2017
+ARCH shutting down
+ARC3: Archival stopped
+Thu Jul 06 02:49:00 2017
+ARCH shutting downARC2: Relinquishing active heartbeat ARCH role
+
+ALTER DATABASE   MOUNT
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_45417432.trc  (incident=75198016):
+ORA-00600: internal error code, arguments: [krsm_get_arch_redo_branch: control file RSBY_RDI/IC mismatch], [0], [], [], [], [], [], [], [], [], [], 
+[]
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75198016/cobr14dr_ora_45417432_i75198016.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+ORA-600 signalled during: ALTER DATABASE   MOUNT...
+Thu Jul 06 02:49:34 2017
+Dumping diagnostic data in directory=[cdmp_20170706024934], requested by (instance=1, osid=45417432), summary=[incident=75198016].
+Thu Jul 06 02:50:20 2017
+Sweep [inc][75198016]: completed
+Sweep [inc2][75198016]: completed
+Thu Jul 06 02:53:29 2017
+alter database mount
+Errors in file /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/trace/cobr14dr_ora_45417432.trc  (incident=75198017):
+ORA-00600: internal error code, arguments: [krsm_get_arch_redo_branch: control file RSBY_RDI/IC mismatch], [0], [], [], [], [], [], [], [], [], [], 
+[]
+Incident details in: /u01/app/oracle/diag/rdbms/cobr14dr/cobr14dr/incident/incdir_75198017/cobr14dr_ora_45417432_i75198017.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+ORA-600 signalled during: alter database mount...
+Thu Jul 06 02:53:35 2017
+Sweep [inc][75198017]: completed
+Sweep [inc2][75198017]: completed
+Thu Jul 06 02:53:35 2017
+Dumping diagnostic data in directory=[cdmp_20170706025335], requested by (instance=1, osid=45417432), summary=[incident=75198017].
+Thu Jul 06 03:01:43 2017

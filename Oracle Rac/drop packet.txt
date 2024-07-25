@@ -1,0 +1,14 @@
+Troubleshooting gc block lost and Poor Network Performance in a RAC Environment (Doc ID 563566.1)
+
+Solution:
+- RHEL 6.6: IPC Send timeout/node eviction etc with high packet reassembles failure (Doc ID 2008933.1)
+- enable jumbo frame : 1500 ->9000 https://wiki.archlinux.org/index.php/Jumbo_frames
+
+
+vi /etc/sysctl.conf
+net.ipv4.ipfrag_high_threshold = 8388608;
+net.ipv4.ipfrag_low_threshold = 8388608;
+
+
+[oracle@dhsxkd-taybac-01 ~]$ netstat -s | fgrep reassembles
+    1698 packet reassembles failed

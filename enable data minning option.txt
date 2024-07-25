@@ -1,0 +1,40 @@
+Enable or Disable the Data Mining Option
+The Data Mining option is enabled by default during installation of Oracle Database. However, you can choose to disable Data Mining and other database options when you install the database software. (See step 6 of Install Oracle Database.)
+
+If you wish to enable or disable a database option for an Oracle home, you can use the command-line utility chopt.
+
+chopt [ enable | disable ] db_option_name
+Set db_option_name. to dm for the Data Mining option.
+
+To enable the Data Mining option: 
+
+Shut down the database.
+
+srvctl stop database -d db_name
+Stop the database service, OracleServiceSID, using the Services program in Control Panel.
+
+Execute these commands.
+
+cd ORACLE_HOME/bin
+chopt enable dm
+Start the database service, Oracle ServiceSID, using the Services program in Control Panel.
+
+Start up the database.
+
+srvctl start database -d db_name
+To disable the Data Mining option: 
+
+Shut down the database.
+
+srvctl stop database -d db_name
+Stop the database service, OracleServiceSID, using the Services program in Control Panel.
+
+Execute these commands.
+
+cd ORACLE_HOME/bin
+chopt disable dm
+Start the database service, Oracle ServiceSID, using the Services program in Control Panel.
+
+Start up the database.
+
+srvctl start database -d db_name

@@ -1,0 +1,35 @@
+
+#Lay DDL của đối tượng
+
+SET HEADING OFF;/n
+SET ECHO OFF;/n
+SET PAGES 999;/n
+SET LONG 90000;/n
+SET Linesize 1000;/n
+
+SELECT DBMS_METADATA.GET_DDL('&OBJ_TYPE','&TABLE_NAME','&OWNER') FROM DUAL@GOLDDBTEST;
+
+
+SELECT DBMS_METADATA.GET_DDL('&OBJ_TYPE','&TABLE_NAME','&OWNER') FROM DUAL@TO_CARD;
+
+
+SELECT DBMS_METADATA.GET_DDL('&OBJ_TYPE','&TABLE_NAME','&OWNER') FROM DUAL@to_bill;
+
+
+
+#Lấy định dang của object
+
+Select OBJECT_TYPE from dba_objects@GOLDDBTEST where OWNER='PNE_OWNER' and OBJECT_NAME='PNE_SUB_EMAIL';
+
+Select OBJECT_TYPE,OWNER from dba_objects@GOLDDBTEST where OBJECT_NAME='RE_CLOSE ';
+
+Select OBJECT_TYPE from dba_objects@TO_CARD where OWNER='DANGTH' and OBJECT_NAME='LOG_CHANGE_BIRTH';
+
+Select OBJECT_TYPE,OWNER from dba_objects@TO_CARD where OBJECT_NAME='RE_CLOSE ';
+
+Select OBJECT_TYPE,OWNER from dba_objects@to_bill where OWNER='SONTQ' and OBJECT_NAME='RE_CLOSE';
+
+Select OBJECT_TYPE,OWNER from dba_objects@to_bill where OBJECT_NAME='PROM_ID';
+
+
+

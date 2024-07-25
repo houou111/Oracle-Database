@@ -1,0 +1,132 @@
+run{
+RECOVER TABLE CES.M_PROFILE OF PLUGGABLE DATABASE P_CES
+UNTIL TIME "TO_DATE('21-FEB-2023 11:00', 'DD-MON-YYYY HH24:MI')"
+AUXILIARY DESTINATION '/backup/dump'
+DATAPUMP DESTINATION '/backup/dump'
+DUMP FILE 'M_PROFILE.dmp'
+NOTABLEIMPORT;
+}
+
+
+
+cd /usr/openv/netbackup/bin
+
+./bplist -S dc-nbumaster.msb.com.vn  -s 02/15/2023   -C msb-dbcenter01 -t 4 -l -R / |grep c-
+
+
+/c-1600676071-20230215-02
+
+
+CONFIGURE channel device type 'sbt_tape' parms='ENV=(NB_ORA_SERV=dc-nbumaster.msb.com.vn, NB_ORA_CLIENT=msb-dbcenter01),SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+CONFIGURE device type 'sbt_tape' PARALLELISM 4;
+
+CONFIGURE DEVICE TYPE DISK PARALLELISM 1
+
+
+
+1. List backup in netbackup/bin
+-------------------------------------------------------------------------------------------------------------------------------------------------
+cd /usr/openv/netbackup/bin
+
+./bplist -S dc-nbumaster.msb.com.vn  -s 02/17/2023   -C carddb02 -t 4 -l -R /
+
+./bplist -S dc-nbumaster.msb.com.vn  -s 02/18/2023   -C carddb02 -t 4 -l -R / |grep c-
+
+
+
+2. Restore database
+-------------------------------------------------------------------------------------------------------------------------------------------------
+RMAN> 
+run {
+allocate channel c1 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+send 'NB_ORA_SERV=dc-nbumaster.msb.com.vn, NB_ORA_CLIENT= 10.0.72.89';
+restore controlfile  from '/ctrl_dCMSPROD_un91m32q1_s36585_p1_t1130466113';
+release channel c1;
+}
+
+
+alter database mount;
+
+
+run{
+allocate channel c1 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c2 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c3 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c4 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c5 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c6 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c7 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c8 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+send 'NB_ORA_SERV=dc-nbumaster.msb.com.vn, NB_ORA_CLIENT= 10.0.72.89';
+SET NEWNAME FOR DATABASE TO '+DATA/CMSPRODSIT/%b';
+restore database;
+}
+
+switch database to copy;
+
+run{
+allocate channel c1 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c2 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c3 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c4 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c5 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c6 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c7 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c8 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+send 'NB_ORA_SERV=dc-nbumaster.msb.com.vn, NB_ORA_CLIENT= 10.0.72.89';
+recover database;
+}
+
+
+ 
+
+3. Add stb log both site
+-------------------------------------------------------------------------------------------------------------------------------------------------
+alter system set standby_file_management=manual scope=both sid='*';
+
+alter database add standby logfile thread 1 group 211 '+FRA' size 4G;
+alter database add standby logfile thread 1 group 212 '+FRA' size 4G;
+alter database add standby logfile thread 1 group 213 '+FRA' size 4G;
+alter database add standby logfile thread 1 group 214 '+FRA' size 4G;
+alter database add standby logfile thread 1 group 215 '+FRA' size 4G;
+alter database add standby logfile thread 2 group 221 '+FRA' size 4G;
+alter database add standby logfile thread 2 group 222 '+FRA' size 4G;
+alter database add standby logfile thread 2 group 223 '+FRA' size 4G;
+alter database add standby logfile thread 2 group 224 '+FRA' size 4G;
+alter database add standby logfile thread 2 group 225 '+FRA' size 4G;
+
+alter system set standby_file_management=auto scope=both sid='*';
+
+
+4. Config broker and enable
+-------------------------------------------------------------------------
+alter system set dg_broker_start=FALSE;
+alter system set dg_broker_config_file1='+DATA/CMSPRODNEW/card1.dat';
+alter system set dg_broker_config_file2='+DATA/CMSPRODNEW/card2.dat';
+alter system set dg_broker_start=TRUE;
+
+
+CREATE CONFIGURATION fcdbprod_active_dg AS PRIMARY DATABASE IS cmsprodnew CONNECT IDENTIFIER IS cmsprodnew;
+ADD DATABASE cmsprodstb AS CONNECT IDENTIFIER IS cmsprodstb MAINTAINED AS PHYSICAL;
+ENABLE CONFIGURATION;
+show configuration
+
+
+
+
+5. Config broker and enable
+-------------------------------------------------------------------------
+
+alter database recover managed standby database cancel;
+
+
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+
+
+
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD#   from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+

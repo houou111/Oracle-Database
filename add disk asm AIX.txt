@@ -1,0 +1,68 @@
+Gia su disk moi add vao hai node (node1, node2) co dung luong 100GB,
+Ten dia vua add vao co ten hdisk4 tren hai node
+Tao ten goi nho (alias) cho hdisk4 la DATA1
+ 
+---------------------
+
+1. Scan dia tren server khi vua moi add them dia vao (chay tren ca hai node)
+	node1# cfgmgr
+	node2# cfgmgr
+
+2. Thuc hien lenh sau de kiem tra ten hdisk vua add vao tren ca hai node 
+
+	node1# ls -l /dev/hdisk* | awk '{print $5  $6    , $10}'	
+        
+        Cho ket qua nhu sau:
+
+	13,  1  /dev/hdisk0
+	13,  2  /dev/hdisk1
+	13,  3  /dev/hdisk2
+	13,  4  /dev/hdisk3
+	13,  5  /dev/hdisk4  -----> (disk moi add vao co ten hdisk4, co hai so maijor va minor la 13 5)
+
+        ------------------
+
+	node2# ls -l /dev/hdisk* | awk '{print $5  $6    , $10}'	
+        
+        Cho ket qua nhu sau:
+
+	13,  1  /dev/hdisk0
+	13,  2  /dev/hdisk1
+	13,  3  /dev/hdisk2
+	13,  4  /dev/hdisk3
+	13,  5  /dev/hdisk4  -----> (disk moi add vao co ten hdisk4, co hai so maijor va minor la 13 5)
+
+2. Kiem tra dung luong cua disk moi add vao (thuc hien tren ca hai node)
+        node1# getconf DISK_SIZE /dev/hdisk4
+	100GB	
+        node2# getconf DISK_SIZE /dev/hdisk4
+	100GB
+
+3. Thay doi thuoc tinh cua dia hdisk4 tren ca hai node
+	node1#chdev -l hdisk6 -a reserve_policy=no_reserve
+	node2#chdev -l hdisk -a reserve_policy=no_reserve
+
+4. Change owner va mode cua rhdisk4 tren ca hai node
+
+	node1# chown grid.asmadmin /dev/rhdisk6
+	node1# chmod 660 /dev/rhdisk6
+	
+	node2# chown grid.asmadmin /dev/rhdisk4
+	node2# chmod 660 /dev/rhdisk4
+
+5. Tao alias cho hdisk4 tren ca hai node (Dat ten alias cho hdisk4 la DATA1)
+
+	node1# mknod /dev/DATA2 c 13 7      ---> ( 13 5 la hai so major va minor cua hdisk4 lay tu buoc thu 2 ben tren )
+	node2# mknod /dev/DATA1 c 13 5      ---> ( 13 5 la hai so major va minor cua hdisk4 lay tu buoc thu 2 ben tren )
+
+6. Change owner va mode cua /dev/DATA1 tren ca hai node
+
+	node1# chown grid.dba /dev/DATA2
+	node1# chmod 660 /dev/DATA2
+
+	node2# chown grid.dba /dev/DATA1
+	node2# chmod 660 /dev/DATA1
+
+7. Thuc hien lenh asmca bang user grid tren node1 de tao asm diskgroup voi duong dan cua dia la  /dev/DATA1
+        node1$ asmca
+	

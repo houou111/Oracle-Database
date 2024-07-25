@@ -1,0 +1,11 @@
+1.  Upgrade to Oracle RDBMS 11.2.0.2.
+
+ 
+
+-OR-
+
+ 
+
+2.  Workaround:
+
+          Set result_cache_max_size=0.

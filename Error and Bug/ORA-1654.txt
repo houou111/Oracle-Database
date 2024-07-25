@@ -1,0 +1,6 @@
+alter table <mytable> enable row movement;
+alter table <mytable> shrink space;
+alter table <mytable> disable row movement;
+ 
+analyze table <mytable> compute statistics;
+commit;

@@ -1,0 +1,56 @@
+begin
+dbms_workload_repository.modify_snapshot_settings(
+   topnsql =>100);
+end;
+/
+
+
+Question:  I see the topnsql argument in dbms_workload_repository:
+
+desc dbms_workload_repository
+
+retention IN NUMBER DEFAULT NULL,
+interval  IN NUMBER DEFAULT NULL,
+topnsql   IN NUMBER DEFAULT NULL,
+dbid      IN NUMBER DEFAULT NULL);
+
+What does the topnsql column do?
+
+Answer:  The topnsql is used to specify the number of SQL to collect at each AWR snapshot for each criteria like elapsed time, CPU time, parse calls, shareable memory, and version count.  The topnsql is normally set to a small number like 10, because you only want to see the most current SQL statements.  This SQL information is normally purged after a period of time, after which the SQL source code is no longer needed.
+ 
+begin
+dbms_workload_repository.modify_snapshot_settings(
+   retention => 7200,
+   interval =>60 ,
+   topnsql =>10 ,
+   dbid => 123661118);
+end;
+/
+  
+
+There are 14 criteria in an AWR report, and Oracle AWR will capture the top-n-SQL for each of these criteria:
+
+1. Elapsed Time (ms)
+2. CPU Time (ms)
+3. Executions
+4. Buffer Gets
+5. Disk Reads
+6. Parse Calls
+7. Rows
+8. User I/O Wait Time (ms)
+9 Cluster Wait Time (ms)
+10. Application Wait Time (ms)
+11. Concurrency Wait Time (ms)
+12. Invalidations
+13. Version Count
+14. Sharable Mem(KB)
+
+You can also set threshold for each of the criteria.  Unlike STATSPACK, AWR uses a "Top N" method which defaults to collect the Top-30 SQL statements for each SQL category, If you set statistics_level = "all", AWR will collect the top 100 SQL statements.
+
+The number of SQL statements captured also depends on your statistics_level setting:
+
+- When statistics_level=typical, AWR will capture the topnsql.  Without the topnsql set, the default is to capture 30 SQL statements, for a total of 420 per snapshot.
+
+- When statistics_level=all, AWR will capture the top 100 SQL for each of the criteria (elapsed time, CPU, disk reads, etc.), for a total of 1400 SQL statements per snapshot.
+
+Of course, some SQL statements will appear in more then one category.

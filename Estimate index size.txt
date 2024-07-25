@@ -1,0 +1,20 @@
+
+Before you create an index, you can estimate how much space it will take via the
+DBMS_SPACE.CREATE_INDEX_COST procedure—for example:
+
+
+SQL> set serverout on
+SQL> exec dbms_stats.gather_table_stats(user,'CUST');
+SQL> variable used_bytes number
+SQL> variable alloc_bytes number
+SQL> exec dbms_space.create_index_cost( 'create index cust_idx2 on cust(first_name)', - :used_bytes, :alloc_bytes );
+
+SQL> print :used_bytes
+USED_BYTES
+----------
+363690
+
+SQL> print :alloc_bytes
+ALLOC_BYTES
+-----------
+2097152

@@ -1,0 +1,124 @@
+
+1. Create pluggable database from seed
+---------------------------------------------------------------
+
+SQL> CREATE PLUGGABLE DATABASE pdb2_1 ADMIN USER pdb2_1_admin
+	 IDENTIFIED BY oracle_4U ROLES=(CONNECT)
+	 CREATE_FILE_DEST='/u01/app/oracle/oradata/cdb2/pdb2_1';
+
+	 
+	 
+2. Clone pluggable database
+---------------------------------------------------------------
+SQL> alter pluggable database pdb2_1 close;
+
+SQL> alter pluggable database pdb2_1 open read only;
+
+SQL> CREATE PLUGGABLE DATABASE pdb2_2 FROM pdb2_1
+CREATE_FILE_DEST='/u01/app/oracle/oradata/cdb2/pdb2_2';
+
+
+
+3. Create database from non-cdb
+---------------------------------------------------------------
+SQL> alter database open read only;
+Database altered.
+
+SQL> CREATE DATABASE LINK link_orcl2
+	 CONNECT TO system IDENTIFIED BY oracle_4U
+	 USING 'orcl2';
+	 
+SQL> create pluggable database PDB_ORCL2 from NON$CDB@link_orcl2
+create_file_dest='/u01/app/oracle/oradata/cdb1/pdb_orcl2';
+
+SQL> @$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+
+
+4. unplug and plug pluggable database
+---------------------------------------------------------------
+SQL> alter pluggable database PDB1 close immediate;
+
+SQL> alter pluggable database PDB1 unplug into 'xmlfilePDB1.xml';
+
+SQL> drop pluggable database PDB1 KEEP DATAFILES;
+
+SQL> create pluggable database pdb1 using 'xmlfilePDB1.xml' NOCOPY;
+
+SQL> alter pluggable database pdb1 open
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

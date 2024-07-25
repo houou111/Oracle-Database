@@ -1,0 +1,335 @@
+1. List table and xout
+----------------------------------------------------------------------------
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT31');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT32');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT33');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT34');
+
+
+XOUT51	SAAS.IDENTITY_USERS
+XOUT52	SAAS.IDENTITY_CUSTOMERS
+XOUT53	SAAS.IDENTITY_CUSTOMER_ACCOUNTS
+XOUT54	SAAS.USER_AUTHORIZED_CUSTOMER_ACCOUNT
+
+ALTER TABLE SAAS.IDENTITY_USERS  ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+ALTER TABLE SAAS.IDENTITY_CUSTOMERS  ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+ALTER TABLE SAAS.IDENTITY_CUSTOMER_ACCOUNTS  ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+ALTER TABLE SAAS.USER_AUTHORIZED_CUSTOMER_ACCOUNT  ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+
+
+
+
+
+
+
+2. Create user
+----------------------------------------------------------------------------
+create user Xstream_user identified by oracle123456;
+CREATE TABLESPACE xstream_tbs DATAFILE '+DATA' ;
+
+ALTER USER Xstream_user DEFAULT TABLESPACE xstream_tbs QUOTA UNLIMITED ON xstream_tbs;
+
+BEGIN
+     DBMS_XSTREAM_AUTH.GRANT_ADMIN_PRIVILEGE(
+        grantee                 => 'XSTREAM_USER',
+        privilege_type          => 'CAPTURE',
+        grant_select_privileges => TRUE
+     );
+  END;
+  /
+  
+BEGIN
+   DBMS_XSTREAM_AUTH.GRANT_REMOTE_ADMIN_ACCESS(
+      grantee                 => 'XSTREAM_USER'
+     );
+  END;
+  /
+  
+GRANT CREATE SESSION TO Xstream_user ;
+GRANT SET CONTAINER TO Xstream_user;
+GRANT SELECT ON V_$DATABASE to Xstream_user;
+GRANT FLASHBACK ANY TABLE TO Xstream_user;
+GRANT SELECT_CATALOG_ROLE TO Xstream_user;
+GRANT EXECUTE_CATALOG_ROLE TO Xstream_user;
+GRANT CREATE SESSION TO XSTREAM_USER; 
+GRANT SET CONTAINER TO XSTREAM_USER; 
+GRANT SELECT ON V_$DATABASE to XSTREAM_USER; 
+GRANT FLASHBACK ANY TABLE TO XSTREAM_USER; 
+GRANT SELECT ANY TABLE TO XSTREAM_USER; 
+GRANT SELECT_CATALOG_ROLE TO XSTREAM_USER; 
+GRANT EXECUTE_CATALOG_ROLE TO XSTREAM_USER; 
+GRANT SELECT ANY TRANSACTION TO XSTREAM_USER; 
+GRANT LOGMINING TO XSTREAM_USER; 
+
+GRANT CREATE TABLE TO XSTREAM_USER; 
+GRANT LOCK ANY TABLE TO XSTREAM_USER; 
+GRANT CREATE SEQUENCE TO XSTREAM_USER; 
+
+GRANT EXECUTE ON DBMS_LOGMNR TO XSTREAM_USER; 
+GRANT EXECUTE ON DBMS_LOGMNR_D TO XSTREAM_USER; 
+
+GRANT SELECT ON V_$LOG TO XSTREAM_USER; 
+GRANT SELECT ON V_$LOG_HISTORY TO XSTREAM_USER; 
+GRANT SELECT ON V_$LOGMNR_LOGS TO XSTREAM_USER; 
+GRANT SELECT ON V_$LOGMNR_CONTENTS TO XSTREAM_USER; 
+GRANT SELECT ON V_$LOGMNR_PARAMETERS TO XSTREAM_USER; 
+GRANT SELECT ON V_$LOGFILE TO XSTREAM_USER; 
+GRANT SELECT ON V_$ARCHIVED_LOG TO XSTREAM_USER; 
+GRANT SELECT ON V_$ARCHIVE_DEST_STATUS TO XSTREAM_USER; 
+GRANT SELECT ON V_$TRANSACTION TO XSTREAM_USER; 
+
+
+
+3. Create Xout for every table
+----------------------------------------------------------------------------
+DECLARE
+  tables  DBMS_UTILITY.UNCL_ARRAY;
+  schemas DBMS_UTILITY.UNCL_ARRAY;
+BEGIN
+    tables(1)  := 'SAAS.IDENTITY_USERS';
+	schemas(1) := NULL;
+  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
+    server_name     =>  'XOUT51',
+    table_names     =>  tables,
+    schema_names    =>  schemas);
+END;
+/
+
+DECLARE
+  tables  DBMS_UTILITY.UNCL_ARRAY;
+  schemas DBMS_UTILITY.UNCL_ARRAY;
+BEGIN
+    tables(1)  := 'SAAS.IDENTITY_CUSTOMERS';
+	schemas(1) := NULL;
+  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
+    server_name     =>  'XOUT52',
+    table_names     =>  tables,
+    schema_names    =>  schemas);
+END;
+/
+
+DECLARE
+  tables  DBMS_UTILITY.UNCL_ARRAY;
+  schemas DBMS_UTILITY.UNCL_ARRAY;
+BEGIN
+    tables(1)  := 'SAAS.IDENTITY_CUSTOMER_ACCOUNTS';
+	schemas(1) := NULL;
+  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
+    server_name     =>  'XOUT53',
+    table_names     =>  tables,
+    schema_names    =>  schemas);
+END;
+/
+
+
+DECLARE
+  tables  DBMS_UTILITY.UNCL_ARRAY;
+  schemas DBMS_UTILITY.UNCL_ARRAY;
+BEGIN
+    tables(1)  := 'SAAS.USER_AUTHORIZED_CUSTOMER_ACCOUNT';
+	schemas(1) := NULL;
+  DBMS_XSTREAM_ADM.CREATE_OUTBOUND(
+    server_name     =>  'XOUT54',
+    table_names     =>  tables,
+    schema_names    =>  schemas);
+END;
+/
+
+
+4. Grant Xout for user admin
+----------------------------------------------------------------------------
+Select to_char(CURRENT_SCN) from v$database;
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT51',
+    connect_user => 'XSTREAM_USER',
+	start_scn => '606110453');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT52',
+    connect_user => 'XSTREAM_USER',
+	start_scn => '574443478');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT53',
+    connect_user => 'XSTREAM_USER',
+	start_scn => '574443478');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT54',
+    connect_user => 'XSTREAM_USER',
+	start_scn => '574443478');
+END;
+/
+
+
+
+5. Start Xout ( If have any problem)
+----------------------------------------------------------------------------
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT41');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT42');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT43');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT44');
+END;
+/
+
+
+
+6. Check Capture process and alter parameter (optional)
+----------------------------------------------------------------------------
+COLUMN SERVER_NAME HEADING 'Outbound|Server|Name' FORMAT A10
+COLUMN CONNECT_USER HEADING 'Connect|User' FORMAT A10
+COLUMN CAPTURE_USER HEADING 'Capture|User' FORMAT A10
+COLUMN CAPTURE_NAME HEADING 'Capture|Process|Name' FORMAT A12
+COLUMN SOURCE_DATABASE HEADING 'Source|Database' FORMAT A11
+COLUMN QUEUE_OWNER HEADING 'Queue|Owner' FORMAT A10
+COLUMN QUEUE_NAME HEADING 'Queue|Name' FORMAT A10
+SELECT SERVER_NAME,
+ CONNECT_USER,
+ CAPTURE_USER,
+ CAPTURE_NAME,
+ SOURCE_DATABASE,
+ QUEUE_OWNER,
+ QUEUE_NAME
+ FROM DBA_XSTREAM_OUTBOUND;
+ 
+XOUT21	XSTREAM_USER	SYS	CAP$_XOUT21_91	SAAS	SYS	Q$_XOUT21_92
+XOUT22	XSTREAM_USER	SYS	CAP$_XOUT22_100	SAAS	SYS	Q$_XOUT22_101
+XOUT23	XSTREAM_USER	SYS	CAP$_XOUT23_109	SAAS	SYS	Q$_XOUT23_110
+XOUT24	XSTREAM_USER	SYS	CAP$_XOUT24_118	SAAS	SYS	Q$_XOUT24_119
+
+ 
+BEGIN
+  DBMS_XSTREAM_ADM.SET_PARAMETER(
+    streams_name => 'CAP$_XOUT21_91',
+    streams_type => 'Capture',
+    parameter    => 'USE_RAC_SERVICE',
+    value        => 'Y');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.SET_PARAMETER(
+    streams_name => 'CAP$_XOUT22_100',
+    streams_type => 'Capture',
+    parameter    => 'USE_RAC_SERVICE',
+    value        => 'Y');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.SET_PARAMETER(
+    streams_name => 'CAP$_XOUT23_109',
+    streams_type => 'Capture',
+    parameter    => 'USE_RAC_SERVICE',
+    value        => 'Y');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.SET_PARAMETER(
+    streams_name => 'CAP$_XOUT24_118',
+    streams_type => 'Capture',
+    parameter    => 'USE_RAC_SERVICE',
+    value        => 'Y');
+END;
+/
+
+
+
+
+
+
+
+
+7. Drop Xout
+----------------------------------------------------------------------------
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT41');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT42');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT43');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT44');
+
+
+
+
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT1');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT3');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT4');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.START_OUTBOUND(
+    server_name => 'XOUT9');
+END;
+/
+
+
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT1',
+	start_scn => '483218946');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT3',
+	start_scn => '483218946');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT4',
+	start_scn => '483218946');
+END;
+/
+
+BEGIN
+  DBMS_XSTREAM_ADM.ALTER_OUTBOUND(
+    server_name  => 'XOUT9',
+	start_scn => '483218946');
+END;
+/

@@ -1,0 +1,4 @@
+Database using wallet khi dbua sẽ cần phải check lại đường dẫn
+rychly.gitlab.io/post/em-express-cert/
+
+ XDB là em express

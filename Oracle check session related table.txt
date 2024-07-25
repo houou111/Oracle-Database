@@ -1,0 +1,39 @@
+set lines 200
+set pages 200
+
+COLUMN object FORMAT A30
+COLUMN type FORMAT A15
+COLUMN sid FORMAT 9999
+COLUMN username FORMAT A20
+COLUMN osuser FORMAT A10
+COLUMN program FORMAT A40
+SELECT a.sid,
+a.object,
+a.type,
+b.username,
+b.osuser,
+b.program
+FROM gv$access a,
+gv$session b
+WHERE a.sid = b.sid
+AND a.owner = UPPER('&ENTER_SCHEMA_NAME')
+AND a.object = upper('&OBJECT_NAME')
+ORDER BY a.object
+/
+
+
+
+
+SELECT a.object,
+a.type,
+a.sid,
+b.username,
+b.osuser,
+b.program
+FROM gv$access a,
+gv$session b
+WHERE a.sid = b.sid
+AND a.owner = UPPER('SAAS_LOG')
+AND a.object = upper('LOG_MASTER')
+ORDER BY a.object
+/

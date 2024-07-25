@@ -1,0 +1,69 @@
+I. Check all db and service
+-----------------------------------------------------
+SELECT CDB FROM V$DATABASE;
+
+
+col name for a30
+col pdb for a30
+
+select name, pdb
+from   v$services
+order by name;
+
+col name format a30
+select con_id, name, open_mode from v$containers;
+
+
+
+SHOW CON_NAME
+SHOW CON_ID
+show pdbs
+select con_id, name, open_mode, total_size from v$pdbs;
+
+
+II. Connect to cdb, pdb
+-----------------------------------------------------
+ALTER SESSION SET CONTAINER=HTKD;
+SHOW CON_NAME
+
+
+ALTER SESSION SET CONTAINER=cdb$root;
+SHOW CON_NAME
+
+
+SQL> -- EZCONNECT
+SQL> CONN system/password@//localhost:1521/pdb1
+Connected.
+SQL>
+
+SQL> -- tnsnames.ora
+SQL> CONN system/password@pdb1
+Connected.
+SQL>
+
+ 
+ 
+III. Open/Close PDB
+-----------------------------------------------------
+ 
+SQL> alter pluggable database open [close];
+
+SQL> alter pluggable database PDB02 open read only [restrict];
+
+SQL> alter pluggable database 
+
+SQL> alter pluggable database all [except PDB02] open;
+
+SQL> alter pluggable database open instances = ('CDB011','CDB012');
+SQL> alter pluggable database open instances = all [except ('CDB014');
+SQL> alter pluggable database close relocate to CDB014;
+It is also possible to put the pluggable database in the desired state, and whenever the CDB is opened, the PDB is opened in that state. But remember that it is a per-instance operation, so you will have to do that in every instance in case of a RAC database.
+
+SQL> alter pluggable database PDB02 save state;
+
+
+ 
+III. Alter parameter
+-----------------------------------------------------
+ALTER SESSION SET CONTAINER=HTKD;
+alter system set 

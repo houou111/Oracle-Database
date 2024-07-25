@@ -1,0 +1,33 @@
+The error code is [INS-30131]. I've the full privileges of an administrator-ship. I also tried to resolve this problem via the following command;
+
+net use \\localhost\c$
+------------------------------
+
+For a client installation:
+
+-ignorePrereq -J"-Doracle.install.client.validate.clientSupportedOSCheck=false"
+For a server installation:
+
+-ignorePrereq -J"-Doracle.install.db.validate.supportedOSCheck=false"
+
+
+----------------------------------
+
+setup.exe -ignorePrereq -J"-Doracle.install.client.validate.clientSupportedOSCheck=false"
+
+
+---------------------------------------------------------------------------
+
+
+
+7
+down vote
+I found another situation in which this problem may arise (despite following the steps listed by other users above) and that's when the username of the user you're logged in as has an '_' on it. The path it will try to use to find the temp directory is whatever is set in %TEMP%. I managed to work around it by:
+
+Launch cmd.exe in Administrator mode
+SET TEMP = C:\TEMP
+Run the installer from that command window
+Installed successfully that way.
+
+
+

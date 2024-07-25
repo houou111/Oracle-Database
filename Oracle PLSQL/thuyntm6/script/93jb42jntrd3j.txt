@@ -1,0 +1,82 @@
+/* Formatted on 4/2/2019 11:43:57 AM (QP5 v5.252.13127.32847) */
+WITH ALL_USER_ID
+     AS (SELECT CASE USERID WHEN -1 THEN :B1 ELSE USERID END AS USERID
+           FROM (SELECT U.ID AS USERID
+                   FROM TCBS_USER U
+                        INNER JOIN INV_MEMBER M ON U.ID = M.USERID
+                  WHERE M.GROUPID IN (SELECT P.OBJECTID
+                                        FROM INV_PERMISSION P,
+                                             INV_ROLE R,
+                                             INV_ACTOR A
+                                       WHERE     A.ACTORTYPE = 'USER'
+                                             AND R.ACTORID = A.ACTORID
+                                             AND P.ROLEID = R.ROLEID
+                                             AND P.OBJECTTYPE LIKE 'GROUP%'
+                                             AND P.PERMISSION = :B2
+                                             AND A.BROKERID IN :B1
+                                      UNION
+                                        SELECT P.OBJECTID
+                                          FROM INV_ACTOR A
+                                               INNER JOIN INV_ROLE R
+                                                  ON A.ACTORID = R.ACTORID
+                                               INNER JOIN INV_PERMISSION P
+                                                  ON R.ROLEID = P.ROLEID
+                                         WHERE     A.ACTORTYPE = 'GROUP'
+                                               AND BROKERID IN (SELECT GROUPID
+                                                                  FROM INV_MEMBER
+                                                                 WHERE USERID IN :B1)
+                                               AND P.OBJECTTYPE LIKE 'GROUP%'
+                                               AND P.PERMISSION = :B2
+                                      GROUP BY P.OBJECTID)
+                 UNION
+                 SELECT OBJECTID AS USERID
+                   FROM INV_PERMISSION P, INV_ROLE R, INV_ACTOR A
+                  WHERE     A.ACTORTYPE = 'USER'
+                        AND R.ACTORID = A.ACTORID
+                        AND P.ROLEID = R.ROLEID
+                        AND A.BROKERID IN :B1
+                        AND P.OBJECTTYPE LIKE 'USER%'
+                        AND P.PERMISSION = :B2
+                 UNION
+                   SELECT P.OBJECTID AS USERID
+                     FROM INV_AC TORA
+                          INNER JOIN INV_ROLE R ON A.ACTORID = R.ACTORID
+                          INNER JOIN INV_PERMISSION P ON R.ROLEID = P.ROLEID
+                    WHERE     A.ACTORTYPE = 'GROUP'
+                          AND BROKERID IN (SELECT GROUPID
+                                             FROM INV_MEMBER
+                                            WHERE USERID IN :B1)
+                          AND P.OBJECTTYPE LIKE 'USER%'
+                          AND P.PERMISSION = :B2
+                 GROUP BY P.OBJECTID)),
+     WITH_ALL_0
+     AS (SELECT U.TCBSID,
+                U.LASTNAME,
+                U.FIRSTNAME,
+                U.EMAIL,
+                U.PHONE,
+                I.ID_NUMBER
+           FROM ALL_USER_ID T,
+                TCBS_USER U
+                LEFT JOIN TCBS_IDENTIFICATION I ON U.ID = I.USER_ID
+          WHERE T.USERID = 0)
+SELECT *
+  FROM (SELECT TCBSID,
+               LASTNAME,
+               FIRSTNAME,
+               EMAIL,
+               PHONE,
+               ID_NUMBER,
+               ROW_NUMBER () OVER (PARTITION BY TCBSID ORDER BY TCBSID) RN
+          FROM (SELECT * FROM WITH_ALL_0
+                UNION
+                SELECT U.TCBSID,
+                       U.LASTNAME,
+                       U.FIRSTNAME,
+                       U.EMAIL,
+                       U.PHONE,
+                       I.ID_NUMBER
+                  FROM ALL_USER_ID A
+                       LEFT JOIN TCBS_USER U ON A.USERID = U.ID
+                       LEFT JOIN TCBS_IDENTIFICATION I ON U.ID = I.USER_ID))
+ WHERE RN = 1

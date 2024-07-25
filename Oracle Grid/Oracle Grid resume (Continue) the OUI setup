@@ -1,0 +1,4 @@
+How to Complete Grid Infrastructure Configuration Assistant(Plug-in) if OUI is not Available (Doc ID 1360798.1)
+
+cd $ORACLE_HOME
+./gridSetup.sh -executeConfigTools -responseFile <responsefile.rsp>

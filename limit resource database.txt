@@ -1,0 +1,8 @@
+
+alter system set resource_limit=true scope=both;
+
+
+alter profile senior_claim_analyst limit
+connect_time 180000
+sessions_per_user 2
+idle_time 30;

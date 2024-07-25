@@ -1,0 +1,71 @@
+[root@dc-core-db-01 ~]# /u01/app/grid/product/12.1.0/grid/bin/oifcfg iflist -p -n
+enccw0.0.f400  192.168.2.0  PRIVATE  255.255.255.252
+enccw0.0.0600  10.100.1.0  PRIVATE  255.255.255.0
+enccw0.0.a800  192.168.2.180  PRIVATE  255.255.255.252
+enccw0.0.a800  169.254.0.0  UNKNOWN  255.255.128.0
+enccw0.0.a900  192.168.2.184  PRIVATE  255.255.255.252
+enccw0.0.a900  169.254.128.0  UNKNOWN  255.255.128.0
+[root@dc-core-db-01 ~]# /u01/app/grid/product/12.1.0/grid/bin/oifcfg getif
+enccw0.0.0600  10.100.1.0  global  public
+enccw0.0.a800  192.168.2.180  global  cluster_interconnect
+enccw0.0.a900  192.168.2.184  global  cluster_interconnect
+[root@dc-core-db-01 ~]# su - grid
+Last login: Wed May 30 07:58:21 +07 2018
+[grid@dc-core-db-01 ~]$ sqlplus / as sysasm
+
+SQL*Plus: Release 12.1.0.2.0 Production on Wed May 30 08:16:47 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+
+SQL> select name,ip_address from v$cluster_interconnects;
+
+NAME            IP_ADDRESS
+--------------- ----------------
+enccw0.0.a800:  169.254.97.24
+enccw0.0.a900:  169.254.248.217
+
+SQL> exit
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+[grid@dc-core-db-01 ~]$
+
+[root@dc-core-db-02 oswprvtnet]# /u01/app/grid/product/12.1.0/grid/bin/oifcfg iflist -p -n
+enccw0.0.f400  192.168.2.0  PRIVATE  255.255.255.252
+enccw0.0.0600  10.100.1.0  PRIVATE  255.255.255.0
+enccw0.0.a800  192.168.2.180  PRIVATE  255.255.255.252
+enccw0.0.a800  169.254.0.0  UNKNOWN  255.255.128.0
+enccw0.0.a900  192.168.2.184  PRIVATE  255.255.255.252
+enccw0.0.a900  169.254.128.0  UNKNOWN  255.255.128.0
+[root@dc-core-db-02 oswprvtnet]# /u01/app/grid/product/12.1.0/grid/bin/oifcfg getif
+enccw0.0.0600  10.100.1.0  global  public
+enccw0.0.a800  192.168.2.180  global  cluster_interconnect
+enccw0.0.a900  192.168.2.184  global  cluster_interconnect
+[root@dc-core-db-02 oswprvtnet]# su - grid
+Last login: Wed May 30 07:58:45 +07 2018
+[grid@dc-core-db-02 ~]$ sqlplus / as sysasm
+
+SQL*Plus: Release 12.1.0.2.0 Production on Wed May 30 08:16:26 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+
+SQL> select name,ip_address from v$cluster_interconnects;
+
+NAME            IP_ADDRESS
+--------------- ----------------
+enccw0.0.a800:  169.254.37.141
+enccw0.0.a900:  169.254.172.40
+
+SQL> exit
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+[grid@dc-core-db-02 ~]$

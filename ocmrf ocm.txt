@@ -1,0 +1,1 @@
+$ORACLE_HOME/OPatch/ocm/bin/emocmrsp  -no_banner -output /tmp/file.rsp

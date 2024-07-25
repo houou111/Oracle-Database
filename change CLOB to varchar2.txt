@@ -1,0 +1,35 @@
+SQL> alter table {your table} add {VARCHAR2_Column} varchar2(32767);
+Table altered.
+
+
+SQL> update {your table} set {VARCHAR2_Column} = {CLOB_Column};
+17000 rows updated.
+
+
+SQL> commit;
+Commit complete.
+
+
+SQL> alter table {your table} drop column {CLOB_Column};
+Table altered.
+
+
+-- Optionally rename the new column
+
+SQL> alter table {your table}
+rename column {VARCHAR2_Column} to {CLOB_Column};
+
+Table altered.
+
+
+
+alter table dwh.account1 add CAP_DATE_CHARGE_NEW varchar2(32767);
+
+update dwh.account1 set CAP_DATE_CHARGE_NEW = CAP_DATE_CHARGE;
+
+commit;
+
+alter table dwh.account1 drop column CAP_DATE_CHARGE;
+
+alter table dwh.account1 rename column CAP_DATE_CHARGE_NEW to CAP_DATE_CHARGE;
+

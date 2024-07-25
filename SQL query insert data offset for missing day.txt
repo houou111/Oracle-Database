@@ -1,0 +1,12 @@
+insert into "mariadb_44.12".dwh.sec_info_hist_all select s,dt,c,re,ce,fl from mongodb_channel."grooo-market".c_symbol_daily where s is not null and s not in ('CHPG2112','CKDH2105','CTCB2107','CVHM2108','CVRE210
+8','HNXINDEX','HNXUPCOMINDEX','VNINDEX') and dt > current_date + interval '-1' day;
+
+INSERT INTO "mariadb_44.12".dwh.sec_info_hist_all
+SELECT code, trading_date + interval '1' day, average_price,basic_price,ceiling_price,floor_price
+FROM "mariadb_44.12".dwh.sec_info_hist_all a
+JOIN (
+    SELECT calendar_date
+    FROM "mariadb_44.12".dwh.calendar_date c
+    LEFT JOIN "mariadb_44.12".dwh.sec_info_hist_all d ON c.calendar_date = d.trading_date
+    WHERE trading_date IS NULL AND calendar_date <= current_date
+) b ON a.trading_date + interval '1' day = b.calendar_date;

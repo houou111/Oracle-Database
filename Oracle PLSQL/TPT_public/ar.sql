@@ -1,0 +1,1 @@
+and rownum <= &1;

@@ -1,0 +1,406 @@
+[root@dc-core-db-01 ~]# /bin/netstat -in
+Kernel Interface table
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+enccw0.0  1500 61177898781      0     38 0      93747219652      0      0      0 BMRU
+enccw0.0  1500      - no statistics available -                        BMRU
+enccw0.0  1500      - no statistics available -                        BMRU
+enccw0.0  1500      - no statistics available -                        BMRU
+enccw0.0  1500      - no statistics available -                        BMRU
+enccw0.0  8992 8790683276      0      0 0      8599439652      0      0      0 BMRU
+enccw0.0  8992      - no statistics available -                        BMRU
+enccw0.0  8992 8789011526      0      0 0      8599511694      0      0      0 BMRU
+enccw0.0  8992      - no statistics available -                        BMRU
+enccw0.0  8192   977428      0      0 0       1109048      0      0      0 BMRU
+lo       16384 2878999710      0      0 0      2878999710      0      0      0 LRU
+
+===============
+[root@dc-core-db-01 ~]# /sbin/ifconfig
+enccw0.0.0600: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.100.1.10  netmask 255.255.255.0  broadcast 10.100.1.255
+        inet6 fe80::1ff:fe10:1  prefixlen 64  scopeid 0x20<link>
+        ether 02:00:01:10:00:01  txqueuelen 1000  (Ethernet)
+        RX packets 61178821402  bytes 18253072196817 (16.6 TiB)
+        RX errors 0  dropped 38  overruns 0  frame 0
+        TX packets 93748452791  bytes 86573578685277 (78.7 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enccw0.0.0600:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.100.1.17  netmask 255.255.255.0  broadcast 10.100.1.255
+        ether 02:00:01:10:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.0600:2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.100.1.12  netmask 255.255.255.0  broadcast 10.100.1.255
+        ether 02:00:01:10:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.0600:5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.100.1.15  netmask 255.255.255.0  broadcast 10.100.1.255
+        ether 02:00:01:10:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.0600:6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.100.1.16  netmask 255.255.255.0  broadcast 10.100.1.255
+        ether 02:00:01:10:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.a800: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8992
+        inet 192.168.2.181  netmask 255.255.255.252  broadcast 192.168.2.183
+        inet6 fe80::ff:fef4:7fe7  prefixlen 64  scopeid 0x20<link>
+        ether 02:00:00:f4:7f:e7  txqueuelen 3000  (Ethernet)
+        RX packets 8790788843  bytes 11253380101899 (10.2 TiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 8599542642  bytes 9847859126364 (8.9 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enccw0.0.a800:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8992
+        inet 169.254.97.24  netmask 255.255.128.0  broadcast 169.254.127.255
+        ether 02:00:00:f4:7f:e7  txqueuelen 3000  (Ethernet)
+
+enccw0.0.a900: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8992
+        inet 192.168.2.185  netmask 255.255.255.252  broadcast 192.168.2.187
+        inet6 fe80::ff:fe6e:32b  prefixlen 64  scopeid 0x20<link>
+        ether 02:00:00:6e:03:2b  txqueuelen 3000  (Ethernet)
+        RX packets 8789117323  bytes 11253013832271 (10.2 TiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 8599615123  bytes 9847441163634 (8.9 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enccw0.0.a900:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8992
+        inet 169.254.248.217  netmask 255.255.128.0  broadcast 169.254.255.255
+        ether 02:00:00:6e:03:2b  txqueuelen 3000  (Ethernet)
+
+enccw0.0.f603: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8192
+        inet 192.168.2.1  netmask 255.255.255.252  broadcast 192.168.2.3
+        inet6 fe80::5c00:f6ff:fe01:5  prefixlen 64  scopeid 0x20<link>
+        ether 5e:00:f6:01:00:05  txqueuelen 1000  (Ethernet)
+        RX packets 977444  bytes 80330507 (76.6 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1109064  bytes 110117442 (105.0 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 16384
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1  (Local Loopback)
+        RX packets 2879045825  bytes 9055402629256 (8.2 TiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 2879045825  bytes 9055402629256 (8.2 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+===============
+[root@dc-core-db-01 ~]# ping dc-core-db-02
+PING dc-core-db-02 (10.100.1.11) 56(84) bytes of data.
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=1 ttl=64 time=0.517 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=2 ttl=64 time=0.318 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=3 ttl=64 time=1.55 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=4 ttl=64 time=1.99 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=5 ttl=64 time=0.983 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=6 ttl=64 time=0.438 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=7 ttl=64 time=4.87 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=8 ttl=64 time=0.351 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=9 ttl=64 time=0.503 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=10 ttl=64 time=0.415 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=11 ttl=64 time=1.24 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=12 ttl=64 time=0.556 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=13 ttl=64 time=0.427 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=14 ttl=64 time=0.616 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=15 ttl=64 time=0.480 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=16 ttl=64 time=0.701 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=17 ttl=64 time=0.787 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=18 ttl=64 time=0.310 ms
+^C
+--- dc-core-db-02 ping statistics ---
+18 packets transmitted, 18 received, 0% packet loss, time 17016ms
+rtt min/avg/max/mdev = 0.310/0.948/4.870/1.050 ms
+[root@dc-core-db-01 ~]# ping dc-core-db-02
+PING dc-core-db-02 (10.100.1.11) 56(84) bytes of data.
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=1 ttl=64 time=0.527 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=2 ttl=64 time=0.291 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=3 ttl=64 time=1.20 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=4 ttl=64 time=0.546 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=5 ttl=64 time=0.365 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=6 ttl=64 time=0.675 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=7 ttl=64 time=0.976 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=8 ttl=64 time=0.855 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=9 ttl=64 time=0.590 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=10 ttl=64 time=0.435 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=11 ttl=64 time=0.545 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=12 ttl=64 time=0.526 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=13 ttl=64 time=0.509 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=14 ttl=64 time=1.65 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=15 ttl=64 time=0.435 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=16 ttl=64 time=0.581 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=17 ttl=64 time=0.379 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=18 ttl=64 time=0.590 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=19 ttl=64 time=0.622 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=20 ttl=64 time=0.698 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=21 ttl=64 time=0.445 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=22 ttl=64 time=0.432 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=23 ttl=64 time=0.746 ms
+64 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=24 ttl=64 time=1.17 ms
+^C
+--- dc-core-db-02 ping statistics ---
+24 packets transmitted, 24 received, 0% packet loss, time 23011ms
+rtt min/avg/max/mdev = 0.291/0.658/1.658/0.311 ms
+
+===============
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 10.100.1.10  dc-core-db-01
+PING dc-core-db-01 (10.100.1.10) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-01 (10.100.1.10): icmp_seq=1 ttl=64 time=0.012 ms
+1508 bytes from dc-core-db-01 (10.100.1.10): icmp_seq=2 ttl=64 time=0.019 ms
+
+--- dc-core-db-01 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.012/0.015/0.019/0.005 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 10.100.1.10  dc-core-db-01
+PING dc-core-db-01 (10.100.1.10) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-01 (10.100.1.10): icmp_seq=1 ttl=64 time=0.012 ms
+1508 bytes from dc-core-db-01 (10.100.1.10): icmp_seq=2 ttl=64 time=0.018 ms
+
+--- dc-core-db-01 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1006ms
+rtt min/avg/max/mdev = 0.012/0.015/0.018/0.003 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 10.100.1.10  dc-core-db-02
+PING dc-core-db-02 (10.100.1.11) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=1 ttl=64 time=0.983 ms
+1508 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=2 ttl=64 time=0.544 ms
+
+--- dc-core-db-02 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.544/0.763/0.983/0.221 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 10.100.1.10  dc-core-db-02
+PING dc-core-db-02 (10.100.1.11) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=1 ttl=64 time=5.30 ms
+1508 bytes from dc-core-db-02 (10.100.1.11): icmp_seq=2 ttl=64 time=0.662 ms
+
+--- dc-core-db-02 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.662/2.983/5.304/2.321 ms
+
+===============
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  192.168.2.181
+PING 192.168.2.181 (192.168.2.181) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 192.168.2.181: icmp_seq=1 ttl=64 time=0.021 ms
+1508 bytes from 192.168.2.181: icmp_seq=2 ttl=64 time=0.579 ms
+
+--- 192.168.2.181 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.021/0.300/0.579/0.279 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  192.168.2.182
+PING 192.168.2.182 (192.168.2.182) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 192.168.2.182: icmp_seq=1 ttl=64 time=1.86 ms
+1508 bytes from 192.168.2.182: icmp_seq=2 ttl=64 time=1.60 ms
+
+--- 192.168.2.182 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 1.609/1.736/1.864/0.134 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  192.168.2.185
+PING 192.168.2.185 (192.168.2.185) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 192.168.2.185: icmp_seq=1 ttl=64 time=0.014 ms
+1508 bytes from 192.168.2.185: icmp_seq=2 ttl=64 time=0.017 ms
+
+--- 192.168.2.185 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.014/0.015/0.017/0.004 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  192.168.2.186
+PING 192.168.2.186 (192.168.2.186) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 192.168.2.186: icmp_seq=1 ttl=64 time=0.295 ms
+1508 bytes from 192.168.2.186: icmp_seq=2 ttl=64 time=0.144 ms
+
+--- 192.168.2.186 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.144/0.219/0.295/0.076 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  169.254.97.24
+PING 169.254.97.24 (169.254.97.24) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 169.254.97.24: icmp_seq=1 ttl=64 time=0.018 ms
+1508 bytes from 169.254.97.24: icmp_seq=2 ttl=64 time=0.014 ms
+
+--- 169.254.97.24 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.014/0.016/0.018/0.002 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  169.254.57.236
+PING 169.254.57.236 (169.254.57.236) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 169.254.57.236: icmp_seq=1 ttl=64 time=0.184 ms
+1508 bytes from 169.254.57.236: icmp_seq=2 ttl=64 time=0.397 ms
+
+--- 169.254.57.236 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1009ms
+rtt min/avg/max/mdev = 0.184/0.290/0.397/0.107 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  169.254.248.217
+PING 169.254.248.217 (169.254.248.217) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 169.254.248.217: icmp_seq=1 ttl=64 time=0.013 ms
+1508 bytes from 169.254.248.217: icmp_seq=2 ttl=64 time=0.024 ms
+
+--- 169.254.248.217 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.013/0.018/0.024/0.007 ms
+[root@dc-core-db-01 ~]# /bin/ping -s 1500 -c 2 -I 192.168.2.181  169.254.186.246
+PING 169.254.186.246 (169.254.186.246) from 192.168.2.181 : 1500(1528) bytes of data.
+1508 bytes from 169.254.186.246: icmp_seq=1 ttl=64 time=0.116 ms
+1508 bytes from 169.254.186.246: icmp_seq=2 ttl=64 time=1.49 ms
+
+--- 169.254.186.246 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.116/0.803/1.491/0.688 ms
+
+
+===============
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 192.168.2.181  1472
+traceroute to 192.168.2.181 (192.168.2.181), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (192.168.2.181)  0.016 ms  0.007 ms  0.005 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 192.168.2.182  1472
+traceroute to 192.168.2.182 (192.168.2.182), 30 hops max, 1472 byte packets
+ 1  192.168.2.182 (192.168.2.182)  0.167 ms  0.160 ms *
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 192.168.2.185  1472
+traceroute to 192.168.2.185 (192.168.2.185), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (192.168.2.185)  0.017 ms  0.004 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 192.168.2.186  1472
+traceroute to 192.168.2.186 (192.168.2.186), 30 hops max, 1472 byte packets
+ 1  192.168.2.186 (192.168.2.186)  0.117 ms  0.170 ms  0.113 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 169.254.97.24  1472
+traceroute to 169.254.97.24 (169.254.97.24), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (169.254.97.24)  0.016 ms  0.005 ms  0.004 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 169.254.57.236  1472
+traceroute to 169.254.57.236 (169.254.57.236), 30 hops max, 1472 byte packets
+ 1  169.254.57.236 (169.254.57.236)  0.132 ms  0.140 ms  0.186 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 169.254.248.217  1472
+traceroute to 169.254.248.217 (169.254.248.217), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (169.254.248.217)  0.020 ms  0.004 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.181  -r -F 169.254.186.246  1472
+traceroute to 169.254.186.246 (169.254.186.246), 30 hops max, 1472 byte packets
+
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 192.168.2.181  1472
+traceroute to 192.168.2.181 (192.168.2.181), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (192.168.2.181)  0.019 ms  0.004 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 192.168.2.182  1472
+traceroute to 192.168.2.182 (192.168.2.182), 30 hops max, 1472 byte packets
+ 1  192.168.2.182 (192.168.2.182)  0.129 ms  0.139 ms *
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 192.168.2.185  1472
+traceroute to 192.168.2.185 (192.168.2.185), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (192.168.2.185)  0.016 ms  0.004 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 192.168.2.186  1472
+traceroute to 192.168.2.186 (192.168.2.186), 30 hops max, 1472 byte packets
+ 1  192.168.2.186 (192.168.2.186)  0.156 ms  0.133 ms  0.202 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 169.254.97.24  1472
+traceroute to 169.254.97.24 (169.254.97.24), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (169.254.97.24)  0.015 ms  0.003 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 169.254.57.236  1472
+traceroute to 169.254.57.236 (169.254.57.236), 30 hops max, 1472 byte packets
+ 1  169.254.57.236 (169.254.57.236)  0.122 ms * *
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 169.254.248.217  1472
+traceroute to 169.254.248.217 (169.254.248.217), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (169.254.248.217)  0.017 ms  0.005 ms  0.003 ms
+[root@dc-core-db-01 ~]# /bin/traceroute -s 192.168.2.185  -r -F 169.254.248.217  1472
+traceroute to 169.254.248.217 (169.254.248.217), 30 hops max, 1472 byte packets
+ 1  dc-core-db-01 (169.254.248.217)  0.017 ms  0.004 ms  0.005 ms
+
+===============
+[root@dc-core-db-01 ~]# ping -c 2 dc-core-db-01-vip
+PING dc-core-db-01-vip (10.100.1.12) 56(84) bytes of data.
+64 bytes from dc-core-db-01-vip (10.100.1.12): icmp_seq=1 ttl=64 time=0.014 ms
+64 bytes from dc-core-db-01-vip (10.100.1.12): icmp_seq=2 ttl=64 time=0.021 ms
+
+--- dc-core-db-01-vip ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1005ms
+rtt min/avg/max/mdev = 0.014/0.017/0.021/0.005 ms
+[root@dc-core-db-01 ~]# ping -c 2 dc-core-db-02-vip
+PING dc-core-db-02-vip (10.100.1.13) 56(84) bytes of data.
+64 bytes from dc-core-db-02-vip (10.100.1.13): icmp_seq=1 ttl=64 time=1.08 ms
+64 bytes from dc-core-db-02-vip (10.100.1.13): icmp_seq=2 ttl=64 time=0.785 ms
+
+--- dc-core-db-02-vip ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.785/0.937/1.089/0.152 ms
+
+===============
+
+[root@dc-core-db-01 ~]# ping -s 1500 -c 2 -I 10.100.1.10 dc-core-db-scan
+PING dc-core-db-scan.techcombank.com.vn (10.100.1.15) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-01 (10.100.1.15): icmp_seq=1 ttl=64 time=0.015 ms
+1508 bytes from dc-core-db-01 (10.100.1.15): icmp_seq=2 ttl=64 time=0.020 ms
+
+--- dc-core-db-scan.techcombank.com.vn ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.015/0.017/0.020/0.004 ms
+[root@dc-core-db-01 ~]# ping -s 1500 -c 2 -I 10.100.1.10 dc-core-db-scan
+PING dc-core-db-scan.techcombank.com.vn (10.100.1.14) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=1 ttl=64 time=1.76 ms
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=2 ttl=64 time=1.37 ms
+
+--- dc-core-db-scan.techcombank.com.vn ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 1.371/1.569/1.767/0.198 ms
+[root@dc-core-db-01 ~]# ping -s 1500 -c 2 -I 10.100.1.10 dc-core-db-scan
+PING dc-core-db-scan.techcombank.com.vn (10.100.1.14) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=1 ttl=64 time=1.51 ms
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=2 ttl=64 time=1.61 ms
+
+--- dc-core-db-scan.techcombank.com.vn ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 1.518/1.568/1.619/0.064 ms
+[root@dc-core-db-01 ~]# ping -s 1500 -c 2 -I 10.100.1.10 dc-core-db-scan
+PING dc-core-db-scan.techcombank.com.vn (10.100.1.15) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from dc-core-db-01 (10.100.1.15): icmp_seq=1 ttl=64 time=0.010 ms
+1508 bytes from dc-core-db-01 (10.100.1.15): icmp_seq=2 ttl=64 time=0.017 ms
+
+--- dc-core-db-scan.techcombank.com.vn ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.010/0.013/0.017/0.005 ms
+[root@dc-core-db-01 ~]# ping -s 1500 -c 2 -I 10.100.1.10 dc-core-db-scan
+PING dc-core-db-scan.techcombank.com.vn (10.100.1.14) from 10.100.1.10 : 1500(1528) bytes of data.
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=1 ttl=64 time=0.670 ms
+1508 bytes from 10.100.1.14 (10.100.1.14): icmp_seq=2 ttl=64 time=1.45 ms
+
+--- dc-core-db-scan.techcombank.com.vn ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.670/1.060/1.451/0.391 ms
+[root@dc-core-db-01 ~]#
+
+
+===============
+[root@dc-core-db-01 ~]# nslookup dc-core-db-01-vip
+Server:         10.98.1.91
+Address:        10.98.1.91#53
+
+Name:   dc-core-db-01-vip.techcombank.com.vn
+Address: 10.100.1.12
+
+[root@dc-core-db-01 ~]# nslookup dc-core-db-02-vip
+Server:         10.98.1.91
+Address:        10.98.1.91#53
+
+Name:   dc-core-db-02-vip.techcombank.com.vn
+Address: 10.100.1.13
+
+[root@dc-core-db-01 ~]# nslookup dc-core-db-scan
+Server:         10.98.1.91
+Address:        10.98.1.91#53
+
+Name:   dc-core-db-scan.techcombank.com.vn
+Address: 10.100.1.14
+Name:   dc-core-db-scan.techcombank.com.vn
+Address: 10.100.1.15
+Name:   dc-core-db-scan.techcombank.com.vn
+Address: 10.100.1.16
+
+===============
+[root@dc-core-db-01 ~]# /bin/grep ^hosts /etc/nsswitch.conf
+hosts:      files dns myhostname
+
+===============
+[root@dc-core-db-01 ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+################# RAC IPs #################
+
+10.100.1.10 dc-core-db-01
+10.100.1.11 dc-core-db-02
+
+10.100.1.12 dc-core-db-01-vip
+10.100.1.13 dc-core-db-02-vip
+
+192.168.2.1 dc-core-db-01-ss
+192.168.2.2 dc-core-db-02-ss
+10.97.8.10              dc-backup-01.headquarter.techcombank.com.vn     dc-backup-01
+10.97.8.136             dr-backup-01.headquarter.techcombank.com.vn     dr-backup-01
+10.97.8.137             dr-backup-02.headquarter.techcombank.com.vn     dr-backup-02
+10.97.8.138             dr-backup-03.headquarter.techcombank.com.vn     dr-backup-03
+10.97.4.155     dc-em13c-app    dc-em13c-app.techcombank.com.vn

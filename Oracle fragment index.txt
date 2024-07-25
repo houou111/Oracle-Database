@@ -1,0 +1,51 @@
+WITH
+indexes AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2b.194 */
+       pt.object_owner,
+       pt.object_name,
+       TO_NUMBER(EXTRACTVALUE(VALUE(d), '/info')) estimated_bytes
+  FROM plan_table pt,
+       TABLE(XMLSEQUENCE(EXTRACT(XMLTYPE(pt.other_xml), '/other_xml/info'))) d
+ WHERE pt.statement_id = 'EXD1Q8G6MG81GBL4BNP5HR097H4DAL'
+   AND pt.other_xml IS NOT NULL -- redundant
+   AND DBMS_LOB.instr(pt.other_xml, 'index_size') > 0 -- redundant
+   AND EXTRACTVALUE(VALUE(d), '/info/@type') = 'index_size' -- grab index_size type
+),
+segments AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2b.194 */
+       owner, segment_name, SUM(bytes) actual_bytes
+  FROM dba_segments
+ WHERE 'Y' = 'Y'
+   AND owner NOT IN ('ANONYMOUS','APEX_030200','APEX_040000','APEX_SSO','APPQOSSYS','CTXSYS','DBSNMP','DIP','EXFSYS','FLOWS_FILES','MDSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS') -- exclude non-application schemas
+   AND owner NOT IN ('SI_INFORMTN_SCHEMA','SQLTXADMIN','SQLTXPLAIN','SYS','SYSMAN','SYSTEM','TRCANLZR','WMSYS','XDB','XS$NULL','PERFSTAT','STDBYPERF') -- exclude more non-application schemas
+   AND segment_type LIKE 'INDEX%'
+HAVING SUM(bytes) > POWER(10,6) -- only indexes with actual size > 1 MB
+ GROUP BY
+       owner,
+       segment_name
+),
+list_bytes AS (
+SELECT /*+  MATERIALIZE NO_MERGE  */ /* 2b.194 */
+       (s.actual_bytes - i.estimated_bytes) actual_minus_estimated,
+       s.actual_bytes,
+       i.estimated_bytes,
+       i.object_owner,
+       i.object_name
+  FROM indexes i,
+       segments s
+ WHERE i.estimated_bytes > POWER(10,6) -- only indexes with estimated size > 1 MB
+   AND s.owner(+) = i.object_owner
+   AND s.segment_name(+) = i.object_name
+)
+SELECT /*+  NO_MERGE  */ /* 2b.194 */
+       ROUND(actual_minus_estimated / POWER(10,6)) actual_minus_estimated,
+       ROUND(actual_bytes / POWER(10,6)) actual_mb,
+       ROUND(estimated_bytes / POWER(10,6)) estimated_mb,
+       object_owner owner,
+       object_name index_name
+  FROM list_bytes
+ WHERE actual_minus_estimated > POWER(10,6) -- only differences > 1 MB
+ ORDER BY
+       1 DESC,
+       object_owner,
+       object_name;

@@ -1,0 +1,84 @@
+--Oracle document
+https://docs.oracle.com/database/121/CWADD/GUID-8ADA9667-EC27-4EF9-9F34-C8F65A757F2A.htm#CWADD90992
+https://docs.oracle.com/database/121/TDPRC/addnodes.htm#TDPRC094
+
+--delete node 2 from cluster
+1. [root@dc-core-db-01 gg_data]# olsnodes -s -t
+2. 
+[grid@dc-core-db-02 bin]$ cd $ORACLE_HOME/oui/bin
+[grid@dc-core-db-02 bin]$ ./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-02" CRS=TRUE -silent -local
+3. 
+$ORACLE_HOME/deinstall/deinstall -local
+[root@dc-core-db-02 bin]$ /tmp/deinstall2018-09-16_02-24-32AM/perl/bin/perl -I/tmp/deinstall2018-09-16_02-24-32AM/perl/lib -I/tmp/deinstall2018-09-16_02-24-32AM/crs/install /tmp/deinstall2018-09-16_02-24-32AM/crs/install/rootcrs.pl -force  -deconfig -paramfile "/tmp/deinstall2018-09-16_02-24-32AM/response/deinstall_OraGI12Home1.rsp"
+/tmp/deinstall2018-11-11_07-23-16AM/perl/bin/perl -I/tmp/deinstall2018-11-11_07-23-16AM/perl/lib -I/tmp/deinstall2018-11-11_07-23-16AM/crs/install /tmp/deinstall2018-11-11_07-23-16AM/crs/install/rootcrs.pl -force  -deconfig -paramfile "/tmp/deinstall2018-11-11_07-23-16AM/response/deinstall_OraGI12Home1.rsp"
+
+
+4. 
+
+/tmp/deinstall2018-11-11_05-33-14AM/perl/bin/perl -I/tmp/deinstall2018-11-11_05-33-14AM/perl/lib -I/tmp/deinstall2018-11-11_05-33-14AM/crs/install /tmp/deinstall2018-11-11_05-33-14AM/crs/install/rootcrs.pl -force  -deconfig -paramfile "/tmp/deinstall2018-11-11_05-33-14AM/response/deinstall_OraGI12Home1.rsp"
+
+
+[grid@dc-core-db-02 deinstall]$ cd $ORACLE_HOME/deinstall
+[grid@dc-core-db-02 deinstall]$ ./deinstall -local
+5. 
+[grid@dc-core-db-01 bin]$ $ORACLE_HOME/oui/bin 
+[grid@dc-core-db-01 bin]$ ./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-01" CRS=TRUE -silent
+6. [root@dc-core-db-01 ~]# crsctl delete node -n dc-core-db-02
+7. 
+[grid@dc-core-db-01 ~]$ cd /u01/app/grid/product/12.1.0/grid/bin/
+[grid@dc-core-db-01 bin]$ ./cluvfy stage -post nodedel -n dc-core-db-02
+10.[grid@dc-core-db-01 ~]$ srvctl stop vip -vip dc-core-db-02-vip -force
+11.[grid@dc-core-db-01 ~]$ srvctl remove vip -vip dc-core-db-02-vip
+
+--add node 2 to cluster
+1. Check and delete file in
+- in grid home node 2 (delete node) $ORACLE_HOME
+- in audit log of node 1 $ORACLE_HOME/rdbms/audit
+2. [grid@dc-core-db-01 ~]$ cluvfy stage -pre nodeadd -n dc-core-db-02 -verbose
+3. 
+[grid@dc-core-db-01 addnode]$ cd $ORACLE_HOME/addnode
+[grid@dc-core-db-01 addnode]$ ./addnode.sh -silent "CLUSTER_NEW_NODES={dc-core-db-02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dc-core-db-02-vip}" -ignorePrereq
+
+./addnode.sh -silent "CLUSTER_NEW_NODES={dc-core-db-02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dc-core-db-02-vip}"  -ignoreSysPrereqs
+
+ERROR:
+Reference data is not available for release "12.1" on the operating system distribution "Linux3.10.0-693.11.6.el7.s390x"
+Verification cannot proceed
+
+
+4. 
+reinstall patch no 18377986 
+check privilege of file oracle and oracleO in grid home
+modify file  more /u01/app/grid/product/12.1.0/grid/crs/install/s_crsconfig_dc-core-db-01_env.txt
+change TZ to "TZ=Asia/Ho_Chi_Minh"
+--> restart CRS
+
+
+
+CRS-4133: Oracle High Availability Services has been stopped.
+CRS-4123: Oracle High Availability Services has been started.
+CRS-4133: Oracle High Availability Services has been stopped.
+CRS-4123: Oracle High Availability Services has been started.
+CRS-4133: Oracle High Availability Services has been stopped.
+CRS-4123: Starting Oracle High Availability Services-managed resources
+CRS-2672: Attempting to start 'ora.mdnsd' on 'dc-core-db-02'
+CRS-2672: Attempting to start 'ora.evmd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.evmd' on 'dc-core-db-02' succeeded
+CRS-2676: Start of 'ora.mdnsd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.gpnpd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.gpnpd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.gipcd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.gipcd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.cssdmonitor' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.cssdmonitor' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.cssd' on 'dc-core-db-02'
+CRS-2672: Attempting to start 'ora.diskmon' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.diskmon' on 'dc-core-db-02' succeeded
+CRS-2883: Resource 'ora.cssdmonitor' failed during Clusterware stack start.
+CRS-4406: Oracle High Availability Services synchronous start failed.
+CRS-4000: Command Start failed, or completed with errors.
+2018/11/11 05:52:56 CLSRSC-117: Failed to start Oracle Clusterware stack
+
+Died at /u01/app/grid/product/12.1.0/grid/crs/install/crsinstall.pm line 984.
+The command '/u01/app/grid/product/12.1.0/grid/perl/bin/perl -I/u01/app/grid/product/12.1.0/grid/perl/lib -I/u01/app/grid/product/12.1.0/grid/crs/install /u01/app/grid
+/product/12.1.0/grid/crs/install/rootcrs.pl ' execution failed

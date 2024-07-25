@@ -1,0 +1,43 @@
+[oracle@dc-esb-db01:/home/oracle/bin]# sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.3.0 Production on Mon Aug 21 09:19:08 2017
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SQL> sho parameter name
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_file_name_convert                 string
+db_name                              string      esbdata
+db_unique_name                       string      esbdata
+global_names                         boolean     FALSE
+instance_name                        string      esbdata1
+lock_name_space                      string
+log_file_name_convert                string
+processor_group_name                 string
+service_names                        string      esbdata
+
+SQL> alter table ESBLOG.MESSAGES_CARDV1 move tablespace ESBLOG;
+
+Table altered.
+
+SQL> alter index ESBLOG.IDX_MESSAGES_CARDV1_SERVICEID rebuild tablespace ESBLOG online;
+
+Index altered.
+
+SQL> alter table ESBLOG.MESSAGES_OSBV1 move tablespace ESBLOG;
+
+Table altered.
+
+SQL> alter index ESBLOG.IDX_MESSAGES_OSBV1_SERVICEID rebuild tablespace ESBLOG online;
+
+Index altered.
+
+SQL> 

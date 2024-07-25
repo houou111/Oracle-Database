@@ -1,0 +1,16 @@
+1. Check network
+------------------
+$ORACLE_HOME/bin/oifcfg getif
+
+oifcfg iflist -p -n
+
+srvctl config nodeapps -a
+
+srvctl config scan
+
+
+export ORACLE_HOME=/u01/app/oracle/
+
+cd $ORACLE_BASE/diag/
+
+

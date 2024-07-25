@@ -1,0 +1,59 @@
+0. Link
+-------------------------------------------------------
+https://technology.amis.nl/2018/03/30/ords-installation-and-configuration/
+
+
+1. Copy and unzip file
+-------------------------------------------------------
+$ mkdir -p /u01/app/oracle/product/ords
+$ cp -p ords-18.2.0.zip /u01/app/oracle/product/ords
+$ cd /u01/app/oracle/product/ords
+$ unzip ords-18.2.0.zip
+
+
+2. add entry to .bash_profile
+-------------------------------------------------------
+vi .bash_profile
+export ORDS_HOME=/u01/app/oracle/product/ords
+
+
+3. Edit ords_params.properties
+-------------------------------------------------------
+vi .bash_profile
+export ORDS_HOME=/u01/app/oracle/product/ords
+ords_params.properties
+
+db.hostname = dw0301-vip 
+db.port = 1521
+db.servicename = dwhuat
+db.username = APEX_PUBLIC_USER
+migrate.apex.rest = false
+plsql.gateway.add = false
+rest.services.apex.add = false
+rest.services.ords.add = true
+schema.tablespace.default = ORDS
+schema.tablespace.temp = TEMP_TBS
+standalone.http.port = 8080
+user.tablespace.default = ORDS
+user.tablespace.temp = TEMP_TBS
+
+
+4. Configuration Directory
+-------------------------------------------------------
+cd $ORDS_HOME
+mkdir config
+java -jar ords.war configdir /u01/app/oracle/product/ords/config
+java -jar ords.war configdir
+
+
+5. Run the ORDS setup
+-------------------------------------------------------
+cd $ORDS_HOME
+$ mkdir -p log
+$ java -jar ords.war setup –database ords –logDir $ORDS_HOME/log –silent
+
+
+
+6. Make a mapping between the URL and the ORDS application
+-------------------------------------------------------
+java -jar ords.war map-url –type http://10.101.4.84:8888 /ords ords

@@ -1,0 +1,216 @@
+mkdir -p /home/oracle/bin
+vi /home/oracle/bin/twa
+
++ profile
+$ vi /home/oracle/.bash_profile
+export TZ=Asia/Ho_Chi_Minh
+export SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
+export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
+export ORACLE_UNQNAME=tsedb
+export ORACLE_SID=tsedb01
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+env | grep ORACLE
+umask 022
+
+export GG_HOME=/u01/app/oracle/ogg
+export LD_LIBRARY_PATH=$GG_HOME:$ORACLE_HOME/lib
+export PATH=$ORACLE_HOME/bin:$GG_HOME:$PATH
+export JAVA_HOME=/usr/bin/java
+
+
++grid:
+$ vi /home/oracle/bin/grid
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/19c/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP_ASM=$ORACLE_BASE/diag/asm/+asm/$ORACLE_SID/trace
+export DUMP_CRS=$ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log
+alias s="sqlplus / as sysdba"
+alias alert_asm="tail -300f $DUMP_ASM/alert_$ORACLE_SID.log"
+alias alert_crs="tail -300f $ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log"
+env | grep ORACLE
+
+
++oracle_sid:
+$ vi /home/oracle/bin/oracle_sid
+export ORACLE_SID=g2fo19c
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+
+export ORACLE_UNQNAME=g2fo19c
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+env | grep ORACLE
+
+
+$ vi /home/oracle/bin/em13c
+export ORACLE_HOME=/u01/app/agent13c/agent_13.4.0.0.0
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=/u01/app/agent13c/agent_inst/sysman/log
+
+
+
+
+
+##DB User profile
+set lines 200
+set pages 200
+col USERNAME for a30
+col PROFILE for a30
+select USERNAME, PROFILE from dba_users;
+
+
+
+select * from dba_profiles where profile='DEFAULT';
+ 
+PROFILE                        RESOURCE_NAME                    RESOURCE LIMIT
+------------------------------ -------------------------------- -------- ----------------------------------------
+DWHUSERS                       COMPOSITE_LIMIT                  KERNEL   DEFAULT
+DWHUSERS                       SESSIONS_PER_USER                KERNEL   DEFAULT
+DWHUSERS                       CPU_PER_SESSION                  KERNEL   DEFAULT
+DWHUSERS                       CPU_PER_CALL                     KERNEL   DEFAULT
+DWHUSERS                       LOGICAL_READS_PER_SESSION        KERNEL   DEFAULT
+DWHUSERS                       LOGICAL_READS_PER_CALL           KERNEL   DEFAULT
+DWHUSERS                       IDLE_TIME                        KERNEL   15
+DWHUSERS                       CONNECT_TIME                     KERNEL   DEFAULT
+DWHUSERS                       PRIVATE_SGA                      KERNEL   DEFAULT
+DWHUSERS                       FAILED_LOGIN_ATTEMPTS            PASSWORD 10
+DWHUSERS                       PASSWORD_LIFE_TIME               PASSWORD 60
+DWHUSERS                       PASSWORD_REUSE_TIME              PASSWORD 240
+DWHUSERS                       PASSWORD_REUSE_MAX               PASSWORD 4
+DWHUSERS                       PASSWORD_VERIFY_FUNCTION         PASSWORD verify_function_11G;
+DWHUSERS                       PASSWORD_LOCK_TIME               PASSWORD 1
+DWHUSERS                       PASSWORD_GRACE_TIME              PASSWORD 10
+
+
+alter profile DWHUSERS 
+
+
+CREATE PROFILE TWUSERS LIMIT
+IDLE_TIME 15
+FAILED_LOGIN_ATTEMPTS 10
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 240
+PASSWORD_REUSE_MAX 4
+PASSWORD_LOCK_TIME 1
+PASSWORD_GRACE_TIME 10;
+
+
+CREATE PROFILE MONITOR_PROFILE  LIMIT
+ 	COMPOSITE_LIMIT DEFAULT                     
+ 	SESSIONS_PER_USER 10                        
+ 	CPU_PER_SESSION DEFAULT                     
+ 	CPU_PER_CALL DEFAULT                        
+ 	LOGICAL_READS_PER_SESSION DEFAULT           
+ 	LOGICAL_READS_PER_CALL DEFAULT              
+ 	IDLE_TIME 15                                
+ 	CONNECT_TIME 60                            
+ 	PRIVATE_SGA UNLIMITED
+	FAILED_LOGIN_ATTEMPTS UNLIMITED
+	PASSWORD_LIFE_TIME UNLIMITED
+	PASSWORD_REUSE_TIME UNLIMITED
+	PASSWORD_REUSE_MAX UNLIMITED
+	PASSWORD_LOCK_TIME 1
+	PASSWORD_GRACE_TIME 10
+	PASSWORD_VERIFY_FUNCTION NULL;  
+  
+
+ CREATE PROFILE MONITOR_PROFILE LIMIT
+	SESSIONS_PER_USER UNLIMITED
+	CPU_PER_SESSION UNLIMITED
+	CPU_PER_CALL UNLIMITED
+	CONNECT_TIME 60
+	IDLE_TIME UNLIMITED
+	LOGICAL_READS_PER_SESSION UNLIMITED
+	LOGICAL_READS_PER_CALL UNLIMITED
+	COMPOSITE_LIMIT UNLIMITED
+	PRIVATE_SGA UNLIMITED
+	FAILED_LOGIN_ATTEMPTS UNLIMITED
+	PASSWORD_LIFE_TIME UNLIMITED
+	PASSWORD_REUSE_TIME UNLIMITED
+	PASSWORD_REUSE_MAX UNLIMITED
+	PASSWORD_LOCK_TIME 1
+	PASSWORD_GRACE_TIME 10
+	PASSWORD_VERIFY_FUNCTION NULL;  
+
+
+alter PROFILE DEFAULT LIMIT    PASSWORD_LIFE_TIME    UNLIMITED;
+
+alter PROFILE DEFAULT LIMIT    SERVICE    UNLIMITED;
+alter PROFILE DWHUSERS LIMIT    SESSIONS_PER_USER             10;
+alter PROFILE ITO LIMIT    CPU_PER_SESSION               UNLIMITED;
+alter PROFILE ITO LIMIT    CPU_PER_CALL                  UNLIMITED;
+alter PROFILE ITO LIMIT    LOGICAL_READS_PER_SESSION     UNLIMITED;
+alter PROFILE ITO LIMIT    LOGICAL_READS_PER_CALL        UNLIMITED;
+alter PROFILE ITO LIMIT    IDLE_TIME                     15;
+alter PROFILE ITO LIMIT    CONNECT_TIME                  UNLIMITED;
+alter PROFILE ITO LIMIT    PRIVATE_SGA                   UNLIMITED;
+alter PROFILE ITO LIMIT    FAILED_LOGIN_ATTEMPTS         10;
+alter PROFILE ITO LIMIT    PASSWORD_REUSE_TIME           240;
+alter PROFILE ITO LIMIT    PASSWORD_REUSE_MAX            4;
+alter PROFILE ITO LIMIT    PASSWORD_VERIFY_FUNCTION      verify_function_11G;
+alter PROFILE ITO LIMIT    PASSWORD_LOCK_TIME            1;
+alter PROFILE DWHUSERS LIMIT    PASSWORD_GRACE_TIME           5;
+
+alter PROFILE DEFAULT LIMIT    CONNECT_TIME                  UNLIMITED;
+
+
+PASSWORD_LIFE_TIME
+
+/*Get the password hash:*/      select password from user$ where name = 'ESBDATA';
+/*Paste it into the alter statement*/ --alter user ESBDATA identified by values 'AEE9B4DD18EA6581';
+
+
+ALTER USER CITADHN PROFILE DEFAULT;
+ALTER USER CITADGW PROFILE DEFAULT;
+ALTER USER CIGATEWAYHN PROFILE DEFAULT;
+ALTER USER CITADHCM PROFILE DEFAULT;
+ALTER USER CIGATEWAYHCM PROFILE DEFAULT;
+
+
+alter system set resource_limit=TRUE;
+alter system set resource_limit=FALSE;
+
+
+alter PROFILE DEFAULT LIMIT    CONNECT_TIME	1440;
+alter PROFILE DEFAULT LIMIT    IDLE_TIME	480;
+alter PROFILE DEFAULT LIMIT    PASSWORD_LIFE_TIME	UNLIMITED;
+
+alter PROFILE LIMIT_RESOURCE LIMIT    CONNECT_TIME	1440;
+alter PROFILE LIMIT_RESOURCE LIMIT    IDLE_TIME	480;
+alter PROFILE LIMIT_RESOURCE LIMIT    PASSWORD_LIFE_TIME	UNLIMITED;
+
+
+alter PROFILE PROFILE_MONITOR LIMIT    CONNECT_TIME	30;
+alter PROFILE PROFILE_MONITOR LIMIT    IDLE_TIME	60;
+alter PROFILE PROFILE_MONITOR LIMIT    PASSWORD_LIFE_TIME	UNLIMITED;
+
+
+
+CREATE PROFILE PROFILE_MONITOR  LIMIT
+ 	COMPOSITE_LIMIT DEFAULT                     
+ 	SESSIONS_PER_USER 10                        
+ 	CPU_PER_SESSION DEFAULT                     
+ 	CPU_PER_CALL DEFAULT                        
+ 	LOGICAL_READS_PER_SESSION DEFAULT           
+ 	LOGICAL_READS_PER_CALL DEFAULT              
+ 	IDLE_TIME 15                                
+ 	CONNECT_TIME 360                            
+ 	PRIVATE_SGA DEFAULT                         
+ 	FAILED_LOGIN_ATTEMPTS 5                     
+ 	PASSWORD_LIFE_TIME    UNLIMITED                     
+ 	PASSWORD_REUSE_TIME UNLIMITED                     
+ 	PASSWORD_REUSE_MAX UNLIMITED                        
+ 	PASSWORD_VERIFY_FUNCTION VERIFY_FUNCTION    
+ 	PASSWORD_LOCK_TIME 1                        
+ 	PASSWORD_GRACE_TIME 10; 

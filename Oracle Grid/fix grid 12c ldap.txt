@@ -1,0 +1,15 @@
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapmoddn
+chmod 755  /u01/app/12.2.0.1/grid/bin/dsml2ldif
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapaddmt
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapmodify
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapmodifymt
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapadd
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapbind
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapcompare
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapdelete
+chmod 755  /u01/app/12.2.0.1/grid/bin/ldapsearch
+chmod 755  /u01/app/12.2.0.1/grid/bin/rawutl
+chmod 755  /u01/app/12.2.0.1/grid/bin/oklist
+chmod 755  /u01/app/12.2.0.1/grid/bin/okdstry
+chmod 755  /u01/app/12.2.0.1/grid/bin/okinit
+chmod 755  /u01/app/12.2.0.1/grid/QOpatch/qopiprep.bat

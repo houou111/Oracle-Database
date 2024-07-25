@@ -1,0 +1,1 @@
+oradebug short_stack

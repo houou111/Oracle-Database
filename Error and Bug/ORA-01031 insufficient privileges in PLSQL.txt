@@ -1,0 +1,8 @@
+
+  
+1.  grant direct to table
+
+2. select into ... from ...
+
+  GRANT FLASHBACK ANY TABLE TO CSS_HTH;
+  ALTER PACKAGE CSS_HTH.notify_data COMPILE ;

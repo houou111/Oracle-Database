@@ -1,0 +1,144 @@
+-- T24 DC
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+COBR14_DC                     512   4,096    1,048,576 MOUNTED     EXTERN       4,608,000      4,363,246     94.69
+CRS                           512   4,096    1,048,576 MOUNTED     NORMAL           3,072            926     30.14
+FRACOBR14_DC                  512   4,096    1,048,576 MOUNTED     EXTERN       2,108,050        395,738     18.77
+FRAT24R14_DC                  512   4,096    1,048,576 CONNECTED   EXTERN       2,108,050        818,404     38.82
+RECOCOBR14_DC                 512   4,096    1,048,576 MOUNTED     EXTERN       2,108,050      1,241,308     58.88
+RECOT24R14_DC                 512   4,096    1,048,576 CONNECTED   EXTERN       2,108,050      1,612,388     76.49
+REDOLOG01                     512   4,096    4,194,304 MOUNTED     EXTERN         124,000            128       .10
+REDOLOG02                     512   4,096    4,194,304 MOUNTED     EXTERN         124,000            128       .10
+T24R14_DC                     512   4,096    1,048,576 CONNECTED   EXTERN       4,608,000      4,465,276     96.90
+                                                                          --------------- --------------
+Grand Total:                                                                   17,899,272     12,897,542
+
+
+
+--- T24 DR
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+ASM_DR                        512   4,096    1,048,576 MOUNTED     EXTERN           1,024             59      5.76
+COBR14_DR                     512   4,096    1,048,576 MOUNTED     EXTERN       4,608,000      4,430,466     96.15
+FRACOBR14_DR                  512   4,096    1,048,576 MOUNTED     EXTERN       2,108,050        661,994     31.40
+FRAT24R14_DR                  512   4,096    1,048,576 CONNECTED   EXTERN       2,108,050        900,597     42.72
+MONTHEND_DR                   512   4,096    1,048,576 MOUNTED     EXTERN       4,608,000      4,408,954     95.68
+RECOCOBR14_DR                 512   4,096    1,048,576 MOUNTED     EXTERN       2,108,050        881,799     41.83
+RECOT24R14_DR                 512   4,096    1,048,576 CONNECTED   EXTERN       2,108,050      1,812,119     85.96
+T24R14_DR                     512   4,096    1,048,576 CONNECTED   EXTERN       4,608,000      4,504,209     97.75
+YEAR12NEW_DR                  512   4,096    1,048,576 MOUNTED     EXTERN       2,867,200      2,427,625     84.67
+YEAR13_DR                     512   4,096    1,048,576 MOUNTED     EXTERN       3,145,728      2,443,265     77.67
+YEAR14_DR                     512   4,096    1,048,576 MOUNTED     EXTERN       2,621,440      1,980,997     75.57
+YEAR15_DR                     512   4,096    1,048,576 MOUNTED     EXTERN       4,096,000      3,292,808     80.39
+YEAR16_DR                     512   4,096    4,194,304 MOUNTED     EXTERN       4,614,144      4,377,472     94.87
+                                                                          --------------- --------------
+Grand Total:                                                                   39,601,736     32,122,364
+
+
+-- Oracle Farm DC
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     EXTERN           2,047            396     19.35
+DATA02                        512   4,096    1,048,576 CONNECTED   EXTERN       1,024,000        611,281     59.70
+DATA03                        512   4,096    1,048,576 MOUNTED     EXTERN         512,000        260,500     50.88
+DATA04                        512   4,096    1,048,576 MOUNTED     EXTERN       1,024,000        714,696     69.79
+FRA                           512   4,096    1,048,576 CONNECTED   EXTERN         409,600        323,316     78.93
+                                                                          --------------- --------------
+Grand Total:                                                                    2,971,647      1,910,189
+
+-- Oracle Farm DR
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     NORMAL           6,144            926     15.07
+DATA02                        512   4,096    4,194,304 CONNECTED   EXTERN       1,048,576        688,952     65.70
+DATA03                        512   4,096    4,194,304 MOUNTED     EXTERN         512,000            128       .03
+DATA04                        512   4,096    4,194,304 MOUNTED     EXTERN       1,024,000        725,480     70.85
+FRA                           512   4,096    4,194,304 CONNECTED   EXTERN         409,600        283,440     69.20
+                                                                          --------------- --------------
+Grand Total:                                                                    3,000,320      1,698,926
+
+
+-- ESB DC
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     EXTERN           1,000            396     39.60
+DATA01                        512   4,096    1,048,576 CONNECTED   EXTERN       1,024,000        545,368     53.26
+FRA01                         512   4,096    1,048,576 CONNECTED   EXTERN         204,800         64,691     31.59
+                                                                          --------------- --------------
+Grand Total:                                                                    1,229,800        610,455
+
+
+-- ESB DR
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     EXTERN           1,024            396     38.67
+DATA01_DR                     512   4,096    1,048,576 CONNECTED   EXTERN       1,024,000        619,744     60.52
+FRA01_DR                      512   4,096    1,048,576 CONNECTED   EXTERN         204,800         72,302     35.30
+RESTORE15                     512   4,096    1,048,576 MOUNTED     EXTERN         409,600            105       .03
+                                                                          --------------- --------------
+Grand Total:                                                                    1,639,424        692,547
+
+
+-- CARD DC
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     NORMAL           6,144            926     15.07
+DATA1                         512   4,096    4,194,304 CONNECTED   EXTERN         409,568        197,056     48.11
+DATA2                         512   4,096    4,194,304 CONNECTED   EXTERN       1,843,056      1,631,740     88.53
+FRA                           512   4,096    4,194,304 CONNECTED   EXTERN         409,568        289,736     70.74
+                                                                          --------------- --------------
+Grand Total:                                                                    2,668,336      2,119,458
+                                                                   2,668,336      1,947,078
+
+
+-- CARD DR
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+CRS                           512   4,096    1,048,576 MOUNTED     NORMAL           6,144            926     15.07
+DATA1                         512   4,096    4,194,304 MOUNTED     EXTERN         409,568        200,596     48.98
+DATA2                         512   4,096    4,194,304 CONNECTED   EXTERN       1,843,056      1,621,112     87.96
+FRA                           512   4,096    4,194,304 CONNECTED   EXTERN         409,568        291,504     71.17
+                                                                          --------------- --------------
+Grand Total:                                                                    2,668,336      2,114,138
+
+
+
+--- DWH DC
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+DATA_DG                       512   4,096    4,194,304 CONNECTED   NORMAL      45,416,448     37,946,824     83.55
+DBFS_DG                       512   4,096    4,194,304 MOUNTED     NORMAL         894,720        208,712     23.33
+HST_DG                        512   4,096    4,194,304 CONNECTED   NORMAL     111,096,960     62,095,252     55.89
+                                                                          --------------- --------------
+Grand Total:                                                                  157,408,128    100,250,788
+
+
+State    Type    Rebal  Sector  Block       AU   Total_MB   Free_MB  Req_mir_free_MB  Usable_file_MB  Offline_disks  Voting_files  Name
+MOUNTED  NORMAL  N         512   4096  4194304   45416448   7469624           540672         3464476              0             Y  DATA_DG/
+MOUNTED  NORMAL  N         512   4096  4194304     894720    686008            29824          328092              0             N  DBFS_DG/
+MOUNTED  NORMAL  N         512   4096  4194304  111096960  49018152          2320288        23348932              0             N  HST_DG/
+
+--- DWH DR
+
+Disk Group                 Sector   Block   Allocation
+Name                         Size    Size    Unit Size State       Type   Total Size (MB) Used Size (MB) Pct. Used
+------------------------- ------- ------- ------------ ----------- ------ --------------- -------------- ---------
+DATA_DG                       512   4,096    4,194,304 MOUNTED     NORMAL      45,416,448     41,423,624     91.21
+DBFS_DG                       512   4,096    4,194,304 MOUNTED     NORMAL       1,038,240          1,888       .18
+HST_DG                        512   4,096    4,194,304 CONNECTED   NORMAL      56,332,224     43,070,776     76.46
+                                                                          --------------- --------------
+Grand Total:                                                                  102,786,912     84,496,288
+
+State    Type    Rebal  Sector  Block       AU  Total_MB   Free_MB  Req_mir_free_MB  Usable_file_MB  Offline_disks  Voting_files  Name
+MOUNTED  NORMAL  N         512   4096  4194304  45416448   3992824          1261568         1365628              0             N  DATA_DG/
+MOUNTED  NORMAL  N         512   4096  4194304   1038240   1036352            34608          500872              0             Y  DBFS_DG/
+MOUNTED  NORMAL  N         512   4096  4194304  56332224  13261448          1564784         5848332              0             N  HST_DG/

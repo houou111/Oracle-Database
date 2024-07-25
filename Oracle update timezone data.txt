@@ -1,0 +1,51 @@
+1. Download TIMEZONE
+---------------------------------------------------
+p31335037
+
+
+
+
+
+2. Prepare Window
+---------------------------------------------------
+$ORACLE_HOME/rdbms/admin
+
+@utltz_countstats.sql
+utltz_countstar.sql
+
+exec dbms_scheduler.purge_log;
+
+
+-- check the number of rows in the tables
+select count(*) from SYS.WRI$_OPTSTAT_HISTGRM_HISTORY;
+select count(*) from SYS.WRI$_OPTSTAT_HISTHEAD_HISTORY;
+
+-- check the data retention period of the stats
+-- the default value is 31
+select systimestamp - dbms_stats.get_stats_history_availability from dual;
+
+-- disable stats retention
+exec dbms_stats.alter_stats_history_retention(0);
+
+-- remove all the stats
+exec DBMS_STATS.PURGE_STATS(systimestamp);
+
+-- check the result of the purge operation
+select count(*) from SYS.WRI$_OPTSTAT_HISTGRM_HISTORY;
+select count(*) from SYS.WRI$_OPTSTAT_HISTHEAD_HISTORY;
+
+
+
+2. Upgrade timezone
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+1. Prepare Window
+---------------------------------------------------

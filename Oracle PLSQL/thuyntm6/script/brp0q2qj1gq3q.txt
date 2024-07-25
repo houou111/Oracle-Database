@@ -1,0 +1,518 @@
+kolarsCreateCt,qmemNextBuf:Large Alloc
+
+
+/* Formatted on 8/7/2018 8:55:03 AM (QP5 v5.252.13127.32847) */
+SELECT paymentins0_.ID_PI AS ID1_835_0_,
+       walletentr1_.ID_ENTITY AS ID1_889_1_,
+       paymentins0_.DAT_CREATION AS DAT2_835_0_,
+       paymentins0_.ID_CUSTOMER_CREATION AS ID3_835_0_,
+       paymentins0_.DAT_LAST_UPDATE AS DAT4_835_0_,
+       paymentins0_.ID_CUSTOMER_LAST_UPDATE AS ID5_835_0_,
+       paymentins0_.CLOB_SPARE_1 AS CLOB6_835_0_,
+       paymentins0_.DAT_SPARE_1 AS DAT7_835_0_,
+       paymentins0_.DAT_SPARE_2 AS DAT8_835_0_,
+       paymentins0_.DAT_SPARE_3 AS DAT9_835_0_,
+       paymentins0_.DAT_SPARE_4 AS DAT10_835_0_,
+       paymentins0_.DAT_SPARE_5 AS DAT11_835_0_,
+       paymentins0_.BOL_SPARE_1 AS BOL12_835_0_,
+       paymentins0_.BOL_SPARE_2 AS BOL13_835_0_,
+       paymentins0_.BOL_SPARE_3 AS BOL14_835_0_,
+       paymentins0_.BOL_SPARE_4 AS BOL15_835_0_,
+       paymentins0_.BOL_SPARE_5 AS BOL16_835_0_,
+       paymentins0_.INT_SPARE_1 AS INT17_835_0_,
+       paymentins0_.INT_SPARE_2 AS INT18_835_0_,
+       paymentins0_.INT_SPARE_3 AS INT19_835_0_,
+       paymentins0_.INT_SPARE_4 AS INT20_835_0_,
+       paymentins0_.INT_SPARE_5 AS INT21_835_0_,
+       paymentins0_.STR_SPARE_1 AS STR22_835_0_,
+       paymentins0_.STR_SPARE_10 AS STR23_835_0_,
+       paymentins0_.STR_SPARE_2 AS STR24_835_0_,
+       paymentins0_.STR_SPARE_3 AS STR25_835_0_,
+       paymentins0_.STR_SPARE_4 AS STR26_835_0_,
+       paymentins0_.STR_SPARE_5 AS STR27_835_0_,
+       paymentins0_.STR_SPARE_6 AS STR28_835_0_,
+       paymentins0_.STR_SPARE_7 AS STR29_835_0_,
+       paymentins0_.STR_SPARE_8 AS STR30_835_0_,
+       paymentins0_.STR_SPARE_9 AS STR31_835_0_,
+       paymentins0_.ID_CLEARING_MODE AS ID40_835_0_,
+       paymentins0_.ID_CUSTOMER AS ID41_835_0_,
+       paymentins0_.BOL_IS_ACTIVE AS BOL32_835_0_,
+       paymentins0_.BOL_CREDIT_ALLOWED AS BOL33_835_0_,
+       paymentins0_.ID_CURRENCY AS ID34_835_0_,
+       paymentins0_.BOL_DEBIT_ALLOWED AS BOL35_835_0_,
+       paymentins0_.ID_FEE_CLEARING_MODE AS ID42_835_0_,
+       paymentins0_.STR_HASH AS STR36_835_0_,
+       paymentins0_.ID_LIMIT_SET AS ID37_835_0_,
+       paymentins0_.BOL_MULTI_CURRENCY AS BOL38_835_0_,
+       paymentins0_.ID_ENTITY_STATUS AS ID39_835_0_,
+       paymentins0_.ID_PI_TYPE AS ID43_835_0_,
+       walletentr1_.DAT_CREATION AS DAT2_889_1_,
+       walletentr1_.ID_CUSTOMER_CREATION AS ID3_889_1_,
+       walletentr1_.DAT_LAST_UPDATE AS DAT4_889_1_,
+       walletentr1_.ID_CUSTOMER_LAST_UPDATE AS ID5_889_1_,
+       walletentr1_.STR_ALIAS AS STR6_889_1_,
+       walletentr1_.INT_CREDIT_PRIO AS INT7_889_1_,
+       walletentr1_.ID_CUSTOMER AS ID10_889_1_,
+       walletentr1_.INT_DEBIT_PRIO AS INT8_889_1_,
+       walletentr1_.ID_LIMIT_SET AS ID9_889_1_,
+       walletentr1_.ID_PI AS ID11_889_1_
+  FROM MOB_PIS paymentins0_,
+       MOB_WALLET walletentr1_,
+       MOB_PI_TYPES paymentins2_
+ WHERE     paymentins0_.ID_PI_TYPE = paymentins2_.ID_PI_TYPE
+       AND walletentr1_.ID_PI = paymentins0_.ID_PI
+       AND walletentr1_.ID_CUSTOMER = :1
+       AND paymentins0_.BOL_IS_ACTIVE = :2
+       AND paymentins0_.ID_ENTITY_STATUS = :3
+       AND (   paymentins0_.BOL_CREDIT_ALLOWED = :4
+            OR     (paymentins0_.BOL_CREDIT_ALLOWED IS NULL)
+               AND paymentins2_.BOL_CREDIT_ALLOWED = :5)
+       AND (paymentins0_.ID_PI_TYPE IN ( :6))
+
+
+/* Formatted on 8/7/2018 8:17:08 AM (QP5 v5.252.13127.32847) */
+SELECT count(*)
+  FROM MOB_PIS paymentins0_,
+       MOB_WALLET walletentr1_,
+       MOB_PI_TYPES paymentins2_
+ WHERE     paymentins0_.ID_PI_TYPE = paymentins2_.ID_PI_TYPE
+       AND walletentr1_.ID_PI = paymentins0_.ID_PI
+       AND walletentr1_.ID_CUSTOMER = :1
+       AND paymentins0_.BOL_IS_ACTIVE = :2
+       AND paymentins0_.ID_ENTITY_STATUS = :3
+       AND (   paymentins0_.BOL_CREDIT_ALLOWED = :4
+            OR     (paymentins0_.BOL_CREDIT_ALLOWED IS NULL)
+               AND paymentins2_.BOL_CREDIT_ALLOWED = :5)
+       AND (paymentins0_.ID_PI_TYPE IN ( :6))
+
+
+14u8nvrmfw8vk	SELECT RECID, t.XMLRECORD.GetClobVal() FROM FBNK_DEPO_WITHDRA t
+
+2d9uab6w7nvfd	SELECT RECID, t.XMLRECORD.GetClobVal() FROM FBNK_INFO_CARD t
+
+@$ORACLE_HOME/rdbms/admin/awrsqrpt.sql
+
+c3wtw65vn8nhy	SELECT t.RECID FROM FBNK_CUSTOMER t ORDER BY NVL(XMLCAST(XMLQUERY('$v/row/c1' PASSING XMLRECORD AS "v" RETURNING CONTENT) AS VARCHAR(256)), CHR(1)) ,NUMSORT(RECID) 
+
+5.10.1.1 TOP SQL BY BUFFER GETS
+
+gnrdq3hh3sr6c
+SELECT t.RECID, t.XMLRECORD.getClobVal ()
+  FROM F_TSA_STATUS t
+ WHERE (   NVL (EXTRACTVALUE (t.XMLRECORD, '/row/c2'), '') < 'STOPPED'
+        OR NVL (EXTRACTVALUE (t.XMLRECORD, '/row/c2'), '') > 'STOPPED')
+		
+gqzn44ws565d0	
+SELECT t.XMLRECORD.getClobVal() FROM F_LCR_AUTO_WRK_TCB t WHERE RECID =:RECID
+
+
+CACHEMGR virtual memory values (may have been adjusted)
+CACHEPAGEOUTSIZE (default):               8M
+PROCESS VM AVAIL FROM OS (min):         128G
+CACHESIZEMAX (strict force to disk):     96G
+
+CACHE CONFIGURATION
+cache size            =  64G   cache force paging =  96G
+buffer min            =  64K   buffer max (soft)  =   8M
+pageout eligible size =   8M
+--------------------
+CACHEMGR virtual memory values (may have been adjusted)
+CACHEPAGEOUTSIZE (default):               4M
+PROCESS VM AVAIL FROM OS (min):           4G
+CACHESIZEMAX (strict force to disk):   3.41G
+CACHEVMPAGEOUTMAX:                       64M
+---
+CACHE CONFIGURATION
+cache size            =   2G   cache force paging   = 3.41G
+buffer min            =  64K   buffer max (soft)    =   4M
+pageout eligible size =   4M   cache vm pageout max =  64M
+
+-----------------------------------------------------
+GGSCI (dc-core-db-01) 2> send ET24DC cachemgr cachestats
+
+Sending CACHEMGR request to EXTRACT ET24DC ...
+
+CACHE OBJECT MANAGER statistics
+
+CACHE MANAGER VM USAGE
+vm current     =  19.25M   vm anon queues =  14.38M
+vm anon in use =   4.88M   vm file        =      0 
+vm used max    =  19.25M   ==> CACHE BALANCED
+
+CACHE CONFIGURATION
+cache size            =  64G   cache force paging =  96G
+buffer min            =  64K   buffer max (soft)  =   8M
+pageout eligible size =   8M
+
+================================================================================
+RUNTIME STATS FOR SUPERPOOL
+
+CACHE Transaction Stats
+trans active    =     40    max concurrent =    394 
+non-zero total  =   4.65M   trans total    =  24.11M
+
+CACHE File Caching
+filecache rqsts        =      0    bytes to disk      =      0 
+file retrieves         =      0    objs filecached    =      0 
+queue entries          =      0    queue processed    =      1 
+queue entry not needed =      0    queue not signaled =      0 
+fc requesting obj      =      0 
+
+CACHE MANAGEMENT
+buffer links   =  19.09K  anon gets   =      0 
+forced unmaps  =      0   cnnbl try   =      0 
+cached out     =      0 
+
+Allocation Request Distribution
+< 128B:    6.07K
+ 128B:    13.73K     4.55M    | 512B:     3.01M     1.61M
+   2K:     1.07M     1.11M    |   8K:   503.60K    12.83K
+  32K:     5.05K        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+Cached Transaction Size Distribution
+    0:    19.47M
+ < 4K:     3.64M
+   4K:  337.100K   384.47K    |  16K:   177.75K   116.75K
+  64K:    16.75K     2.28K    | 256K:       42         0 
+   1M:        0         4     |   4M:        0         0 
+  16M:        0         0     |  64M:        0         0 
+ 256M:        0         0     |   1G:        0         0 
+   4G:        0         0     |  16G:        0         0 
+  64G:        0         0     | 256G:        0         0 
+   1T:        0         0     |   4T:        0         0 
+  16T:        0         0     |  64T:        0         0 
+ 256T:        0         0     |1024T:        0         0 
+
+================================================================================
+CUMULATIVE STATS FOR SUPERPOOL (PREVIOUS RUNS ONLY)
+
+CACHE Transaction Stats
+trans active    =     14    max concurrent =   1.01K
+non-zero total  =   2.27G   trans total    =  9.100G
+
+CACHE File Caching
+filecache rqsts        =      0    bytes to disk      =      0 
+file retrieves         =      0    objs filecached    =      0 
+queue entries          =      0    queue processed    =    855 
+queue entry not needed =      0    queue not signaled =      0 
+fc requesting obj      =      0 
+
+CACHE MANAGEMENT
+buffer links   =  94.84M  anon gets   =      0 
+forced unmaps  =      0   cnnbl try   =      0 
+cached out     =      0 
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      2.75G    | 512B:   739.70M   780.19M
+   2K:   389.06M   236.55M    |   8K:   471.52M    18.30M
+  32K:   115.07M        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+Cached Transaction Size Distribution
+    0:     7.74G
+ < 4K:   890.42M
+   4K:    27.35M    44.53M    |  16K:    78.05M    40.52M
+  64K:    47.41M     1.99M    | 256K:   722.86K   945.30K
+   1M:     1.08M   188.34K    |   4M:     3.71K      371 
+  16M:      640       297     |  64M:      189        80 
+ 256M:        3         0     |   1G:        0         0 
+   4G:        0         0     |  16G:        0         0 
+  64G:        0         0     | 256G:        0         0 
+   1T:        0         0     |   4T:        0         0 
+  16T:        0         0     |  64T:        0         0 
+ 256T:        0         0     |1024T:        0         0 
+
+
+QUEUE Statistics
+num queues =     15     q hits =   4.67M     q misses =    135 
+
+queue size  q hits  curlen  maxlen     cannibalized
+  0   64K   4.65M    110     124       0 
+  1  128K      0       0       0       0 
+  2  256K      0       0       0       0 
+  3  512K  19.07K      5       6       0 
+  4    1M      3       1       1       0 
+  5    2M      4       0       1       0 
+  6    4M      2       1       1       0 
+  7    8M      0       0       0       0 
+  8   16M      0       0       0       0 
+  9   32M      0       0       0       0 
+ 10   64M      0       0       0       0 
+ 11  128M      0       0       0       0 
+ 12  256M      0       0       0       0 
+ 13  512M      0       0       0       0 
+ 14    1G      0       0       0       0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #0
+POOL INFO   group: et24dc  id: p12371_BLOB  instance: 0  tid: 0x3ff94c6e150
+trans active  =       0   trans concurrent (max) =     1 
+trans total   =    1.71M  (1.71M)
+flag          = 0x00000030
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:    6.07K
+ 128B:    13.73K    21.78K    | 512B:   969.17K   181.94K
+   2K:   335.53K   713.15K    |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #0 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_BLOB  instance: 0  tid: 0x3ff94c6e150
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000030
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #1
+POOL INFO   group: et24dc  id: p12371_ORA-LOB-MEMPOOL  instance: 0  tid: (nil)
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000279
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #1 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_ORA-LOB-MEMPOOL  instance: 0  tid: (nil)
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000279
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #2
+POOL INFO   group: et24dc  id: p12371_extr  instance: 1  tid: 0x3ff893ee150
+trans active  =      40   trans concurrent (max) =   394 
+trans total   =   22.40M  (22.40M)
+flag          = 0x00000135
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      4.53M    | 512B:     2.06M     1.43M
+   2K:   750.53K   419.89K    |   8K:   503.60K    12.83K
+  32K:     5.05K        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #2 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_extr  instance: 1  tid: 0x3ff893ee150
+trans active  =      40   trans concurrent (max) =   394 
+trans total   =    8.85G  (8.85G)
+flag          = 0x00000135
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      2.75G    | 512B:   739.70M   780.19M
+   2K:   389.06M   236.55M    |   8K:   471.52M    18.30M
+  32K:   115.07M        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+.
+
+
+GGSCI (dc-core-db-01) 3> 
+====
+
+
+
+DECLARE
+p_begin_time timestamp;
+p_end_time   timestamp;
+p_date       date;
+p_dbid       number;
+p_check      number;
+p_begin_snap number;
+p_end_snap   number;
+p_task_id    number;
+p_task_name  varchar2(100);
+p_len number;
+p_result varchar2(4000);
+sql_stmt varchar2(4000);
+report_clob CLOB;
+TYPE data_cursor_type IS REF CURSOR;
+data_cursor data_cursor_type;
+
+BEGIN
+SELECT count(*)
+INTO   p_check
+FROM   V$PARAMETER
+WHERE  name = 'control_management_pack_access'
+AND  lower(value) = 'none';
+
+IF p_check > 0 THEN
+p_task_name := null;
+OPEN data_cursor for
+SELECT 'Diagnostic pack license is turned off. The license needs to be turned on to view the report.' report1,
+' ' report2,
+' ' report3,
+' ' report4,
+' ' report5,
+' ' report6,
+' ' report7,
+' ' report8,
+' ' report9,
+' ' report10,
+' ' report11,
+' ' report12,
+' ' report13,
+' ' report14,
+' ' report15,
+' ' report16 FROM dual;
+:1   := data_cursor;
+
+ELSE
+SELECT v.dbid
+INTO   p_dbid
+FROM   V$DATABASE v;
+
+select sysdate into p_date from dual;
+p_begin_time := to_timestamp(p_date - 1);
+p_end_time := to_timestamp(p_date);
+
+SELECT min(s.snap_id), max(s.snap_id)
+INTO   p_begin_snap, p_end_snap
+FROM   dba_hist_snapshot s
+WHERE  s.dbid = p_dbid
+AND  s.end_interval_time >= p_begin_time
+AND  s.end_interval_time <= p_end_time;
+
+IF p_end_snap <= p_begin_snap OR p_end_snap IS NULL THEN
+p_task_name := null;
+OPEN data_cursor for
+SELECT 'Not enough AWR snapshots in the range to view the ADDM report.' report1,
+' ' report2,
+' ' report3,
+' ' report4,
+' ' report5,
+' ' report6,
+' ' report7,
+' ' report8,
+' ' report9,
+' ' report10,
+' ' report11,
+' ' report12,
+' ' report13,
+' ' report14,
+' ' report15,
+' ' report16 FROM dual;
+:2   := data_cursor;
+
+
+ELSE
+
+p_task_name := 'QR:' || p_dbid || '_' || to_char(p_date, 'YYYYMMDDHH24MISS');
+SELECT count(*)
+INTO   p_check
+FROM   dba_addm_tasks
+WHERE  task_name = p_task_name;
+IF (p_check<>0) THEN
+OPEN data_cursor for
+SELECT 'Task Name was already exists. ADDM report could not be generated.' report1,
+' ' report2,
+' ' report3,
+' ' report4,
+' ' report5,
+' ' report6,
+' ' report7,
+' ' report8,
+' ' report9,
+' ' report10,
+' ' report11,
+' ' report12,
+' ' report13,
+' ' report14,
+' ' report15,
+' ' report16 FROM dual;
+:3   := data_cursor;
+ELSE
+dbms_advisor.create_task('ADDM', p_task_id, p_task_name);
+dbms_advisor.set_task_parameter(p_task_name, 'START_SNAPSHOT', p_begin_snap);
+dbms_advisor.set_task_parameter(p_task_name, 'END_SNAPSHOT', p_end_snap);
+dbms_advisor.set_task_parameter(p_task_name, 'DB_ID', p_dbid);
+
+dbms_addm.insert_finding_directive(p_task_name, p_task_name || '_F',
+'Virtual Memory Paging',
+1000000, 100);
+dbms_addm.insert_finding_directive(p_task_name, p_task_name || '_G',
+'Top SQL Statements',
+1000000, 100);
+dbms_advisor.execute_task(p_task_name);
+SELECT dbms_addm.get_report(p_task_name) into report_clob from dual;
+SELECT dbms_lob.getlength(report_clob) into p_len from dual;
+IF(p_len > 64000) THEN
+SELECT dbms_advisor.get_task_report(p_task_name, 'TEXT', 'BASIC') into report_clob from dual;
+END IF;
+OPEN data_cursor for
+SELECT dbms_lob.substr(report_clob,4000,1) report1,
+dbms_lob.substr(report_clob,4000,4001) report2,
+dbms_lob.substr(report_clob,4000,8001) report3,
+dbms_lob.substr(report_clob,4000,12001) report4,
+dbms_lob.substr(report_clob,4000,16001) report5,
+dbms_lob.substr(report_clob,4000,20001) report6,
+dbms_lob.substr(report_clob,4000,24001) report7,
+dbms_lob.substr(report_clob,4000,28001) report8,
+dbms_lob.substr(report_clob,4000,32001) report9,
+dbms_lob.substr(report_clob,4000,36001) report10,
+dbms_lob.substr(report_clob,4000,40001) report11,
+dbms_lob.substr(report_clob,4000,44001) report12,
+dbms_lob.substr(report_clob,4000,48001) report13,
+dbms_lob.substr(report_clob,4000,52001) report14,
+dbms_lob.substr(report_clob,4000,56001) report15,
+dbms_lob.substr(report_clob,4000,60001) report16 FROM dual;
+:4   := data_cursor;
+END IF;
+END IF;
+END IF;
+END;

@@ -1,0 +1,5 @@
+https://support.oracle.com/epmos/faces/PatchDetail?requestId=23651627&_afrLoop=426975209013534&patchId=30668407&_afrWindowMode=0&_adf.ctrl-state=1cdun2elcp_290
+
+
+Patch 30668407: AFTER UPGRADE FROM 11.2G TO 12.2C DBA_TABLESPACE_USAGE_METRICS SHOWS INCORRECT
+ 

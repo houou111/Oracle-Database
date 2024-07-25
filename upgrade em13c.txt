@@ -1,0 +1,68 @@
+Step 1: Prerequisites
+------------------------------------------------------------------------------------------------------------
+export ORACLE_SID=emrep
+export ORAENV_ASK=NO
+. oraenv
+export ORAENV_ASK=YES
+
+sqlplus / as sysdba
+GRANT EXECUTE ON dbms_random TO dbsnmp; 
+GRANT EXECUTE ON dbms_random TO sysman;
+REVOKE EXECUTE ON dbms_random FROM public;
+
+
+--Make sure there are no invalid objects in the repository database.
+SELECT owner, object_name, object_type
+FROM   dba_objects 
+WHERE  status = 'INVALID'
+AND    owner IN ('SYS', 'SYSTEM', 'SYSMAN', 'MGMT_VIEW', 'DBSNMP', 'SYSMAN_MDS');
+
+
+--If you have any, recompile them using the following commands. Only pick the schemas that have invalid objects though.
+EXEC UTL_RECOMP.recomp_serial('SYS');
+EXEC UTL_RECOMP.recomp_serial('DBSNMP');
+EXEC UTL_RECOMP.recomp_serial('SYSMAN');
+
+
+Step 2: Copy EMKey to the Management Repository.
+------------------------------------------------------------------------------------------------------------
+Note: EMKey is used during upgrade, EM13c will need to access EMKey. { secret key to encrypt password}
+$OMS_HOME/bin/emctl config emkey -copy_to_repos
+$OMS_HOME/bin/emctl status emkey
+
+
+Step 3: Make sure you have "optimizer_adaptive_features" disabled in your repository database, if not run the below mentioned SQL command.
+------------------------------------------------------------------------------------------------------------
+SQL> alter system set optimizer_adaptive_features=false scope=spfile;
+
+
+Step 4: Create  a directory for the new installation.
+------------------------------------------------------------------------------------------------------------
+$ mkdir -p /u01/app/oracle/middleware2
+
+
+Step 5: Download the OEM13cR2 Setup from Oracle Website. Use the below mentioned URL to download 6 files included in setup.
+------------------------------------------------------------------------------------------------------------
+
+
+Step 6: Copy Software on the installation server.
+------------------------------------------------------------------------------------------------------------
+
+
+Step 7: Run the Setup and enter MOS Details.
+------------------------------------------------------------------------------------------------------------
+$ chmod u+x em13300_linux64.bin
+$ ./em13300_linux64.bin
+
+
+Step 8: Post installation
+------------------------------------------------------------------------------------------------------------
+With the upgrade complete you should secure the EMKey using the following command.
+
+$ $OMS_HOME/bin/emctl config emkey -remove_from_repos
+Start the original agent. We will upgrade that in the next section.
+
+$ export AGENT_HOME=/u01/app/oracle/agent/agent_inst
+$ $AGENT_HOME/bin/emctl start agent
+
+

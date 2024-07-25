@@ -1,0 +1,3 @@
+select * 
+from dba_hist_sqlstat
+where sql_id='&sql_id';

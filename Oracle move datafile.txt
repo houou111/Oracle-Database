@@ -1,0 +1,181 @@
+﻿1. 12c +
+----------------------------------------------------------------------------------------
+ALTER DATABASE MOVE DATAFILE 1 TO '/oradata/OHLC/system01.dbf';
+ALTER DATABASE MOVE DATAFILE 2 TO '/oradata/OHLC/ohlc02.dbf';
+ALTER DATABASE MOVE DATAFILE 3 TO '/oradata/OHLC/sysaux01.dbf';
+ALTER DATABASE MOVE DATAFILE 5 TO '/oradata/OHLC/ohlc01.dbf';
+
+ALTER DATABASE MOVE DATAFILE 1 TO '/oradata/OHLC/system01.dbf';
+ALTER DATABASE MOVE DATAFILE 2 TO '/oradata/OHLC/ohlc02.dbf';
+ALTER DATABASE MOVE DATAFILE 3 TO '/oradata/OHLC/sysaux01.dbf';
+ALTER DATABASE MOVE DATAFILE 5 TO '/oradata/OHLC/ohlc01.dbf';
+
+ALTER DATABASE MOVE DATAFILE   1 to '/u01/app/oracle/oradata/oradb/system01.dbf';
+ALTER DATABASE MOVE DATAFILE   3 to '/u01/app/oracle/oradata/oradb/sysaux01.dbf';
+ALTER DATABASE MOVE DATAFILE   4 to '/u01/app/oracle/oradata/oradb/undotbs01.dbf';
+ALTER DATABASE MOVE DATAFILE   5 to '/u01/app/oracle/oradata/oradb/pdbseed/system01.dbf';
+ALTER DATABASE MOVE DATAFILE   6 to '/u01/app/oracle/oradata/oradb/pdbseed/sysaux01.dbf';
+ALTER DATABASE MOVE DATAFILE   7 to '/u01/app/oracle/oradata/oradb/users01.dbf';
+ALTER DATABASE MOVE DATAFILE   8 to '/u01/app/oracle/oradata/oradb/pdbseed/undotbs01.dbf';
+ALTER DATABASE MOVE DATAFILE   9 to '/u01/app/oracle/oradata/oradb/oradbpdb/system01.dbf';
+ALTER DATABASE MOVE DATAFILE  10 to '/u01/app/oracle/oradata/oradb/oradbpdb/sysaux01.dbf';
+ALTER DATABASE MOVE DATAFILE  11 to '/u01/app/oracle/oradata/oradb/oradbpdb/undotbs01.dbf';
+ALTER DATABASE MOVE DATAFILE  12 to '/u01/app/oracle/oradata/oradb/oradbpdb/users01.dbf';
+
+
+2. 11g -
+----------------------------------------------------------------------------------------
+
+
+# Liệt kê các datafile cần chuyển
+col file_name for a60
+col status for a20
+set lines 200
+select FILE_ID, FILE_NAME, STATUS, TABLESPACE_NAME from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Backup as copy
+set pages 0
+set lines 200
+select 'BACKUP AS COPY DATAFILE ' || FILE_ID || ' FORMAT '''|| FILE_NAME || ''';' from v$datafile where TABLESPACE_NAME ='USERS';
+
+#đổi sang địa chỉ mới,thực hiện chạy
+
+# Offline tablespace
+set pages 0
+set lines 200
+select 'SQL ''ALTER TABLESPACE ' || tablespace_name || ' OFFLINE'';' from dba_tablespaces where TABLESPACE_NAME ='USERS';
+
+# Switch datafile to copy ( chuyen datafile sang địa chỉ mới)
+select 'SWITCH DATAFILE ' || FILE_ID || ' TO COPY;' from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Recover datafile
+select 'RECOVER DATAFILE ' || FILE_ID || ';' from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Online tablespace
+select 'SQL ''ALTER TABLESPACE ' || tablespace_name || ' ONLINE'';' from dba_tablespaces where TABLESPACE_NAME ='USERS';
+
+# Kiểm tra lại
+select FILE_ID, FILE_NAME, STATUS, TABLESPACE_NAME from dba_data_files where TABLESPACE_NAME ='USERS';
+
+#delete datafile cũ
+select 'delete noprompt copy of datafile ' || file_id || ';' from dba_data_files where tablespace_name='USERS';
+
+
+
+RUN
+{
+  ALLOCATE CHANNEL c1 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c2 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c3 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c4 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c5 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c6 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c7 TYPE DISK FORMAT '+DATA';
+  ALLOCATE CHANNEL c8 TYPE DISK FORMAT '+DATA';
+  BACKUP AS COPY DATABASE;
+}
+
+
+
+ALTER DATABASE MOVE DATAFILE 1 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 2 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 3 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 4 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 5 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 6 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 7 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 8 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 9 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 10 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 11 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 12 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 13 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 14 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 15 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 16 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 17 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 18 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 19 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 20 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 21 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 22 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 23 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 24 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 25 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 26 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 27 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 28 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 29 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 30 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE 31 TO '+DATA';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+ALTER DATABASE MOVE DATAFILE  TO '+DATA2';
+
+
+ALTER DATABASE MOVE DATAFILE 31 TO '/data/idsuat/users16.dbf';
+ALTER DATABASE MOVE DATAFILE 32 TO '/data/idsuat/users17.dbf';
+ALTER DATABASE MOVE DATAFILE 33 TO '/data/idsuat/users18.dbf';
+ALTER DATABASE MOVE DATAFILE 34 TO '/data/idsuat/users19.dbf';
+ALTER DATABASE MOVE DATAFILE 35 TO '/data/idsuat/users20.dbf';
+
+ALTER DATABASE MOVE DATAFILE 36 TO '/data/idsuat/ids04.dbf';
+ALTER DATABASE MOVE DATAFILE 37 TO '/data/idsuat/ids05.dbf';
+ALTER DATABASE MOVE DATAFILE 38 TO '/data/idsuat/ids06.dbf';
+
+        35
+/data/idsuat/users20.dbf
+
+        36
+/u01/app/oracle/oradata/IDSUAT/ids04.dbf
+
+        37
+/u01/app/oracle/oradata/IDSUAT/ids05.dbf
+
+
+     FILE#
+----------
+NAME
+--------------------------------------------------------------------------------
+        38
+/u01/app/oracle/oradata/IDSUAT/ids06.dbf
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31

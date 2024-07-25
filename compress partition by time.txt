@@ -1,0 +1,94 @@
+DECLARE
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='SAAS_LOG'
+       AND table_name IN ('LOG_MASTER_HISTORY')
+	   AND (COMPRESS_FOR <> 'ADVANCED' OR COMPRESS_FOR is null)
+       AND PARTITION_NAME NOT IN ('P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' move partition '|| cc.partition_name || ' ONLINE ROW STORE COMPRESS ADVANCED';
+         DBMS_OUTPUT.put_line (cmd);
+      execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+
+
+DECLARE
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='ADMIN_LOG'
+       AND table_name IN ('LOGS_VNPT_PAY')
+       AND PARTITION_NAME NOT IN ('P1')
+	   AND ;    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' move partition '|| cc.partition_name || ' COMPRESS for query high tablespace USERS PARALLEL 2;';
+         DBMS_OUTPUT.put_line (cmd);
+      --execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+
+
+DECLARE
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='ADMIN_LOG'
+       AND table_name IN ('LOGS_VNPT_PAY')
+       AND PARTITION_NAME NOT IN ('P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' move partition '|| cc.partition_name || ' COMPRESS for query high tablespace USERS PARALLEL 2';
+         DBMS_OUTPUT.put_line (cmd);
+      execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+

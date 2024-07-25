@@ -1,0 +1,150 @@
+#GI_HOME=`cat /home/grid/.bash_profile |grep "ORACLE_HOME="| cut -d"=" -f2- `
+#GI_HOME=`cat /etc/oratab |grep "MGMTDB"|grep -v "#"|cut -f2 -d":"` #oracle 12.2 and later 
+GI_HOME=`cat /etc/oratab |grep "+ASM"|cut -f2 -d":"`                #oracle 11 and 12.1 
+SCAN_NAME=`$GI_HOME/bin/srvctl config scan |grep "SCAN name"   |awk '{print $3}' |sed 's/.$//'`
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+datetime=`date +%Y%m%d_%H%M%S`
+CHECKLIST_LOG=/home/oracle/checklist_log_${datetime}.log
+DB_LIST=/home/oracle/db_list_${datetime}.log
+
+echo "">> $CHECKLIST_LOG  
+echo "###############################   ${bold}STATUS OK/NOK${normal}  ###############################">>$CHECKLIST_LOG
+####################################################
+CHECK_LISTENER=`grep ADMIN_RESTRICTIONS $GI_HOME/network/admin/listener.ora |wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_LISTENER" = "0" ] 
+then 
+echo "${bold}[NOK]${normal} Listener admin restriction" >>$CHECKLIST_LOG
+else
+echo "[OK]  Listener admin restriction" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+Trans_hugepage=`cat /sys/kernel/mm/transparent_hugepage/enabled|grep "always madvise [never]" |wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$Trans_hugepage" = "0" ] 
+then 
+echo "[OK]  Disable transparent hugepage" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} Disable transparent hugepage" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_Timezone=`timedatectl|grep "Time zone: Asia/Ho_Chi_Minh"| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_Timezone" = "Time zone: Asia/Ho_Chi_Minh (+07, +0700)" ] 
+then 
+echo "[OK]  $CHECK_Timezone" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} Time zone: $CHECK_Timezone" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_SELINUX=`getenforce`
+if [ "$CHECK_SELINUX" <> "Enforcing" ] 
+then 
+echo "[OK]  SELINUX=$CHECK_SELINUX" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} SELINUX=$CHECK_SELINUX" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_RNGD=`systemctl status rngd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_RNGD" = 1 ] 
+then 
+echo "[OK]  rngd serivce status: active(running) " >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} rngd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_IPtables=`systemctl status iptables|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_IPtables" = 1 ] 
+then 
+echo "[OK]  iptables serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} iptables serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_Multipath=`systemctl status multipathd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_Multipath" = 1 ] 
+then 
+echo "[OK]  multipathd serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} multipathd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_chronyd=`systemctl status chronyd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_chronyd" = 1 ] 
+then 
+echo "[OK]  chronyd serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} chronyd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+
+echo "">> $CHECKLIST_LOG  
+echo "################################### ${bold}OS INFO${normal}  ###################################">>$CHECKLIST_LOG
+####################################################
+OSPARAM_MIN_FREE=`cat /etc/sysctl.conf |grep "vm.min_free_kbytes"`
+echo "$OSPARAM_MIN_FREE" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+####################################################
+#OSPARAM_Hugepage=`cat /etc/sysctl.conf |grep "vm.nr_hugepages"|grep -v "#"`
+OSPARAM_Hugepage=`cat /proc/meminfo |grep HugePages`
+echo "$OSPARAM_Hugepage" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+####################################################
+VAL=1024
+TOTAL_MEM=`cat /proc/meminfo |grep MemTotal|sed 's/[^0-9]*//g'`
+FREE_MEM=`cat /proc/meminfo |grep MemFree|sed 's/[^0-9]*//g'`
+echo "Total memory: $((TOTAL_MEM / VAL / VAL))GB" >>$CHECKLIST_LOG
+echo "Free memory: $((FREE_MEM / VAL / VAL))GB" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+####################################################
+CPU=`lscpu |grep "CPU(s)"`
+echo "$CPU" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+
+
+echo "">> $CHECKLIST_LOG  
+echo "########################  ${bold}DATABASE'S NOT ONLINE SERVICE${normal}  #######################">>$CHECKLIST_LOG
+####################################################
+
+SERVICE_STAT=`$GI_HOME/bin/crsctl stat res -t -w "((TARGET != ONLINE) or (STATE != ONLINE)"`
+echo "$SERVICE_STAT" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+
+echo "">> $CHECKLIST_LOG  
+echo "############## ${bold}DATABASE'S CONNECTION - DB configured in srvctl${normal} #################">>$CHECKLIST_LOG
+####################################################
+DBLIST=`$GI_HOME/bin/crsctl stat res -t -w "((TYPE = ora.database.type) and (STATE = ONLINE)"|grep '\<ora\>'| cut -f2 -d"."`
+echo "${DBLIST}"> $DB_LIST
+
+while read line; do
+SERVICE_NAME=`echo $line| awk '{print $1}' `
+echo "Num of sessions connect to ${bold}$SERVICE_NAME${normal}" >>$CHECKLIST_LOG 
+sqlplus -s  dbsnmp/PAssw0rd@$SCAN_NAME:1521/$SERVICE_NAME <<EOF
+spool  $CHECKLIST_LOG append 
+select inst_id,username,count(*) from gv\$session where username not in ('SYS','DBSNMP','SYSRAC','THUYNTM_DBA','DUONGPK_DBA','PUBLIC') 
+ group by inst_id,username  order by 2,1;
+spool off
+exit;
+EOF
+done < "$DB_LIST"
+
+####################################################

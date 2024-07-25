@@ -1,0 +1,113 @@
+I. Check grant to user
+--------------------------------------------------------------------------------------------------------------------------------
+1. User system granted:
+------------------------------------------------------
+select grantee, privilege from dba_sys_privs tblp inner join dba_users tblu on tblp.grantee=tblu.username 
+where grantee not in ( 'SYSTEM','SYS','MGMT_VIEW','DBSNMP','SYSMAN','HOANNT_DBA','TRUNGHX_DBA','THINHNH_DBA','DUYDX_DBA')  
+and tblu.account_status  in ('OPEN', 'EXPIRED(GRACE)')
+order by grantee, privilege;
+
+
+2. User role granted:
+------------------------------------------------------
+select grantee, granted_role from dba_role_privs tblp inner join dba_users tblu on tblp.grantee=tblu.username 
+where grantee not in ( 'SYSTEM','SYS','MGMT_VIEW','DBSNMP','SYSMAN','HOANNT_DBA','TRUNGHX_DBA','THINHNH_DBA','DUYDX_DBA')  
+and tblu.account_status  in ('OPEN', 'EXPIRED(GRACE)')
+order by grantee, granted_role;
+
+
+3. User table granted:
+------------------------------------------------------
+select grantee, owner, table_name, privilege, username 
+from dba_tab_privs tblp inner join dba_users tblu on tblp.grantee=tblu.username 
+where grantee not in ( 'SYSTEM','SYS','MGMT_VIEW','DBSNMP','SYSMAN','HOANNT_DBA','TRUNGHX_DBA','THINHNH_DBA','DUYDX_DBA')  
+and tblu.account_status  in ('OPEN', 'EXPIRED(GRACE)');
+
+
+4. Role role grant:
+------------------------------------------------------
+select tblu.Role,  granted_role 
+from ROLE_ROLE_PRIVS tblp inner join dba_roles tblu on tblp.role=tblu.role 
+where  tblu.role  like ' %'   
+order by role, granted_role;
+
+User table granted:
+
+
+
+
+II. Grant to user
+--------------------------------------------------------------------------------------------------------------------------------
+1. Basic privilege
+------------------------------------------------------
+Create user aaa identified by bbbbbb;
+grant resource, connect, unlimited tablespace to aaa;
+
+
+
+2. App privilege
+------------------------------------------------------
+grant create TYPE to checkin_sys;
+grant create view to checkin_sys;
+grant CREATE PROCEDURE to checkin_sys;
+grant DEBUG ANY PROCEDURE  to checkin_sys;
+grant SCHEDULER_ADMIN to checkin_sys;
+grant CREATE SEQUENCE to checkin_sys	;
+
+
+
+3. Full privilege
+------------------------------------------------------
+grant dba to aaa;
+grant select any table to aaa;
+
+
+4. grant to multpale define object
+------------------------------------------------------
+create user "htdv.it" identified by Abcd#1234;
+grant resource, connect "htdv.it";
+select 'GRANT select ON '||owner||'.'||table_name||' TO "htdv.it";
+from dba_tables a, dba_users b
+where a.owner=b.USERNAME
+AND b.DEFAULT_TABLESPACE='USERS'
+
+select owner,table_name
+from dba_tables a, dba_users b
+where a.owner=b.USERNAME
+AND b.DEFAULT_TABLESPACE='USERS'
+
+
+
+select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO cuongtv_tbh;'
+from all_objects
+where owner = 'BCSS_TBH'
+and object_type='FUNCTION';
+
+select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO cuongtv_tbh;'
+from all_objects
+where owner = 'BCSS_TBH'
+and object_type='PROCEDURE';
+
+
+select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO cuongtv_tbh;'
+from all_objects
+where owner = 'BCSS_TBH'
+and object_type='PACKAGE';
+
+select 'GRANT DEBUG ON '||owner||'.'||object_name||' TO cuongtv_tbh;'
+from all_objects
+where owner = 'BCSS_TBH'
+and object_type='PACKAGE';
+
+ 
+BEGIN 
+  FOR r IN (select owner,table_name
+from dba_tables a
+where a.owner in ('BAOHONG_HCM','CABMAN_HCM') ) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'GRANT select ON '||r.owner||'.'||r.table_name||' TO ttvt_gd '; 
+     END; 
+  END LOOP; 
+END; 
+/ 

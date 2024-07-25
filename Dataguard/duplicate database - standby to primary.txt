@@ -1,0 +1,94 @@
+I. Target database 
+----------------------------------------------------------------------------------------------------
+0.	create clone database [Optional]
+-------------------------------------------------------
+dbca -silent \
+-createDatabase \
+-templateName General_Purpose.dbc \
+-gdbName sktddr \
+-totalMemory 8000 \
+-storageType ASM -asmSysPassword oracle123456 \
+-diskGroupName DATA \
+-recoveryGroupName DATA -redoLogFileSize 1024 \
+-nodeinfo gphone01,gphone02 \
+-characterset AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-SysPassword oracle123456 -SystemPassword oracle123456 \
+-emConfiguration NONE \
+-ignorePreReqs
+
+
+1.	shutdown 1 node
+------------------------------------------------------------------
+alter system set cluster_database=FALSE scope=spfile sid='*';
+startup nomount;
+
+
+
+2.	insert into listener.ora --> restart listener
+------------------------------------------------------------------
+vi $ORACLE_HOME/network/admin/listener.ora
+SID_LIST_LISTENER =
+(SID_LIST =
+        (SID_DESC =
+        (GLOBAL_DBNAME = bhst)
+        (ORACLE_HOME = /u01/app/oracle/product/11g/dbhome_1)
+        (SID_NAME = bhst)
+    )
+)
+                                
+-- restart listener
+lsnrctl stop                          
+lsnrctl start
+
+
+3.	vi tnsnames.ora
+---------------------------------------------------------------------
+BHST =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.159.136.212)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = bhst)
+    )
+  )
+
+  
+4.	Copy password file
+----------------------------------------------------------------------
+Create the password file for the auxiliary instance 
+cp $ORACLE_HOME/dbs/orapwtwrdr2  $ORACLE_HOME/dbs/orapwtwrres
+
+
+5.	on T24r14dr [Optional – if is standby database] 
+---------------------------------------------------------------------
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+
+
+6.	Clone to new primary DB
+-----------------------------------------------------------------------
+rman target DBSNMP/PAssw0rd@twadr2 AUXILIARY DBSNMP/PAssw0rd@twa2018
+rman target /  AUXILIARY sys/oracle123456@bhst
+
+
+run{
+allocate channel d01 device type disk;          
+allocate channel d02 device type disk;
+allocate channel d03 device type disk;          
+allocate channel d04 device type disk;
+allocate auxiliary channel da01 device type disk;               
+allocate auxiliary channel da02 device type disk;
+allocate auxiliary channel da03 device type disk;               
+allocate auxiliary channel da04 device type disk;
+DUPLICATE TARGET DATABASE TO bhst FROM ACTIVE DATABASE;
+}  
+
+
+
+=====ERROR
+RMAN-06136: ORACLE error from auxiliary database: ORA-07202: sltln: invalid parameter to sltln.  --> spfile is created . 2 controlfile value recieved
+if hang in copy controlfile --> add "DISABLE_OOB=on" to sqlnet.ora
+
+
+7.	t24r14dr [Optional]
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;

@@ -1,0 +1,6 @@
+
+SQL> col grantee format A10
+	 col granted_role format A28
+	 select grantee, granted_role, common, con_id
+	 from cdb_role_privs
+	 where grantee='SYSTEM';

@@ -1,0 +1,77 @@
+I. 
+-------------------------------------------------------------------------------------------------------------------------
+select * from (select s.sid,s.serial#,s.osuser,s.username,p.spid,w.wait_time,w.SECONDS_IN_WAIT,w.event,w.state from
+(select sid,wait_time,SECONDS_IN_WAIT,event,state from v$session_wait) w,
+(select sid,serial#,osuser,username,paddr from v$session) s,(select spid,addr from v$process)p 
+where s.sid=w.sid and s.paddr=p.addr order by w.SECONDS_IN_WAIT desc) where rownum <11;
+
+
+
+II. 
+-------------------------------------------------------------------------------------------------------------------------
+SELECT * FROM
+(SELECT
+    sql_fulltext,
+    sql_id,
+    child_number,
+    disk_reads,
+    executions,
+    first_load_time,
+    last_load_time
+FROM    v$sql
+ORDER BY elapsed_time DESC)
+WHERE ROWNUM < 10
+-----------------------------------------
+--
+-- Top 10 CPU consumers in last 5 minutes
+--
+-----------------------------------------
+SQL> select * from
+(
+select session_id, session_serial#, count(*)
+from v$active_session_history
+where session_state= 'ON CPU' and
+ sample_time > sysdate - interval '5' minute
+group by session_id, session_serial#
+order by count(*) desc
+)
+where rownum <= 10;
+--------------------
+--
+-- Who is that SID?
+--
+--------------------
+
+set lines 200
+col username for a10
+col osuser for a10
+col machine for a10
+col program for a10
+col resource_consumer_group for a10
+col client_info for a10
+
+SQL> select  serial#,
+ username,
+ osuser,
+ machine,
+ program,
+ resource_consumer_group,
+ client_info
+from v$session where sid=&sid;
+
+-------------------------
+--
+-- What did that SID do?
+--
+-------------------------
+
+SQL> select distinct sql_id, session_serial# from v$active_session_history
+where sample_time >  sysdate - interval '5' minute
+and session_id=&sid;
+----------------------------------------------
+--
+-- Retrieve the SQL from the Library Cache:
+--
+----------------------------------------------
+col sql_text for a80
+SQL> select sql_text from v$sql where sql_id='&sqlid'

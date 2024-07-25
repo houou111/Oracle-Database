@@ -1,0 +1,56 @@
+/* Formatted on 4/2/2019 11:43:20 AM (QP5 v5.252.13127.32847) */
+SELECT atype.VALUE AS typeAccount,
+       i.id_number,
+       TO_CHAR (i.id_date, :"SYS_B_0") AS id_date,
+       i.id_place,
+       b.BANK_ACCOUNT_NAME,
+       b.BANK_ACCOUNT_NO,
+       b.BANK_BRANCH,
+       b.BANK_NAME,
+       b.BANKPROVINCE,
+       u.LASTNAME || :"SYS_B_1" || u.FIRSTNAME AS FULLNAME,
+       u.ID,
+       u.USERNAME,
+       u.PASSWORD,
+       u.EMAIL,
+       u.FIRSTNAME,
+       u.LASTNAME,
+       u.GENDER,
+       u.BIRTHDAY,
+       u.RELATIONSHIP,
+       TO_CHAR (u.CREATED_DATE, :"SYS_B_2") AS CREATED_DATE,
+       u.UPDATED_DATE,
+       u.STATUS,
+       u.PROFILE_PICTURE,
+       u.HONORIFIC,
+       u.PHONE,
+       u.TCBSID,
+       au.STATUS AS statusProfile,
+       au.USER_APP_ID AS custodycd,
+          ad.address
+       || (CASE
+              WHEN ad.original_id IS NOT NULL
+              THEN
+                 :"SYS_B_3" || get_full_address (ad.original_id)
+              ELSE
+                 :"SYS_B_4"
+           END)
+          AS address,
+       ai.VALUE AS rmvalue,
+       u.FLOW_OPEN_ACCOUNT AS flowOpenAccount,
+       u.DOCUSIGN_STATUS AS docusignStatus,
+       u.ENVELOPE_ID AS envelopeId,
+       appro.VALUE AS checkHardCopy
+  FROM TCBS_USER u
+       LEFT JOIN tcbs_identification i ON u.id = i.user_id
+       LEFT JOIN tcbs_bank_account b ON u.id = b.user_id
+       LEFT JOIN tcbs_application_user au
+          ON u.id = au.user_id AND au.app_id = :"SYS_B_5"
+       LEFT JOIN tcbs_address ad ON ad.user_id = u.id
+       LEFT JOIN TCBS_USER_ADDITION_INFO ai
+          ON ai.userid = u.id AND ai.key = :"SYS_B_6"
+       LEFT JOIN TCBS_USER_ADDITION_INFO atype
+          ON atype.userid = u.id AND atype.key = :"SYS_B_7"
+       LEFT JOIN TCBS_USER_ADDITION_INFO appro
+          ON appro.userid = u.id AND appro.key = :"SYS_B_8"
+ WHERE u.tcbsid = :1 AND ROWNUM <= :"SYS_B_9"

@@ -1,0 +1,49 @@
+
+ORA-00600: internal error code, arguments: [kdsgrp1]
+OERR: ORA-1499 table/Index Cross Reference Failure - see trace file (Doc ID 1499.1)
+
+analyze index CSS_PYN.IDX_HUONGGIAO_ID_GIAOPHIEU validate structure  online;
+analyze index CSS_PYN.IDX_NGAYGIAO_GIAOPHIEU validate structure  online;
+
+
+row 0x523c0591.7 continuation at: 0x523c0591.7 file# 328 block# 3933585 slot 7 not found (dscnt: 0)
+
+SELECT segment_type, owner, segment_name
+FROM dba_extents
+WHERE file_id = 328
+AND 3933585 BETWEEN block_id and block_id+blocks-1;
+
+
+SQL> analyze table DEPT validate structure cascade;
+analyze table dept validate structure cascade
+*
+ERROR at line 1:
+ORA-01499: table/index cross reference failure - see trace file
+
+
+select INDEX_NAME from dba_indexes where table_name='GIAOPHIEU' AND OWNER='CSS_PYN';
+
+IDX_TUNING_89
+IDX_TUNING_90
+IDX_HDTB_ID_GIAOPHIEU
+PTH_PK
+IDX_KQXL_ID_GIAOPHIEU
+IDX_NHANVIEN_TH_ID_GIAOPHIEU
+IDX_PHIEU_CHA_ID
+IDX_HUONGGIAO_ID_GIAOPHIEU
+IDX_NGAYGIAO_GIAOPHIEU
+
+
+
+analyze index CSS_PYN.IDX_HUONGGIAO_ID_GIAOPHIEU validate structure  online;
+analyze index CSS_PYN.IDX_NGAYGIAO_GIAOPHIEU validate structure  online;
+analyze index CSS_PYN.IDX_NHANVIEN_TH_ID_GIAOPHIEU validate structure  online;
+analyze index CSS_PYN.IDX_TUNING_89 validate structure  online;
+analyze index CSS_ PYN.IDX_TUNING_90 validate structure  online;
+analyze index CSS_PYN.PTH_PK validate structure  online;
+
+
+
+
+Drop index
+re create index

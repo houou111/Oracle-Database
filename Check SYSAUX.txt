@@ -1,0 +1,143 @@
+11g
+https://www.oracle-scn.com/purging-statistics-from-the-sysaux-tablespace/
+
+
+12c
+
+
+I. check object in sysaux
+---------------------------------------------------------
+set lines 200
+set pages 200
+col owner for a6
+col segment_name for a50
+select * from
+(select owner,segment_name||'~'||partition_name segment_name,bytes/(1024*1024) size_m
+from dba_segments
+where tablespace_name = 'SYSAUX' ORDER BY BLOCKS desc) where rownum < 6;
+
+SELECT  schema_name, occupant_desc,round( space_usage_kbytes/1024) "Space (M)"
+FROM    v$sysaux_occupants 
+order by 3;
+
+
+col "Space (M)" for 999,999.99  
+
+SELECT 
+  occupant_name,  
+  round( space_usage_kbytes/1024) "Space (M)",  
+  schema_name, 
+  move_procedure
+FROM 
+  v$sysaux_occupants  
+ORDER BY 
+  1  
+/
+
+
+
+OWNER  SEGMENT_NAME                       SIZE_M                                                                                                                            
+------ ---------------------------------- ----------                                                                                                                            
+AUDSYS SYS_LOB0000091751C00014$$~         17808.125                                                                                                                            
+AUDSYS CLI_SWP$8e0bfd86$1$1~              14296                                                                                                                            
+AUDSYS CLI_TIME$8e0bfd86$1$1~               232                                                                                                                            
+AUDSYS CLI_SCN$8e0bfd86$1$1~                224                                                                                                                            
+AUDSYS CLI_LOB$8e0bfd86$1$1~                209                                                                                                                            
+5 rows selected.     
+
+
+
+II. Complete empty the unified audit trail
+---------------------------------------------------------
+BEGIN
+DBMS_AUDIT_MGMT.CLEAN_AUDIT_TRAIL(
+AUDIT_TRAIL_TYPE => DBMS_AUDIT_MGMT.AUDIT_TRAIL_UNIFIED,
+USE_LAST_ARCH_TIMESTAMP => FALSE,
+CONTAINER => dbms_audit_mgmt.container_current);
+END;
+/
+
+
+III. Partial Clean record up-to specific time as described in two example
+-------------------------------------------------------------------------
+1. Keep of last 15 days data as follows:
+-----------------------------------------
+BEGIN
+DBMS_AUDIT_MGMT.set_last_archive_timestamp(
+audit_trail_type => DBMS_AUDIT_MGMT.audit_trail_unified,
+last_archive_time => SYSTIMESTAMP-15,
+--rac_instance_number => 1,
+container => DBMS_AUDIT_MGMT.container_current
+);
+END;
+/
+
+
+--Check 
+COLUMN audit_trail FORMAT A20
+COLUMN last_archive_ts FORMAT A40
+SELECT audit_trail, last_archive_ts FROM dba_audit_mgmt_last_arch_ts;
+AUDIT_TRAIL LAST_ARCHIVE_TS
+------------------- -----------------------------------
+UNIFIED AUDIT TRAIL 18-JUL-18 02.26.17.000000 AM +00:00
+
+
+
+2. Specify time
+-----------------------------------------
+BEGIN
+DBMS_AUDIT_MGMT.SET_LAST_ARCHIVE_TIMESTAMP(audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_OS,last_archive_time => TO_TIMESTAMP('10-SEP-0714:10:10.0','DD-MON-RRHH24:MI:SS.FF'));
+END;
+/
+
+-- Start the clean job by using last time stamp defined as TRUE value in upper both example.
+BEGIN
+DBMS_AUDIT_MGMT.CLEAN_AUDIT_TRAIL(
+audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_UNIFIED,
+use_last_arch_timestamp => TRUE);
+END;
+/
+
+IV. Other action
+------------------------------------------------------
+1. Flush from memory
+----------------------------------------------
+
+exec DBMS_AUDIT_MGMT.FLUSH_UNIFIED_AUDIT_TRAIL;
+
+
+2. Disable the Unified Audit policies that are enabled by default
+--------------------------------------------------
+NOAUDIT POLICY ORA_SECURECONFIG;
+noaudit policy ORA_LOGON_FAILURES;
+
+
+3. Re-enable these audit policies if needed
+--------------------------------------------------
+AUDIT POLICY ORA_SECURECONFIG;
+audit policy ORA_LOGON_FAILURES;
+
+
+4. Example of cleaning unified audit data
+--------------------------------------------------
+
+sqlplus / as sysdba
+
+SQL> select count(*) from unified_audit_trail;
+COUNT(*)
+----------
+454543252
+
+BEGIN
+DBMS_AUDIT_MGMT.CLEAN_AUDIT_TRAIL(
+audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_UNIFIED,
+use_last_arch_timestamp => FALSE);
+END;
+/
+
+PL/SQL procedure successfully completed.
+
+SQL> select count(*) from unified_audit_trail;
+COUNT(*)
+----------
+1

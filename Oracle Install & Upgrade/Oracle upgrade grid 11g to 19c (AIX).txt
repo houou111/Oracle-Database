@@ -1,0 +1,183 @@
+https://oracledbwr.com/step-by-step-upgrade-oracle-rac-grid-infrastructure-and-database-from-11gr2-to-12cr1/
+https://oracledbwr.com/oracle-19c-database-upgrade-from-11-2-0-4-to-19-2-0-0-using-manual-method/
+https://oracledbwr.com/apply-patching-on-patch-32578972-combo-of-ojvm-ru-component-19-11-0-0-210420-db-ru-19-11-0-0-210420/
+
+Upgrade 11g-19c
+
+
+mkdir -p /u01/app/19c/grid
+mkdir -p /u01/app/oracle
+mkdir -p /u01/app/grid
+
+mkdir -p /u01/setup
+mkdir -p /u01/dump
+mkdir -p /home/oracle/bin
+mkdir -p /home/oracle/dbscript/log
+mkdir -p /u01/app/oracle/product/19c/dbhome_1
+
+
+
+
+Backup CRS*******************************************************************************************
+mkdir -p /u01/ocrbkp
+cd /u01/app/11.2.0/grid/bin/
+./ocrconfig -export /u01/ocrbkp/ocrfile
+
+tar -cvf grid_home_11g.tar $GRID_HOME
+
+Backup Database*******************************************************************************************
+rman target / 
+
+run {
+allocate channel test_backup_disk1 type disk format '/u01/backup/%d_%U';
+backup incremental level 0 tag 'ORCL_BEFORE_UPG'  database;
+backup format  tag 'ORCL_CONTROL_FILE' current controlfile;
+release channel test_backup_disk1;
+}
+
+sqlplus / as sysdba
+PURGE DBA_RECYCLEBIN ;
+EXEC DBMS_STATS.GATHER_DICTIONARY_STATS;
+
+Precheck grid upgrade*******************************************************************************************
+./runcluvfy.sh stage -pre crsinst -upgrade -rolling -src_crshome /u01/app/11.2.0/grid -dest_crshome /u01/app/19c/grid -dest_version 19.3.0.0.0 -verbose
+
+Cài đặt gói bị thiếu
+
+uncompress 15.1.0.9-IBM-xlf.rte-AIX-FP009.tar.Z
+tar -xvf 15.1.0.9-IBM-xlf.rte-AIX-FP009.tar -C /tmp/install
+cd /tmp/install
+smit
+
+sửa compatible cho cả 3 diskgroup của ASM
+ALTER DISKGROUP DATA SET ATTRIBUTE 'compatible.asm' = '11.2.0.2.0';
+ALTER DISKGROUP DATA SET ATTRIBUTE 'compatible.rdbms' = '11.2.0.2.0';
+ALTER DISKGROUP DATA SET ATTRIBUTE 'compatible.advm' = '11.2.0.2.0';
+
+ALTER DISKGROUP FRA SET ATTRIBUTE 'compatible.asm' = '11.2.0.2.0';
+ALTER DISKGROUP FRA SET ATTRIBUTE 'compatible.rdbms' = '11.2.0.2.0';
+ALTER DISKGROUP FRA SET ATTRIBUTE 'compatible.advm' = '11.2.0.2.0';
+
+ALTER DISKGROUP CRS SET ATTRIBUTE 'compatible.asm' = '11.2.0.2.0';
+ALTER DISKGROUP CRS SET ATTRIBUTE 'compatible.rdbms' = '11.2.0.2.0';
+ALTER DISKGROUP CRS SET ATTRIBUTE 'compatible.advm' = '11.2.0.2.0';
+  
+
+Stop database *******************************************************************************************
+srvctl stop database -d g2fo
+
+Cài đặt grid 19c*******************************************************************************************
+mkdir -p /u01/app/19c/grid
+unzip V982588-01.zip -d /u01/app/19c/grid
+
+chown -R grid:oinstall /u01/app/19c/grid
+chmod -R 775 /u01/app/19c/grid
+
+cd /u01/app/19c/grid
+
+./runInstaller 
+Chọn upgrade grid infratructure
+
+.grid
+cd $ORACLE_HOME
+unzip V982588-01.zip
+rm -rf OPatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+
+chmod +x gridSetup.sh
+./gridSetup.sh
+
+
+$ ./gridSetup.sh -applyRU /u01/setup/33509923
+
+$ ./runInstaller -applyRU /u01/setup/33567270
+
+
+
+
+sh /u01/app/19c/grid/rootupgrade.sh
+
+Check lại status CRS sau khi upgrade*******************************************************************************************
+./crsctl query crs activeversion
+
+
+***Upgrade Database
+
+Cài đặt Database 19c*******************************************************************************************
+mkdir -p /u01/app/oracle/19c/db
+chown -R grid:oinstall /u01/app/oracle/19c/db
+chmod -R 775 /u01/app/oracle/19c/db
+
+unzip V982583-01 -d /u01/app/oracle/19c/db
+
+Precheck database upgrade*******************************************************************************************
+cd /u01/app/19c/grid
+./runcluvfy.sh stage -pre dbinst -upgrade -src_dbhome /u01/app/oracle/11.2.0/db -dest_dbhome /u01/app/oracle/19c/db -dest_version 19c.0.0
+
+cd /u01/app/oracle/11.2.0/db
+/u01/app/oracle/11.2.0/db/jdk/bin/java -jar /u01/app/oracle/19c/db/rdbms/admin/preupgrade.jar FILE DIR /u01/backup/ 
+SQL> @/u01/preupgrade/preupgrade_fixups.sql
+
+Upgrade Database*******************************************************************************************
+alter system set cluster_database=false scope=spfile sid='*';
+
+Copy pfile and password file from the 11g home to the new 19c home*******************************************************************************************
+cp /u01/app/oracle/11.2.0/db/dbs/initg2fo1.ora /u01/app/oracle/19c/db/dbs/
+cp /u01/app/oracle/11.2.0/db/dbs/orapwg2fo1 /u01/app/oracle/19c/db/dbs/
+
+upgrade Database*******************************************************************************************
+unset ORACLE_HOME
+unset ORACLE_BASE
+unset ORACLE_SID
+
+export ORACLE_HOME=/u01/app/oracle/19c/db
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_SID=g2fo1
+export PATH=/u01/app/oracle/19c/db:$PATH
+
+cd /u01/app/oracle/19c/db/bin
+./sqlplus / as sysdba
+
+SQL> startup upgrade
+
+./dbupgrade
+
+./sqlplus / as sysdba
+startup
+@catuppst.sql
+@utlrp.sql
+
+ALTER SYSTEM SET COMPATIBLE = '19c' SCOPE=SPFILE;
+
+shut immediate
+startup
+EXECUTE DBMS_STATS.GATHER_FIXED_OBJECTS_STATS;
+@/u01/preupgrade/postupgrade_fixups.sql
+
+SQL> select name,version,open_mode from v$database,v$instance;
+
+NAME      VERSION           OPEN_MODE
+--------- ----------------- ----------
+g2fo    19c.0.0        READ WRITE
+
+
+Patch*******************************************************************************************
+unzip p33509923_190000_AIX64-5L.zip
+export PATH=$PATH:/u01/app/19c/grid/OPatch
+export ORACLE_HOME=/u01/app/19c/grid
+
+/u01/app/19c/grid/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /u01/setup/33509923/33515361
+/u01/app/19c/grid/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /u01/setup/33509923/33529556
+/u01/app/19c/grid/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /u01/setup/33509923/33534448
+/u01/app/19c/grid/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /u01/setup/33509923/33239955
+/u01/app/19c/grid/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /u01/setup/33509923/33575402
+
+/u01/app/19c/grid/OPatch/opatchauto apply /u01/setup/33509923 -oh /u01/app/19c/grid  -nonrolling
+
+unzip p33567270_190000_AIX64-5L.zip
+export ORACLE_HOME=/u01/app/oracle/19c/db
+export PATH=/u01/app/oracle/19c/db:$PATH
+export PATH=$PATH:/usr/ccs/bin
+
+/u01/app/oracle/19c/db/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+/u01/app/oracle/19c/db/OPatch/opatch apply

@@ -1,0 +1,36 @@
+select * from v$active_session_history
+where sql_id=''
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_id,sql_fulltext,parsing_schema_name,elapsed_time,MODULE,FIRST_LOAD_TIME
+from v$sql
+where upper(sql_fulltext) like '%LOG_MASTER%'
+order by first_load_time desc;
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where upper(sql_text) like '%CMS_TRANSACTION%'
+
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where sql_id=''
+
+
+
+select inst_id,sample_time,session_id,session_serial#,sql_id from gv$active_session_history
+where sql_id is not null
+order by 1 desc
+/
+

@@ -1,0 +1,24 @@
+SELECT d.histdate, h.* FROM (
+    WITH tbDateRange AS (
+	        -- Lay ra danh sach ngay tu bang hist
+	        SELECT TO_CHAR((enddate - level + 1), 'YYYYMMDD') AS histdate, TO_CHAR((enddate - level + 1), 'D') AS histday
+	        FROM (
+	        	SELECT TO_DATE(min(TRADING_DATE), 'YYYYMMDD') AS startdate, TO_DATE(max(TRADING_DATE), 'YYYYMMDD') AS enddate FROM HUB_CTCK.TT_SYMBOL_INFO_HIST WHERE TRADING_DATE LIKE '2023%'
+			)
+	        CONNECT BY LEVEL <= (enddate - startdate + 1)
+    )
+    SELECT d.*
+    	-- Lay ngay gan nhat ma do co du lieu
+    	, MAX(h.TRADING_DATE) OVER (PARTITION BY d.SYMBOLCODE ORDER BY d.histdate ROWS BETWEEN UNBOUNDED PRECEDING AND 0 FOLLOWING) AS get_trading_date
+    FROM (
+    	SELECT * 
+    	FROM tbDateRange 
+    	CROSS JOIN (SELECT DISTINCT SYMBOLCODE FROM HUB_CTCK.TT_SYMBOL_INFO_HIST WHERE TRADING_DATE LIKE '2023%') -- Danh sach cac ma
+    ) d
+    LEFT JOIN HUB_CTCK.TT_SYMBOL_INFO_HIST h ON d.histdate = h.TRADING_DATE AND d.SYMBOLCODE = h.SYMBOLCODE  AND H.TRADING_DATE LIKE '2023%'
+) d
+JOIN HUB_CTCK.TT_SYMBOL_INFO_HIST h ON d.GET_TRADING_DATE = h.TRADING_DATE AND d.SYMBOLCODE = h.SYMBOLCODE AND TRADING_DATE LIKE '2023%'
+where 1=1
+and d.HISTDATE IN ('20231111', '20231112', '20231110',  '20231109') 
+and H.SYMBOLCODE = 'SSI'
+order by TRADING_DATE desc

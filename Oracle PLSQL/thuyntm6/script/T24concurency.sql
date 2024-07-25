@@ -1,0 +1,95 @@
+/* Formatted on 5/18/2017 11:16:57 AM (QP5 v5.252.13127.32867) */
+MERGE INTO F_ENQUIRY_SELECT
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD =
+                 XMLTYPE ( :XMLRECORD,
+                          NULL,
+                          1,
+                          1)
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES (XMLTYPE ( :XMLRECORD,
+                        NULL,
+                        1,
+                        1),
+               :RECID)
+			   
+			   
+			   
+			   
+/* Formatted on 5/18/2017 11:18:25 AM (QP5 v5.252.13127.32867) */
+MERGE INTO FBNK_DEPO_WITHDRA
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD =
+                 XMLTYPE ( :XMLRECORD,
+                          NULL,
+                          1,
+                          1)
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES (XMLTYPE ( :XMLRECORD,
+                        NULL,
+                        1,
+                        1),
+               :RECID)
+
+
+/* Formatted on 5/18/2017 11:18:49 AM (QP5 v5.252.13127.32867) */
+MERGE INTO FBNK_ACCT_STMT_PRINT
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD = :XMLRECORD
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES ( :XMLRECORD, :RECID)
+
+
+/* Formatted on 5/18/2017 11:19:19 AM (QP5 v5.252.13127.32867) */
+MERGE INTO FBNK_ENTRY_HOLD
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD = :XMLRECORD
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES ( :XMLRECORD, :RECID)
+
+
+/* Formatted on 5/18/2017 11:20:03 AM (QP5 v5.252.13127.32867) */
+MERGE INTO FBNK_CATEG_ENT_ACTIVITY
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD = :XMLRECORD
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES ( :XMLRECORD, :RECID)
+
+
+
+/* Formatted on 5/18/2017 11:20:26 AM (QP5 v5.252.13127.32867) */
+MERGE INTO FBNK_MM_CPARTY_UNCONF
+     USING DUAL
+        ON (RECID = :RECID)
+WHEN MATCHED
+THEN
+   UPDATE SET XMLRECORD = :XMLRECORD
+WHEN NOT MATCHED
+THEN
+   INSERT     (XMLRECORD, RECID)
+       VALUES ( :XMLRECORD, :RECID)	   

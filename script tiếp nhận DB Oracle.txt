@@ -1,0 +1,83 @@
+CREATE OR REPLACE TRIGGER audit_IP AFTER LOGON ON DATABASE
+DECLARE
+ipinfo VARCHAR2(30);
+BEGIN
+SELECT SYS_CONTEXT('USERENV','IP_ADDRESS') INTO ipinfo FROM DUAL;
+DBMS_APPLICATION_INFO.SET_CLIENT_INFO(ipinfo);
+END;
+/
+
+set pagesize 0 
+set linesize 1000  
+select distinct USERNAME,OSUSER,MACHINE,PROGRAM,CLIENT_INFO
+from gv$session a
+where USERNAME not in ('SYS','DBSNMP','DBA01','C##DBA01','ZABBIX')
+AND CLIENT_INFO is not null
+AND OSUSER not in ('grid')
+order by CLIENT_INFO;
+
+
+SELECT  trunc(first_time) ARCHIVED_DATE ,count(1)*(Select bytes/1024/1024/1024 from v$log where rownum=1) Size_GB
+From v$log_history group by trunc(first_time) order by 1;
+
+
+select owner,table_name
+from dba_tab_statistics
+where (stale_stats = 'YES')
+and owner not like '%SYS%'
+and stattype_locked is NULL;
+
+
+SET ECHO        OFF
+SET FEEDBACK    6
+SET HEADING     ON
+SET LINESIZE    180
+SET PAGESIZE    50000
+SET TERMOUT     ON
+SET TIMING      OFF
+SET TRIMOUT     ON
+SET TRIMSPOOL   ON
+SET VERIFY      OFF
+
+CLEAR COLUMNS
+CLEAR BREAKS
+CLEAR COMPUTES
+
+COLUMN owner           FORMAT a25         HEADING 'Owner'
+COLUMN object_name     FORMAT a30         HEADING 'Object Name'
+COLUMN object_type     FORMAT a20         HEADING 'Object Type'
+COLUMN status          FORMAT a10         HEADING 'Status'
+
+BREAK ON owner SKIP 2 ON report
+
+COMPUTE count LABEL ""               OF object_name ON owner
+COMPUTE count LABEL "Grand Total: "  OF object_name ON report
+
+SELECT
+    owner
+  , object_name
+  , object_type
+  , status
+FROM dba_objects
+WHERE status <> 'VALID'
+ORDER BY owner, object_name
+/
+
+
+set lines 200
+set pages 200
+col owner for a15
+col table_name for a30
+col "Fragmented size (mb)" for 999,999.00
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2) "Reclaim size (mb)",
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "Reclaimable space % " 
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS')
+order by 1,6 desc;
+
+

@@ -1,0 +1,139 @@
+[root@dc-mbb-db-01 ~]# iptables -S
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT DROP
+-N LOGGING
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -i enccw0.0.f603 -j ACCEPT
+-A INPUT -s 169.254.0.0/16 -j ACCEPT
+-A INPUT -s 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.192.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.128.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.1.1-10.96.3.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.10.1-10.96.11.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.128.1-10.96.130.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.138.1-10.96.138.254 -j ACCEPT
+-A INPUT -p udp -m udp --dport 123 -j ACCEPT
+-A INPUT -s 10.98.4.38/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.62/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.63/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.166/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.73/32 -p tcp -m multiport --dports 8440,8441 -j ACCEPT
+-A INPUT -s 10.98.4.74/32 -p tcp -m multiport --dports 8440,8441 -j ACCEPT
+-A INPUT -s 10.97.4.71/32 -p tcp -m multiport --dports 8443,9001 -j ACCEPT
+-A INPUT -s 10.97.4.72/32 -p tcp -m multiport --dports 8443,9001 -j ACCEPT
+-A INPUT -s 10.98.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.20/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.22/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.23/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.143/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.144/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.62.72.0/24 -p tcp -m multiport --dports 22,80,443,3389 -j ACCEPT
+-A INPUT -s 10.98.4.136/32 -p udp -m multiport --dports 137:138,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.4.136/32 -p tcp -m multiport --dports 22,135,137:139,443,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.13/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.14/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.143/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.4.234/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.97.4.235/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.1.63/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.12.30/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.97.4.234/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.97.4.235/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.98.1.63/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.98.12.30/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.107.4.37/32 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.62.31.58/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.62.58.31/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.62.30.161/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.62.30.170/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.62.30.234/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.62.30.212/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.99.1.89/32 -p tcp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.97.4.155/32 -p tcp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.99.1.89/32 -p udp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.97.4.155/32 -p udp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.99.1.0/24 -j ACCEPT
+-A INPUT -s 10.109.1.0/24 -j ACCEPT
+-A INPUT -s 192.168.11.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 10.100.100.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 10.99.1.75/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 192.168.11.42/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 192.168.11.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 10.100.100.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 10.97.4.133/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -s 10.97.5.204/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A INPUT -p tcp -m iprange --src-range 10.109.1.128-10.109.1.134 -m multiport --dports 22,1521 -m comment --comment "DC-DR synch" -j ACCEPT
+-A INPUT -s 10.98.1.76/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.98.1.77/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.98.1.145/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.98.1.174/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.98.1.178/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.108.1.145/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -j LOGGING
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -o enccw0.0.f603 -j ACCEPT
+-A OUTPUT -d 169.254.0.0/16 -j ACCEPT
+-A OUTPUT -d 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.192.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.128.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.1.1-10.96.3.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.10.1-10.96.11.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.128.1-10.96.130.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.138.1-10.96.138.254 -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
+-A OUTPUT -d 10.97.4.71/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.73/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.242/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.243/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.98.4.136/32 -p udp -m multiport --dports 137,183,445 -j ACCEPT
+-A OUTPUT -d 10.98.4.136/32 -p tcp -m multiport --dports 139,445,9524 -j ACCEPT
+-A OUTPUT -d 10.97.5.238/32 -p tcp -m multiport --dports 21,5000:5001 -j ACCEPT
+-A OUTPUT -d 10.96.128.128/32 -p tcp -m multiport --dports 21,5000:5001 -j ACCEPT
+-A OUTPUT -d 10.98.4.73/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+-A OUTPUT -d 10.98.4.74/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+-A OUTPUT -d 10.97.4.234/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.97.4.235/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.98.1.63/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.98.12.30/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.13/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.14/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.143/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.4.53/32 -p udp -m udp --dport 514 -j ACCEPT
+-A OUTPUT -d 10.97.4.71/32 -p udp -m udp --dport 514 -j ACCEPT
+-A OUTPUT -d 10.99.1.89/32 -p tcp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.97.4.155/32 -p tcp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.99.1.89/32 -p udp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.97.4.155/32 -p udp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.99.1.0/24 -j ACCEPT
+-A OUTPUT -d 10.109.1.0/24 -j ACCEPT
+-A OUTPUT -d 192.168.11.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 10.100.100.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 10.99.1.75/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 192.168.11.42/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 192.168.11.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 10.100.100.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 10.97.4.133/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -d 10.97.5.204/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment dbs -j ACCEPT
+-A OUTPUT -p tcp -m iprange --dst-range 10.109.1.128-10.109.1.134 -m multiport --dports 22,1521 -m comment --comment "DC-DR synch" -j ACCEPT
+-A OUTPUT -j LOGGING
+-A LOGGING -m limit --limit 20/min -j LOG --log-prefix "IPTABLES DROP:"

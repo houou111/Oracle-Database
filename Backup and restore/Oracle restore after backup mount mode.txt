@@ -1,0 +1,6 @@
+run
+{
+SET NEWNAME FOR DATABASE   TO  '+DATA';
+set until time "to_date('2022-07-30:06:30:00', 'yyyy-mm-dd:hh24:mi:ss')";
+restore database;
+}

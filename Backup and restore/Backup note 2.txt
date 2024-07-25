@@ -1,0 +1,95 @@
+﻿1. Do môi trường crcdb là môi trường RAC 2 node vì vậy để tối ưu backup có thể cấu hình parallel backup đồng thời trên cả hai node như vậy resource (CPU, MEMORY) sẽ chia ra trên hai node:
+	#Cấu hình các channel backup trên node1:
+	RMAN>CONFIGURE CHANNEL RMAN_DISK01 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb1';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK02 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb1';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK03 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb1';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK04 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb1';
+	#Cấu hình các channel backup trên node2:
+	RMAN>CONFIGURE CHANNEL RMAN_DISK05 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb2';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK06 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb2';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK07 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb2';
+	RMAN>CONFIGURE CHANNEL RMAN_DISK08 DEVICE TYPE DISK CONNECT 'sys/passwd@crcdb2';
+2. Enable block change tracking:
+	-Hiện tại db 11g chưa enable block change tracking
+	SQL> select status from v$block_change_tracking;
+
+	STATUS
+	----------
+	DISABLED
+
+	-Khi Enable block change tracking bản backup level 1 sẽ chỉ backup các datafile có block thay đổi thay vì phải quét toàn bộ các datafile của hệ thống do đó sẽ giảm được thời gian backup level 1:
+	SQL> alter database enable block change tracking;
+3. Để đảm bảo thời gian backup nhanh nhất cấu hình lại thuật toán nén bản backup, hiện tại hệ thống đang để là BASIC có thể cấu hình LOW ( lưu ý: với cấu hình COMPRESSION=LOW bản backup sẽ có dung lượng lớn hơn COMPRESSION=BASIC)
+	RMAN> show COMPRESSION ALGORITHM;
+	RMAN configuration parameters for database with db_unique_name CRCDB are:
+	CONFIGURE COMPRESSION ALGORITHM 'BASIC' AS OF RELEASE 'DEFAULT' OPTIMIZE FOR LOAD TRUE ; # default
+
+        -Thực hiện thay đổi:
+	RMAN>CONFIGURE COMPRESSION ALGORITHM 'LOW';
+4. Cấu hình backup optimization để oracle tối ưu backup bỏ qua các datafile offline, read-only khi backup nếu đã tồn tại một bản backup của các datafile này vẫn thỏa mãn policy backup
+	-Cấu hình hiện tại:
+	RMAN> show BACKUP OPTIMIZATION ;
+	RMAN configuration parameters for database with db_unique_name CRCDB are:
+	CONFIGURE BACKUP OPTIMIZATION OFF; # default
+	-Thay đổi:
+	RMAN>CONFIGURE BACKUP OPTIMIZATION ON;
+5. Script backup:
+	-backup_db_lelvel0.rcv
+	run {
+	ALLOCATE CHANNEL RMAN_DISK01 DEVICE TYPE DISK FORMAT '/s17/backup_db/crcdb_lev0/c1_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK02 DEVICE TYPE DISK FORMAT '/s02/backup_db/crcdb_lv0/c2_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK03 DEVICE TYPE DISK FORMAT '/s14/backup_db/crcdb_lv0/c3_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK04 DEVICE TYPE DISK FORMAT '/s15/backup_db/crcdb_lv0/c4_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK05 DEVICE TYPE DISK FORMAT '/s17/backup_db/crcdb_lev0/c5_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK06 DEVICE TYPE DISK FORMAT '/s02/backup_db/crcdb_lv0/c6_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK07 DEVICE TYPE DISK FORMAT '/s14/backup_db/crcdb_lv0/c7_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK08 DEVICE TYPE DISK FORMAT '/s15/backup_db/crcdb_lv0/c8_db_%Y%M%D_%U.dbf';
+	CROSSCHECK ARCHIVELOG ALL;
+	DELETE NOPROMPT EXPIRED ARCHIVELOG ALL;
+	DELETE NOPROMPT EXPIRED BACKUP;
+	BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 0 DATABASE FILESPERSET 4 MAXSETSIZE 40 G TAG LEVEL0;
+	SQL 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+	BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL FILESPERSET 4 TAG ARCH ;
+	DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-7';
+	CROSSCHECK BACKUP;
+	CROSSCHECK COPY;
+	DELETE NOPROMPT EXPIRED BACKUP;
+	DELETE NOPROMPT OBSOLETE;
+	RELEASE CHANNEL RMAN_DISK01;
+	RELEASE CHANNEL RMAN_DISK02;
+	RELEASE CHANNEL RMAN_DISK03;
+	RELEASE CHANNEL RMAN_DISK04;
+	RELEASE CHANNEL RMAN_DISK05;
+	RELEASE CHANNEL RMAN_DISK06;
+	}
+	EXIT;
+	-backup_db_lelvel1.rcv
+	run {
+	ALLOCATE CHANNEL RMAN_DISK01 DEVICE TYPE DISK FORMAT '/s17/backup_db/crcdb_lev1/c1_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK02 DEVICE TYPE DISK FORMAT '/s02/backup_db/crcdb_lv1/c2_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK03 DEVICE TYPE DISK FORMAT '/s14/backup_db/crcdb_lv1/c3_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK04 DEVICE TYPE DISK FORMAT '/s15/backup_db/crcdb_lv1/c4_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK05 DEVICE TYPE DISK FORMAT '/s17/backup_db/crcdb_lev1/c5_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK06 DEVICE TYPE DISK FORMAT '/s02/backup_db/crcdb_lv1/c6_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK07 DEVICE TYPE DISK FORMAT '/s14/backup_db/crcdb_lv1/c7_db_%Y%M%D_%U.dbf';
+	ALLOCATE CHANNEL RMAN_DISK08 DEVICE TYPE DISK FORMAT '/s15/backup_db/crcdb_lv1/c8_db_%Y%M%D_%U.dbf';
+	CROSSCHECK ARCHIVELOG ALL;
+	DELETE NOPROMPT EXPIRED ARCHIVELOG ALL;
+	DELETE NOPROMPT EXPIRED BACKUP;
+	BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 1 DATABASE FILESPERSET 4 MAXSETSIZE 40 G TAG LEVEL0;
+	SQL 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+	BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL FILESPERSET 4 TAG ARCH ;
+	DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-7';
+	CROSSCHECK BACKUP;
+	CROSSCHECK COPY;
+	DELETE NOPROMPT EXPIRED BACKUP;
+	DELETE NOPROMPT OBSOLETE;
+	RELEASE CHANNEL RMAN_DISK01;
+	RELEASE CHANNEL RMAN_DISK02;
+	RELEASE CHANNEL RMAN_DISK03;
+	RELEASE CHANNEL RMAN_DISK04;
+	RELEASE CHANNEL RMAN_DISK05;
+	RELEASE CHANNEL RMAN_DISK06;
+	}
+	EXIT;
+

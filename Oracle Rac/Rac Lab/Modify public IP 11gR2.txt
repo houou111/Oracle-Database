@@ -1,0 +1,105 @@
+
+Note that the actual value of IP addresses and host names was changed.
+The configuration
+ 
+ 
+Host		Current 	IP Address		Changed IP Address
+Private IP	hst1		192.168.1.101  	192.168.2.121  
+Private IP	hst2		192.168.1.100  	192.168.2.120  
+VIP			hst1-vip	192.168.1.111  	192.168.2.111  
+VIP			hst2-vip	192.168.1.110  	192.168.2.110  
+ 
+ 
+The basic steps
+ 
+The change of the private IP address is performed in the following basic steps
+ 
+1) Shut down everything except the CRS stack
+2) Change the public interface
+3) Modify the VIP address
+4) Shut down CRS
+5) Modify IP address on OS level and reconfigure /etc/hosts, listener,..
+6) Restart
+
+
+1. Shut Down Everything Except the CRS Stack
+-------------------------------------------------------------
+The database and nodeapps (on all nodes) are stopped.
+ 
+[oracle@hst1 ~]$ srvctl stop database -d mydb
+[oracle@hst1 ~]$ srvctl stop nodeapps -n hst1
+[oracle@hst1 ~]$ srvctl stop nodeapps -n hst2
+ 
+Note that if you use ASM, it must be stopped as well.
+ 
+After that we verify the status.
+ 
+[oracle@hst1 ~]$ srvctl status database -d mydb
+Instance MYDB1 is not running on node hst2
+Instance MYDB2 is not running on node hst1
+
+[oracle@hst1 ~]$ srvctl status nodeapps -n hst1
+VIP is not running on node: hst1
+GSD is not running on node: hst1
+Listener is not running on node: hst1
+ONS daemon is not running on node: hst1
+
+[oracle@hst1 ~]$ srvctl status nodeapps -n hst2
+VIP is not running on node: hst2
+GSD is not running on node: hst2
+Listener is not running on node: hst2
+ONS daemon is not running on node: hst2
+ 
+
+ 
+2. Change the Public Interface
+-------------------------------------------------------------
+ 
+[oracle@hst1 ~]$ oifcfg getif
+eth0  192.168.1.0  global  public
+eth1  192.168.2.0  global  cluster_interconnect
+ 
+We need to change the interface eth0.
+As there is no modify command, we will delete and redefine the interface.
+ 
+[oraclu@hst1 ~]$ oifcfg delif -global eth0
+[oraclu@hst1 ~]$ oifcfg setif -global eth0/192.168.2.0:public
+ 
+[oracle@hst1 ~]$ oifcfg getif
+eth0  192.168.2.0  global  public
+eth1  192.168.2.0  global  cluster_interconnect
+ 
+ 
+ 
+3.Modify the VIP Address
+---------------------------------------------------------------
+As already mentioned, due to the fact that we changed the subnet of the public IP address, 
+we must change the VIP address as well.
+The following modify statement should be used.
+ 
+[root@hst1 ~]# /u01/app/11.2.0/grid/bin/srvctl modify nodeapps -n hst2 -A 192.168.2.110/255.255.255.0/eth0
+[root@hst1 ~]# /u01/app/11.2.0/grid/bin/srvctl modify nodeapps -n hst1 -A 192.168.2.111/255.255.255.0/eth0
+
+
+
+4.Shutdown CRS
+---------------------------------------------------------------
+[root@hst1 ~]#/u01/app/11.2.0/grid/bin/crsctl stop crs -f
+[root@hst2 ~]#/u01/app/11.2.0/grid/bin/crsctl stop crs -f
+ 
+ 
+ 
+5.Modify the IP Address on OS Level
+---------------------------------------------------------------
+Modify the public IP address (eth0). In Centos with application / system setting / network
+Perform the change on all nodes.
+Modify /etc/hosts and listener.ora files if required.
+
+
+
+6.Restart
+---------------------------------------------------------------
+Reboot all nodes and verify the status.
+Shortly after reboot we can see...
+ 
+

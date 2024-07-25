@@ -1,0 +1,185 @@
+﻿#Đầu vào
+file txt hoặc .csv( excel)
+Ví dụ: employee.txt 
+100,Thomas,Sales,5000
+200,Jason,Technolog,5500
+300,Mayla,Technology,7000
+400,Nisha,Marketing,9500
+500,Randy,Technology,6000
+501,Ritu,Accounting,5400
+
+
+#Tạo controlfile ( nên đặt trong $ORACLE/bin )
+Ví dụ: example1.ctl
+load data
+ infile '/home/ramesh/employee.txt'
+ into table employee
+ fields terminated by ","
+ TRAILING NULLCOLS
+ ( id, name, dept, salary )
+ 
+ 
+#Tạo sẵn table để rót dữ liệu vào
+SQL> create table employee
+(
+  id integer,
+  name varchar2(10),
+  dept varchar2(15),
+  salary integer,
+  hiredon date
+)
+
+#Thực hiện rót dữ liệu
+[oracle@ggate1 bin]$ sqlldr duong/123456 control=sqlloadertest.ctl log=sqlloadertest.log
+
+
+
+
+echo "" > /home/oracle/etl_script/v_open_acc_flow.ctl
+echo 
+
+
+LOAD DATA INFILE "/XXINSTANCEXX/applmgr/CUSTOM/xbol/12.0.0/bin/$FILENAME.csv"
+
+
+
+
+example.ctl:
+LOAD DATA
+INFILE 'example.dat'
+LOGFILE 'example.log'
+BADFILE 'example.bad'
+APPEND
+INTO TABLE emp
+FIELDS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '\\'
+LINES TERMINATED BY '\n'
+TRAILING NULLCOLS
+(
+empno,
+ename,
+job,
+mgr,
+hiredate,
+sal,
+comm,
+deptno
+)
+
+
+
+
+LOAD DATA
+INFILE 'cus*.txt'
+APPEND
+INTO TABLE s2.customer
+FIELDS TERMINATED BY '|'
+TRAILING NULLCOLS
+( timeline, 
+custype,
+cusid,
+ProductHolding,
+Pri_mas,
+income_ranked,
+mortgage_ranked,
+cc_purchased_ranked,
+td_avgbal_ranked,
+ca_avgbal_ranked,
+Segment_final,
+segment_pre
+)
+
+
+
+sqlldr '"/ as sysdba"' control=cus.ctl log=cus.log
+
+
+
+
+CREATE OR REPLACE PIPELINE tpch_100_lineitem
+    AS LOAD DATA S3 'memsql-tpch-dataset/sf_100/lineitem/'
+    config '{"region":"us-east-1"}'
+    SKIP DUPLICATE KEY ERRORS
+    INTO TABLE lineitem
+    FIELDS TERMINATED BY '|'
+    LINES TERMINATED BY '|\n';
+	
+
+
+load data into table emails
+insert
+fields terminated by ","
+(
+email_id,
+email
+)
+
+
+
+[oracle@qr01dbadm01 mydbfs]$ head customers.csv
+55,"Bruce","Lange","hi","INDIA",1999,"Bruce.Lange@oracle.com",166
+74,"Claude","Brown","d","SWITZERLAND",4737,"Claude.Brown@oracle.com",163
+81,"Max","Capshaw","us","AMERICA",650,"Max.Capshaw@oracle.com",165
+97,"Roy","Kazan","zhs","CHINA",2707,"Roy.Kazan@oracle.com",156
+111,"Robert","Young","i","ITALY",4895,"Robert.Young@oracle.com",169
+146,"Ridley","Schneider","th","THAILAND",3775,"Ridley.Schneider@oracle.com",168
+245,"Matthias","Russell","i","ITALY",2839,"Matthias.Russell@oracle.com",158
+252,"Edward","Hoskins","ja","JAPAN",2469,"Edward.Hoskins@oracle.com",153
+262,"Grace","Sen","zhs","CHINA",500,"Grace.Sen@oracle.com",162
+281,"Gtz","Peckinpah","th","THAILAND",1128,"Gtz.Peckinpah@oracle.com",151
+
+
+
+
+
+create directory staging as '/home/oracle/DBFS/mydbfs';
+
+grant read, write on directory staging to sh;
+
+
+connect sh/??
+
+
+SQL> create table ext_customers
+(
+customer_id number(12),
+cust_first_name varchar2(30),
+cust_last_name varchar2(30),
+nls_language varchar2(3),
+nls_territory varchar2(30),
+credit_limit number(9,2),
+cust_email varchar2(100),
+account_mgr_id number(6)
+)
+organization external
+(
+type oracle_loader
+default directory staging
+access parameters
+(
+records delimited by newline
+badfile staging:'custxt%a_%p.bad'
+logfile staging:'custxt%a_%p.log'
+fields terminated by ',' optionally enclosed by '"'
+missing field values are null
+(
+customer_id, cust_first_name, cust_last_name, nls_language,
+nls_territory, credit_limit, cust_email, account_mgr_id
+)
+)
+location ('customers.csv')
+)
+parallel
+reject limit unlimited;
+
+
+
+
+SQL> create table loaded_customers
+2 as select * from ext_customers;
+
+
+
+
+

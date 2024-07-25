@@ -1,0 +1,126 @@
+-- in case need linking library
+sh /usr/openv/netbackup/bin/oracle_link
+
+-- add host to Netbackup
+
+-- list backup file in netbackup
+/usr/openv/netbackup/bin/bplist  -C dr-cardlinux-db01.techcombank.com.vn -t 4 -S dr-backup-01.headquarter.techcombank.com.vn -s 09/17/2017 00:00:00 -e 09/18/2017 23:00:00 -l -b -R /
+
+-- restore spfile from netbackup
+startup nomount
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore spfile from '/ctl_TWO_20170918_fssenqov_1_1;
+release channel t1;
+}
+
+-- create pfile from spfile
+SQL> Create pfile='' from spfile='';
+
+-- modify pfile
+vi init...ora
+
+-- restore controlfile from netbackup
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore controlfile from '/ctl_TWO_20170918_fssenqov_1_1';
+release channel t1;
+}
+
+-- restore database
+run {
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+allocate channel t5 device type 'sbt_tape' ;
+allocate channel t6 device type 'sbt_tape' ;
+allocate channel t7 device type 'sbt_tape' ;
+allocate channel t8 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+set newname for datafile 1 to "+DATA2" ;
+set newname for datafile 2 to "+DATA2" ;
+set newname for datafile 3 to "+DATA2" ;
+set newname for datafile 4 to "+DATA2" ;
+set newname for datafile 5 to "+DATA2" ;
+set newname for datafile 6 to "+DATA2" ;
+set newname for datafile 7 to "+DATA2" ;
+set newname for datafile 8 to "+DATA2" ;
+set newname for datafile 9 to "+DATA2" ;
+set newname for datafile 10 to "+DATA2" ;
+set newname for datafile 11 to "+DATA2" ;
+set newname for datafile 12 to "+DATA2" ;
+set newname for datafile 13 to "+DATA2" ;
+set newname for datafile 14 to "+DATA2" ;
+set newname for datafile 15 to "+DATA2" ;
+set newname for datafile 16 to "+DATA2" ;
+set newname for datafile 17 to "+DATA2" ;
+restore database;
+}
+
+switch database to copy;
+
+-- recover database
+run {
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+allocate channel t5 device type 'sbt_tape' ;
+allocate channel t6 device type 'sbt_tape' ;
+allocate channel t7 device type 'sbt_tape' ;
+allocate channel t8 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+recover database;
+}
+
+
+-- clear redo logfiles
+ALTER DATABASE clear LOGFILE GROUP 11;
+ALTER DATABASE clear LOGFILE GROUP 12;
+ALTER DATABASE clear LOGFILE GROUP 13;
+ALTER DATABASE clear LOGFILE GROUP 14;
+ALTER DATABASE clear LOGFILE GROUP 21;
+ALTER DATABASE clear LOGFILE GROUP 22;
+ALTER DATABASE clear LOGFILE GROUP 23;
+ALTER DATABASE clear LOGFILE GROUP 24;
+ALTER DATABASE clear LOGFILE GROUP 31;
+ALTER DATABASE clear LOGFILE GROUP 32;
+ALTER DATABASE clear LOGFILE GROUP 33;
+ALTER DATABASE clear LOGFILE GROUP 34;
+ALTER DATABASE clear LOGFILE GROUP 41;
+ALTER DATABASE clear LOGFILE GROUP 42;
+ALTER DATABASE clear LOGFILE GROUP 43;
+ALTER DATABASE clear LOGFILE GROUP 44;
+
+
+ALTER DATABASE drop LOGFILE GROUP 11;
+ALTER DATABASE drop LOGFILE GROUP 12;
+ALTER DATABASE drop LOGFILE GROUP 13;
+ALTER DATABASE drop LOGFILE GROUP 14;
+ALTER DATABASE drop LOGFILE GROUP 21;
+ALTER DATABASE drop LOGFILE GROUP 22;
+ALTER DATABASE drop LOGFILE GROUP 23;
+ALTER DATABASE drop LOGFILE GROUP 24;
+ALTER DATABASE drop LOGFILE GROUP 31;
+ALTER DATABASE drop LOGFILE GROUP 32;
+ALTER DATABASE drop LOGFILE GROUP 33;
+ALTER DATABASE drop LOGFILE GROUP 34;
+ALTER DATABASE drop LOGFILE GROUP 41;
+ALTER DATABASE drop LOGFILE GROUP 42;
+ALTER DATABASE drop LOGFILE GROUP 43;
+ALTER DATABASE drop LOGFILE GROUP 44;
+
+
+
+-- active database
+alter system set fal_server='';
+ALTER DATABASE ACTIVATE PHYSICAL STANDBY DATABASE;
+
+
+-- recreate tempfile
+alter tablespace temp add tempfile '+DATA01' size 50m reuse autoextend on next 1m maxsize 500m;
+
+-- turn off archivelog mode

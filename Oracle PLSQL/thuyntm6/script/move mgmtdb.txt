@@ -1,0 +1,44 @@
+1. Stop and disable ora.crf resource. as root
+[BOTH] crsctl stop res ora.crf -init
+[BOTH] crsctl modify res ora.crf -attr ENABLED=0 -init
+
+2. Issue the DBCA command to delete the management database
+#As Grid User, locate the node that the Management Database is running by executing:
+grid# srvctl status mgmtdb
+grid# dbca -silent -deleteDatabase -sourceDB -MGMTDB
+
+/u01/app/12.2.0/grid/bin/dbca -silent -deleteDatabase -sourceDB -MGMTDB <-- database should be running on node1
+
+
+======
+cat /etc/udev/rules.d/12-dm-permissions.rules
+Drop diskgroup mgmt;
+CREATE DISKGROUP MGMT external REDUNDANCY  disk  '/dev/mapper/mpathp'  ATTRIBUTE 'au_size'='4M';
+  
+=====  
+3. create mgmt on new diskgroup
+  $ORACLE_HOME/bin/dbca -silent -createDatabase -sid -MGMTDB -createAsContainerDatabase true -templateName MGMTSeed_Database.dbc -gdbName _mgmtdb -storageType ASM -diskGroupName +MGMT -datafileJarLocation $ORACLE_HOME/assistants/dbca/templates -characterset AL32UTF8 -autoGeneratePasswords -skipUserTemplateCheck
+
+4.  Secure that the Management Database credential
+[grid@racnode1 ~]$ srvctl status MGMTDB
+[grid@racnode1 ~]$ /u01/app/12.1.0/grid/bin/mgmtca <--no output
+
+5. Enable and start ora.crf resource on every node.
+crsctl modify res ora.crf -attr ENABLED=1 -init
+crsctl start res ora.crf -init
+
+./crsctl stat res -t -init
+
+6. Check management database and management listener.
+[grid@racnode1 ~]$ srvctl status MGMTDB
+
+
+[grid@racnode1 ~]$ ps -eaf | grep tns
+root 15 2 0 20:05 ? 00:00:00 [netns]
+grid 1168 892 0 22:37 pts/0 00:00:00 grep --color=auto tns
+grid 3974 1 0 20:06 ? 00:00:00 /u01/app/12.1.0/grid/bin/tnslsnr MGMTLSNR -no_crs_notify -inherit
+grid 4064 1 0 20:06 ? 00:00:00 /u01/app/12.1.0/grid/bin/tnslsnr LISTENER -no_crs_notify -inherit
+grid 4092 1 0 20:06 ? 00:00:00 /u01/app/12.1.0/grid/bin/tnslsnr LISTENER_SCAN2 -no_crs_notify -inherit
+grid 4103 1 0 20:06 ? 00:00:00 /u01/app/12.1.0/grid/bin/tnslsnr LISTENER_SCAN3 -no_crs_notify -inherit
+[grid@racnode1 ~]$ lsnrctl status MGMTLSNR
+

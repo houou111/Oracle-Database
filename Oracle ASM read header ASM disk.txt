@@ -1,0 +1,8 @@
+dd if=/dev/sdc1 of=/tmp/sdc1.out bs=4096 count=100
+
+dd if=/dev/hdisk14 of=/tmp/d14.out bs=4096 count=100
+
+
+kfed read /dev/sdc1
+
+kfod op=DISKS label=TRUE disks=ALL name=TRUE

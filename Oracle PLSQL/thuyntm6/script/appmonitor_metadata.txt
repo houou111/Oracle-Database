@@ -1,0 +1,2043 @@
+USE [master]
+GO
+/****** Object:  Database [APPMONITOR]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE DATABASE [APPMONITOR]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'MONITOR', FILENAME = N'E:\DATABASE\APPMONITOR.mdf' , SIZE = 8388608KB , MAXSIZE = 8388608KB , FILEGROWTH = 102400KB ),
+( NAME = N'MONITOR_01', FILENAME = N'E:\DATABASE\MONITOR_01.ndf' , SIZE = 35252096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'MONITOR_log', FILENAME = N'E:\DATABASE\APPMONITOR_1.ldf' , SIZE = 5000KB , MAXSIZE = 33554432KB , FILEGROWTH = 1024000KB )
+GO
+ALTER DATABASE [APPMONITOR] SET COMPATIBILITY_LEVEL = 100
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [APPMONITOR].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [APPMONITOR] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET AUTO_SHRINK ON 
+GO
+ALTER DATABASE [APPMONITOR] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [APPMONITOR] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [APPMONITOR] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [APPMONITOR] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [APPMONITOR] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [APPMONITOR] SET  MULTI_USER 
+GO
+ALTER DATABASE [APPMONITOR] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [APPMONITOR] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [APPMONITOR] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [APPMONITOR] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [APPMONITOR] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'APPMONITOR', N'ON'
+GO
+ALTER DATABASE [APPMONITOR] SET QUERY_STORE = OFF
+GO
+USE [APPMONITOR]
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET MAXDOP = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET LEGACY_CARDINALITY_ESTIMATION = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET PARAMETER_SNIFFING = PRIMARY;
+GO
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
+GO
+USE [APPMONITOR]
+GO
+/****** Object:  User [tester]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [tester] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [test_user]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [test_user] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [POSTPAY\sql2008]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [POSTPAY\sql2008] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [POSTPAY\oper6]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [POSTPAY\oper6] WITH DEFAULT_SCHEMA=[POSTPAY\oper6]
+GO
+/****** Object:  User [POSTPAY\OPER]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [POSTPAY\OPER]
+GO
+/****** Object:  User [monitor]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [monitor] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [linhnxh]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [linhnxh] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [CCM]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [CCM] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [appmonitoruser]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [appmonitoruser] FOR LOGIN [appmonitoruser] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [appmonitorbatch]    Script Date: 9/17/2018 2:15:30 PM ******/
+CREATE USER [appmonitorbatch] FOR LOGIN [appmonitorbatch] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_accessadmin] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_securityadmin] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_backupoperator] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_denydatareader] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_denydatawriter] ADD MEMBER [test_user]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [POSTPAY\sql2008]
+GO
+ALTER ROLE [db_accessadmin] ADD MEMBER [POSTPAY\sql2008]
+GO
+ALTER ROLE [db_securityadmin] ADD MEMBER [POSTPAY\sql2008]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [POSTPAY\OPER]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [monitor]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [CCM]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [appmonitoruser]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [appmonitorbatch]
+GO
+/****** Object:  Schema [POSTPAY\oper6]    Script Date: 9/17/2018 2:15:33 PM ******/
+CREATE SCHEMA [POSTPAY\oper6]
+GO
+/****** Object:  UserDefinedFunction [dbo].[fn_decToBase]    Script Date: 9/17/2018 2:15:33 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create function [dbo].[fn_decToBase]
+(
+@val as BigInt,
+@base as int
+)
+returns varchar(63)
+as
+Begin
+/* Check if we get the valid base */
+If (@val<0) OR (@base < 2) OR (@base> 36) Return Null;
+/* variable to hold final answer */
+Declare @answer as varchar(63);
+
+/* Following variable contains all
+possible alpha numeric letters for any base
+*/
+Declare @alldigits as varchar(36);
+Set @alldigits='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+/* Set the initial value of
+final answer as empty string
+*/
+Set @answer='';
+/* Loop until your source value is greater than 0 */
+While @val>0
+Begin
+Set @answer=Substring(@alldigits,@val % @base + 1,1) + @answer;
+Set @val = @val / @base;
+End
+
+return @answer;
+End
+
+
+GO
+/****** Object:  UserDefinedFunction [POSTPAY\oper6].[FnTestSMS]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE FUNCTION [POSTPAY\oper6].[FnTestSMS]
+(
+@Content as nvarchar(160)
+)
+RETURNS int
+AS
+BEGIN
+
+EXEC msdb.dbo.sp_send_dbmail
+    --@profile_name = 'ssweb10',
+    --@recipients = '01999337788@ssweb',    
+    @profile_name = 'Mail Alert',
+    @recipients = '0912301656@ssweb',
+    @subject='_',
+    @body = @Content
+
+return 0;
+END
+
+GO
+/****** Object:  Table [dbo].[ChannelAVG]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelAVG](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Channel] [varchar](10) NOT NULL,
+	[Day] [varchar](8) NOT NULL,
+	[Hour] [int] NOT NULL,
+	[Y1AVG] [int] NULL,
+	[Y2AVG] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelAVG_Tmp]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelAVG_Tmp](
+	[Channel] [varchar](10) NOT NULL,
+	[Day] [varchar](8) NOT NULL,
+	[Hour] [int] NOT NULL,
+	[Y1AVG] [int] NULL,
+	[Y2AVG] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelData]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelData](
+	[Channel] [nvarchar](20) NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL,
+	[Extend] [nvarchar](40) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelDataNCC]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelDataNCC](
+	[Channel] [nvarchar](10) NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL,
+	[Y3] [int] NULL,
+	[Extend] [nvarchar](40) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelDataTEMP]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelDataTEMP](
+	[Channel] [nvarchar](20) NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL,
+	[Extend] [nvarchar](40) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelDayAVG]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelDayAVG](
+	[Channel] [varchar](10) NOT NULL,
+	[Hour] [int] NOT NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelHBK_DWH]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelHBK_DWH](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Content] [nvarchar](200) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelProcess]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelProcess](
+	[Channel] [nvarchar](10) NULL,
+	[UpdateTime] [datetime] NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelSetting]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelSetting](
+	[Channel] [nvarchar](20) NULL,
+	[Legend1] [nvarchar](20) NULL,
+	[Legend2] [nvarchar](20) NULL,
+	[Legend3] [nvarchar](20) NULL,
+	[Legend4] [nvarchar](20) NULL,
+	[SeriesNumber] [tinyint] NULL,
+	[Serie1] [tinyint] NULL,
+	[Serie2] [tinyint] NULL,
+	[Serie3] [tinyint] NULL,
+	[Serie4] [tinyint] NULL,
+	[ChartTitle] [nvarchar](20) NULL,
+	[Avgline] [tinyint] NULL,
+	[RecordNumber] [int] NULL,
+	[Duration] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTBank]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTBank](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTCS]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTCS](
+	[Channel] [varchar](10) NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL,
+	[Y2] [int] NULL,
+	[Y3] [int] NULL,
+	[Y4] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTWFA]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTWFA](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTWO]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTWO](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTWO_2]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTWO_2](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTWOVbV]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTWOVbV](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChannelTWR]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChannelTWR](
+	[UpdateTime] [datetime] NOT NULL,
+	[Y1] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[ChartDisplay]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChartDisplay](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[SystemName] [nvarchar](20) NULL,
+	[Channel] [nvarchar](20) NULL,
+	[DisplayStat] [tinyint] NULL,
+	[AlertStat] [tinyint] NULL,
+	[MenuItem] [nvarchar](20) NULL,
+	[AlertLvl1] [int] NULL,
+	[AlertLvl2] [int] NULL,
+	[Ispercent] [tinyint] NULL,
+	[IsRev] [tinyint] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Event2MailProfile]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Event2MailProfile](
+	[EventName] [varchar](30) NOT NULL,
+	[MailProfile] [varchar](30) NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Event2Mobi]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Event2Mobi](
+	[EventName] [varchar](30) NOT NULL,
+	[Mobinumber] [varchar](20) NOT NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Event2TimeSlot]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Event2TimeSlot](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[EventName] [nvarchar](20) NULL,
+	[TimeSlot] [int] NULL,
+	[Used] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Event2TimeSlot2]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Event2TimeSlot2](
+	[EventName] [nvarchar](20) NULL,
+	[TimeSlot] [int] NULL,
+	[Used] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Mobi]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mobi](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PhoneNumber] [nvarchar](20) NULL,
+	[Name] [nvarchar](50) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Mobi2TimeSlot]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Mobi2TimeSlot](
+	[MobiId] [int] NULL,
+	[TimeId] [int] NULL,
+	[Used] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[SMSAlert]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SMSAlert](
+	[EventName] [nvarchar](30) NOT NULL,
+	[LastContent] [nvarchar](200) NULL,
+	[UpdateTime] [datetime] NULL,
+	[SentTime] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[SMSCMSAlert]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SMSCMSAlert](
+	[ID] [int] NULL,
+	[TYPE] [nvarchar](50) NULL,
+	[PHONE] [nvarchar](200) NULL,
+	[CONTENT] [nvarchar](160) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[T24Req]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[T24Req](
+	[OrigType] [int] NULL,
+	[Type] [int] NULL,
+	[TranId] [numeric](18, 0) NULL,
+	[Time] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[T24Res]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[T24Res](
+	[OrigType] [int] NULL,
+	[Type] [int] NULL,
+	[TranId] [numeric](18, 0) NULL,
+	[Time] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[tblCMSFile]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblCMSFile](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[FileName] [nvarchar](20) NOT NULL,
+	[FileSize] [int] NULL,
+	[FileTime] [datetime] NULL,
+	[InputTime] [datetime] NULL,
+	[State] [int] NULL,
+	[CountSMS] [int] NULL,
+	[NumInput] [int] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[tblLogEvent]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[tblLogEvent](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[EventName] [nvarchar](20) NULL,
+	[SMS] [nvarchar](200) NULL,
+	[EventTime] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[test1]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[test1](
+	[updatetime] [datetime] NULL,
+	[aaa] [nvarchar](500) NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[TESTx]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TESTx](
+	[ID] [numeric](9, 0) NULL,
+	[INSTANCE] [numeric](9, 0) NULL,
+	[TYPE] [numeric](9, 0) NULL,
+	[DEBUGLEVEL] [numeric](9, 0) NULL,
+	[TRACELEVEL] [numeric](9, 0) NULL,
+	[TRACEFILE] [nvarchar](255) NULL,
+	[TRACETOFILE] [numeric](1, 0) NULL,
+	[TRACESIZE] [numeric](9, 0) NULL,
+	[USE] [numeric](1, 0) NULL,
+	[PANLEFTMASKCOUNT] [numeric](3, 0) NULL,
+	[PANRIGHTMASKCOUNT] [numeric](3, 0) NULL,
+	[STATE] [numeric](12, 0) NULL,
+	[LOADED] [numeric](1, 0) NULL,
+	[LASTREFRESHTIME] [datetime] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[TimeProcess]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TimeProcess](
+	[OrigType] [int] NULL,
+	[TranId] [numeric](18, 0) NULL,
+	[TimeProcess] [float] NULL
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[TimeSlot]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TimeSlot](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[FromHour] [int] NULL,
+	[ToHour] [int] NULL,
+	[wDay] [nvarchar](50) NULL,
+	[Used] [int] NULL,
+	[Type] [int] NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [IX_ChannelAVG_Channel]    Script Date: 9/17/2018 2:15:34 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ChannelAVG_Channel] ON [dbo].[ChannelAVG]
+(
+	[Channel] DESC,
+	[Hour] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [IX_ChannelData_Channel]    Script Date: 9/17/2018 2:15:34 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ChannelData_Channel] ON [dbo].[ChannelData]
+(
+	[Channel] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ChannelData_UpdateTime]    Script Date: 9/17/2018 2:15:34 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ChannelData_UpdateTime] ON [dbo].[ChannelData]
+(
+	[UpdateTime] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ChannelTWO]    Script Date: 9/17/2018 2:15:34 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ChannelTWO] ON [dbo].[ChannelTWO]
+(
+	[UpdateTime] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ChannelData] ADD  CONSTRAINT [DF_ChannelData_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelDataNCC] ADD  CONSTRAINT [DF_ChannelDataNCC_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelTBank] ADD  CONSTRAINT [DF_ChannelTBank_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelTWFA] ADD  CONSTRAINT [DF_ChannelTWFA_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelTWO] ADD  CONSTRAINT [DF_ChannelTWO_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelTWOVbV] ADD  CONSTRAINT [DF_ChannelTWOVbV_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChannelTWR] ADD  CONSTRAINT [DF_ChannelTWR_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+ALTER TABLE [dbo].[ChartDisplay] ADD  DEFAULT ((1)) FOR [DisplayStat]
+GO
+ALTER TABLE [dbo].[Event2TimeSlot] ADD  DEFAULT ((1)) FOR [Used]
+GO
+ALTER TABLE [dbo].[Event2TimeSlot2] ADD  DEFAULT ((1)) FOR [Used]
+GO
+ALTER TABLE [dbo].[Mobi2TimeSlot] ADD  DEFAULT ((1)) FOR [Used]
+GO
+ALTER TABLE [dbo].[tblCMSFile] ADD  CONSTRAINT [DF__tblCMSFil__Input__119F9925]  DEFAULT (getdate()) FOR [InputTime]
+GO
+ALTER TABLE [dbo].[tblCMSFile] ADD  CONSTRAINT [DF__tblCMSFil__State__1293BD5E]  DEFAULT ((0)) FOR [State]
+GO
+ALTER TABLE [dbo].[tblCMSFile] ADD  CONSTRAINT [DF__tblCMSFil__Count__1387E197]  DEFAULT ((0)) FOR [CountSMS]
+GO
+ALTER TABLE [dbo].[tblCMSFile] ADD  CONSTRAINT [DF_tblCMSFile_Count]  DEFAULT ((1)) FOR [NumInput]
+GO
+ALTER TABLE [dbo].[tblLogEvent] ADD  DEFAULT (getdate()) FOR [EventTime]
+GO
+ALTER TABLE [dbo].[test1] ADD  CONSTRAINT [DF_test1_updatetime]  DEFAULT (getdate()) FOR [updatetime]
+GO
+ALTER TABLE [dbo].[TimeSlot] ADD  DEFAULT ((1)) FOR [Used]
+GO
+/****** Object:  StoredProcedure [dbo].[CheckChannelTBank]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+create PROCEDURE [dbo].[CheckChannelTBank]
+AS
+BEGIN
+
+--insert into test1(aaa) values('xxxxx')
+
+declare @num_fail_conn int
+select @num_fail_conn = COUNT(1) from 
+(select top 5 * from  ChannelTBank where UpdateTime>dateadd(minute,-20,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1<0
+
+if (@num_fail_conn=5) and (DATEPART(hour,getdate()) between 8 and 21)
+begin
+	declare @mor_content varchar(200)
+	set @mor_content=CONVERT(nvarchar(20),getdate()) + '> '
+	select top 5
+	@mor_content = @mor_content +  
+	convert(varchar(2),DATEPART(minute,UpdateTime))+':'+convert(varchar(2),DATEPART(second,UpdateTime)) +
+	' ' + convert(varchar(4),y1) + ', '
+	from  ChannelTBank where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc
+
+	exec EVENTSERVER 'TBank','TBank Conn: ',@mor_content,15
+
+	--insert into test1(aaa) values(@mor_content)
+
+end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckChannelTWFA]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckChannelTWFA]
+AS
+BEGIN
+
+--insert into test1(aaa) values('xxxxx')
+
+declare @num_fail_conn int
+select @num_fail_conn = COUNT(1) from 
+(select top 10 * from  ChannelTWFA where UpdateTime>dateadd(minute,-20,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1<0
+
+if (@num_fail_conn=10) 
+begin
+	declare @mor_content varchar(200)
+	set @mor_content=CONVERT(nvarchar(20),getdate()) + '> '
+	select top 5
+	@mor_content = @mor_content +  
+	convert(varchar(2),DATEPART(minute,UpdateTime))+':'+convert(varchar(2),DATEPART(second,UpdateTime)) +
+	' ' + convert(varchar(4),y1) + ', '
+	from  ChannelTWFA where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc
+
+	exec EVENTSERVER 'TWFA','TWFA Conn: ',@mor_content,20
+
+	--insert into test1(aaa) values(@mor_content)
+
+end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckChannelTWO]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckChannelTWO]
+@LowLimit int 
+AS
+BEGIN
+
+--insert into test1(aaa) values('xxxxx')
+
+declare @num_under_limit int
+select @num_under_limit = COUNT(1) from 
+(select top 1 * from  ChannelTWO where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1>=0 and tmp.Y1<@LowLimit
+
+declare @num_fail_conn int
+select @num_fail_conn = COUNT(1) from 
+(select top 3 * from  ChannelTWO where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1<0
+
+if (@num_under_limit=1) or (@num_fail_conn=3) 
+begin
+	declare @mor_content varchar(200)
+	set @mor_content=CONVERT(nvarchar(20),getdate()) + '> '
+	select top 5
+	@mor_content = @mor_content +  
+	convert(varchar(2),DATEPART(minute,UpdateTime))+':'+convert(varchar(2),DATEPART(second,UpdateTime)) +
+	' ' + convert(varchar(4),y1) + ', '
+	from  ChannelTWO where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc
+
+	exec EVENTSERVER 'TWO','TWO TRANS: ',@mor_content,10
+
+	--insert into test1(aaa) values(@mor_content)
+
+end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckChannelTWOVbV]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckChannelTWOVbV]
+@LowLimit int 
+AS
+BEGIN
+
+--insert into test1(aaa) values('xxxxx')
+
+declare @num_under_limit int
+select @num_under_limit = COUNT(1) from 
+(select top 1 * from  ChannelTWOVbV where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1>=0 and tmp.Y1<@LowLimit
+
+if (@num_under_limit=1)
+begin
+	declare @mor_content varchar(200)
+	set @mor_content=CONVERT(nvarchar(20),getdate()) + '> '
+	select top 5
+	@mor_content = @mor_content +  
+	convert(varchar(2),DATEPART(minute,UpdateTime))+':'+convert(varchar(2),DATEPART(second,UpdateTime)) +
+	' ' + convert(varchar(4),y1) + ', '
+	from  ChannelTWOVbV where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc
+
+	exec EVENTSERVER 'TWOVbV','TWO VbV TRANS: ',@mor_content,30
+
+	--insert into test1(aaa) values(@mor_content)
+
+end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckChannelTWR]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckChannelTWR]
+AS
+BEGIN
+
+--insert into test1(aaa) values('xxxxx')
+
+declare @num_fail_conn int
+select @num_fail_conn = COUNT(1) from 
+(select top 5 * from  ChannelTWR where UpdateTime>dateadd(minute,-20,GETDATE()) order by UpdateTime desc) tmp where 
+tmp.Y1<0
+
+if (@num_fail_conn=5) 
+begin
+	declare @mor_content varchar(200)
+	set @mor_content=CONVERT(nvarchar(20),getdate()) + '> '
+	select top 5
+	@mor_content = @mor_content +  
+	convert(varchar(2),DATEPART(minute,UpdateTime))+':'+convert(varchar(2),DATEPART(second,UpdateTime)) +
+	' ' + convert(varchar(4),y1) + ', '
+	from  ChannelTWR where UpdateTime>dateadd(minute,-10,GETDATE()) order by UpdateTime desc
+
+	exec EVENTSERVER 'TWR','TWR Conn: ',@mor_content,15
+
+	--insert into test1(aaa) values(@mor_content)
+
+end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckCMSFiles]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckCMSFiles]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	declare @fileName nvarchar(50)
+	declare @fileTime nvarchar(50)
+	declare @content nvarchar(140)
+	
+	if exists ( select 1 from tblcmsfile where  numinput > 3 and  countsms < 1)
+	begin
+		Select top 1 @fileName = filename,@fileTime = filetime from tblcmsfile 
+		where  numinput > 3 and  countsms < 1
+		
+		set @content = @fileName + ', ' + @fileTime
+		exec EVENTSERVER 'CMSFILE','CMSFILE ',@content ,10
+		update tblcmsfile set state = 1, countSms = countSms + 1 where [filename] = @fileName
+	end
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[CheckVisaRate]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[CheckVisaRate]
+AS
+BEGIN
+
+DECLARE @y1 INT
+DECLARE @y2 INT
+DECLARE @getid CURSOR
+DECLARE @content varchar(300)
+DECLARE @count INT
+
+set @count =0
+set @content =''
+SET @getid = CURSOR FOR
+SELECT top 3 y1,y2
+FROM   channeldata
+where channel = 'VISA_ALL'
+order by updatetime desc
+
+OPEN @getid
+FETCH NEXT
+FROM @getid INTO @y1, @y2
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    --select @y1,@y2
+    --if ((@y2/@y1<0.7 and @y1 >= 10) or (@y2/@y1<0.5 and @y1 < 10))
+    if (@y2/CONVERT(decimal(4,2),@y1)<0.7 and @y1 >= 10) or (@y2/CONVERT(decimal(4,2),@y1)<0.5 and @y1 < 10)
+    		begin
+			set @count = @count+1
+			set @content= @content+ CONVERT(varchar(10),@y2)+'/'+CONVERT(varchar(10),@y1)+','
+			--FETCH NEXT
+			--FROM @getid INTO @y1, @y2
+		end
+	--else
+	--	begin
+	--	select 'xxxx'
+	--	end
+			
+	FETCH NEXT
+	FROM @getid INTO @y1, @y2
+END
+
+CLOSE @getid
+DEALLOCATE @getid
+
+if @count = 3
+begin 
+  set @content = @content + ' at: ' + CONVERT(VARCHAR(24),GETDATE(),120)
+  --select @content
+  exec EVENTSERVER 'VisaRate','Visa Check Rate: ', @content , 15
+end
+END
+--exec CheckVisaRate
+
+--select CONVERT(VARCHAR(24),GETDATE(),120)
+
+--exec EVENTSERVER 'VisaRate','Visa Check Rate: ', 'sau tin nhan nay Rule canh bao quay lai binh thuong' , 1
+
+GO
+/****** Object:  StoredProcedure [dbo].[EVENTSERVER]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- ================================================
+-- Template generated from Template Explorer using:
+-- Create Procedure (New Menu).SQL
+--
+CREATE PROCEDURE  [dbo].[EVENTSERVER]
+    @EVENTNAME  varchar(30), 	
+    @PREFIX varchar(10),
+    @ALERT	varchar(200),
+    @TIMECYCLE int
+AS
+declare @date_time	varchar(20)
+declare @profile varchar(30)
+declare @recipients_list varchar(200)
+
+if not exists (select 1 from smsalert where EventName=@EVENTNAME)
+	insert into smsalert(EventName,LastContent,UpdateTime,SentTime) values(@EVENTNAME,@ALERT,getdate(),'2000-1-1')
+else
+	update smsalert set lastcontent=@alert, updatetime = getdate() where EventName=@EVENTNAME
+
+if exists (select 1 from smsalert where EventName=@EVENTNAME and datediff(minute,senttime,getdate())>=@TIMECYCLE )
+begin
+	select @profile = MailProfile from Event2MailProfile where EventName = @EVENTNAME
+	set @recipients_list = ''
+	--select @recipients_list = @recipients_list + Mobinumber + '@ssweb;' from Event2Mobi where EventName = @EVENTNAME
+    exec dbo.sp_getlistmobi @EVENTNAME,@recipients_list output
+    set @date_time = convert(varchar,getdate())
+    set @ALERT = @PREFIX + @ALERT
+    EXEC msdb.dbo.sp_send_dbmail
+    --@profile_name = 'ssweb10',
+    --@recipients = '01999337788@ssweb',    
+    @profile_name = @profile,
+    @recipients = @recipients_list,
+    @subject='_',
+    @body = @ALERT
+   /*
+   EXEC master.dbo.xp_smtp_sendmail 
+    @server = '10.64.16.10', @port=25,
+    @from = 'CardSys', 
+--    @to = '0912301656@smsinform;0936005858@smsinform;', 
+    @to = '01999337788@smsinform;0936005858@smsinform;', 
+--    @to = '01999337788@smsinform;', 
+
+--    @to = '0912301656@smsinform;', 
+    @subject = @date_time, 
+    @type = 'text/plain', 
+    @message = @ALERT
+    */
+    
+    update smsalert set senttime = getdate() where EventName=@EVENTNAME
+   
+end
+GO
+/****** Object:  StoredProcedure [dbo].[EveryGreen]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[EveryGreen] 
+	-- Add the parameters for the stored procedure here	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	Declare @count int
+	Declare @Max int
+	Declare @Channel nvarchar(20)
+	
+	Select @Max = MAX(ID) from ChartDisplay
+	Set @count = 1
+	While @count <= @Max
+	Begin
+		Select @Channel = Channel from ChartDisplay where ID = @count
+		Exec dbo.UpdateAlert @Channel
+		Set @count = @count + 1
+	End
+	
+	
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetAVGDay]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetAVGDay]
+	@Channel varchar(10)
+
+
+	
+AS	
+SELECT Y1, Y2, [Hour]  FROM ChannelDayAVG cd WHERE Channel = @Channel ORDER BY [Hour] DESC
+
+
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetbyDay]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetbyDay]
+	@Channel varchar(10),
+	--@DuringTime int,
+	@FromDate varchar(8),
+	@ToDate varchar(8)
+	
+AS	
+SELECT Y1A,Y2A, Y1, Y2, B.Hour, B.Day FROM 
+(SELECT Y1AVG as y1a, Y2AVG as y2a, [DAY], [Hour]  FROM ChannelAVG cd WHERE Channel = @Channel and [Day] between @FromDate and @ToDate)B 
+JOIN ChannelDayAVG ON B.Hour = ChannelDayAVG.Hour and ChannelDayAVG.Channel = @Channel
+ORDER BY B.Day , B.Hour 
+
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChannel]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChannel]
+	@Channel varchar(20),
+	@DuringTime int,
+	@NumberRecord int
+
+AS
+IF (@Channel LIKE '%COB%')
+BEGIN
+select UpdateTime, y1, y2-Y1 as Y2,Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData cd WHERE Channel = 'COB.A' order by UpdateTime desc) y1
+UNION 
+select UpdateTime, y1, y2-Y1 as Y2,Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData cd WHERE Channel = 'COB.S' order by UpdateTime desc) y2
+UNION 
+select UpdateTime, y1, y2-Y1 as Y2,Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'COB.R' order by UpdateTime desc) y3
+UNION 
+select UpdateTime, y1, y2-Y1 as Y2,Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'COB.D' order by UpdateTime desc) y4
+UNION 
+select UpdateTime, y1, y2-Y1 as Y2,Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'COB.O' order by UpdateTime desc) y5
+order by  UpdateTime desc
+END ELSE IF (@Channel LIKE '%VOL%')
+BEGIN
+select UpdateTime, y1, 100-Y1 as Y2,RIGHT(Channel,7) as Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'T24.VOL.CFS' order by UpdateTime desc) x1
+UNION 
+select UpdateTime, y1, 100-Y1 as Y2,RIGHT(Channel,7) as Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'T24.VOL.APP_t24tcb5' order by UpdateTime desc) x2
+UNION 
+select UpdateTime, y1, 100-Y1 as Y2,RIGHT(Channel,7) as Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'T24.VOL.APP_t24tcb8' order by UpdateTime desc) x3
+UNION 
+select UpdateTime, y1, 100-Y1 as Y2,RIGHT(Channel,7) as Channel from (SELECT top 1 UpdateTime, y1, y2,Channel FROM ChannelData WHERE Channel = 'T24.VOL.APP_t24tcb9' order by UpdateTime desc) x4
+END ELSE IF (@Channel LIKE 'HB_REC%')
+select top 5 UpdateTime, y1, y2, REPLACE(SUBSTRING(CONVERT(VARCHAR(10), UpdateTime, 120), 6, 8),'-','/') as Channel FROM ChannelData WHERE Channel like 'HB_REC%' order by UpdateTime desc
+ELSE
+BEGIN
+SET ROWCOUNT @NumberRecord 
+SELECT y1, y2,Channel FROM ChannelData cd WHERE Channel = @Channel and UpdateTime>=getdate() - cast(@DuringTime AS float)/86400 order by UpdateTime desc
+END
+
+SET ROWCOUNT 0
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChannelAVG]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChannelAVG]
+	@Channel varchar(10)
+	--@DuringTime int,
+
+AS
+SELECT AVG(Y1AVG)as y1a, AVG(Y2AVG)as y2a FROM ChannelAVG cd 
+WHERE Channel = @Channel and [Day]<= convert(varchar,GETDATE()-1,112) and [Day]>= convert(varchar,GETDATE()-61,112) and [Hour]= datepart(hour,getdate())
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChannelNCC]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChannelNCC]
+	@Channel varchar(10),
+	@DuringTime int,
+	@NumberRecord int
+
+AS
+	
+SET ROWCOUNT @NumberRecord 
+
+SELECT y1, y2,y3  FROM ChannelDataNCC cd WHERE Channel = @Channel and UpdateTime>=getdate() - cast(@DuringTime AS float)/86400 order by UpdateTime desc
+
+SET ROWCOUNT 0
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChannelProcess]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChannelProcess]
+	@Channel varchar(10),
+	@DuringTime int,
+	@NumberRecord int
+
+AS
+	
+SET ROWCOUNT @NumberRecord 
+
+SELECT y1, y2 FROM ChannelData cd WHERE Channel = @Channel and UpdateTime>=getdate() - cast(@DuringTime AS float)/86400 order by UpdateTime desc
+
+SET ROWCOUNT 0
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChannelSetting]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChannelSetting]
+	-- Add the parameters for the stored procedure here
+	@Channel nvarchar(20)
+AS
+BEGIN
+	SELECT Channel, Legend1, Legend2,Legend3,Legend4, SeriesNumber, Serie1, Serie2,Serie3,Serie4,ChartTitle,Avgline,Duration,RecordNumber from ChannelSetting where Channel = @Channel
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChartConfig]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChartConfig]
+	@SysID int
+AS
+
+SELECT Channel,ChartType, RecordNumber,Duration,FirstValueColumn,SecondValueColumn,MaxValue,HasAVG,ChartName,Active FROM ChartConfig WHERE SysID = @SysID
+
+SET ROWCOUNT 0
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetChartDisplay]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetChartDisplay]
+	-- Add the parameters for the stored procedure here
+@SysName nvarchar(20)
+
+AS
+BEGIN
+	Select SystemName, Channel,DisplayStat,MenuItem, AlertStat,AlertLvl1,AlertLvl2 from ChartDisplay where SystemName = @SysName and DisplayStat > 0
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetLastStatusChannel]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetLastStatusChannel] 
+--	@status varchar(400) output
+AS
+/*
+declare @i int
+declare @s1 varchar(100)
+declare @s2 varchar(100)
+declare @s12 varchar(200)
+declare @s3 varchar(400)
+select @s1 = Channel + ',' + convert(varchar(24),updatetime,20) + ',' + 
+convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + extend + '; ' 
+from (select top 1 * from channeldata where channel in ('SAF') order by updatetime desc) SAF 
+
+
+select @s2 = Channel + ',' + convert(varchar(24),updatetime,20) + ',' + 
+convert(varchar(5),Y1) + ',' + convert(varchar(5),Y2) + '; ' 
+from (select top 1 * from channeldata where channel in ('GLOBUS') order by updatetime desc) GLOBUS 
+set @s12=@s1+@s2
+set @s3=''
+*/
+
+declare @i int
+declare @s3 varchar(4000)
+declare @s12 varchar(4000)
+set @s3=''
+set @s12='<br>'
+select @s12 = @s12 + ChannelLine + '<br>' from 
+(
+select '1G' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('GLOBUS') order by updatetime desc) G 
+union
+select '2S' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('SAF') order by updatetime desc) S 
+union
+select '3A' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('ATM') order by updatetime desc) A 
+union
+select '4VCBI' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('VCB_ISS') order by updatetime desc) VCBI 
+union
+select '5VCBA' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('VCB_ACQ') order by updatetime desc) VCBA 
+union
+select '6VALL' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('VISA_ALL') order by updatetime desc) VALL 
+union
+select '7MALL' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('MC_ALL') order by updatetime desc) MALL 
+union
+select '8HALL' + ',' + convert(varchar(24),updatetime,20) + ',' + convert(varchar(6),Y1) + ',' + convert(varchar(5),Y2) + ', ' + isnull(extend,'') + '; ' ChannelLine
+from (select top 1 * from channeldata where channel in ('HSBC_ALL') order by updatetime desc) HALL 
+
+) AllChannel order by ChannelLine
+
+set @i=1
+while @i >= 1 and @i<=len(@s12)
+begin
+  set @s3 = @s3 + dbo.fn_decToBase(ascii(substring(@s12, @i, 1)),16)  
+  set @i = @i + 1
+end
+--set @status=@s3
+select convert(nvarchar(4000),@s3) status
+--select @s12
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetTotalTrans]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetTotalTrans]
+	-- Add the parameters for the stored procedure here
+	--@Channel varchar(10),
+	--@DuringTime int,
+	@FromDate varchar(8),
+	@ToDate varchar(8)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	select SUM(Y1AVG)*60 as Y1, SUM(Y2AVG)*60 as Y2, [DAY] from ChannelAVG where Channel = 'GLOBUS' and [Day] between @FromDate and @ToDate
+	Group by [Day]
+	order by [Day]
+    -- Insert statements for procedure here
+	
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[InsertChannelAVG]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertChannelAVG]
+	-- Add the parameters for the stored procedure here
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    Delete from channelavg_tmp
+
+	insert into channelavg_tmp
+	select channel, convert(nvarchar,updatetime,112) ngay ,datepart(hh,updatetime) gio,avg(y1) y1avg,avg(y2) y2avg
+	from channeldata
+	where channel in ('GLOBUS','SAF','Process') 
+	and 
+	updatetime>=getdate()-1
+	--datediff(dd,updatetime,getdate()) =0
+	group by datepart(hh,updatetime),channel,convert(nvarchar,updatetime,112)
+	order by convert(nvarchar,updatetime,112),gio
+
+	delete from channelavg
+	where id in (
+	select id from channelavg t1,channelavg_tmp t2
+	where t1.channel = t2.channel and t1.day = t2.day and t1.hour = t2.hour
+	)
+
+	insert into channelavg
+	select * from channelavg_tmp
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[InsertData]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertData]
+	-- Add the parameters for the stored procedure here
+	@Channel varchar(20),
+	@Value1 int,
+	@Value2 int,
+	@Extend varchar(40)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	INSERT INTO ChannelData(Channel, UpdateTime, Y1, Y2,Extend)
+	VALUES(@Channel, GETDATE(), @Value1, @Value2,@Extend)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[InsertDayAVG]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertDayAVG]
+	-- Add the parameters for the stored procedure here
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+SET NOCOUNT ON;
+
+DELETE ChannelDayAVG
+INSERT INTO ChannelDayAVG
+SELECT [Channel],[Hour], AVG(Y1AVG)as Y1, AVG(Y2AVG) as Y2 FROM ChannelAVG
+GROUP BY [Channel], [Hour]
+ORDER BY [Channel] DESC, [Hour]DESC
+	
+
+/*UPDATE ChannelDayAVG 
+SET Y1 = (SELECT Y1 FROM((SELECT ((Y1*DATEDIFF(dd,'2011-08-24',getdate()-1) + Y1AVG)/(DATEDIFF(dd,'2011-08-24',getdate()-1)+1)) as Y1, B.Channel, B.Hour
+
+	FROM (SELECT TOP 72 [Channel]
+      ,[Hour]
+      ,[Y1AVG]
+      ,[Y2AVG]
+		FROM [MONITOR].[dbo].[ChannelAVG]
+		WHERE [Day]= convert(varchar,GETDATE()-1,112)
+		ORDER BY [Channel] DESC, [Hour] DESC )B JOIN ChannelDayAVG
+		ON B.Channel = ChannelDayAVG.Channel and B.Hour = ChannelDayAVG.Hour)) C 
+		WHERE C.Channel = ChannelDayAVG.Channel and C.Hour = ChannelDayAVG.Hour), 
+	Y2 = (SELECT Y2 FROM((SELECT ((Y2*DATEDIFF(dd,'2011-08-24',getdate()-1) + Y2AVG)/(DATEDIFF(dd,'2011-08-24',getdate()-1)+1)) as Y2, B.Channel, B.Hour
+
+	FROM (SELECT TOP 72 [Channel]
+      ,[Hour]
+      ,[Y1AVG]
+      ,[Y2AVG]
+		FROM [MONITOR].[dbo].[ChannelAVG]
+		WHERE [Day]= convert(varchar,GETDATE()-1,112)
+		ORDER BY [Channel] DESC, [Hour] DESC )B JOIN ChannelDayAVG
+		ON B.Channel = ChannelDayAVG.Channel and B.Hour = ChannelDayAVG.Hour)) C 
+		WHERE C.Channel = ChannelDayAVG.Channel and C.Hour = ChannelDayAVG.Hour)
+*/
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[InsertT24Channel]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertT24Channel]
+	-- Add the parameters for the stored procedure here
+	@Channel varchar(20),
+	@Value1 int,
+	@Value2 int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	INSERT INTO ChannelData(Channel, UpdateTime, Y1, Y2)
+	VALUES(@Channel, GETDATE(), @Value1, @Value2)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[InsertTimeProcess2ChannelData]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertTimeProcess2ChannelData]
+AS
+BEGIN
+delete timeprocess 
+insert into Timeprocess 
+ select t1.origtype,t1.TranId,datediff(ss,t1.time,t2.time) 
+ from t24req t1,t24res t2 where t1.tranid = t2.tranid 
+
+
+insert into channelData
+select 'Process',getdate(),t1.process,t2.process,'' from 
+(select round(avg(timeprocess)*100,0) process from timeprocess where origtype =2) t1,
+(select round(avg(timeprocess)*100,0) process from timeprocess where origtype =1) t2
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_Alert_T24]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_Alert_T24] 	
+AS
+BEGIN
+	Declare @Res int
+	Declare @Req int
+	declare @Time  datetime
+	declare @Y1 nvarchar(10)
+	declare @Y2 nvarchar(10)
+	Declare @Y3 nvarchar(10)
+	declare @SMS nvarchar(160)
+	
+	Set @Time = GETDATE ()
+	select @Req = COUNT(1) from (select top 5 * from ChannelData 
+	where Channel ='GLOBUS' and (Y1 - y2) > 50 and DATEDIFF (MI,UpdateTime ,@Time) <= 7 order by UpdateTime desc)tmp1
+	
+	Select @Res = COUNT(1) from ( select top 5 * from ChannelData
+	where Channel ='Process' and Y2 > 1000 and DATEDIFF (MI,UpdateTime ,@Time ) <= 7 order by UpdateTime desc)tmp2
+	if ( @Res = 5 and @Req = 5)
+	begin	
+		select @Y1 = y1,@Y2 = y2 from ChannelData where Channel ='GLOBUS' and updatetime = (select MAX(updatetime) from ChannelData where Channel ='GLOBUS')	
+		select @Y3 = y2 from ChannelData where Channel ='Process' and updatetime = (select MAX(updatetime) from ChannelData where Channel ='Process')	
+		set @SMS = 'Req: ' + @Y1 + ', Res: ' + @Y2 + ', Time process: ' + @Y3 + '. ' + CONVERT (nvarchar,@Time)
+		--insert event log
+		
+		insert into tbllogevent(Eventname,sms) values ('T24ENQ',@SMS)
+		exec EVENTSERVER 'T24ENQ','GLOBUS ',@SMS,10
+		
+	end
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_EventServer]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- ================================================
+-- Template generated from Template Explorer using:
+-- Create Procedure (New Menu).SQL
+--
+CREATE PROCEDURE  [dbo].[sp_EventServer]
+    @EVENTNAME  varchar(30), 	
+    @PREFIX varchar(10),
+    @ALERT	varchar(200),
+    @TIMECYCLE int
+AS
+declare @date_time	varchar(20)
+declare @profile varchar(30)
+declare @recipients_list varchar(200)
+
+if not exists (select 1 from smsalert where EventName=@EVENTNAME)
+	insert into smsalert(EventName,LastContent,UpdateTime,SentTime) values(@EVENTNAME,@ALERT,getdate(),'2000-1-1')
+else
+	update smsalert set lastcontent=@alert, updatetime = getdate() where EventName=@EVENTNAME
+
+if exists (select 1 from smsalert where EventName=@EVENTNAME and datediff(minute,senttime,getdate())>=@TIMECYCLE )
+begin
+	select @profile = MailProfile from Event2MailProfile where EventName = @EVENTNAME
+	set @recipients_list = ''
+	exec dbo.sp_GetListMobi @EVENTNAME,@recipients_list output
+    set @date_time = convert(varchar,getdate())
+    set @ALERT = @PREFIX + @ALERT
+    EXEC msdb.dbo.sp_send_dbmail    
+		@profile_name = @profile,
+		@recipients = @recipients_list,
+		@subject='_',
+		@body = @ALERT
+    update smsalert set senttime = getdate() where EventName=@EVENTNAME
+   
+end
+GO
+/****** Object:  StoredProcedure [dbo].[sp_getCMSFileError]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_getCMSFileError]
+ AS
+	Select filename,filetime from tblcmsfile 
+	where  numinput > 5 and  countsms < 1 and datediff(hh,filetime,getdate()) > 8
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetListMobi]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_GetListMobi] 
+	@EventName nvarchar(20),
+	@MobiList  nvarchar(200) output
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	--declare @MobiList nvarchar(200)
+set @MobiList =''
+select @MobiList = @MobiList + phonenumber + '@ssweb;' from
+(select distinct phonenumber from mobi a1,mobi2timeslot a2
+where a2.Used=1 and a1.id = a2.mobiid and a2.timeid in (
+select timeslot
+from event2timeslot t1,timeslot t2
+where t1.eventname =@EventName
+and t1.timeslot = t2.id
+and (
+(t2.wday = '0' and datepart(hh,GETDATE()) >= t2.fromhour and datepart(hh,GETDATE()) <=t2.tohour)
+or (charindex( convert(varchar,datepart(dw,getdate())),wday) > 0 and datepart(hh,GETDATE()) >= t2.fromhour and datepart(hh,GETDATE()) <=t2.tohour and TYPE =0 )
+or (charindex( convert(varchar,datepart(dw,getdate())),wday) > 0 and datepart(hh,GETDATE()) >= t2.fromhour and TYPE =1 )
+or (charindex( convert(varchar,datepart(dw,getdate()-1)),wday)> 0 and datepart(hh,GETDATE()) <= t2.tohour and TYPE =1 )
+)
+)) t
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_InsertCMSFile]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_InsertCMSFile]
+	@fileName nvarchar(20),
+	@fileTime datetime,
+	@fileSize int
+ AS
+	if not exists (select 1 from tblcmsfile where [filename] = @fileName)
+		insert into tblcmsfile (filename,filetime,filesize) values (@fileName,@fileTime,@fileSize)
+	Else
+		update tblcmsfile set numinput = numinput +1 where filename = @fileName
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_InsertTCSQueue]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_InsertTCSQueue]
+	@Y1 int,
+	@Y2 int,
+	@Extend nvarchar(40)
+AS
+
+--delete channeldata  where updatetime < getdate ()- 1
+insert into channeldata(channel, y1, y2,extend) values('SAF', @Y1, @Y2,@Extend)
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_SendSMS]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_SendSMS]
+(
+      -- variable(s) goes here !
+      @number varchar(500),
+      @s_subject varchar(200), 
+      @msg varchar(500) 
+)
+AS
+
+set @number = (select REPLACE(@number,'*','@ssweb;') + '@ssweb;')
+set @msg = (select REPLACE(@msg,'|',CHAR(10)))
+EXEC msdb.dbo.sp_send_dbmail @profile_name='SendSMS',
+@recipients= @number,
+@subject=@s_subject,
+@body=@msg
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TruncateDataChannel]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_TruncateDataChannel]
+AS
+BEGIN
+	delete channeldata  where (updatetime < getdate ()- 2) and (Channel != 'HB_RECON')
+	
+	delete ChannelDataNCC  where updatetime < getdate ()- 2
+	
+	delete ChannelProcess  where updatetime < getdate ()- 2
+	
+	delete ChannelTWO where UpdateTime < GETDATE() - 3
+	
+	delete ChannelTBank where UpdateTime < GETDATE() - 2
+	delete ChannelTWFA where UpdateTime < GETDATE() - 2
+	delete ChannelTWR where UpdateTime < GETDATE() - 2
+	delete ChannelTWOVbV where UpdateTime < GETDATE() - 2
+	delete ChannelDataTEMP where UpdateTime < GETDATE() - 2
+	
+	delete ChannelAVG where [Day] < CONVERT(varchar(8),GETDATE() - 365,112)
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_UpdateCMSFile]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_UpdateCMSFile] 
+	@fileName nvarchar(20),
+	@State int
+ AS
+	update tblcmsfile set state = @State, countSms = countSms + 1 where [filename] = @fileName
+
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateAlert]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[UpdateAlert]
+	-- Add the parameters for the stored procedure here
+	@Channel nvarchar(20)
+AS
+BEGIN
+	Declare @Y1 int
+	Declare @Y2 int
+	Declare @Alert1 int
+	Declare @Alert2 int
+	Declare @IsPercent tinyint
+	Declare @IsRev tinyint
+	Declare @a tinyint 
+	Declare @b tinyint
+	
+	Select top 1 @Y1 = Y1 from ChannelData where Channel = @Channel order by UpdateTime desc 
+	Select top 1 @Y2 = Y2 from ChannelData where Channel = @Channel order by UpdateTime desc 
+	Select @Alert1 = AlertLvl1 from ChartDisplay where Channel = @Channel
+	Select @Alert2 = AlertLvl2 from ChartDisplay where Channel = @Channel
+	Select @IsPercent = Ispercent from ChartDisplay where Channel = @Channel
+	Select @IsRev = IsRev from ChartDisplay where Channel = @Channel
+	
+	If (@Channel in ('GLOBUS', 'VISA_ALL', 'VCB_ISS', 'VCB_ACQ', 'HSBC_ALL','MC_ALL','ATM') and @Y1 != 0) Set @Y1 = 100*@Y2/@Y1
+	Else If (@IsPercent = 1 and (@Y1+@Y2) != 0 ) Set @Y1 = 100*@Y1/(@Y1+@Y2)
+	
+	If (@IsRev = 1) 
+		Begin
+		Set @a = 3
+		Set @b = 1
+		End
+	Else
+		Begin 
+		Set @a = 1
+		Set @b = 3
+		End
+	If (@Alert1 IS NULL)
+	Begin		
+		If (@Channel like 'HB_REC%')
+			Begin
+				If (@Y1 = '0') 
+					Update ChartDisplay set AlertStat = 3 where Channel = @Channel
+				Else
+					Update ChartDisplay set AlertStat = 1 where Channel = @Channel
+			End
+		else
+			Update ChartDisplay set AlertStat = 1 where Channel = @Channel
+	End		
+	Else	
+	If (@Y1 <= @Alert1)
+		Update ChartDisplay set AlertStat = @a where Channel = @Channel
+	Else If (@Y1 <= @Alert2)
+		Update ChartDisplay set AlertStat = 2 where Channel = @Channel
+	Else Update ChartDisplay set AlertStat = @b where Channel = @Channel
+			
+END
+
+GO
+/****** Object:  StoredProcedure [POSTPAY\oper6].[GetAllTableSizes]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [POSTPAY\oper6].[GetAllTableSizes]
+AS
+/*
+    Obtains spaced used data for ALL user tables in the database
+*/
+DECLARE @TableName VARCHAR(100)    --For storing values in the cursor
+
+--Cursor to get the name of all user tables from the sysobjects listing
+DECLARE tableCursor CURSOR
+FOR 
+select [name]
+from dbo.sysobjects 
+where  OBJECTPROPERTY(id, N'IsUserTable') = 1
+FOR READ ONLY
+
+--A procedure level temp table to store the results
+CREATE TABLE #TempTable
+(
+    tableName varchar(100),
+    numberofRows varchar(100),
+    reservedSize varchar(50),
+    dataSize varchar(50),
+    indexSize varchar(50),
+    unusedSize varchar(50)
+)
+
+--Open the cursor
+OPEN tableCursor
+
+--Get the first table name from the cursor
+FETCH NEXT FROM tableCursor INTO @TableName
+
+--Loop until the cursor was not able to fetch
+WHILE (@@Fetch_Status >= 0)
+BEGIN
+    --Dump the results of the sp_spaceused query to the temp table
+    INSERT  #TempTable
+        EXEC sp_spaceused @TableName
+
+    --Get the next table name
+    FETCH NEXT FROM tableCursor INTO @TableName
+END
+
+--Get rid of the cursor
+CLOSE tableCursor
+DEALLOCATE tableCursor
+
+--Select all records so we can use the reults
+SELECT * 
+FROM #TempTable
+
+--Final cleanup!
+DROP TABLE #TempTable
+
+
+
+GO
+/****** Object:  StoredProcedure [POSTPAY\oper6].[TestOutput]    Script Date: 9/17/2018 2:15:34 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [POSTPAY\oper6].[TestOutput]
+	@FileName varchar(100) output
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+    set @FileName = 'C:\\ADFS\\22.txt'
+END
+
+GO
+USE [master]
+GO
+ALTER DATABASE [APPMONITOR] SET  READ_WRITE 
+GO

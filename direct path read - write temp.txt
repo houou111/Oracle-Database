@@ -1,0 +1,105 @@
+How to Address High Wait Times for the 'direct path write temp' Wait Event (Doc ID 1576956.1)
+
+
+
+	
+Copyright (c) 2023, Oracle. All rights reserved. Oracle Confidential.
+
+
+Click to add to Favorites		How to Address High Wait Times for the 'direct path write temp' Wait Event (Doc ID 1576956.1)	To BottomTo Bottom	
+
+In this Document
+Symptoms
+Changes
+Cause
+Solution
+ 	1. Check for slow I/O on the temporary tablespace.
+ 	2. Tune SQL statements using large amounts of memory
+ 	3. Look for high levels of sorting 
+References
+
+APPLIES TO:
+Oracle Database - Enterprise Edition - Version 11.1.0.6 and later
+Oracle Database Cloud Schema Service - Version N/A and later
+Oracle Database Exadata Express Cloud Service - Version N/A and later
+Gen 1 Exadata Cloud at Customer (Oracle Exadata Database Cloud Machine) - Version N/A and later
+Oracle Cloud Infrastructure - Database Service - Version N/A and later
+Information in this document applies to any platform.
+SYMPTOMS
+Slow performance is observed.
+Significant waits for 'direct path write temp' wait are seen on the system:
+
+Top 5 Timed Events                                                 Avg    % Total
+~~~~~~~~~~~~~~~~~~                                                 wait   Call
+Event                                     Waits        Time (s)    (ms)   Time
+----------------------------------------- ------------ ----------- ------ ------
+direct path write temp                         286,517      22,665     79   58.1
+CPU time                                                     8,259          21.2
+log file sync                                    5,783       2,685    464    6.9
+log file parallel write                         14,430       2,161    150    5.5
+db file async I/O submit                         4,018       1,208    301    3.1
+--------------------------------------------------------------------------------
+ 
+CHANGES
+ 
+
+CAUSE
+Waits for 'direct path write temp' are typically caused by sort operations that cannot be completed in memory, spilling over to disk.
+
+Database sorting is mainly required for the following operations:
+
+Index Creation
+Aggregation/Group By
+Order By SQL's
+UNION/Intersect/Minus Operations
+Sorting is usually performed in a memory area called the PGA (configured via the PGA_AGGREGATE_TARGET parameter). If memory is insufficient to accommodate sorting, then the sort over flows to disk  within the temporary tablespace. While writing to Temporary Tablespace, waits for 'direct path write temp' will occur. If these writes takes significant time then these will be reported in AWR, statspack or other performance tools.
+
+Note: while sorting is the prevalent cause, there are some other operations (such as hash joins) that will also spill to disk in the event that memory is exhausted and use space in the Temporary Tablespace.
+ 
+ 
+
+SOLUTION
+1. Check for slow I/O on the temporary tablespace.
+If the I/O on the temporary tablespace is slow, then this could cause problems when a lot of operations on that disk occur. Check  "Tablespace IO Stats" and TEMP tablespace I/O stats(avg wait ms) in the AWR report to see if they fall within an acceptable range of performance. Typically, if the average wait in milliseconds is above 20 milliseconds, start investigating the slow I/O:
+
+awr
+
+In the example above, the wait time is well below 20 ms and so I/O alone is unlikely to be the cause.
+
+Refer to following documents:
+
+Document 1275596.1 How to Tell if the IO of the Database is Slow
+Document 50416.1 WAITEVENT: "direct path write" Reference Note
+If I/O is slow, then check the following:
+
+Ensure no disks are I/O bound.
+Ensure asynchronous I/O is configured correctly at the O/S level.
+Ensure Disk_Asynch_IO is TRUE . This is unlikely to reduce wait times from the wait event timings but may reduce sessions elapsed times (as synchronous direct IO is not accounted for in wait event timings).
+Check what other activity is contributing to the I/O load on the disk and re-locate it (or the temporary tablespace) to another less loaded disk
+ 
+
+2. Tune SQL statements using large amounts of memory
+If there are SQL statements that utilise more memory that can be accommodated within the PGA, then this too can spill to disk. Look to tune these statements to reduce the memory requirements. Check for memory-intensive SQL operators such as sort, group-by, hash-join, bitmap merge and bitmap create. You can check usage by reviewing the top SQL statements in an AWR report.  Look for the most resource intensive SQL statements, in particular those statements doing lot of physical reads (since AWR does not directly link SQL statements to PGA memory usage or sorts) :
+
+ awr1
+
+Because of the volume of data these statements are reading, it is more likely that any sorting that is required will spill to disk. If statements are reading a large volume of data then that data may be spilling to disk resulting in waits for 'direct path write temp'. Once you have the SQL IDs for the high usage statements, you can look at ASH reports for the same period to see if the statements in question have significant waits for 'direct path write temp'. The following article contains more details on how to find candidate queries:
+
+Document 232443.1 How to Identify Resource Intensive SQL to Tune
+Once identified, check the top statements to determine if they are using optimal access paths
+
+ 
+
+3. Look for high levels of sorting 
+If PGA_AGGREGATE_TARGET is insufficient, then sorts can overflow to the temp tablespace. Advisory information regarding memory sizing is provided in AWR/v$pga_target_advice: 
+
+awr3
+
+In the example above, the "Size Factr" and "PGA Target Est(MB)" columns indicates the current setting (the row containing "Size Factr" of  1.00 is the current setting, meaning that here the PGA is sized around 4Gb.), the sizes associated with other size settings and the relative size of these to the current setting.  The "Estd PGA Cache Hit %" shows that with this setting, 99% of sorting is done in memory.  If the PGA was sized at 4.915Gb (1.2x the current), it predicts that 100% of sorting would be handled in memory with "Estd Extra W/A MB Read/Written to Disk" at 0 and "Estd PGA Cache Hit %" at 100%.  This indicates that there would be no sorting onto disk if the PGA was sized appropriately.
+
+
+4. May need to increase _smm_isort_cap
+
+If increasing PGA does not help this parameter, "_smm_isort_cap", may need to be increased from 100mb to 180mb in order to prevent a large sort from writing 10 GB to temporary tablespace.
+
+alter system set "_smm_isort_cap" = 184320;

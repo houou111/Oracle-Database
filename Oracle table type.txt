@@ -1,0 +1,15 @@
+Bảng Heap (Heap table) - Deafault : Lưu trữ dữ liệu theo thứ tự không nhất định, không có cấu trúc (vật lý)cụ thể.
+
+Bảng Sắp xếp (Sorted table): Dữ liệu được sắp xếp theo giá trị của một hoặc nhiều cột.
+
+Bảng Partition (Partitioned table): Bảng được chia thành các phân vùng (partition) dựa trên giá trị của một hoặc nhiều cột.
+
+Bảng Tạm (Temporary table): Bảng được tạo ra để chứa các dữ liệu tạm thời trong quá trình thực hiện các thao tác truy vấn.
+
+Bảng Trong bộ nhớ (In-Memory table): Lưu trữ dữ liệu hoàn toàn trong bộ nhớ để tăng tốc độ truy vấn.
+
+Bảng Chiến lược (Materialized view table): Lưu trữ các kết quả truy vấn của một hoặc nhiều bảng trong một bảng mới.
+
+Bảng Không đổi (Immutable table): Không cho phép thay đổi dữ liệu sau khi đã được chèn vào bảng.
+
+Bảng Tạm thời phiên bản (Temporary versioned table): Lưu trữ phiên bản của bảng trong quá trình thực hiện các thao tác truy vấn.

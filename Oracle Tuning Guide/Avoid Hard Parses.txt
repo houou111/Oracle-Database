@@ -1,0 +1,11 @@
+In an OLTP system, reduce misses by keeping hard-parsing to a minimum:
+• Make sure that users can share statements.
+• Prevent frequently used statements from being aged out by allocating enough space.
+• Avoid invalidations that induce reparsing.
+
+
+
+If % Pct Miss is greater than 10% in an OLTP system:
+– Improve the sharing of your application code by using bind variables
+– Increase the size of the shared pool
+– Set the CURSOR_SHARING parameter

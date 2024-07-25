@@ -1,0 +1,3 @@
+SELECT sid, r.job, log_user, r.this_date, r.this_sec
+FROM dba_jobs_running r, dba_jobs j
+WHERE r.job = j.job

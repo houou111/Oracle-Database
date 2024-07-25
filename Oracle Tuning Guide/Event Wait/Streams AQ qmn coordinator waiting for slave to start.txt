@@ -1,0 +1,3 @@
+The aq_tm_processes parameter is used in advanced queuing applications (e.g. Oracle Streams) to control the time monitor on queued messages, and Oracle strongly recommends leaving aq_tm_processes alone and allow Oracle to auto-tune the processes.
+
+There is a related wait event associated with this parameter "Streams AQ: qmn coordinator waiting for slave to start", but changing the default value can lead to extreme problems with advanced queuing, especially Oracle Streams.

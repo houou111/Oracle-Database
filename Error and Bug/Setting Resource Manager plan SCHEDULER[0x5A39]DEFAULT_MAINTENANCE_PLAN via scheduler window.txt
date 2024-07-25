@@ -1,0 +1,10 @@
+select * from V$RSRC_PLAN_HISTORY;
+
+WINDOW_SMS_CB_BH1
+
+
+You can disable above windows by using below commands and see the result ?
+
+
+
+execute dbms_scheduler.set_attribute('<window name>','RESOURCE_PLAN','');

@@ -1,0 +1,14 @@
+select AA.sql_id,AA.last_active_time,AA.AVG_ELAPSED_TIME,BB.sql_fulltext
+from (
+select a.sql_id,c.last_active_time,sum(A.ELAPSED_TIME_TOTAL/60000000)/count(A.ELAPSED_TIME_TOTAL) as AVG_ELAPSED_TIME
+from DBA_HIST_SQLSTAT a ,DBA_HIST_SNAPSHOT b,v$sqlarea c
+where 
+a.snap_id=b.snap_id
+and a.sql_id=c.sql_id
+and elapsed_time_total/60000000>1
+and B.BEGIN_INTERVAL_TIME>sysdate-30 
+group by a.sql_id,c.last_active_time
+)AA,
+(select sql_id,sql_fulltext from v$sqlarea)BB
+where AA.sql_id=BB.sql_id
+order by 3 desc

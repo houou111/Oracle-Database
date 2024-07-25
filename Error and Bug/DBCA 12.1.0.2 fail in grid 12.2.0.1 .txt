@@ -1,0 +1,3 @@
+DBCA 12.1.0.2 fail in grid 12.2.0.1
+
+apply patch 21626377

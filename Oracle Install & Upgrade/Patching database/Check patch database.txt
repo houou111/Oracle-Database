@@ -1,0 +1,8 @@
+1. Check software
+-----------------------------------
+opatch lspatches
+
+
+2. Check registry
+-----------------------------------
+select * from registry$history;

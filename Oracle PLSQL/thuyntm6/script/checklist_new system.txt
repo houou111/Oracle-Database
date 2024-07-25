@@ -1,0 +1,7 @@
+1. Os parameter (TCTSCH - CPU - MEM - Iptables)
+2. DB parameter (TCTSCH)
+3. Dataguard
+4. Backup agent
+5. DBS - thu hồi PAM - thu hồi sysdba user
+6. AM - EM13C
+7. Crontab house keeping

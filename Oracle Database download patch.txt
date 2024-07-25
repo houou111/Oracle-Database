@@ -1,0 +1,9 @@
+Assistant: Download Reference for Oracle Database/GI Update, Revision, PSU, SPU(CPU), Bundle Patches, Patchsets and Base Releases 
+(Doc ID 2118136.2)
+
+https://updates.oracle.com/download/6880880.html
+
+unzip xxxxxxx.zip -d $ORACLE_HOME/OPatch
+
+opatch version
+

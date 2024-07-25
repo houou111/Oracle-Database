@@ -1,0 +1,31 @@
+
+---Start/stop TFA
+/etc/init.d/init.tfa start
+/etc/init.d/init.tfa stop
+
+
+
+---Colect log
+tfactl diagcollect -all -since 2h
+
+
+---Collect trace by a specific time
+tfactl diagcollect -all -node all -from "Jan/26/2022 08:00:00" -to "Jan/26/2022 10:00:00"
+tfactl diagcollect -all -node all -from "Oct/07/2017 09:00:00" -to "Oct/07/2017 09:21:00"
+
+
+---Collecting diagnostic data for a specific day
+tfactl diagcollect -all -for "Sep/29/2017"
+
+
+
+
+tfactl diagcollect -all -from "JAN/04/2020 09:00:00" -to "JAN/06/2020 09:00:00"
+
+
+tfactl diagcollect -from "JUL/08/2022 16:00:00" -to "JUL/08/2022 19:00:00"
+
+
+tfactl diagcollect -all -node all -from "Aug/22/2022 12:00:00" -to "Aug/22/2022 20:00:00"
+
+tfactl diagcollect -all -from "Aug/22/2022 12:00:00" -to "Aug/22/2022 20:00:00"

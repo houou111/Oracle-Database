@@ -1,0 +1,53 @@
+1. 
+-------------------------------------------------------------
+ANALYZE INDEX  emp_id_idx  VALIDATE STRUCTURE;
+SELECT
+    name
+  , del_lf_rows
+  , lf_rows - del_lf_rows lf_rows_used
+  , TO_CHAR( del_lf_rows /(DECODE(lf_rows,0,0.01,lf_rows))*100,'999.99999') ibadness 
+FROM   index_stats;
+
+
+2. 
+-------------------------------------------------------------
+SET SERVEROUTPUT ON;
+DECLARE
+Fragmentation number;
+CURSOR cs IS select * from all_indexes where OWNER='SPOTFIRE_DB103';
+index_row cs%ROWTYPE;
+cnt number;
+hgt number;
+leaf_blocks number;
+leaf_rows number;
+del_lf number;
+BEGIN
+fragmentation := 20;
+cnt := 0;
+OPEN cs;
+LOOP
+FETCH  cs  INTO index_row;
+EXIT WHEN cs%NOTFOUND;
+IF index_row.segment_created = 'NO' then
+DBMS_OUTPUT.PUT_LINE('*TABLE_NAME*'||' - '||index_row.TABLE_NAME||' , '||'*INDEX*'||' - '||index_row.INDEX_NAME|| ' , ' ||'*Percentage*'|| ' - ' ||'0'|| '%');
+cnt:=cnt+1;
+continue;
+END IF;
+EXECUTE IMMEDIATE 'ANALYZE INDEX '||index_row.INDEX_NAME||' VALIDATE STRUCTURE';
+select height, lf_blks, lf_rows, del_lf_rows into hgt, leaf_blocks, leaf_rows, del_lf from index_stats;
+if leaf_rows=0 then
+DBMS_OUTPUT.PUT_LINE('*TABLE_NAME*'||' - '||index_row.TABLE_NAME||' , '||'*INDEX*'||' - '||index_row.INDEX_NAME|| ' , ' ||'*Percentage*'|| ' - ' ||'0'|| '%');
+cnt:=cnt+1;
+CONTINUE;
+END IF;
+IF leaf_rows>100 AND del_lf>0 then
+select round((del_lf_rows/lf_rows)*100,2) into fragmentation from index_stats;
+DBMS_OUTPUT.PUT_LINE('*TABLE_NAME*'||' - '||index_row.TABLE_NAME||' , '||'*INDEX*'||' - '||index_row.INDEX_NAME|| ' , ' ||'*Percentage*'|| ' - ' ||fragmentation|| '%');
+ELSE
+DBMS_OUTPUT.PUT_LINE('*TABLE_NAME*'||' - '||index_row.TABLE_NAME||' , '||'*INDEX*'||' - '||index_row.INDEX_NAME|| ' , ' ||'*Percentage*'|| ' - ' ||'0'|| '%');
+END IF;
+cnt := cnt+1;
+END LOOP;
+DBMS_OUTPUT.PUT_LINE('TOTAL INDEXES ANALYZED'||' - '||cnt||'');
+CLOSE cs;
+END;

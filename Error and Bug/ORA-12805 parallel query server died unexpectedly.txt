@@ -1,0 +1,4 @@
+ORA-12805: parallel query server died unexpectedly
+
+-> solution:
+alter system set PARALLEL_FORCE_LOCAL=TRUE;

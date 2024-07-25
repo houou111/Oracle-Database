@@ -1,0 +1,76 @@
+UPGrade Database
+Pre-upgrade tasks:
+1. Backup Database
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '/oracle/backups/preupgrade/%F';
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '/oracle/backups/preupgrade/snapcf_oid.f';
+
+startup mount;
+RUN
+{
+  ALLOCATE CHANNEL disk1 DEVICE TYPE DISK FORMAT '/oracle/backups/preupgrade/%D%M%U';
+  backup database include current controlfile;
+}
+
+2. Backup OCR & Voting File
+[root@rac1 ~]# /oracle/product/10.2.0/crs/bin/crsctl query css votedisk
+
+[root@rac1 ~]# /oracle/product/10.2.0/crs/bin/ocrcheck
+
+-- Backup OCR
+[crs@rac1 ~]$ocrconfig -showbackup    
+/oracle/product/10.2.0/crs/bin/ocrconfig -export /oracle/product/10.2.0/crs/cdata/crs/preupg.dmp
+-- Backup Voting DISK
+dd if=/dev/raw/raw3 of=/oracle/product/10.2.0/crs/cdata/crs/preupg_votingdisk1
+
+-- Check kernel parameter, resource limit
+
+-- Check invalid object
+select unique OBJECT_NAME, OBJECT_TYPE,
+OWNER from DBA_OBJECTS where
+STATUS='INVALID'
+ 
+Fix:
+@$ORACLE_HOME/rdbms/admin/utlrp.sql
+
+-- Check duplicate object
+select OBJECT_NAME, OBJECT_TYPE from
+DBA_OBJECTS where OBJECT_NAME||OBJECT_TYPE
+in (select OBJECT_NAME||OBJECT_TYPE from
+DBA_OBJECTS where OWNER='SYS') and
+OWNER='SYSTEM' and OBJECT_NAME not in
+('AQ$_SCHEDULES_PRIMARY', 'AQ$_SCHEDULES','DBMS_REPCAT_AUTH');
+
+-- Fix non valid component
+select substr(COMP_ID, 1,10) compid,
+substr(COMP_NAME,1,24) compname, STATUS,
+VERSION from DBA_REGISTRY where
+STATUS<>'VALID';
+
+-- purge DBA_RECYCLEBIN;
+
+-- Chay file pre-upgrade script utlu112i.sql
+
+-- Remove old parameter
+
+--  truncate table SYS.AUD$
+
+-- Tao new home
+mkdir -p /u01/base/grid
+mkdir -p /u01/base/oracle
+chmod -R 775 /u01/base
+chown oracle:oinstall /u01/base/oracle
+chown grid:oinstall /u01/base/grid
+
+-- Unzip and install grid
+-- Chay rootupgrade.
+
+-- Sua .bash_profile tro sang ORACLE_HOME moi
+@$ORACLE_HOME/rdbms/admin/utlrp.sql
+
+-- Copy parameter file to new Home
+
+
+-- srvctl modify database -d golddb -o /u01/base/oracle
+ 
+-- s? d?ng dbua

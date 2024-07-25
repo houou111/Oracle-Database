@@ -1,0 +1,76 @@
+[oracle@dc-esb-db01:/home/oracle/bin]# sqlplus
+
+SQL*Plus: Release 11.2.0.3.0 Production on Thu Mar 30 14:01:48 2017
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Enter user-name: thuyntm_dba
+Enter password: 
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SQL> create  procedure esblog.drop_partition as
+  2     v_date        date;
+  3     v_highvalue   VARCHAR2 (128);
+  4     cmd           VARCHAR2 (128);
+  5  
+  6     CURSOR c_partitions
+  7     IS
+  8     
+  9     SELECT table_name, partition_name, HIGH_VALUE
+ 10          FROM user_tab_partitions
+ 11         WHERE table_name IN ( 'MESSAGES_CARDV1_QUERY','MESSAGES_OSBV1_QUERY')
+ 12         AND PARTITION_NAME NOT IN ('MESS_CARDV1_QUERY_P1','MESSAGES_OSBV1_QUERY_P1');    
+ 13         
+ 14  BEGIN
+ 15     FOR cc IN c_partitions
+ 16     LOOP
+ 17     
+ 18        v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+ 19        v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+ 20        IF v_date < to_date(sysdate) - 35
+ 21        THEN
+ 22           cmd :='alter table '|| cc.table_name|| ' drop partition '|| cc.partition_name;
+ 23           execute immediate cmd;
+ 24        END IF;
+ 25     END LOOP;
+ 26  END;
+ 27  /
+
+Procedure created.
+
+
+SQL> BEGIN
+  2    SYS.DBMS_SCHEDULER.CREATE_JOB
+  3      (
+  4         job_name        => 'ESBLOG.JOB_DROP_PARTITION'
+  5        ,start_date      => TO_TIMESTAMP_TZ('2017/03/30 14:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+  6        ,repeat_interval => 'FREQ=WEEKLY' 
+  7        ,end_date        => NULL
+  8        ,job_class       => 'DEFAULT_JOB_CLASS'
+  9        ,job_type        => 'STORED_PROCEDURE'
+ 10        ,job_action      => 'ESBLOG.DROP_PARTITION' 
+ 11        ,comments        => 'Job to automatic drop 1-month-ago partition.' 
+ 12      );
+ 13    SYS.DBMS_SCHEDULER.ENABLE  (name => 'ESBLOG.JOB_DROP_PARTITION');
+ 14    --SYS.DBMS_SCHEDULER.SET_ATTRIBUTE(attribute   => 'database_role',value       =>'PRIMARY');
+ 15  END;
+ 16  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select status,actual_start_date from dba_scheduler_job_run_details  where job_name='JOB_DROP_PARTITION'
+  2  ;
+
+STATUS
+------------------------------
+ACTUAL_START_DATE
+---------------------------------------------------------------------------
+SUCCEEDED
+30-MAR-17 02.00.00.094702 PM +07:00
+
+
+SQL> 

@@ -1,0 +1,89 @@
+I. Check information 
+--------------------------------------------------------------------------------------
+Read all log and fix all error
+- Alert log
+- Cluster log
+- Number of archivelog
+
+select trunc(COMPLETION_TIME) TIME, SUM(BLOCKS * BLOCK_SIZE)/1024/1024/1024 SIZE_GB 
+from V$ARCHIVED_LOG group by trunc (COMPLETION_TIME) order by 1;
+
+Using em13c or create ADDM, AWR
+- AAS < CPU count
+
+
+II. Tuning OS
+--------------------------------------------------------------------------------------
+/etc/sysctl.conf
+kernel.shmmax -> max 60-80% memory server
+kernel.shmall = shmmax/shmmni
+vm.nr_hugepages=xxxxxx
+vm.min_free_kbytes = 3954222
+
+
+
+III. Tuning Instance
+--------------------------------------------------------------------------------------
+1. Memory
+-------------------------------------------
+select * from v$sga_target_advice order by sga_size;
+select * from v$pga_target_advice order by 1;
+
+
+2. Control file
+-------------------------------------------
+In 2 separate diskgroup 
+
+
+3. Redolog
+-------------------------------------------
+20 min switch
+2 member and locate in both diskgroup 
+
+
+4. Using tempgroup
+-------------------------------------------
+
+
+
+5. Tuning CPU
+-------------------------------------------
+cursor_sharing -> force (hard parse take high)
+open_cursors = 1000 
+session_cached_cursors  = 1000 
+
+
+
+6. Tuning parameter
+-------------------------------------------
+
+
+
+IV. Tuning object
+--------------------------------------------------------------------------------------
+1. Check and gather statistic all database
+-------------------------------------------
+Check stale statistic
+
+
+2. Rebuild Table high water marks 
+-------------------------------------------
+using autospace advisor, segments advisor
+find defragment (>30%)
+
+
+3. Tuning Top expensive SQL
+-------------------------------------------
+- Create index
+- Split table to partition
+
+
+4. Compress/archive old data
+-------------------------------------------
+
+
+
+V. Tuning backup
+--------------------------------------------------------------------------------------
+Increare parallel
+backup 2 node (Rac)

@@ -1,0 +1,1 @@
+@ed %SQLPATH%\&1

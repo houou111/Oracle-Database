@@ -1,0 +1,5 @@
+Latch: row cache objects
+
+indicates that there is contention loading, referencing,
+and freeing objects in the data dictionary cache. This can be caused by excessive
+row-cache access operations in a hard-parse scenario

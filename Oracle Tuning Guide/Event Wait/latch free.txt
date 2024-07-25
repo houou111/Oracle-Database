@@ -1,0 +1,9 @@
+
+
+Get ASH
+Get number
+
+select *
+from v$latchname
+where latch# = 665 
+;

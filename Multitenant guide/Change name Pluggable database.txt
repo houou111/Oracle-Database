@@ -1,0 +1,10 @@
+
+SQL> alter pluggable database close immediate;
+
+SQL> alter pluggable database open restricted;
+
+SQL> alter pluggable database RENAME GLOBAL_NAME TO pdb2;
+
+SQL> alter pluggable database close immediate;
+
+SQL> alter pluggable database open;

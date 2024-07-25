@@ -1,0 +1,5 @@
+locate bp.conf
+
+vi bp.conf
+
+RMAN_OUTPUT_DIR = /home/oracle/DBSCRIPT/log

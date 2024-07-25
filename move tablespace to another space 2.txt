@@ -1,0 +1,69 @@
+set echo off
+set heading off
+
+var tbs_source varchar2(4000);
+var tbs_dest varchar2(4000);
+var schema_user varchar2(4000);
+
+-- '' if it isn't relevant.
+exec :tbs_source  := 'DWH2_CURRENT_TBS';
+-- '' if it isn't relevant.
+exec :schema_user     := 'duongpk'; 
+exec :tbs_dest := 'DWH2017_TBS';
+
+select 'Transporting tablespace ' || :tbs_source || ' or user ' || :schema_user || ' to tablespace ' || :tbs_dest from dual;
+
+select 'Size: ' || to_char((sum(ext.bytes) / 1048576), '9,990.00') || ' MB'
+from dba_objects ob
+inner join (
+  select ta.owner, ta.table_name as nom, ta.tablespace_name as tbs, 'TABLE' as tipo from dba_tables ta
+  union
+  select ind.owner, ind.index_name as nom, ind.tablespace_name as tbs, 'INDEX' as tipo from dba_indexes ind
+) tb on tb.owner=ob.owner and tb.nom=ob.object_name and tb.tipo=ob.object_type
+inner join dba_extents ext on ext.segment_name = ob.object_name
+where ob.object_type in ('INDEX', 'TABLE', 'LOB') and (tb.tbs = :tbs_source or ob.owner = :schema_user);
+
+select 'alter user ' || ob.owner || ' quota unlimited on ' || :tbs_dest || ' default tablespace ' || :tbs_dest || ';'
+from dba_objects ob
+inner join (
+  select ta.owner, ta.table_name as nom, ta.tablespace_name as tbs, 'TABLE' as tipo from dba_tables ta
+  union
+  select ind.owner, ind.index_name as nom, ind.tablespace_name as tbs, 'INDEX' as tipo from dba_indexes ind
+) tb on tb.owner=ob.owner and tb.nom=ob.object_name and tb.tipo=ob.object_type
+where ob.object_type in ('INDEX', 'TABLE', 'LOB') and (tb.tbs = :tbs_source or ob.owner = :schema_user)
+group by ob.owner;
+
+select 
+  decode(ob.object_type,
+    'TABLE',
+      'alter table "' || ob.owner || '"."' || ob.object_name || '" move tablespace ' || :tbs_dest || ';',
+      'alter index "' || ob.owner || '"."' || ob.object_name || '" rebuild tablespace ' || :tbs_dest || ';'
+  )
+from dba_objects ob 
+inner join (
+  select ta.owner, ta.table_name as nom, ta.tablespace_name as tbs, 'TABLE' as tipo from dba_tables ta
+  union
+  select ind.owner, ind.index_name as nom, ind.tablespace_name as tbs, 'INDEX' as tipo from dba_indexes ind
+) tb on tb.owner=ob.owner and tb.nom=ob.object_name and tb.tipo=ob.object_type
+where ob.object_type in ('TABLE') and (tb.tbs = :tbs_source or ob.owner = :schema_user);
+
+select
+  'alter table "' || lo.owner || '"."' || lo.table_name ||
+  '" move lob ("' || lo.column_name || '") store as (tablespace ' || :tbs_dest || ');'
+from dba_lobs lo
+inner join  dba_segments se on se.segment_name = lo.segment_name
+where se.tablespace_name = :tbs_source or se.owner = :schema_user;
+
+select 
+  decode(ob.object_type,
+    'TABLE',
+      'alter table "' || ob.owner || '"."' || ob.object_name || '" move tablespace ' || :tbs_dest || ';',
+      'alter index "' || ob.owner || '"."' || ob.object_name || '" rebuild tablespace ' || :tbs_dest || ';'
+  )
+from dba_objects ob 
+inner join (
+  select ta.owner, ta.table_name as nom, ta.tablespace_name as tbs, 'TABLE' as tipo from dba_tables ta
+  union
+  select ind.owner, ind.index_name as nom, ind.tablespace_name as tbs, 'INDEX' as tipo from dba_indexes ind
+) tb on tb.owner=ob.owner and tb.nom=ob.object_name and tb.tipo=ob.object_type
+where ob.object_type in ('INDEX') and (tb.tbs = :tbs_source or ob.owner = :schema_user);

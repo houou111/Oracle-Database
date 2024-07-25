@@ -1,0 +1,57 @@
+[root@dr-core-db-test02 18377986]# /u01/app/12.1.0/grid/OPatch/opatchauto apply  /u01/software/27967747
+
+OPatchauto session is initiated at Thu Aug 16 17:14:01 2018
+
+System initialization log file is /u01/app/12.1.0/grid/cfgtoollogs/opatchautodb/systemconfig2018-08-16_05-14-05PM.log.
+
+Session log file is /u01/app/12.1.0/grid/cfgtoollogs/opatchauto/opatchauto2018-08-16_05-14-41PM.log
+The id for this session is QMTQ
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/12.1.0/grid
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/oracle/product/12.1.0/dbhome_1
+ Patch applicability verified successfully on home /u01/app/12.1.0/grid
+
+Patch applicability verified successfully on home /u01/app/oracle/product/12.1.0/dbhome_1
+
+
+Verifying SQL patch applicability on home /u01/app/oracle/product/12.1.0/dbhome_1
+SQL patch applicability verified successfully on home /u01/app/oracle/product/12.1.0/dbhome_1
+
+
+Preparing to bring down database service on home /u01/app/oracle/product/12.1.0/dbhome_1
+Successfully prepared home /u01/app/oracle/product/12.1.0/dbhome_1 to bring down database service
+
+
+Bringing down CRS service on home /u01/app/12.1.0/grid
+Prepatch operation log file location: /u01/app/12.1.0/grid/cfgtoollogs/crsconfig/crspatch_dr-core-db-test02_2018-08-16_05-15-48PM.log
+Failed to bring down CRS service on home /u01/app/12.1.0/grid
+
+Execution of [GIShutDownAction] patch action failed, check log for more details. Failures:
+Patch Target : dr-core-db-test02->/u01/app/12.1.0/grid Type[crs]
+Details: [
+---------------------------Patching Failed---------------------------------
+Command execution failed during patching in home: /u01/app/12.1.0/grid, host: dr-core-db-test02.
+Command failed:  /u01/app/12.1.0/grid/perl/bin/perl -I/u01/app/12.1.0/grid/perl/lib -I/u01/app/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dr-core-db-test02/patchwork/crs/install /u01/app/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dr-core-db-test02/patchwork/crs/install/rootcrs.pl -prepatch
+Command failure output:
+Using configuration parameter file: /u01/app/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dr-core-db-test02/patchwork/crs/install/crsconfig_params
+2018/08/16 17:15:51 CLSRSC-177: Failed to add (property/value):('SOFTWAREPATCH'/'') for checkpoint 'ROOTCRS_PREPATCH' (error code 1)
+
+Oracle Clusterware active version on the cluster is [12.1.0.2.0]. The cluster upgrade state is [NORMAL]. The cluster active patch level is [602420069].
+CRS-1158: There was an error setting the cluster to rolling patch mode.
+CRS-4000: Command Start failed, or completed with errors.
+2018/08/16 17:15:51 CLSRSC-430: Failed to start rolling patch mode
+
+
+After fixing the cause of failure Run opatchauto resume
+
+]
+OPATCHAUTO-68061: The orchestration engine failed.
+OPATCHAUTO-68061: The orchestration engine failed with return code 1
+OPATCHAUTO-68061: Check the log for more details.
+OPatchAuto failed.
+
+OPatchauto session completed at Thu Aug 16 17:15:53 2018
+Time taken to complete the session 1 minute, 52 seconds
+
+ opatchauto failed with error code 42

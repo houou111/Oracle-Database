@@ -1,0 +1,64 @@
+--Tạo mới Tablespace
+
+CREATE UNDO TABLESPACE UNDO2 DATAFILE '/tibero_data/coreuat/datafile/undo2_01.dtf' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+alter system set undo_tablespace=UNDO2 sid='KONTUM1';
+
+CREATE UNDO TABLESPACE UNDO_TBS DATAFILE '/tibero_data/coreuat/datafile/UNDOTBS_01.dtf' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+
+CREATE UNDO TABLESPACE UNDOTBS01 DATAFILE '+DATAC1' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+CREATE UNDO TABLESPACE UNDO_2 DATAFILE '+DATAC1' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+CREATE UNDO TABLESPACE UNDOTBS03 DATAFILE '+DATAC1' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+CREATE UNDO TABLESPACE UNDOTBS04 DATAFILE '+DATAC1' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+
+
+CREATE UNDO TABLESPACE UNDO_TBS DATAFILE '+DATA_REF' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+
+alter system set undo_tablespace=UNDOTBS01 sid='KONTUM1';
+alter system set undo_tablespace=UNDOTBS02 sid='KONTUM2';
+alter system set undo_tablespace=UNDOTBS03 sid='KONTUM3';
+alter system set undo_tablespace=UNDOTBS04 sid='KONTUM4';
+
+DROP TABLESPACE UNDO including contents and datafiles;
+
+DROP TABLESPACE UNDO_4 including contents and datafiles;
+DROP TABLESPACE UNDO_5 including contents and datafiles;
+DROP TABLESPACE UNDO_6 including contents and datafiles;
+
+UNDO_1
+UNDO_4
+UNDO_5
+UNDO_6
+
+--Thay đổi undo tablespace
+SQL> ALTER SYSTEM SET UNDO_TABLESPACE = undotbs_02;
+
+
+--Resize datafile
+SQL> alter database datafile 
+'+DATA/orcl/datafile/data_tbs.266.851782949' resize 1G; 
+ 
+ 
+--Thêm datafile  vào tablespace 
+SQL> ALTER TABLESPACE undotbs_01
+		ADD DATAFILE '/u01/oracle/rbdb1/undo0102.dbf' AUTOEXTEND ON NEXT 1M 
+			MAXSIZE UNLIMITED;
+			
+ALTER TABLESPACE UNDOTBS1 ADD DATAFILE '+DATA' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+ALTER TABLESPACE UNDOTBS2 ADD DATAFILE '+DATA' SIZE 1G  AUTOEXTEND ON NEXT 1G;
+ 
+--Drop tablespace 
+SQL> DROP TABLESPACE undotbs01 including contetns and datafiles;
+
+
+--Kiểm tra undo datafile có để autoextent không? 
+SQL> select FILE_NAME,bytes/1024/1024 MB, AUTOEXTENSIBLE from dba_data_files where TABLESPACE_NAME='UNDOTBS1';
+TABLESPACE_NAME='UNDOTBS1'; 
+ 
+ 
+ DROP TABLESPACE UNDO_1 including contents and datafiles;
+ DROP TABLESPACE UNDO_4 including contents and datafiles;
+ DROP TABLESPACE UNDO_5 including contents and datafiles;
+ DROP TABLESPACE UNDO_6 including contents and datafiles;
+ 
+ 
+

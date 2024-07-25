@@ -1,0 +1,51 @@
+---Check archive log sinh ra trong thời điểm cần revert
+ 
+SELECT name, TO_CHAR(first_time, 'DD-MON-YYYY HH24:MI:SS') first_time
+FROM v$archived_log
+WHERE name IS NOT NULL AND first_time BETWEEN TO_DATE('03-AUG-2017 12:00:00', 'DD-MON-YYYY HH24:MI:SS')
+AND TO_DATE('03-AUG-2017 16:00:00', 'DD-MON-YYYY HH24:MI:SS')
+ORDER BY sequence#;
+ 
+---Add archivelog vào logminer
+ 
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_1_seq_179155.636.925657241',OPTIONS => DBMS_LOGMNR.NEW);
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_1_seq_179156.790.925660849',OPTIONS => DBMS_LOGMNR.ADDFILE);
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_1_seq_179157.339.925664463',OPTIONS => DBMS_LOGMNR.ADDFILE);
+ 
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_2_seq_152817.466.925657241',OPTIONS => DBMS_LOGMNR.ADDFILE);
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_2_seq_152818.1411.925660543',OPTIONS => DBMS_LOGMNR.ADDFILE);
+EXECUTE DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '+FRA/qadb01/archivelog/2016_10_19/thread_2_seq_152819.1414.925660849',OPTIONS => DBMS_LOGMNR.ADDFILE);
+ 
+Execute DBMS_LOGMNR.START_LOGMNR(OPTIONS => DBMS_LOGMNR.DICT_FROM_ONLINE_CATALOG);
+ 
+create table myLogAnalysis3 as select * from v$logmnr_contents;
+ 
+---Tìm lại câu lệnh đã thực thi để rollback, sử dụng câu lệnh ở undo_value để rollback
+ 
+SELECT username, operation,
+DBMS_LOGMNR.MINE_VALUE(REDO_VALUE,'SCHEMA.TABLENAME.COLNAME') REDO_VALUE,
+DBMS_LOGMNR.MINE_VALUE(UNDO_VALUE,'SCHEMA.TABLENAME.COLNAME') UNDO_VALUE,
+sql_redo,
+sql_undo,
+TO_CHAR(timestamp, 'DD-MON-YYYY HH24:MI:SS') timestamp,
+scn
+FROM
+v$logmnr_contents
+WHERE username = 'saas_qa_zact'
+AND operation = 'DELETE';
+--AND seg_owner = 'saas_qa_zact'
+ 
+SELECT TIMESTAMP,username,SQL_REDO, SQL_UNDO,SESSION_INFO FROM sys.myLogAnalysis3 WHERE sql_redo like '%delete%saas_qa_zact%ACCOUNTID%';
+ 
+ 
+SELECT username, operation,
+--DBMS_LOGMNR.MINE_VALUE(REDO_VALUE,'SCHEMA.TABLENAME.COLNAME') REDO_VALUE,
+--DBMS_LOGMNR.MINE_VALUE(UNDO_VALUE,'SCHEMA.TABLENAME.COLNAME') UNDO_VALUE,
+sql_redo,
+sql_undo,
+TO_CHAR(timestamp, 'DD-MON-YYYY HH24:MI:SS') timestamp,
+scn
+FROM
+sys.myLogAnalysis3
+WHERE username = 'SAAS_QA_ZACT'
+AND operation = 'DELETE' AND sql_redo like '%ACCOUNT%';

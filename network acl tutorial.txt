@@ -1,0 +1,171 @@
+0. check ACL
+---------------------------------------
+set lines 200
+set pages 200
+COLUMN host FORMAT A30
+COLUMN acl FORMAT A100
+SELECT host, lower_port, upper_port, acl
+FROM   dba_network_acls;
+
+
+
+COLUMN acl FORMAT A30
+COLUMN principal FORMAT A30
+
+SELECT acl,
+       principal,
+       privilege,
+       is_grant,
+       TO_CHAR(start_date, 'DD-MON-YYYY') AS start_date,
+       TO_CHAR(end_date, 'DD-MON-YYYY') AS end_date
+FROM   dba_network_acl_privileges;
+
+
+
+
+1. Create ACL
+---------------------------------------
+CONN sys/password@db11g AS SYSDBA
+
+CREATE USER test1 IDENTIFIED BY test1;
+GRANT CONNECT TO test1;
+
+CREATE USER test2 IDENTIFIED BY test2;
+GRANT CONNECT TO test2;
+
+
+--Create
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => 'test_acl_file.xml', 
+    description  => 'A test of the ACL functionality',
+    principal    => 'TEST1',
+    is_grant     => TRUE, 
+    privilege    => 'connect',
+    start_date   => SYSTIMESTAMP,
+    end_date     => NULL);
+
+  COMMIT;
+END;
+/
+
+-- Drop
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl ( 
+    acl         => 'test_acl_file.xml');
+
+  COMMIT;
+END;
+/
+
+
+
+
+2. Add_privilege 
+---------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege ( 
+    acl         => 'test_acl_file.xml', 
+    principal   => 'TEST2',
+    is_grant    => FALSE, 
+    privilege   => 'connect', 
+    position    => NULL, 
+    start_date  => NULL,
+    end_date    => NULL);
+
+  COMMIT;
+END;
+/
+
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.delete_privilege ( 
+    acl         => 'test_acl_file.xml', 
+    principal   => 'TEST2',
+    is_grant    => FALSE, 
+    privilege   => 'connect');
+
+  COMMIT;
+END;
+/
+
+
+- http: Makes an HTTP request to a host through the UTL_HTTP package and the HttpUriType type
+- http_proxy: Makes an HTTP request through a proxy through the UTL_HTTP package and the HttpUriType type. You must include http_proxy in conjunction to the http privilege if the user makes the HTTP request through a proxy.
+- smtp: Sends SMTP to a host through the UTL_SMTP and UTL_MAIL packages
+- resolve: Resolves a network host name or IP address through the UTL_INADDR package
+- connect: Grants the user permission to connect to a network service at a host through the UTL_TCP, UTL_SMTP, UTL_MAIL, UTL_HTTP, and DBMS_LDAP packages, or the HttpUriType type
+- jdwp: Used for Java Debug Wire Protocol debugging operations for Java or PL/SQL stored procedures. See Configuring Network Access for Java Debug Wire Protocol Operations for more information.
+
+
+
+
+
+Grant to debug:
+BEGIN
+ DBMS_NETWORK_ACL_ADMIN.APPEND_HOST_ACE
+ (
+ host => '*',
+ ace => xs$ace_type(privilege_list => xs$name_list('jdwp'),
+ principal_name => 'NAMLBH_HCM',
+ principal_type => xs_acl.ptype_db)
+ );
+END;
+/
+
+
+
+
+3. assign to network
+---------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => 'test_acl_file.xml',
+    host        => '192.168.2.3', 
+    lower_port  => 80,
+    upper_port  => NULL); 
+
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => 'test_acl_file.xml',
+    host        => '10.1.10.*', 
+    lower_port  => NULL,
+    upper_port  => NULL);
+
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.unassign_acl (
+    acl         => 'test_acl_file.xml',
+    host        => '192.168.2.3', 
+    lower_port  => 80,
+    upper_port  => NULL); 
+
+  COMMIT;
+END;
+/
+
+
+
+
+BEGIN
+    DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(ACL => '/sys/acls/utl_http.xml', PRINCIPAL => 'QLVT_DLC', IS_GRANT => TRUE, PRIVILEGE => 'resolve');
+    DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(ACL => '/sys/acls/utl_http.xml', PRINCIPAL => 'QLVT_DLC', IS_GRANT => TRUE, PRIVILEGE => 'connect');
+END;
+/
+
+BEGIN
+    DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(ACL => '/sys/acls/utl_http.xml', PRINCIPAL => 'NAMLBH_HCM', IS_GRANT => TRUE, PRIVILEGE => 'resolve');
+    DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(ACL => '/sys/acls/utl_http.xml', PRINCIPAL => 'NAMLBH_HCM', IS_GRANT => TRUE, PRIVILEGE => 'connect');
+END;
+/
+
+
+HENTVH
+MIVTT
+LINHNVU
+KHANHNV
+TRIHM
+NAMLBH_HCM
+

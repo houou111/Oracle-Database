@@ -1,0 +1,161 @@
+SELECT e.owner, e.segment_type, e.segment_name, e.partition_name, c.file#
+         , greatest(e.block_id, c.block#) s_blk#
+         , least(e.block_id+e.blocks-1, c.block#+c.blocks-1) e_dblk#
+         , least(e.block_id+e.blocks-1, c.block#+c.blocks-1)
+         - greatest(e.block_id, c.block#) + 1 blk_corrupt
+        , null description
+  FROM dba_extents e, v$database_block_corruption c
+  WHERE e.file_id = c.file#
+  AND e.block_id <= c.block# + c.blocks - 1    AND e.block_id + e.blocks - 1 >= c.block#
+  UNION
+  SELECT s.owner, s.segment_type, s.segment_name, s.partition_name, c.file#
+         , header_block s_blk#
+         , header_block e_blk#
+         , 1 blk_corrupt
+         , 'Segment Header' description
+  FROM dba_segments s, v$database_block_corruption c
+  WHERE s.header_file = c.file#
+  AND s.header_block between c.block# and c.block# + c.blocks - 1
+  UNION
+  SELECT null owner, null segment_type, null segment_name, null partition_name, c.file#
+         , greatest(f.block_id, c.block#) s_blk#
+         , least(f.block_id+f.blocks-1, c.block#+c.blocks-1) e_blk#
+         , least(f.block_id+f.blocks-1, c.block#+c.blocks-1)
+         - greatest(f.block_id, c.block#) + 1 blk_corrupt
+         , 'Free Block' description
+  FROM dba_free_space f, v$database_block_corruption c
+  WHERE f.file_id = c.file#
+  AND f.block_id <= c.block# + c.blocks - 1    AND f.block_id + f.blocks - 1 >= c.block#
+  order by file#, s_blk#
+  ;
+  
+  
+  
+Step 5 - Create a dummy table as user other than SYS and SYSTEM
+
+SQL> connect duongpk_dba/password
+
+Create a dummy table in the tablespace containing datafile which has the corrupt block - and use nologging option to prevent redo records from being generated: 
+
+SQL> create table s (
+       n number,
+       c varchar2(4000)
+     ) nologging tablespace TWA_TDE pctfree 99; 
+
+
+SQL>Select table_name,tablespace_name from user_tables where table_name='S' ;
+ 
+
+
+Step 6 - Create trigger on dummy table which throws exception once the corrupted block is reused
+
+Login as SYSDBA
+
+Please note when prompted for file number enter the relative file no(rfile# value from v$datafile)
+
+CREATE OR REPLACE TRIGGER corrupt_trigger 
+  AFTER INSERT ON duongpk_dba.s 
+  REFERENCING OLD AS p_old NEW AS new_p 
+  FOR EACH ROW 
+DECLARE 
+  corrupt EXCEPTION; 
+BEGIN 
+  IF (dbms_rowid.rowid_block_number(:new_p.rowid)=&blocknumber)
+ and (dbms_rowid.rowid_relative_fno(:new_p.rowid)=&filenumber) THEN 
+     RAISE corrupt; 
+  END IF; 
+EXCEPTION 
+  WHEN corrupt THEN 
+     RAISE_APPLICATION_ERROR(-20000, 'Corrupt block has been formatted'); 
+END; 
+/
+
+When prompted for the block number, provide the block reported corrupt as input. 
+When prompted for the file number enter the relative fileno (rfile# value from v$datafile) for corrupt datafile.
+
+Step 7- Allocate space to the table from the affected datafile
+
+
+
+SQL> Select BYTES from dba_free_space where file_id=8 and 855209 between block_id and block_id + blocks -1;
+
+BYTES
+---------------- ---------- ---------- ---------- ---------- ------------
+ 65536
+ 8388608
+ 
+In this case it's 64K, so allocate the extent as follows:
+
+
+SQL> alter table duongpk_dba.s
+allocate extent (DATAFILE '+DATA2/twa/datafile/twa_tde.271.926434953' SIZE 8388608);
+ 
+
+If there are multiple extents of 64K free in this datafile, you may need use this loop:
+
+BEGIN
+for i in 1..1000000 loop
+EXECUTE IMMEDIATE 'alter table duongpk_dba.s allocate extent (DATAFILE '||'''E:\xxxx\test.ORA''' ||'SIZE 64K) ';
+end loop;
+end ;
+/
+
+
+
+Keep allocating until the corrupted block is part of duongpk_dba.s. Use this query to confirm thus:
+
+SQL> select segment_name, segment_type, owner
+       from dba_extents 
+      where file_id = 8
+        and 855209 between block_id 
+            and block_id + blocks -1 ;
+ 
+
+ 
+
+Step 8 -  Insert data into dummy table to format the block
+
+Sample code (depending on the size of the tablespace it may vary):
+
+Begin
+  FOR i IN 1..1000 loop
+    for j IN 1..1000 loop
+      Insert into duongpk_dba.s VALUES(i,'x');
+    end loop;
+    commit;
+  END LOOP;
+END;
+/
+ 
+
+The trigger will be fired for every row inserted into the table and an exception with ORA-20000 will be produced as soon as it inserts the first row into the corrupt block.
+
+Step 9 - Confirm that the block is now corruption free
+
+Run dbverify or RMAN validate on the corrupt datafile (or entire database) again. It will not show the block as corrupted.
+
+Rman> validate check logical datafile 8 ;
+
+SQL>Select * from v$database_block_corruption ;
+
+ 
+Step 10 - Drop the dummy table created in step 4
+
+ 
+
+SQL> DROP TABLE duongpk_dba.s ;
+
+
+
+Step 11:-  Do a Manual logswitch and checkpoint
+
+Do couple of logswitch and checkpoint so that The block  formatted in-memory are written  into disk and dbverify no longer reports errors
+
+SQL>Alter system switch logfile ;  --> Do this couple of time
+
+SQL>Alter system checkpoint ;
+ 
+
+Step 12:- Drop trigger created in step 6
+
+SQL> DROP trigger corrupt_trigger ;

@@ -1,0 +1,10 @@
+
+6. scm0 process consuming high cpu in a standby environment.
+--------------------------------------------------------------------------------------
+Below example of 'top' command:
+PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
+13722 oracle 20 0 5818744 33852 27820 R 100.0 0.0 21415:52 ora_scm0_test
+42375 oracle 20 0 5818704 32396 26388 R 100.0 0.0 94536:13 ora_scm0_orcl
+
+
+Bug 25348567 fixed in 18.1. Apply interim patch 25348567

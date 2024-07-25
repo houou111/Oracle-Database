@@ -1,0 +1,235 @@
+﻿1. IP
+------------------------------------------------------------------------
+# Public IPs
+10.100.100.80           dc-cardlinux-db01       dc-cardlinux-db01.techcombank.com.vn
+10.100.100.81           dc-cardlinux-db02       dc-cardlinux-db02.techcombank.com.vn
+
+10.110.100.80           dr-cardlinux-db01
+10.110.100.81           dr-cardlinux-db02
+
+# Private IPs
+192.168.1.25            dc-cardlinux-db01-priv01
+192.168.1.26            dc-cardlinux-db02-priv01
+
+192.168.1.33            dc-cardlinux-db01-priv02
+192.168.1.34            dc-cardlinux-db02-priv02
+
+
+#Virtual Network
+10.100.100.82           dc-cardlinux-db01-vip
+10.100.100.83           dc-cardlinux-db02-vip
+
+10.110.100.82           dr-cardlinux-db01-vip
+10.110.100.83           dr-cardlinux-db02-vip
+
+# SCAN
+# 10.100.100.84         dc-cardlinux-scan1
+# 10.100.100.85         dc-cardlinux-scan2
+# 10.100.100.86         dc-cardlinux-scan3
+# 10.110.100.84         dr-cardlinux-scan1
+# 10.110.100.85         dr-cardlinux-scan2
+# 10.110.100.86         dr-cardlinux-scan3
+
+#Backup
+10.97.8.10              dc-backup-01    dc-backup-01.headquarter.techcombank.com.vn
+10.97.8.11              dc-backup-02    dc-backup-02.headquarter.techcombank.com.vn
+
+
+
+2. Config ntp server
+---------------------------------------------------------------------------
+vi /etc/sysconfig/ntpd
+#OPTIONS="-g"
+OPTIONS="-x -g -p /var/run/ntpd.pid"
+
+
+3. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 68610528000
+kernel.shmall = 16700000
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+kernel.pid_max = 4000000
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 10
+vm.nr_hugepages = 20480
+
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+
+4. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+oracle soft nproc 16000
+oracle hard nproc 32000
+oracle soft nofile 10240
+oracle hard nofile 65536
+oracle soft stack 10240
+
+* soft memlock unlimited
+* hard memlock unlimited
+
+# vi /etc/pam.d/login
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+# vi /etc/security/limits.d/20-nproc.conf
+*         	soft    nproc     16000
+
+5. DISABLE FIREWALL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# systemctl stop firewalld
+# systemctl disable firewalld
+
+
+6. DISABLE SElinux: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/selinux/config 
+SELINUX=permissive
+
+
+
+7. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CREATE REPO:
+# mount /dev/cdrom /media/
+# cd /media/Packages
+# rpm -Uvh  deltarpm-*
+# rpm -Uvh  python-deltarpm-*
+# rpm -Uvh libxml2-python*
+# rpm -Uvh  createrepo-*
+# mkdir /u01/repo
+# cp * /u01/repo/
+# cd ..
+# rpm --import  RPM-GPG-KEY-redhat-beta  RPM-GPG-KEY-redhat-release
+# cd /u01/repo/
+# createrepo /u01/repo/
+
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///u01/repo/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# cd /u01/repo/
+# yum install -y lftp java-1.8.0* compat-libcap1 binutils gcc gcc-c++  glibc-devel  libgcc libstdc++ make compat-db libXp ksh sysstat libaio-devel compat-libstdc++-33 elfutils-libelf-devel kmod-oracleasm oracleasmlib oracleasm-support  glibc libaio  libstdc++-devel numactl numactl-devel openmotif openmotif22           
+
+8. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++FOR ORACLE:
+# groupadd -g 2001 oinstall
+# groupadd -g 2002 dba
+# useradd -m -u 2000 -g oinstall -G dba -d /home/oracle -s /bin/bash oracle
+# chage -m 0 -M 99999 -I -1 -E -1 oracle
+# usermod -e '' oracle
+# chage -l oracle
+
+
+
+
+9. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/12.2.0.1/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /home/oracle/bin
+# chown oracle:oinstall /home/oracle/bin
+# chmod -R 775 /home/oracle/bin
+# chmod -R 775 /u01
+# chown oracle:oinstall -R  /u01
+
+
+11. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
++ profile
+$ vi /home/oracle/.bash_profile
+export ORACLE_UNQNAME=em13cdr
+export ORACLE_SID=em13cdr
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/12.2.0.1/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+umask 002
+
+
++grid:
+$ vi /home/oracle/bin/grid
+
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/12.2.0.1/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+
+
++oracle_sid:
+$ vi /home/oracle/bin/oracle_sid
+export ORACLE_UNQNAME=orcl
+export ORACLE_SID=orcl
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/12.2.0.1/dbhome_1
+export PATH=$PATH:$ORACLE_HOME/bin
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+
+
+12. Add permission to disk
+---------------------------------------------------------------------------
+Follow add_disk_group_linux_one
+
+
+
+13. INSTALLATION
+---------------------------------------------------------------------------
+## Install Grid
+cd /u01/setup/
+mv V840012-01.zip /u01/app/12.2.0.1/grid/
+cd /u01/app/12.2.0.1/grid/
+unzip V840012-01.zip 
+chmod +x gridSetup.sh
+./gridSetup.sh
+
+
+## Install Oracle
+cd /u01/setup/
+unzip V839960-01.zip 
+cd database
+./runInstaller
+
+
+
+14. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+
+patch to lastest patch
+

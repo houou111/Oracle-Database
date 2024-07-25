@@ -1,0 +1,186 @@
+How to Mark Hot for the query which are contending with Library Cache Lock and Cursor pin waits. (Doc ID 2369968.1)
+
+set lines 200 
+pages 200
+col event for a20
+select inst_id, substr(event,1,30) event, p1, sql_id, count(*)
+from gv$session
+where event = 'cursor: pin S'
+group by inst_id, substr(event,1,30), p1, sql_id;
+
+
+
+
+2. Setup parameter or marhot object
+------------------------------------------------------------
+alter system set '_kgl_hot_object_copies'=1000 scope=spfile sid='*';
+
+select kglnahsh, kglnahsv from v$sql, x$kglob where kglhdadr=address and sql_id in ('2nj4206q0agpv','31ps05wd0tx7h','90271qjkyqkr2');
+
+31ps05wd0tx7h
+
+
+
+alter system set '_kgl_hot_object_copies'=1000 scope=spfile sid='*';
+
+select sql_id,kglnahsv from v$sql, x$kglob
+where kglhdadr=address
+and sql_id in ('2nj4206q0agpv','31ps05wd0tx7h','90271qjkyqkr2')
+/
+
+exec dbms_shared_pool.markhot('11722f555e8f676c30d7002f1a0cf4f0', 0);
+exec dbms_shared_pool.markhot('cb6884fb43ce27e69008e1b465eb4ae2', 0);
+exec dbms_shared_pool.markhot('&kglnahsv', 0);
+
+
+exec dbms_shared_pool.unmarkhot('085e19a9f878a71f2a448201ac053ebb', 0);
+
+
+
+
+SELECT x.ksppinm "Parameter",
+       Y.ksppstvl "Session Value",
+       Z.ksppstvl "Instance Value"
+FROM   x$ksppi X,
+       x$ksppcv Y,
+       x$ksppsv Z
+WHERE  x.indx = Y.indx
+AND    x.indx = z.indx
+AND    x.ksppinm in ('_kgl_hot_object_copies','_kgl_debug')
+order by x.ksppinm;
+
+
+
+exec dbms_shared_pool.markhot('085e19a9f878a71f2a448201ac053ebb', 0);
+
+
+
+select kglnahsh, kglnahsv from v$sql, x$kglob where kglhdadr=address and sql_id = '7tr4jwnamtmsr';
+
+
+in Instance 1,
+~~~~~~~~~~~~~~~~
+alter system set "_kgl_debug" = "hash='11722f555e8f676c30d7002f1a0cf4f0' namespace=0 debug=33554432" sid='*';
+
+
+in Instance 2,
+~~~~~~~~~~~~~~~~
+alter system set "_kgl_debug" = "hash=' <X$KGLOB.KGLNAHSV> ' namespace=0 debug=33554432" sid='<instance 2>';
+
+
+
+alter system set "_kgl_debug"="name='SM_CHECK_SESSION_SF' schema='G2FO' namespace=1 debug=33554432" sid='*';
+alter system set "_kgl_hot_object_copies"= 1024 scope=spfile;
+
+alter system set "_kgl_hot_object_copies"= 256 scope=spfile;
+
+
+
+
+alter system reset "_kgl_debug"
+
+
+
+alter system set "_kgl_debug" =
+        "name='SM_CHECK_SESSION_SF' schema='G2FO' namespace=1 debug=33554432",
+        "hash='USER_AUTH' schema='G2FO' namespace=1 debug=33554432",
+		"name='USER_LOGIN_SESSION' schema='G2FO' namespace=1 debug=33554432" scope=spfile;
+		
+		
+
+alter system reset "_kgl_debug";
+alter system reset "_kgl_hot_object_copies";
+
+
+show parameter  "_kgl_debug"
+show parameter  "_kgl_hot_object_copies"
+		
+
+begin
+dbms_shared_pool.markhot(
+        schema =>'G2FO',
+        objname => 'SM_CHECK_SESSION_SF'
+);
+end;
+/
+
+
+begin
+dbms_shared_pool.unmarkhot(
+        schema =>'G2FO',
+        objname => 'SM_CHECK_SESSION_SF'
+);
+end;
+/
+
+set lines 200
+set pages 200
+col owner for a10
+col object_name for a20
+select KGLNAOWN owner, KGLNAOBJ object_name, KGLHDNSP namespace, decode(bitand(KGLHDFLG, 1024), 1024, 'ROOT', decode(bitand(KGLHDFLG, 33554432), 33554432, 'COPY', null)) copy_or_root
+from X$KGLOB where bitand(KGLHDFLG, 1024) = 1024 or bitand(KGLHDFLG, 33554432) = 33554432 order by KGLHDNSP;
+
+
+
+alter system set '_kgl_debug'='name='DBMS_APPLICATION_INFO' schema='SYS' namespace=1 debug=33554432', 'name='DBMS_APPLICATION_INFO' schema='SYS' namespace=2 debug=33554432' scope=spfile;
+
+
+SELECT x.ksppinm "Parameter",
+       Y.ksppstvl "Session Value",
+       Z.ksppstvl "Instance Value"
+FROM   x$ksppi X,
+       x$ksppcv Y,
+       x$ksppsv Z
+WHERE  x.indx = Y.indx
+AND    x.indx = z.indx
+AND    x.ksppinm in ('_kgl_hot_object_copies','_kgl_debug')
+order by x.ksppinm;
+
+
+
+Startup file:
+ 
+_kgl_debug="hash='cc7d5ecdcc9e7c0767456468efe922ea' namespace=0 debug=33554432"
+ 
+Alter system call with multiple targets:
+ 
+alter system set "_kgl_debug" =
+        "hash='cc7d5ecdcc9e7c0767456468efe922ea' namespace=0 debug=33554432",
+        "hash='59a1f6575a5006600792ee802558305b' namespace=0 debug=33554432"
+;
+ 
+markhot() procedure:
+ 
+begin
+        dbms_shared_pool.markhot(
+                hash            =>'71fc6ccf9a3265368492ec9fc05b785b',
+                namespace       =>0,
+                global          =>true
+        );
+end;
+/
+The namesp
+
+
+SELECT x.ksppinm "Parameter",
+       Y.ksppstvl "Session Value",
+       Z.ksppstvl "Instance Value"
+FROM   x$ksppi X,
+       x$ksppcv Y,
+       x$ksppsv Z
+WHERE  x.indx = Y.indx
+AND    x.indx = z.indx
+AND    x.ksppinm LIKE '_kgl_hot_object_copies'
+order by x.ksppinm;
+
+
+SELECT x.ksppinm "Parameter",
+       Y.ksppstvl "Session Value",
+       Z.ksppstvl "Instance Value"
+FROM   x$ksppi X,
+       x$ksppcv Y,
+       x$ksppsv Z
+WHERE  x.indx = Y.indx
+AND    x.indx = z.indx
+AND    x.ksppinm LIKE '_kgl_debug'
+order by x.ksppinm;

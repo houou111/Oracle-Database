@@ -1,0 +1,25 @@
+1. CREATE DISKGROUP
+-----------------------
+CREATE DISKGROUP TEST EXTERNAL REDUNDANCY DISK '/dev/mapper/mpathi';
+
+
+2. CREATE DATABASE
+----------------------
+dbca -silent -createDatabase -templateName General_Purpose.dbc -gdbName testdb -sid testdb -SysPassword PAssw0rd -SystemPassword PAssw0rd -emConfiguration NONE -redoLogFileSize 200 -storageType ASM -asmSysPassword PAssw0rd -diskGroupName TEST -recoveryAreaDestination TEST -characterSet AL32UTF8 -nationalCharacterSet AL16UTF16 -totalMemory 1024 -nodeinfo dr-oradb-test01,dr-oradb-test02
+
+
+3. Umount diskgroup
+----------------------
+ALTER DISKGROUP TEST DISMOUNT;
+
+
+4. Map and config to new host
+----------------------
+
+
+
+5. Discover
+----------------------
+SELECT name, header_status, path FROM V$ASM_DISK; 
+SELECT name, header_status, path FROM V$ASM_DISKGROUP; 
+

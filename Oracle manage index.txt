@@ -1,0 +1,155 @@
+I. Rule create index
+------------------------------------------------------------------------------------------
+1. Create index for where
+2. Combine index
+- distinct ít đứng trước
+- distinct nhiều đứng sau ( for skip scan)
+
+
+
+II. Manage index
+------------------------------------------------------------------------------------------
+----Create new index
+CREATE INDEX ix_emp_01 ON emp (deptno) TABLESPACE index_tbs;
+CREATE INDEX ix_emp_01 ON emp (empno, deptno) TABLESPACE index_tbs;
+
+create index date1_uk on interval_date (date1) LOCAL;
+create index date1_uk on interval_date(date1) GLOBAL;
+
+
+--- Invisible index
+CREATE INDEX index_name ON table_name(column_name) INVISIBLE;
+ALTER INDEX index_name INVISIBLE;
+ALTER INDEX index_name VISIBLE;
+
+
+---Rebuild index
+ALTER INDEX ix_emp_01 REBUILD TABLESPACE new_index;
+
+
+---Rename
+ALTER INDEX ix_emp_01 RENAME TO ix_emp_01_old;
+
+
+---DROP
+DROP INDEX ix_emp_01_old;
+
+
+---Get metadata
+select dbms_metadata.get_ddl('INDEX',index_name) 
+from dba_indexes
+where xxxx;
+
+
+
+---drop global index and rebuild index as local
+
+set lines 1000
+set pages 32000
+set long 32000
+set serveroutput on
+
+DECLARE
+v_ddl    VARCHAR2 (4000);
+tmp_ddl  VARCHAR2 (4000);
+tmp  VARCHAR2 (4000);
+position1 int ;
+position2 int;
+cmd      VARCHAR2 (4000);
+
+   CURSOR c_index
+   IS
+    SELECT A.TABLE_OWNER||'.'||A.TABLE_NAME tab , A.OWNER,A.INDEX_NAME ,
+    'select dbms_metadata.get_ddl(''INDEX'',''' || a.INDEX_NAME || ''',''' || A.OWNER  || ''') from dual'   AS COMMAND
+    FROM sys.DBA_INDEXES A, sys.DBA_TABLES B
+    WHERE A.TABLE_OWNER=B.OWNER
+        AND A.TABLE_NAME=B.TABLE_NAME
+        AND B.PARTITIONED='YES'
+        AND A.PARTITIONED='NO'
+        AND A.TABLE_OWNER <>'SYS'
+        and a.uniqueness='NONUNIQUE' --not drop index unique
+        --and a.table_name='SYS_EXPORT_SCHEMA_03'
+        AND A.OWNER||'.'||A.INDEX_NAME NOT IN (SELECT DISTINCT INDEX_OWNER||'.'|| INDEX_NAME FROM sys.DBA_CONSTRAINTS  )  
+        ;
+BEGIN
+   FOR cc IN c_index
+   LOOP
+      --DBMS_OUTPUT.put_line (cc.command);
+      EXECUTE IMMEDIATE cc.command INTO v_ddl;
+      DBMS_OUTPUT.put_line ('  drop index '||cc.owner||'.'||cc.index_name ||';');
+      tmp_ddl :=REGEXP_REPLACE (v_ddl, '\)', ') local ONLINE',1,1);
+      position1 :=instr (tmp_ddl, 'TABLESPACE')+10;
+      position2 :=instr (tmp_ddl,'" ',position1 );
+      tmp := substr (tmp_ddl,1,position1)||' "DWH_IND_TBS' ||substr(tmp_ddl,position2);
+      DBMS_OUTPUT.put_line (tmp||';');
+      DBMS_OUTPUT.put_line (chr(10));
+      DBMS_OUTPUT.put_line ('EXECUTE DBMS_STATS.gather_index_stats(OwnName =>'''||cc.owner||''',IndName=>'''||cc.index_name||''', estimate_percent=> 100,Degree => 2 );');
+   END LOOP;
+END;
+/
+
+
+
+
+------------------------------------------------
+check superset - drop
+
+DECLARE
+   v_ddl   VARCHAR2 (4000);
+   cmd     VARCHAR2 (4000);
+
+   CURSOR c_tab
+   IS
+        SELECT table_owner,table_name, column_name,COUNT (1)
+          FROM dba_ind_columns
+         WHERE table_owner = 'SYS' AND column_position = 1
+        HAVING COUNT (1) > 1
+      GROUP BY table_owner, table_name, column_name;
+BEGIN
+   FOR cc IN c_tab
+   LOOP
+      DBMS_OUTPUT.put_line ('--table_name: '||cc.table_owner || '.' || cc.table_name || '--Column_name : ' || cc.column_name);
+
+      FOR c_ind1
+         IN (  SELECT b.index_owner, b.index_name, COUNT (1) dem
+                 FROM (SELECT DISTINCT index_owner, index_name
+                         FROM dba_ind_columns
+                        WHERE     table_owner = cc.table_owner
+                              AND table_name = cc.table_name
+                              AND column_name = cc.column_name
+                              AND column_position = 1) a,
+                      dba_ind_columns b
+                WHERE     a.index_owner = b.index_owner
+                      AND a.index_name = b.index_name
+               HAVING COUNT (1) = 1
+             GROUP BY b.index_owner, b.index_name
+             ORDER BY 3)
+      LOOP
+         DBMS_OUTPUT.put_line (
+            'drop index ' || c_ind1.index_name || ';--num of column: ' || c_ind1.dem);
+
+         FOR c_ind2
+            IN (  SELECT b.index_owner, b.index_name, COUNT (1) dem
+                    FROM (SELECT DISTINCT index_owner, index_name
+                            FROM dba_ind_columns
+                           WHERE     table_owner = cc.table_owner
+                                 AND table_name = cc.table_name
+                                 AND column_name = cc.column_name
+                                 AND column_position = 1) a,
+                         dba_ind_columns b
+                   WHERE     a.index_owner = b.index_owner
+                         AND a.index_name = b.index_name
+                  HAVING COUNT (1) > 1
+                GROUP BY b.index_owner, b.index_name
+                ORDER BY 3)
+         LOOP
+            DBMS_OUTPUT.put_line ('--super set index '|| c_ind2.index_name|| '--num of column: '|| c_ind2.dem);
+         END LOOP;
+      END LOOP;
+
+      DBMS_OUTPUT.put_line (CHR (10));
+   END LOOP;
+END;
+/
+
+

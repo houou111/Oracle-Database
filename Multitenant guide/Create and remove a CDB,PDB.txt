@@ -1,0 +1,38 @@
+
+II. Create PDB
+-----------------------------------------------------------------
+1. Creation of a PDB from a Seed
+-----------------------------------
+CREATE PLUGGABLE DATABASE hrpdb
+ADMIN USER dba1 IDENTIFIED BY password;
+
+
+2. Creation of a PDB by Cloning
+-----------------------------------
+CREATE PLUGGABLE DATABASE salespdb FROM hrpdb;
+
+
+
+
+4. PDB Snapshots COPY
+-----------------------------------
+SNAPSHOT COPY clause
+
+
+5. Refreshable Clone PDBs
+-----------------------------------
+
+
+6. Creation of a PDB by Plugging In an Unplugged PDB
+-----------------------------------
+
+
+
+
+8. Creation of a PDB by Relocating
+-----------------------------------
+CREATE PLUGGABLE DATABASE hrpdb FROM hrpdb@lnk_to_source RELOCATE;
+
+
+9. Creation of a PDB as a Proxy PDB
+-----------------------------------

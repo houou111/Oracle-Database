@@ -1,0 +1,67 @@
+BEGIN
+  SYS.DBMS_SCHEDULER.DROP_JOB
+    (job_name  => 'SYSTEM.GATHER_SCHEMA_MANUALLY');
+END;
+/
+
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+      ,start_date      => TO_TIMESTAMP_TZ('2018/01/08 18:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzh:tzm')
+      ,repeat_interval => 'FREQ=DAILY;BYHOUR=01;BYMINUTE=30'
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'PLSQL_BLOCK'
+      ,job_action      => 'Begin
+DBMS_STATS.gather_schema_stats(''SSI_DATAFEED'',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => ''AUTO'',CASCADE => TRUE,degree => 8,force=>true);
+DBMS_STATS.gather_schema_stats(''IT_DEV'',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => ''AUTO'',CASCADE => TRUE,degree => 8,force=>true);
+END;'
+      ,comments        => 'gatherSSI_DATAFEED statistic'
+    );
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'RESTARTABLE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'LOGGING_LEVEL'
+     ,value     => SYS.DBMS_SCHEDULER.LOGGING_OFF);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'MAX_FAILURES');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'MAX_RUNS');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'STOP_ON_WINDOW_CLOSE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'JOB_PRIORITY'
+     ,value     => 3);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'SCHEDULE_LIMIT');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'AUTO_DROP'
+     ,value     => TRUE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'RESTART_ON_RECOVERY'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'RESTART_ON_FAILURE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYSTEM.GATHER_SCHEMA_MANUALLY'
+     ,attribute => 'STORE_OUTPUT'
+     ,value     => TRUE);
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYSTEM.GATHER_SCHEMA_MANUALLY');
+END;
+/

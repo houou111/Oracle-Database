@@ -1,0 +1,3 @@
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d $ORACLE_HOME/olap/admin -c 'PDB$SEED' -b catnoxoq_pdbseed catnoxoq.sql
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d $ORACLE_HOME/rdbms/admin -c 'PDB$SEED' -b utlrp utlrp.sql

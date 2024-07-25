@@ -1,0 +1,118 @@
+-- in case need linking library
+sh /usr/openv/netbackup/bin/oracle_link
+
+-- add host to Netbackup
+
+-- list backup file in netbackup
+/usr/openv/netbackup/bin/bplist  -C dr-citad-db -t 4 -S dr-backup-01.headquarter.techcombank.com.vn -s 05/14/2018 00:00:00 -e 05/15/2018 23:00:00 -l -b -R /
+
+-- restore spfile from netbackup
+
+startup nomount
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-citad-db,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore spfile from '/ctrl_dCITAD_um0t445pf_s1728_p1_t977409839';
+release channel t1;
+}
+shutdown abort
+
+create pfile from spfile
+modify pfile
+create spfile from pfile
+
+-- restore controlfile from netbackup
+startup nomount
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-citad-db,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore controlfile from '/ctrl_dCITAD_um0t445pf_s1728_p1_t977409839';
+release channel t1;
+}
+alter database mount;
+
+-- restore database
+run {
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-citad-db,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+set newname for datafile 1 to '+DATA';
+set newname for datafile 2 to '+DATA';
+set newname for datafile 3 to '+DATA';
+set newname for datafile 4 to '+DATA';
+set newname for datafile 5 to '+DATA';
+set newname for datafile 6 to '+DATA';
+set newname for datafile 7 to '+DATA';
+restore database;
+release channel t1;
+release channel t2;
+release channel t3;
+release channel t4;
+}
+
+switch database to copy;
+
+-- recover database
+run 
+{
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-citad-db,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+recover database;
+release channel t1;
+release channel t2;
+release channel t3;
+release channel t4;
+}
+
+-- configure FRA
+ALTER SYSTEM SET DB_RECOVERY_FILE_DEST_SIZE =100G SCOPE=BOTH SID='*';
+ALTER SYSTEM SET DB_RECOVERY_FILE_DEST='+DATA' SCOPE=BOTH;
+alter system set log_archive_dest_1='LOCATION=USE_DB_RECOVERY_FILE_DEST';
+alter system set standby_file_management='manual';
+
+-- clear redo logfiles
+ALTER DATABASE clear LOGFILE GROUP 11;
+ALTER DATABASE clear LOGFILE GROUP 12;
+ALTER DATABASE clear LOGFILE GROUP 13;
+ALTER DATABASE clear LOGFILE GROUP 14;
+ALTER DATABASE clear LOGFILE GROUP 15;
+ALTER DATABASE clear LOGFILE GROUP 16;
+ALTER DATABASE clear LOGFILE GROUP 21;
+ALTER DATABASE clear LOGFILE GROUP 22;
+ALTER DATABASE clear LOGFILE GROUP 23;
+ALTER DATABASE clear LOGFILE GROUP 24;
+ALTER DATABASE clear LOGFILE GROUP 25;
+
+
+ALTER DATABASE drop LOGFILE GROUP 11;
+ALTER DATABASE drop LOGFILE GROUP 12;
+ALTER DATABASE drop LOGFILE GROUP 13;
+ALTER DATABASE drop LOGFILE GROUP 14;
+ALTER DATABASE drop LOGFILE GROUP 15;
+ALTER DATABASE drop LOGFILE GROUP 16;
+ALTER DATABASE drop LOGFILE GROUP 21;
+ALTER DATABASE drop LOGFILE GROUP 22;
+ALTER DATABASE drop LOGFILE GROUP 23;
+ALTER DATABASE drop LOGFILE GROUP 24;
+ALTER DATABASE drop LOGFILE GROUP 25;
+
+-- active database
+ALTER DATABASE ACTIVATE PHYSICAL STANDBY DATABASE;
+
+-- recreate tempfile
+alter tablespace temp add tempfile '+DATA01' size 50m reuse autoextend on next 1m maxsize 500m;
+alter database tempfile '+DATA01/twa/datafile/temp02.dbf' drop including datafiles;
+
+-- turn off archivelog mode
+SELECT name, guarantee_flashback_database, scn FROM v$restore_point;
+drop restore point "SNAPSHOT_STANDBY_REQUIRED_02/11/2017 08:39:49";
+
+-- set local and remote listener
+
+alter system set
+

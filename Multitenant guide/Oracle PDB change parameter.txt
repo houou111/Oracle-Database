@@ -1,0 +1,63 @@
+Initialization parameters in a Multitenant database - FAQ and Examples (Doc ID 2101638.1)
+
+*** Parameter của PDB ko 
+Parameters for the PDBs are stored in the DB's dictionary, in the PDB_SPFILE$ table.
+
+
+If you want to set different values for the same parameter to the instances you need to add the SID clause, like this:
+alter system set open_cursors=150 comment='setting open_cursors to instance 1 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY1';
+alter system set open_cursors=250 comment='setting open_cursors to instance 2 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY2';
+
+
+
+ALTER SESSION SET CONTAINER = PDBP1;
+alter system set open_cursors=150 comment='setting open_cursors to PDBP1 standby' scope=spfile db_unique_name='CDB_STBY';
+Please note the "...db_unique_name='CDB_STBY'..." in the syntax above, which specifies the db_unique_name of the standby database.
+
+If you want to set different values for the same parameter to the instances you need to add the SID clause, like this:
+alter system set open_cursors=150 comment='setting open_cursors to instance 1 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY1';
+alter system set open_cursors=250 comment='setting open_cursors to instance 2 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY2';
+
+
+
+- Where is the SPFILE for a PDB database ?
+PDBs do not have an init.ora file or SPFILE, only the root's CDB has one. Parameters for the PDBs are stored in the DB's dictionary, in the PDB_SPFILE$ table.
+
+- I'm querying the PDB's PDB_SPFILE$ table and it is empty, why ?
+
+This is expected, all the information about the modified parameters for a PDB are stored in the PDB_SPFILE$ table in the ROOT CDB.
+The only time when parameters are copied into the PDB's own pdb_spfile$ table is during PDB UNPLUG, and this is done as a fallback in case the XML is lost.
+Once the PDB plug back into another CDB the PDB's PDB_SPFILE$ table is truncated.
+
+- How can I see the current value for a parameter in the PDB ?
+For backward compatibility, checking the current value for a parameter doesn't change when using multitenant databases.
+show parameter while connected to the PDB should still work
+V$PARAMETER or V$SYSTEM_PARAMETER can be queried. Hidden or underscore parameters are not listed there though unless fix for bug#20700587 is installed.
+As an alternative, in case fix for bug#20700587 is not installed, you can query CDB's PDB_SPFILE$ table instead. V$SPPARAMETER view can also be queried to show PDB's SPFILE parameters when queried from inside the PDB.
+
+- I want to change the value for a parameter for a PDB only but it fails, why ?
+Not all parameters are PDB modifiable. To identify which parameters can be modified for a PDB, the ISPDB_MODIFIABLE column in the V$SYSTEM_PARAMETER or V$PARAMETER views must be TRUE.
+
+- How can I set a parameter to only one of my RAC PDB instances ?
+If you want to set different values for the same parameter to the RAC instances you need to add the SID clause, just like you would do in a normal not mutitenant DB, the only difference is that the SID provided is the SID of the multitenant DB:
+ALTER SESSION SET CONTAINER = PDBP1;
+alter system set open_cursors=150 comment='setting open_cursors to RAC instance 1 from PDBP1' scope=spfile sid='CBD_PRD1';
+alter system set open_cursors=250 comment='setting open_cursors to RAC instance 2 from PDBP1' scope=spfile sid='CBD_PRD2';
+
+Please note that we are executing the command while connected to the PDBP1 container.
+
+- Changing a parameter for an standby PDB fails, How can I set a parameter to the standby database ?
+Since the parameters for a PDB are stored in the dictionary of the database, any change will be dissallowed because the standby DB is not opened in read-write mode.
+Starting with 12.1.0.2 there is a syntax enhancement to execute an ALTER SYSTEM SET statement with a DB_UNIQUE_NAME clause.
+This clause provides a way to modify the system parameter with SCOPE=SPFILE inside the PDB on the primary database, but specify the db_unique_name of the standby database where the parameter value should really take effect. This approach ensures that the DML gets performed on the primary with the intention to take effect on the standby.
+From primary while connected to the correct container PDB execute:
+ALTER SESSION SET CONTAINER = PDBP1;
+alter system set open_cursors=150 comment='setting open_cursors to PDBP1 standby' scope=spfile db_unique_name='CDB_STBY';
+Please note the "...db_unique_name='CDB_STBY'..." in the syntax above, which specifies the db_unique_name of the standby database.
+
+If you want to set different values for the same parameter to the instances you need to add the SID clause, like this:
+alter system set open_cursors=150 comment='setting open_cursors to instance 1 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY1';
+alter system set open_cursors=250 comment='setting open_cursors to instance 2 from PDBP1 standby' scope=spfile db_unique_name='CDB_STBY' sid='CBD_STBY2';
+
+Please note that we are executing the command from primary DB while connected to the PDBP1 container DB and we need to specify both the db_unique_name and sid.
+Please also note that the SID is the sid of the multitenant standby DB.

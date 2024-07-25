@@ -1,0 +1,46 @@
+CREATE  procedure ESBLOG_TEST.drop_partition as
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   
+   SELECT  table_name, partition_name, HIGH_VALUE
+        FROM user_tab_partitions
+       WHERE  table_name IN ( 'MESSAGES_CARDV1_QUERY','MESSAGES_OSBV1_QUERY')
+       AND PARTITION_NAME NOT IN ('MESS_CARDV1_QUERY_P1','MESSAGES_OSBV1_QUERY_P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 35
+      THEN
+         cmd :='alter table '||  cc.table_name|| ' drop partition '|| cc.partition_name;
+         DBMS_OUTPUT.put_line (cmd);
+         execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'ESBLOG_TEST.JOB_DROP_PARTITION'
+      ,start_date      => TO_TIMESTAMP_TZ('2017/03/25 09:31:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,repeat_interval => 'FREQ=WEEKLY'
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'STORED_PROCEDURE'
+      ,job_action      => 'drop_partition'
+      ,comments        => 'Job to automatic drop 1-month-ago partition.'
+    );
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'ESBLOG_TEST.JOB_DROP_PARTITION');
+END;
+/

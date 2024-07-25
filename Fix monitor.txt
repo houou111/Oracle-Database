@@ -1,0 +1,48 @@
+### pedb ###
+-----------------------------------
+alter tablespace VW_DATA_TS add datafile '+DATA04' size 1G autoextend on next 1G; 
+alter tablespace VW_INDEX_TS add datafile '+DATA04' size 1G autoextend on next 1G; 
+
+
+
+### dbfs ###
+-----------------------------------
+alter tablespace DBFS_DIRECTS_TBS add datafile '+HST_DG' size 1G autoextend on next 1G; 
+alter tablespace OBIEE_TBS add datafile '+DBFS_DG' size 1G autoextend on next 1G; 
+
+
+
+### pcadb ###
+-----------------------------------
+alter tablespace ATOMICINFO_PART2016 add datafile '+DATA_DG' size 1G autoextend on next 1G; 
+
+
+
+
+### dwprd ###
+-----------------------------------
+alter tablespace USERS add datafile '+DATA_DG' size 1G autoextend on next 1G; 
+
+
+
+### pedb ###
+-----------------------------------
+
+
+
+
+### pedb ###
+-----------------------------------
+
+
+
+
+### pedb ###
+-----------------------------------
+
+
+
+
+
+### pedb ###
+-----------------------------------

@@ -1,0 +1,4 @@
+export ORACLE_HOME=/u01/app/oracle/product/12c/dbhome_1
+export ORACLE_SID=HNI1
+export PATH=/usr/bin:/usr/sbin/:$ORACLE_HOME/bin:$PATH
+export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK

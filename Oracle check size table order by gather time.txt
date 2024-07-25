@@ -1,0 +1,20 @@
+SELECT distinct a.owner,a.segment_name,bytes/1024/1024/1024 as "Size in GB", b.STATS_UPDATE_TIME
+FROM dba_segments a,DBA_TAB_STATS_HISTORY b
+WHERE a.owner=b.owner
+AND a.segment_type='TABLE'
+AND a.SEGMENT_NAME=b.table_name
+AND a.owner='INTELLECT'
+ORDER by b.STATS_UPDATE_TIME;
+
+
+SELECT distinct a.owner,a.segment_name,b.partition_name,bytes/1024/1024/1024 as "Size in GB", b.STATS_UPDATE_TIME
+FROM dba_segments a,DBA_TAB_STATS_HISTORY b
+WHERE a.owner=b.owner
+AND a.segment_type='TABLE PARTITION'
+AND a.SEGMENT_NAME=b.table_name
+and a.partition_name=b.partition_name
+AND a.owner='INTELLECT'
+ORDER by b.STATS_UPDATE_TIME;
+
+
+

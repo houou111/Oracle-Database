@@ -1,0 +1,74 @@
+I. Unplug the database
+------------------------------------------------------------------------------------------------
+1. Close PDB
+------------------------------
+sqlplus / as sysdba
+alter pluggable database PDBLDG close immediate instances=all;
+
+
+2. Unplug the closed PDB and then specify the path and name of the XML file.
+------------------------------
+alter pluggable database PDBLDG unplug into '/u01/dump/PDBLDG.xml';
+
+
+3. Drop the closed PDB and keep the data files.
+------------------------------
+drop pluggable database PDBLDG keep datafiles;
+
+
+4. Verify the status of the unplugged PDB.
+------------------------------
+show pdbs
+
+
+
+II. Prepare in source
+------------------------------------------------------------------------------------------------
+1. Check the compatiable (optional)
+------------------------------
+set serveroutput on
+DECLARE
+   compatible BOOLEAN := FALSE;
+BEGIN  
+   compatible := DBMS_PDB.CHECK_PLUG_COMPATIBILITY(
+        pdb_descr_file => '/u01/dump/PDBLDG.xml');
+   if compatible then
+      DBMS_OUTPUT.PUT_LINE('Is pluggable compatible? YES');
+   else DBMS_OUTPUT.PUT_LINE('Is pluggable compatible? NO');
+   end if;
+END;
+/
+
+
+2. Plugging the Unplugged PDB: NOCOPY Method
+------------------------------
+create pluggable database LAMDONG using '/u01/dump/PDBLDG.xml'
+NOCOPY
+TEMPFILE REUSE;
+
+show pdbs
+
+
+3. Plugging the Unplugged PDB: COPY Method
+------------------------------
+create pluggable database LAMDONG using '/u01/dump/PDBLDG.xml'
+COPY
+FILE_NAME_CONVERT=('+DATAC1/DUPCDB/','+DATAC1/NAMTRUNG/','+RECOC1/DUPCDB/','+RECOC1/NAMTRUNG/');
+
+select pdb_name, status from cdb_pdbs where pdb_name='LAMDONG';
+select open_mode from v$pdbs where name='LAMDONG';
+
+
+4. Plugging the Unplugged PDB: MOVE Method
+------------------------------
+create pluggable database LAMDONG
+AS CLONE using '/u01/dump/PDBLDG.xml'
+MOVE
+
+
+FILE_NAME_CONVERT=('+DATAC1/DUPCDB','+DATAC1/NAMTRUNG','+RECOC1/DUPCDB','+RECOC1/NAMTRUNG');
+
+select pdb_name, status from cdb_pdbs where pdb_name='LAMDONG';
+select open_mode from v$pdbs where name='LAMDONG';
+
+

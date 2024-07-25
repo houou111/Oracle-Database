@@ -1,0 +1,505 @@
+﻿Last unsuccessful login: Thu Mar 16 16:22:18 ICT 2017 on ssh from 10.98.4.166
+Last login: Tue Apr  4 11:09:54 ICT 2017 on /dev/pts/77 from 10.98.4.166
+This is asset of Techcombank, only permit authorized person. If you are accessing illegally, you will commit a criminal offence.
+[YOU HAVE NEW MAIL]
+[oracle@dr-esb-db01(/home/oracle)]$cd /tmp
+[oracle@dr-esb-db01(/tmp)]$ls -lrt|grep rman
+-rw-rw-rw-    1 root     system        16409 Mar 29 16:55 rman_esbinf1_DAILY_20170329_1650.log
+-rw-rw-rw-    1 root     system        32131 Mar 29 17:01 rman_esbdata2_DAILY_20170329_1650.log
+-rw-rw-rw-    1 root     system        15849 Mar 29 17:01 rman_esbinf2_DAILY_20170329_1650.log
+-rw-rw-rw-    1 root     system        29584 Mar 30 16:46 rman_esbinf1_DAILY_20170330_1623.log
+-rw-rw-rw-    1 root     system        80422 Mar 30 18:02 rman_esbinf1_DAILY_20170330_1656.log
+-rw-rw-rw-    1 root     system        28870 Mar 30 22:31 rman_esbdata2.log
+-rw-rw-rw-    1 root     system         1467 Mar 31 22:05 rman_esbdata2_DAILY_20170331_2205.log
+-rw-rw-rw-    1 root     system         9894 Mar 31 22:05 rman_esbinf1_DAILY_20170331_2200.log
+-rw-rw-rw-    1 root     system         1467 Mar 31 22:15 rman_esbdata2_DAILY_20170331_2215.log
+-rw-rw-rw-    1 root     system         1463 Apr 01 22:00 rman_esbdata2_DAILY_20170401_2200.log
+-rw-rw-rw-    1 root     system         1463 Apr 01 22:10 rman_esbdata2_DAILY_20170401_2210.log
+-rw-rw-rw-    1 root     system        13146 Apr 01 22:19 rman_esbinf1_DAILY_20170401_2205.log
+-rw-rw-rw-    1 root     system         1463 Apr 02 10:10 rman_esbdata2_DAILY_20170402_1010.log
+-rw-rw-rw-    1 root     system         1463 Apr 02 10:20 rman_esbdata2_DAILY_20170402_1020.log
+-rw-rw-rw-    1 root     system        19189 Apr 02 22:02 rman_esbinf1_DAILY_20170402_2200.log
+-rw-rw-rw-    1 root     system         1463 Apr 02 22:20 rman_esbdata2_DAILY_20170402_2220.log
+-rw-rw-rw-    1 root     system         1463 Apr 02 22:30 rman_esbdata2_DAILY_20170402_2230.log
+-rw-rw-rw-    1 root     system        18801 Apr 03 11:36 rman_esbdata2_DAILY_20170403_1009.log
+-rw-rw-rw-    1 root     system        19947 Apr 03 22:05 rman_esbinf1_DAILY_20170403_2200.log
+-rw-rw-rw-    1 root     system        25806 Apr 03 22:39 rman_esbdata2_DAILY_20170403_2200.log
+-rw-rw-rw-    1 root     system        15620 Apr 04 22:05 rman8083.log
+-rw-rw-rw-    1 root     system        19897 Apr 04 22:09 rman_esbinf1_DAILY_20170404_2205.log
+-rw-rw-rw-    1 root     system        28275 Apr 04 22:56 rman_esbdata2_DAILY_20170404_2205.log
+[oracle@dr-esb-db01(/tmp)]$more rman_esbdata2_DAILY_20170404_2205.log
+Script /home/oracle/esbdata2.sh
+==== started on Tue Apr 4 22:05:04 ICT 2017 ====
+
+[YOU HAVE NEW MAIL]
+
+Recovery Manager: Release 11.2.0.3.0 - Production on Tue Apr 4 22:05:04 2017
+
+Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: ESBDATA (DBID=458373748, not open)
+using target database control file instead of recovery catalog
+
+RMAN> RMAN> 
+RMAN> 2> 3> 4> 5> 6> 7> 8> 9> 10> 11> 12> 13> 14> 15> 16> 17> 18> 19> 20> 21> 22> 23> 24> 25> 26> 27> 28> 29> 30> 31> 32> 33> 34> 35> 36> 37> 38> RMAN> 2> 3> 4> 5> 6>
+ 7> 8> 9> 10> 11> 12> 13> 14> 15> 16> 17> 18> 19> 20> 21> 22> 23> 24> 25> 26> 27> 28> 29> 30> 31> 32> 33> 34> 35> 36> 37> 38> 
+old RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+new RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+new RMAN configuration parameters are successfully stored
+
+allocated channel: ch0
+channel ch0: SID=1427 instance=esbdata21 device type=SBT_TAPE
+channel ch0: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch1
+channel ch1: SID=1563 instance=esbdata22 device type=SBT_TAPE
+channel ch1: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch2
+channel ch2: SID=1710 instance=esbdata21 device type=SBT_TAPE
+channel ch2: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch3
+channel ch3: SID=1706 instance=esbdata22 device type=SBT_TAPE
+channel ch3: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch4
+channel ch4: SID=6 instance=esbdata21 device type=SBT_TAPE
+channel ch4: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch5
+channel ch5: SID=2133 instance=esbdata22 device type=SBT_TAPE
+channel ch5: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch6
+channel ch6: SID=291 instance=esbdata21 device type=SBT_TAPE
+channel ch6: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+allocated channel: ch7
+channel ch7: SID=145 instance=esbdata22 device type=SBT_TAPE
+channel ch7: Veritas NetBackup for Oracle - Release 7.6 (2014070701)
+
+sent command to channel: ch0
+sent command to channel: ch2
+sent command to channel: ch4
+sent command to channel: ch6
+sent command to channel: ch3
+sent command to channel: ch5
+sent command to channel: ch7
+sent command to channel: ch1
+
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_1_seq_4559.5634.940238259 RECID=2704 STAMP=940238283
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_1_seq_4560.908.940266759 RECID=2707 STAMP=940266768
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4561.4944.940325377 RECID=2711 STAMP=940325394
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4562.5926.940332295 RECID=2712 STAMP=940332301
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4563.5419.940348439 RECID=2715 STAMP=940348457
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4564.5652.940353341 RECID=2718 STAMP=940353345
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4565.5657.940354313 RECID=2722 STAMP=940354317
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_1_seq_4566.5685.940372409 RECID=2725 STAMP=940372425
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_1_seq_4567.5929.940417913 RECID=2728 STAMP=940417933
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_1_seq_4568.5900.940435815 RECID=2731 STAMP=940435833
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_1_seq_4569.875.940439891 RECID=2734 STAMP=940439898
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_1_seq_4570.5928.940440579 RECID=2738 STAMP=940440581
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_01/thread_2_seq_5239.6086.940183327 RECID=2702 STAMP=940183338
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5240.6035.940237633 RECID=2703 STAMP=940237654
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5241.4259.940262771 RECID=2705 STAMP=940262783
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5242.5642.940266537 RECID=2706 STAMP=940266550
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5243.5640.940266759 RECID=2708 STAMP=940266771
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5244.6032.940266933 RECID=2709 STAMP=940266944
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5245.5654.940322287 RECID=2710 STAMP=940322300
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5246.5653.940332297 RECID=2713 STAMP=940332310
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5247.6103.940346785 RECID=2714 STAMP=940346796
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5248.6091.940349355 RECID=2716 STAMP=940349372
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5249.6078.940352967 RECID=2717 STAMP=940352979
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5250.5426.940353339 RECID=2719 STAMP=940353355
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5251.5407.940353701 RECID=2720 STAMP=940353713
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5252.5622.940354003 RECID=2721 STAMP=940354018
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5253.918.940354311 RECID=2723 STAMP=940354327
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5254.5404.940355189 RECID=2724 STAMP=940355206
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_03/thread_2_seq_5255.6093.940372407 RECID=2726 STAMP=940372425
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5256.4775.940416313 RECID=2727 STAMP=940416329
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5257.5430.940432711 RECID=2729 STAMP=940432725
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5258.5975.940435731 RECID=2730 STAMP=940435745
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5259.5421.940439403 RECID=2732 STAMP=940439415
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5260.5895.940439667 RECID=2733 STAMP=940439686
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5261.4882.940439889 RECID=2735 STAMP=940439903
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5262.4261.940440119 RECID=2736 STAMP=940440138
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5263.4871.940440349 RECID=2737 STAMP=940440361
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5264.320.940440577 RECID=2739 STAMP=940440594
+validation succeeded for archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_04/thread_2_seq_5265.5647.940449061 RECID=2740 STAMP=940449076
+Crosschecked 39 objects
+
+
+specification does not match any archived log in the repository
+
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=+FRA01_DR/esbdata2/autobackup/2017_03_17/s_938861577.6084.938861579 RECID=5264 STAMP=938861578
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=+FRA01_DR/esbdata2/autobackup/2017_03_28/s_939774796.5648.939775451 RECID=5600 STAMP=939775451
+Crosschecked 2 objects
+
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qfs0ogs3_1_1 RECID=5706 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qbs0ogs2_1_1 RECID=5708 STAMP=940327810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qds0ogs2_1_1 RECID=5709 STAMP=940327810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qjs0ogs3_1_1 RECID=5713 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qls0ogs4_1_1 RECID=5715 STAMP=940327812
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qns0ogs4_1_1 RECID=5717 STAMP=940327812
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_q9s0ogs1_1_1 RECID=5718 STAMP=940327810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-00 RECID=5719 STAMP=940332267
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qus0ol8l_1_1 RECID=5721 STAMP=940332309
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qqs0ol8k_1_1 RECID=5724 STAMP=940332308
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qss0ol8k_1_1 RECID=5725 STAMP=940332308
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_r0s0ol8l_1_1 RECID=5726 STAMP=940332309
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=ctl_ESBDATA_20170403_r1s0olrd_1_1 RECID=5728 STAMP=940332910
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-01 RECID=5729 STAMP=940332936
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qhs0ogs3_1_1 RECID=5730 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-02 RECID=5731 STAMP=940333810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_ras0oncg_1_1 RECID=5733 STAMP=940334481
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r6s0oncg_1_1 RECID=5735 STAMP=940334480
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r8s0oncg_1_1 RECID=5736 STAMP=940334480
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r4s0oncf_1_1 RECID=5739 STAMP=940334479
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-03 RECID=5740 STAMP=940338807
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rfs0pqgk_1_1 RECID=5744 STAMP=940370452
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rjs0pqgl_1_1 RECID=5745 STAMP=940370453
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rhs0pqgk_1_1 RECID=5746 STAMP=940370453
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rds0pqgj_1_1 RECID=5748 STAMP=940370451
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-04 RECID=5749 STAMP=940372368
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_rqs0pse6_1_1 RECID=5750 STAMP=940372422
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_ros0pse5_1_1 RECID=5751 STAMP=940372421
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_rms0pse5_1_1 RECID=5753 STAMP=940372421
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=ctl_ESBDATA_20170403_rss0psni_1_1 RECID=5756 STAMP=940372723
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=c-458373748-20170403-05 RECID=5757 STAMP=940372749
+Crosschecked 31 objects
+
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qgs0ogs3_1_1 RECID=5705 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qes0ogs2_1_1 RECID=5707 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qcs0ogs2_1_1 RECID=5710 STAMP=940327810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qas0ogs2_1_1 RECID=5711 STAMP=940327810
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qms0ogs4_1_1 RECID=5712 STAMP=940327812
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qks0ogs3_1_1 RECID=5714 STAMP=940327812
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qis0ogs3_1_1 RECID=5716 STAMP=940327811
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qts0ol8k_1_1 RECID=5720 STAMP=940332309
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qrs0ol8k_1_1 RECID=5722 STAMP=940332308
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_qvs0ol8l_1_1 RECID=5723 STAMP=940332309
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_qos0ogs4_1_1 RECID=5727 STAMP=940327813
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rbs0onch_1_1 RECID=5732 STAMP=940334481
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r9s0oncg_1_1 RECID=5734 STAMP=940334480
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r7s0oncg_1_1 RECID=5737 STAMP=940334480
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_r5s0oncf_1_1 RECID=5738 STAMP=940334480
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rgs0pqgk_1_1 RECID=5741 STAMP=940370452
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_rks0pqgl_1_1 RECID=5742 STAMP=940370453
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_res0pqgj_1_1 RECID=5743 STAMP=940370452
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=data_ESBDATA_20170403_ris0pqgl_1_1 RECID=5747 STAMP=940370453
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_rns0pse5_1_1 RECID=5752 STAMP=940372421
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_rps0pse5_1_1 RECID=5754 STAMP=940372422
+crosschecked backup piece: found to be 'AVAILABLE'
+backup piece handle=arch_ESBDATA_20170403_rrs0pse6_1_1 RECID=5755 STAMP=940372422
+Crosschecked 22 objects
+
+
+specification does not match any backup in the repository
+
+Starting backup at 2017-04-04 22:05:54
+channel ch0: starting compressed incremental level 1 datafile backup set
+channel ch0: specifying datafile(s) in backup set
+input datafile file number=00008 name=+DATA01_DR/esbdata2/datafile/logtbs.410.922131449
+input datafile file number=00026 name=+DATA01_DR/esbdata2/datafile/logtbs.393.933848751
+input datafile file number=00004 name=+DATA01_DR/esbdata2/datafile/users.317.922131517
+input datafile file number=00014 name=+DATA01_DR/esbdata2/datafile/users.318.922131585
+channel ch0: starting piece 1 at 2017-04-04 22:05:57
+channel ch1: starting compressed incremental level 1 datafile backup set
+channel ch1: specifying datafile(s) in backup set
+input datafile file number=00009 name=+DATA01_DR/esbdata2/datafile/logtbs.335.922131449
+input datafile file number=00027 name=+DATA01_DR/esbdata2/datafile/logtbs.388.933848757
+input datafile file number=00021 name=+DATA01_DR/esbdata2/datafile/log_tbs.331.922131637
+input datafile file number=00024 name=+DATA01_DR/esbdata2/datafile/logtbs.325.922131627
+channel ch1: starting piece 1 at 2017-04-04 22:05:57
+channel ch2: starting compressed incremental level 1 datafile backup set
+channel ch2: specifying datafile(s) in backup set
+input datafile file number=00010 name=+DATA01_DR/esbdata2/datafile/logtbs.319.922131449
+input datafile file number=00028 name=+DATA01_DR/esbdata2/datafile/logtbs.392.933848761
+input datafile file number=00019 name=+DATA01_DR/esbdata2/datafile/log_tbs.324.922131621
+input datafile file number=00020 name=+DATA01_DR/esbdata2/datafile/log_tbs.326.922131637
+channel ch2: starting piece 1 at 2017-04-04 22:05:57
+channel ch3: starting compressed incremental level 1 datafile backup set
+channel ch3: specifying datafile(s) in backup set
+input datafile file number=00011 name=+DATA01_DR/esbdata2/datafile/users.377.922131587
+input datafile file number=00003 name=+DATA01_DR/esbdata2/datafile/undotbs1.321.922131585
+input datafile file number=00017 name=+DATA01_DR/esbdata2/datafile/log_tbs.339.922131621
+input datafile file number=00018 name=+DATA01_DR/esbdata2/datafile/log_tbs.314.922131621
+channel ch3: starting piece 1 at 2017-04-04 22:05:57
+channel ch4: starting compressed incremental level 1 datafile backup set
+channel ch4: specifying datafile(s) in backup set
+input datafile file number=00012 name=+DATA01_DR/esbdata2/datafile/logtbs.380.922131449
+input datafile file number=00029 name=+DATA01_DR/esbdata2/datafile/logtbs.387.933848763
+input datafile file number=00015 name=+DATA01_DR/esbdata2/datafile/log_tbs.296.922131619
+input datafile file number=00016 name=+DATA01_DR/esbdata2/datafile/log_tbs.340.922131619
+channel ch4: starting piece 1 at 2017-04-04 22:05:58
+channel ch5: starting compressed incremental level 1 datafile backup set
+channel ch5: specifying datafile(s) in backup set
+input datafile file number=00013 name=+DATA01_DR/esbdata2/datafile/logtbs.316.922131515
+input datafile file number=00005 name=+DATA01_DR/esbdata2/datafile/undotbs2.320.922131583
+input datafile file number=00006 name=+DATA01_DR/esbdata2/datafile/log_tbs.409.922131617
+input datafile file number=00007 name=+DATA01_DR/esbdata2/datafile/log_tbs.297.922131619
+channel ch5: starting piece 1 at 2017-04-04 22:05:58
+channel ch6: starting compressed incremental level 1 datafile backup set
+channel ch6: specifying datafile(s) in backup set
+input datafile file number=00023 name=+DATA01_DR/esbdata2/datafile/logtbs.337.922131513
+input datafile file number=00002 name=+DATA01_DR/esbdata2/datafile/sysaux.378.922131607
+input datafile file number=00030 name=+DATA01_DR/esbdata2/datafile/users.389.933848805
+input datafile file number=00032 name=+DATA01_DR/esbdata2/datafile/users.391.933848813
+channel ch6: starting piece 1 at 2017-04-04 22:05:58
+channel ch7: starting compressed incremental level 1 datafile backup set
+channel ch7: specifying datafile(s) in backup set
+input datafile file number=00022 name=+DATA01_DR/esbdata2/datafile/logtbs.336.922131515
+input datafile file number=00025 name=+DATA01_DR/esbdata2/datafile/users.379.924621059
+input datafile file number=00031 name=+DATA01_DR/esbdata2/datafile/users.390.933848811
+input datafile file number=00001 name=+DATA01_DR/esbdata2/datafile/system.408.922131613
+channel ch7: starting piece 1 at 2017-04-04 22:05:58
+channel ch3: finished piece 1 at 2017-04-04 22:24:20
+piece handle=data_ESBDATA_20170404_s1s0sf65_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch3: backup set complete, elapsed time: 00:18:23
+channel ch1: finished piece 1 at 2017-04-04 22:30:42
+piece handle=data_ESBDATA_20170404_rvs0sf65_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch1: backup set complete, elapsed time: 00:24:45
+channel ch6: finished piece 1 at 2017-04-04 22:31:12
+piece handle=data_ESBDATA_20170404_s4s0sf66_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch6: backup set complete, elapsed time: 00:25:14
+channel ch2: finished piece 1 at 2017-04-04 22:31:22
+piece handle=data_ESBDATA_20170404_s0s0sf65_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch2: backup set complete, elapsed time: 00:25:25
+channel ch4: finished piece 1 at 2017-04-04 22:31:22
+piece handle=data_ESBDATA_20170404_s2s0sf65_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch4: backup set complete, elapsed time: 00:25:24
+channel ch5: finished piece 1 at 2017-04-04 22:31:42
+piece handle=data_ESBDATA_20170404_s3s0sf66_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch5: backup set complete, elapsed time: 00:25:44
+channel ch0: finished piece 1 at 2017-04-04 22:35:43
+piece handle=data_ESBDATA_20170404_rus0sf64_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch0: backup set complete, elapsed time: 00:29:46
+channel ch7: finished piece 1 at 2017-04-04 22:45:34
+piece handle=data_ESBDATA_20170404_s5s0sf66_1_1 tag=DATA_LV1 comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch7: backup set complete, elapsed time: 00:39:36
+Finished backup at 2017-04-04 22:45:34
+
+Starting Control File and SPFILE Autobackup at 2017-04-04 22:45:34
+piece handle=c-458373748-20170404-00 comment=API Version 2.0,MMS Version 5.0.0.0
+Finished Control File and SPFILE Autobackup at 2017-04-04 22:46:10
+
+
+System altered.
+
+host command complete
+
+Starting backup at 2017-04-04 22:46:29
+skipping archived logs of thread 1 from sequence 4559 to 4565; already backed up
+skipping archived logs of thread 2 from sequence 5239 to 5254; already backed up
+channel ch0: starting compressed archived log backup set
+channel ch0: specifying archived log(s) in backup set
+input archived log thread=1 sequence=4566 RECID=2725 STAMP=940372425
+input archived log thread=2 sequence=5255 RECID=2726 STAMP=940372425
+input archived log thread=2 sequence=5256 RECID=2727 STAMP=940416329
+channel ch0: starting piece 1 at 2017-04-04 22:46:34
+channel ch1: starting compressed archived log backup set
+channel ch1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=4567 RECID=2728 STAMP=940417933
+input archived log thread=2 sequence=5257 RECID=2729 STAMP=940432725
+input archived log thread=1 sequence=4568 RECID=2731 STAMP=940435833
+channel ch1: starting piece 1 at 2017-04-04 22:46:34
+channel ch2: starting compressed archived log backup set
+channel ch2: specifying archived log(s) in backup set
+input archived log thread=2 sequence=5258 RECID=2730 STAMP=940435745
+input archived log thread=2 sequence=5259 RECID=2732 STAMP=940439415
+input archived log thread=1 sequence=4569 RECID=2734 STAMP=940439898
+channel ch2: starting piece 1 at 2017-04-04 22:46:35
+channel ch3: starting compressed archived log backup set
+channel ch3: specifying archived log(s) in backup set
+input archived log thread=2 sequence=5260 RECID=2733 STAMP=940439686
+input archived log thread=2 sequence=5261 RECID=2735 STAMP=940439903
+input archived log thread=2 sequence=5262 RECID=2736 STAMP=940440138
+channel ch3: starting piece 1 at 2017-04-04 22:46:35
+channel ch4: starting compressed archived log backup set
+channel ch4: specifying archived log(s) in backup set
+input archived log thread=1 sequence=4570 RECID=2738 STAMP=940440581
+input archived log thread=2 sequence=5263 RECID=2737 STAMP=940440361
+input archived log thread=2 sequence=5264 RECID=2739 STAMP=940440594
+channel ch4: starting piece 1 at 2017-04-04 22:46:36
+channel ch5: starting compressed archived log backup set
+channel ch5: specifying archived log(s) in backup set
+input archived log thread=2 sequence=5265 RECID=2740 STAMP=940449076
+input archived log thread=2 sequence=5266 RECID=2741 STAMP=940459584
+channel ch5: starting piece 1 at 2017-04-04 22:46:36
+channel ch5: finished piece 1 at 2017-04-04 22:49:52
+piece handle=arch_ESBDATA_20170404_sks0shic_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch5: backup set complete, elapsed time: 00:03:16
+channel ch2: finished piece 1 at 2017-04-04 22:51:42
+piece handle=arch_ESBDATA_20170404_shs0shia_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch2: backup set complete, elapsed time: 00:05:07
+channel ch4: finished piece 1 at 2017-04-04 22:51:42
+piece handle=arch_ESBDATA_20170404_sjs0shib_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch4: backup set complete, elapsed time: 00:05:06
+channel ch0: finished piece 1 at 2017-04-04 22:53:02
+piece handle=arch_ESBDATA_20170404_sfs0shia_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch0: backup set complete, elapsed time: 00:06:28
+channel ch1: finished piece 1 at 2017-04-04 22:53:42
+piece handle=arch_ESBDATA_20170404_sgs0shia_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch1: backup set complete, elapsed time: 00:07:08
+channel ch3: finished piece 1 at 2017-04-04 22:55:13
+piece handle=arch_ESBDATA_20170404_sis0shib_1_1 tag=ARCH comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch3: backup set complete, elapsed time: 00:08:38
+Finished backup at 2017-04-04 22:55:13
+
+Starting backup at 2017-04-04 22:55:15
+channel ch0: starting compressed full datafile backup set
+channel ch0: specifying datafile(s) in backup set
+including current control file in backup set
+channel ch0: starting piece 1 at 2017-04-04 22:55:16
+channel ch0: finished piece 1 at 2017-04-04 22:55:51
+piece handle=ctl_ESBDATA_20170404_sms0si2j_1_1 tag=CTRL comment=API Version 2.0,MMS Version 5.0.0.0
+channel ch0: backup set complete, elapsed time: 00:00:35
+Finished backup at 2017-04-04 22:55:51
+
+Starting Control File and SPFILE Autobackup at 2017-04-04 22:55:52
+piece handle=c-458373748-20170404-02 comment=API Version 2.0,MMS Version 5.0.0.0
+Finished Control File and SPFILE Autobackup at 2017-04-04 22:56:17
+
+List of Archived Log Copies for database with db_unique_name ESBDATA2
+=====================================================================
+
+Key     Thrd Seq     S Low Time           
+------- ---- ------- - -------------------
+2704    1    4559    A 2017-04-01 17:25:06
+        Name: +FRA01_DR/esbdata2/archivelog/2017_04_02/thread_1_seq_4559.5634.940238259
+
+2702    2    5239    A 2017-04-01 17:25:05
+        Name: +FRA01_DR/esbdata2/archivelog/2017_04_01/thread_2_seq_5239.6086.940183327
+
+2703    2    5240    A 2017-04-01 18:02:06
+        Name: +FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5240.6035.940237633
+
+deleted archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_1_seq_4559.5634.940238259 RECID=2704 STAMP=940238283
+deleted archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_01/thread_2_seq_5239.6086.940183327 RECID=2702 STAMP=940183338
+deleted archived log
+archived log file name=+FRA01_DR/esbdata2/archivelog/2017_04_02/thread_2_seq_5240.6035.940237633 RECID=2703 STAMP=940237654
+Deleted 3 objects
+
+
+released channel: ch0
+
+released channel: ch1
+
+released channel: ch2
+
+released channel: ch3
+
+released channel: ch4
+
+released channel: ch5
+
+released channel: ch6
+
+released channel: ch7
+
+RMAN> RMAN> 
+
+Recovery Manager complete.
+
+Script /home/oracle/esbdata2.sh
+==== ended successfully on Tue Apr 4 22:56:23 ICT 2017 ====
+[oracle@dr-esb-db01(/tmp)]$
+[oracle@dr-esb-db01(/tmp)]$

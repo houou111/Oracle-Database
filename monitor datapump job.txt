@@ -1,0 +1,169 @@
+How To Monitor The Progress Of Datapump Jobs (Doc ID 1471766.1)
+Finding Out The Current SQL Statement A Data Pump Process Is Executing (Doc ID 1528301.1)
+
+1. Monitor datapump_jobs
+------------------------------------
+set lines 200
+set pages 200
+col OWNER_NAME for a10
+col JOB_NAME for a10
+col OPERATION for a10
+col JOB_MODE for a10
+col STATE for a10
+select * from dba_datapump_jobs;
+
+
+2. Monitor datapump_jobs detaile
+------------------------------------
+set lines 200
+set pages 200
+SELECT sl.sid, sl.serial#, sl.sofar, sl.totalwork, dp.owner_name, dp.state, dp.job_mode
+FROM v$session_longops sl, v$datapump_job dp
+WHERE sl.opname = dp.job_name
+AND sl.sofar != sl.totalwork;
+
+Or
+
+set lines 200
+set pages 200
+SQL> SELECT sl.sid, sl.serial#, sl.sofar, sl.MESSAGE,sl.totalwork, dp.owner_name, dp.state, dp.job_mode
+FROM v$session_longops sl, v$datapump_job dp
+WHERE sl.opname = dp.job_name 2 3 ;
+
+
+3. Monitor datapump_jobs detaile
+------------------------------------
+set lines 150 pages 100 numwidth 7
+col program for a38
+col username for a10
+col spid for a7
+select to_char (sysdate,'YYYY-MM-DD HH24:MI:SS') "DATE", s.program, s.sid,  
+       s.status, s.username, d.job_name, p.spid, s.serial#, p.pid  
+from   v$session s, v$process p, dba_datapump_sessions d
+where  p.addr=s.paddr and s.saddr=d.saddr;
+
+Sample output:
+DATE                  PROGRAM                                  STATUS    USERNAME     JOB_NAME                 SPID
+--------------------- ---------------------------------------- --------- ------------ ------------------------ -------
+2013-02-12 15:05:22   oracle@celclnx14.us.oracle.com (DW00)    ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32341
+2013-02-12 15:05:22   oracle@celclnx14.us.oracle.com (DM00)    ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32152
+2013-02-12 15:05:22   ude@celclnx14.us.oracle.com (TNS V1-V3   ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32148
+
+
+		 
+		 
+Finding Out The Current SQL Statement A Data Pump Process Is Executing (Doc ID 1528301.1)	To BottomTo Bottom	
+
+In this Document
+	Purpose
+	Troubleshooting Steps
+	References
+
+Applies to:
+Oracle Database - Enterprise Edition - Version 10.1.0.2 and later
+Information in this document applies to any platform.
+Purpose
+
+This script could be used as a first step in diagnosing a possible hung or slow Data Pump process. The script will dump the current sql statement the Data Pump Worker process is executing once every 10 minutes along with the current wait event the process is waiting for.
+
+The script should be executed only during periods of slowness or possible hanging scenarios. Otherwise, it has no value, since the current sql statement will be different each time a snapshot is taken as the process is neither slow or hung.
+Troubleshooting Steps
+
+ 1. Copy the following sql script in a directory and save it as dp_current_sql.sql file:
+spool current_sql.out
+
+oradebug setospid &spid
+
+select to_char (sysdate, 'YYYY-MM-DD HH24:MI:SS') from dual;
+
+oradebug current_sql
+break by 1;
+
+select w.event, w.wait_time,w.seconds_in_wait, w.p1,w.p2,w.p3
+from   v$session s, v$process p, v$session_wait w
+where  s.paddr=p.addr and s.module='Data Pump Worker' and s.sid=w.sid;
+
+exec DBMS_LOCK.SLEEP(600);
+
+select to_char (sysdate, 'YYYY-MM-DD HH24:MI:SS') from dual;
+
+oradebug current_sql
+break by 1;
+
+select w.event, w.wait_time,w.seconds_in_wait, w.p1,w.p2,w.p3
+from   v$session s, v$process p, v$session_wait w
+where  s.paddr=p.addr and s.module='Data Pump Worker' and s.sid=w.sid;
+
+exec DBMS_LOCK.SLEEP(600);
+
+select to_char (sysdate,'YYYY-MM-DD HH24:MI:SS') from dual;
+
+oradebug current_sql
+break by 1;
+
+select w.event, w.wait_time,w.seconds_in_wait, w.p1,w.p2,w.p3
+from   v$session s, v$process p, v$session_wait w
+where  s.paddr=p.addr and s.module='Data Pump Worker' and s.sid=w.sid;
+
+spool off;
+
+
+2. Connect to sqlplus AS SYSDBA user and obtain Data Pump process information using the following sql. Make note of the SPID value for the Data Pump Worker (DW00) process:
+set lines 150 pages 100 numwidth 7
+col program for a38
+col username for a10
+col spid for a7
+select to_char (sysdate,'YYYY-MM-DD HH24:MI:SS') "DATE", s.program, s.sid,  
+       s.status, s.username, d.job_name, p.spid, s.serial#, p.pid  
+from   v$session s, v$process p, dba_datapump_sessions d
+where  p.addr=s.paddr and s.saddr=d.saddr;
+
+
+Sample output:
+DATE                  PROGRAM                                  STATUS    USERNAME     JOB_NAME                 SPID
+--------------------- ---------------------------------------- --------- ------------ ------------------------ -------
+2013-02-12 15:05:22   oracle@celclnx14.us.oracle.com (DW00)    ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32341
+2013-02-12 15:05:22   oracle@celclnx14.us.oracle.com (DM00)    ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32152
+2013-02-12 15:05:22   ude@celclnx14.us.oracle.com (TNS V1-V3   ACTIVE    SYSTEM       SYS_EXPORT_FULL_03         32148
+
+
+3. At the point when you notice that the Data Pump job is too slow or is hung, and ONLY THEN, execute the dp_current_sql.sql file saved in step #1. Please note that if you run the script when the slowness of hang is not happening, running the script has no value. When prompted, enter the SPID obtained in step #2 above:
+SQL> @dp_current_sql.sql
+Enter value for spid:         << Enter SPID obtained in step #2 above
+
+
+4. When the script completes, upload the spool file created named current_sql.out to the SR via My Oracle Support (MOS).
+
+Note 1:
+
+If the current sql statement is different from snapshot to snapshot, then Data Pump process is running fine and is neither hung or slow.
+
+Note 2:
+If the same current sql statement is reported in all the snapshots, then we could assume that the process is either hung or running very slow in that particular sql statement. In that case, use the current sql statement to do a search for any known issues or bugs that have been reported for the same or similar statements to see if it is a known issue. The best way to do this would be to find the table(s) in the statement FROM clause and search in MOS Search for any known issue with Data Pump and the table(s) involved.
+
+For example, let's say we identify the following sql statement as being too slow or hung:
+--  Oracle pid: 27, Unix process pid: 24498, image: oracle@celclnx14.us.oracle.com (DW00)
+
+TO_CHAR(SYSDATE,'YY
+-------------------
+2013-02-11 19:18:47
+
+SELECT /*+all_rows*/ SYS_XMLGEN(VALUE(KU$), XMLFORMAT.createFormat2('TABLE_T', '7')), KU$.OBJ_NUM ,KU$.ANC_OBJ.NAME ,KU$.ANC_OBJ.OWNER_NAME ,KU$.ANC_OBJ.TYPE_NAME ,KU$.BASE_OBJ.NAME ,KU$.BASE_OBJ.OWNER_NAME ,KU$.BASE_OBJ.TYPE_NAME ,KU$.SPARE1 ,KU$.TSTZ_COLS ,KU$.XMLSCHEMACOLS ,KU$.SCHEMA_OBJ.NAME ,KU$.SCHEMA_OBJ.NAME ,'TABLE' ,KU$.PARENT_OBJ.NAME ,KU$.PARENT_OBJ.OWNER_NAME ,KU$.PROPERTY ,KU$.REFPAR_LEVEL ,KU$.SCHEMA_OBJ.OWNER_NAME ,KU$.TS_NAME ,KU$.TRIGFLAG FROM SYS.KU$_IOTABLE_VIEW KU$ WHERE NOT (BITAND (KU$.PROPERTY,8192)=8192) AND  NOT BITAND(KU$.SCHEMA_OBJ.FLAGS,128)!=0 AND   KU$.OBJ_NUM IN (SELECT * FROM TABLE(DBMS_METADATA.FETCH_OBJNUMS(200001))) AND  (BITAND(KU$.FLAGS,536870912)=0)
+
+EVENT                                      WAIT_TIME    SECONDS_IN_WAIT       P1      P2       P3
+------------------------------------------ ------------ --------------------- ------- -------- -------
+direct path write                                    -1                     8       1   100195       8
+
+PL/SQL procedure successfully completed.
+
+
+In this case, we find out that the table(s) in the FROM clause is the following:
+SYS.KU$_IOTABLE_VIEW KU$
+
+We could then do a search for keywords like the following:
+Data Pump slow SYS.KU$_IOTABLE_VIEW KU$
+
+
+Note 3:
+The same could be said for the specific wait event the process is waiting for. In the above example, we could search for keywords like:
+Data Pump slow 'direct path write'

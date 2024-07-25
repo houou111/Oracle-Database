@@ -1,0 +1,27 @@
+/u01/app/11.2.0/grid/deinstall/sshUserSetup.sh -user oraem -hosts "dw01db01 dw01db02" -noPromptPassphrase
+
+
+/u01/app/grid/product/11.2.0/crs/deinstall/sshUserSetup.sh -user oracle -hosts "dr-card-db-01 dr-card-db-02" -noPromptPassphrase
+
+
+/u01/app/12.2.0.1/grid/deinstall/sshUserSetup.sh -user root -hosts "dw01db01 dw01cel01 dw01cel02 dw01cel03" -noPromptPassphrase
+
+scp authorized_keys dw02ecel01:/root/.ssh/
+scp authorized_keys dw02ecel02:/root/.ssh/
+scp authorized_keys dw02ecel03:/root/.ssh/
+scp authorized_keys dw02ecel04:/root/.ssh/
+
+
+
+/u01/app/11.2.0/grid/deinstall/sshUserSetup.sh	-user oracle -hosts "dw02db01 dw02db02" -noPromptPassphrase
+
+
+
+db#Chivas#123
+
+
+
+$ORACLE_HOME/deinstall/sshUserSetup.sh	-user oracle -hosts "ho-2f-g2db-01 ho-2f-g2db-02" -noPromptPassphrase
+
+
+Ssi_1234

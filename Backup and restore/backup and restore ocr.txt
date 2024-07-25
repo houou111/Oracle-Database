@@ -1,0 +1,91 @@
+1. Automatic OCR Backup
+-------------------------------------------------------------------
+OCR is automatically backed up physically
+
+Every four hours
+At the end of every day
+At the end of every week
+To check current location of automatic backup of OCR:
+
+[root@rac1 crs]# ocrconfig –showbackup
+rac1     2009/06/07 14:58:31     /apps/oracle/clusterware/product/10.2.0/crs/cdata/crs
+
+rac1     2009/06/07 10:58:30     /apps/oracle/clusterware/product/10.2.0/crs/cdata/crs
+
+rac1     2009/06/07 06:58:29     /apps/oracle/clusterware/product/10.2.0/crs/cdata/crs
+
+rac1     2009/06/06 22:58:27     /apps/oracle/clusterware/product/10.2.0/crs/cdata/crs
+
+rac2     2009/05/31 05:46:11     /apps/oracle/clusterware/product/10.2.0/crs/cdata/crs
+
+_____________
+
+[root@rac1] cd $ORA_CRS_HOME /cdata/crs
+List the existing backup
+
+[root@rac1 crs]# ls -lst
+total 27804
+5032 -rw-r–r–  1 root root 5140480 Jun  7 14:58 backup00.ocr
+5032 -rw-r–r–  1 root root 5140480 Jun  7 10:58 backup01.ocr
+5032 -rw-r–r–  1 root root 5140480 Jun  7 06:58 backup02.ocr
+4236 -rw-r–r–  1 root root 4325376 Jun  7 02:58 day_.ocr
+4236 -rw-r–r–  1 root root 4325376 Jun  7 02:58 week_.ocr
+4236 -rw-r–r–  1 root root 4325376 Jun  6 22:58 day.ocr
+.
+
+
+
+2. Restoring OCR from automatic backup
+-------------------------------------------------------------------
+Stop oracle clusterware on each node
+[root@rac1]# crsctl stop crs
+Identify the most recent backup
+[root@rac1 crs]# ocrconfig -showbackup
+Restore the backup file
+[root@rac1 crs]# ocrconfig –restore <file_name>
+For example , to restore most recent backup
+[root@rac1 crs]# ocrconfig –restore $ORA_CRS_HOME/cdata/crs/backup00.ocr
+Now verify the restore operation
+root@rac1]# cluvfy comp ocr –n all
+
+Now restart Oracle clusterware on each node
+root@rac1]# crsctl start crs
+
+
+
+3. Manual OCR backup: 
+-------------------------------------------------------------------
+You can take logical backup of OCR using export and can restore it using import command.
+
+Stop clusterware on every node.
+root@rac1]# crsctl stop crs
+
+Export the OCR to specified location using this command.
+root@rac1]# ocrconfig – export <path_ name>
+
+For example:
+root@rac1]# ocrconfig – export /home/oracle/ocr
+
+Finally restart clusterware on every node
+root@rac1]# crsctl start crs
+
+.
+
+4.Recover OCR using physical backup: 
+-------------------------------------------------------------------
+To restore content on OCR file use import option of ocrconfig command.
+
+First, stop the clusterware on every node.
+root@rac1]# crsctl stop crs
+
+Export the OCR to specified location using this command.
+root@rac1]# ocrconfig –import <path_ name>
+
+For example:
+root@rac1]# ocrconfig –import /home/oracle/ocr
+
+Then run oracle clusterware verification utility to check the integrity of OCR
+root@rac1]# cluvfy comp ocr –n all
+
+Finally restart clusterware on every node
+root@rac1]# crsctl start crs

@@ -1,0 +1,49 @@
+set lines 200
+set pages 200
+
+prompt ****Check dblinks
+col OWNER for a20
+col DB_LINK for a20
+col USERNAME for a20
+col HOST for a50
+col CREATED for a10
+select * from dba_db_links;
+
+set lines 1000
+column userid format a15
+column ntimestamp# format a30
+column sqltext format a40
+column comment$text format a200
+select userid, ntimestamp#, sqltext, comment$text from aud$ where comment$text like '%DBLINK%';
+
+
+prompt ****Scheduler job fail
+SELECT distinct owner,job_name,operation,status FROM dba_scheduler_job_log
+where  OPERATION='RUN'
+AND STATUS='FAILED'
+AND Log_date < to_date ('2019/09/01', 'YYYY/MM/DD')
+order by 2;
+
+
+prompt ****Check invalid object
+SELECT owner, object_type, object_name
+FROM dba_objects
+WHERE status = 'INVALID'
+
+
+prompt ****Check HWM table
+set lines 200
+set pages 200
+col owner for a15
+col table_name for a30
+col "Fragmented size (mb)" for 999,999.00
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2) "Reclaim size (mb)",
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "Reclaimable space % " 
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS')
+order by 1,6 desc;

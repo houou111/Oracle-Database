@@ -1,0 +1,1735 @@
+Thu Jan 10 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 10 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717621 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717621',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717622 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717622',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717620 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717620',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717610 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717610',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717623 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717623',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717616 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717616',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717618 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717618',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717612 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717612',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717617 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717617',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717619 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717619',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717605 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717605',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717603 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717603',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717614 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717614',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717604 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717604',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717606 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717606',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717608 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717608',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717613 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717613',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717601 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717601',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717602 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717602',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717625 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717625',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717626 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717626',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717615 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717615',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717611 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717611',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717624 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717624',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717607 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717607',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_1416 MOVE PARTITION SYS_P717609 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_1416',PartName =>'SYS_P717609',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717595 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717595',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717596 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717596',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717593 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717593',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717592 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717592',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717594 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717594',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717591 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717591',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717597 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717597',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717598 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717598',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717599 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717599',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P717600 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P717600',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:15:13.00
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan 11 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 11 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.89
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 12 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 12 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P718777 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P718777',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P718842 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P718842',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P718850 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P718850',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P718818 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P718818',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P718843 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P718843',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P718851 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P718851',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:02:59.99
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan 13 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 13 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:16.21
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan 14 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 14 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:15.53
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan 15 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 15 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.11
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 19 16:00:02 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 19 16:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:16.01
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 26 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 26 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:15.26
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan 27 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 27 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:16.16
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb  2 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 2 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P726794 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P726794',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:36.71
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb  3 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 3 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.39
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb  9 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 9 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:15.16
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 10 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 10 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.41
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb 16 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 16 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:15.41
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 17 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 17 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.53
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb 23 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 23 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:16.03
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 24 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 24 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.92
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar  2 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 2 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P734490 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P734490',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:38.32
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar  3 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 3 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.60
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar  9 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 9 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:14.39
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 10 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 10 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:15.61
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 16 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 16 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P745029 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P745029',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P745067 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P745067',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P745030 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P745030',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P745068 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P745068',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:02:08.51
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 17 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 17 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.43
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 23 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 23 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:01.62
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 24 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 24 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:01.91
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 30 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 30 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P750291 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P750291',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P750290 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P750290',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P750290 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P750292 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P750292',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P750292 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P750293 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P750293',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P750293 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P750295 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P750295',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P750295 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P750297 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P750297',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P750298 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P750298',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P750298 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P750298 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P750276 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P750276',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P750276 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P750296 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P750296',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P750296 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P750296 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P750294 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P750294',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P750294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P750294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P750294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P750294 TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:22:53.12
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 31 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 31 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr  6 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 6 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P752410 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P752410',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P752411 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P752411',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P753047 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P753047',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P753045 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P753045',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P753045 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P753071 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P753071',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P753071 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P753072 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P753072',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P753072 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P753049 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P753049',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P753049 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P753074 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P753074',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P753090 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P753090',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P753090 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P753090 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P753046 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P753046',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P753046 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P753073 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P753073',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P753073 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P753073 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P753048 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P753048',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P753048 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P753048 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P753048 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P753048 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P751741 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P751741',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:09:21.05
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr  7 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 7 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.20
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 13 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 13 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P754292 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P754292',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P754291 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P754291',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P755050 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P755050',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P754291 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P755050 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P754293 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P754293',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P754293 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P754295 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P754295',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P754295 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P754296 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P754296',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P754296 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P754298 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P754298',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P754297 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P754297',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P754297 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P754297 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P754310 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P754310',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P755070 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P755070',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P754310 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P755070 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P754311 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P754311',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P754311 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P754311 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P754294 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P754294',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P754294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P754294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P754294 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P754294 TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:10:46.50
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 14 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 14 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.20
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 20 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 20 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P757910 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P757910',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P757911 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P757911',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P757911 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P757849 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P757849',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P757849 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P757930 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P757930',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P757930 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P757913 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P757913',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P757931 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P757931',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P757931 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P757931 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P757912 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P757912',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P757912 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P757912 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P757912 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P757912 TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:11:06.87
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 21 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 21 14:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.93
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 27 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 27 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:21.12
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 28 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 28 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:24.80
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May  4 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 4 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P762413 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P762413',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:38.19
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May  5 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 5 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:16.02
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 11 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 11 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.64
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 12 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 12 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:17.91
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 18 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 18 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P766750 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P766750',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P766751 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P766751',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:41.15
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 19 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 19 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.63
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 25 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 25 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.62
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 26 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 26 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.22
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun  1 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 1 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:17.76
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun  2 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 2 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P771551 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P771551',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:43.70
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun  8 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 8 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P772350 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P772350',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P772351 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P772351',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:49.88
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun  9 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 9 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.38
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 15 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 15 14:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P775090 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P775090',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P775324 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P775324',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P775324 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P775090 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P775091 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P775091',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P775330 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P775330',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P775330 TABLESPACE EDW_STG_TBS PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P775091 TABLESPACE EDW_STG_TBS PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:04:16.48
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 16 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 16 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 22 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 22 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:20.75
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 23 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 23 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.75
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 29 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 29 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.88
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 30 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 30 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.58
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jul  6 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jul 6 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P782550 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P782550',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P782550 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P782570 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P782570',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P782570 TABLESPACE EDW_STG_TBS PARALLEL 4
+ALTER TABLE EDW_STG.T_TBL_CU_0011_EB_ST_CST MOVE PARTITION SYS_P782158 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'T_TBL_CU_0011_EB_ST_CST',PartName =>'SYS_P782158',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:05:00.14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jul  7 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jul 7 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P783450 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P783450',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P783451 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P783451',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:41.51
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jul 13 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jul 13 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.71
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jul 14 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jul 14 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+      FROM dba_tables a, dba_users b
+                         *
+ERROR at line 9:
+ORA-06550: line 9, column 26:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 8, column 7:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 17, column 69:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 15, column 14:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 27, column 14:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 26, column 9:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 33, column 33:
+PLS-00364: loop index variable 'V_TAB' use is invalid
+ORA-06550: line 33, column 10:
+PL/SQL: Statement ignored
+ORA-06550: line 39, column 67:
+PLS-00364: loop index variable 'V_TAB' use is invalid
+ORA-06550: line 39, column 9:
+PL/SQL: Statement ignored
+ORA-06550: line 48, column 24:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 47, column 17:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 55, column 38:
+PLS-00364: loop index variable 'C_INDEX' use is invalid
+ORA-06550: line 55, column 13:
+PL/SQL: Statement ignored
+ORA-06550: line 64, column 24:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 63, column 17:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 68, column 38:
+PLS-00364: loop index variable 'C_INDEX' use is invalid
+ORA-06550: line 68, column 13:
+PL/SQL: Statement ignored
+
+
+Elapsed: 00:00:00.01
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options

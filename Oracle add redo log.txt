@@ -1,0 +1,97 @@
+
+
+alter database add logfile thread 1 group 111 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 1 group 112 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 1 group 113 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 1 group 114 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 2 group 211 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 2 group 212 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 2 group 213 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 2 group 214 ('+DATA','+FRA') size 2G;
+
+alter database add logfile thread 3 group 311 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 3 group 312 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 3 group 313 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 3 group 314 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 4 group 411 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 4 group 412 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 4 group 413 ('+DATA','+FRA') size 2G;
+alter database add logfile thread 4 group 414 ('+DATA','+FRA') size 2G;
+
+
+
+/u01/app/oracle/oradata/oradb/redo01.log
+
+/home/oracle/app/oracle/oradata/oradb/redo01.log
+
+
+alter database add logfile thread 1 group 11 ('/u01/app/oracle/oradata/oradb/redo11.log') size 2G;
+alter database add logfile thread 1 group 12 ('/u01/app/oracle/oradata/oradb/redo12.log') size 2G;
+alter database add logfile thread 1 group 13 ('/u01/app/oracle/oradata/oradb/redo13.log') size 2G;
+alter database add logfile thread 1 group 14 ('/u01/app/oracle/oradata/oradb/redo14.log') size 2G;
+
+
+
+
+alter database add standby logfile thread 1 group 121 '+FRA' size 2G;
+alter database add standby logfile thread 1 group 122 '+FRA' size 2G;
+alter database add standby logfile thread 1 group 123 '+FRA' size 2G;
+alter database add standby logfile thread 1 group 124 '+FRA' size 2G;
+alter database add standby logfile thread 1 group 125 '+FRA' size 2G;
+
+alter database add standby logfile thread 2 group 221 '+DATA' size 2G;
+alter database add standby logfile thread 2 group 222 '+DATA' size 2G;
+alter database add standby logfile thread 2 group 223 '+DATA' size 2G;
+alter database add standby logfile thread 2 group 224 '+DATA' size 2G;
+alter database add standby logfile thread 2 group 225 '+DATA' size 2G;
+
+
+alter database add standby logfile thread 3 group 321 '+FRA' size 2G;
+alter database add standby logfile thread 3 group 322 '+FRA' size 2G;
+alter database add standby logfile thread 3 group 323 '+FRA' size 2G;
+alter database add standby logfile thread 3 group 324 '+FRA' size 2G;
+alter database add standby logfile thread 3 group 325 '+FRA' size 2G;
+alter database add standby logfile thread 4 group 421 '+FRA' size 2G;
+alter database add standby logfile thread 4 group 422 '+FRA' size 2G;
+alter database add standby logfile thread 4 group 423 '+FRA' size 2G;
+alter database add standby logfile thread 4 group 424 '+FRA' size 2G;
+alter database add standby logfile thread 4 group 425 '+FRA' size 2G;
+
+
+alter database drop logfile group 33;
+alter database drop logfile group 34;
+alter database drop logfile group 35;
+alter database drop logfile group 36;
+alter database drop logfile group 41;
+alter database drop logfile group 42;
+alter database drop logfile group 43;
+alter database drop logfile group 44;
+alter database drop logfile group 45;
+alter database drop logfile group 46;
+                                  
+alter database drop logfile group 32;
+alter database drop logfile group 42;
+
+
+alter database drop logfile group 1  ;
+alter database drop logfile group 2  ;
+alter database drop logfile group 3  ;
+alter database drop logfile group 4  ;
+
+alter database drop logfile group 211  ;
+alter database drop logfile group 212  ;
+alter database drop logfile group 213  ;
+alter database drop logfile group 214  ;
+
+
+
+
+
+alter database add logfile thread 1 group 11 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 12 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 13 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 14 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 21 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 22 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 23 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 24 ('+DATA','+FRA') size 4G;

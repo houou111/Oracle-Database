@@ -1,0 +1,9 @@
+echo 'set lines 200' >> /u01/app/12.2.0.1/grid/sqlplus/admin/glogin.sql
+echo 'set lines 200' >> /u01/app/oracle/product/11.2.0.4/dbhome_1/sqlplus/admin/glogin.sql
+echo 'set lines 200' >> /u01/app/oracle/product/12.1.0.2/dbhome_1/sqlplus/admin/glogin.sql
+echo 'set lines 200' >> /u01/app/oracle/product/12.2.0.1/dbhome_1/sqlplus/admin/glogin.sql
+
+echo 'set pages 200' >> /u01/app/12.2.0.1/grid/sqlplus/admin/glogin.sql
+echo 'set pages 200' >> /u01/app/oracle/product/11.2.0.4/dbhome_1/sqlplus/admin/glogin.sql
+echo 'set pages 200' >> /u01/app/oracle/product/12.1.0.2/dbhome_1/sqlplus/admin/glogin.sql
+echo 'set pages 200' >> /u01/app/oracle/product/12.2.0.1/dbhome_1/sqlplus/admin/glogin.sql

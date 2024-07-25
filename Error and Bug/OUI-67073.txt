@@ -1,0 +1,12 @@
+Following executables are active :
+/u00/app/oracle/product/11.2.0.3/db_1/lib/libclntsh.so.11.1
+UtilSession failed: Prerequisite check "CheckActiveFilesAndExecutables" failed.
+Log file location: /u00/app/oracle/product/11.2.0.3/db_1/cfgtoollogs/opatch/opatch2012-11-22_14-10-00PM.log
+
+OPatch failed with error code 73
+
+
+$ /sbin/fuser /u00/app/oracle/product/11.2.0.3/db_1/lib/libclntsh.so.11.1
+/u00/app/oracle/product/11.2.0.3/db_1/lib/libclntsh.so.11.1:  4212m
+
+$ kill -9 4212

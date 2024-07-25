@@ -1,0 +1,86 @@
+bash-3.2# prtconf | grep "Memory size"
+Memory size: 65536 Megabytes
+
+
+groupadd oinstall
+groupadd dba
+groupadd oper
+
+useradd -g oinstall -G dba -d /export/home/oracle -s /usr/bin/bash oracle
+mkdir /export/home/oracle
+chown oracle:oinstall /export/home/oracle
+passwd -r files oracle
+
+projadd user.oracle
+prctl -n project.max-shm-memory -v 32gb -r -i project user.oracle
+projmod -s -K "project.max-shm-memory=(priv,32gb,deny)" user.oracle
+
+vi /etc/system
+
+set noexec_user_stack=1
+set semsys:seminfo_semmni=100
+set semsys:seminfo_semmns=1024
+set semsys:seminfo_semmsl=256
+set semsys:seminfo_semvmx=32767
+set shmsys:shminfo_shmmax=4294967295
+set shmsys:shminfo_shmmin=1
+set shmsys:shminfo_shmmni=100
+set shmsys:shminfo_shmseg=10
+set md:mirrored_root_flag=1
+set rlim_fd_max=2048
+set rlim_fd_cur=1024
+set max_nprocs=30000
+set maxuprc=16384
+
+***reboot to apply parameter
+
+
+mkdir -p /oravl01/oracle/product/10.2.0/db_1
+mkdir -p /oravl01/oracle/product/10.2.0/db_1/bin
+mkdir -p /oravl01/oracle/product/10.2.0/db_1/bin
+mkdir -p /oravl01/oracle/product/10.2.0/db_1
+mkdir -p /oravl01/oracle/product/10.2.0/db_1/lib32
+mkdir -p /oravl01/oracle/product/10.2.0/db_1/lib
+chown -R oracle:oinstall /oravl01
+chown -R oracle:oinstall /u01
+
+
+vi .profile
+# Oracle Settings
+TMP=/tmp; export TMP
+TMPDIR=$TMP; export TMPDIR
+
+# Select the appropriate ORACLE_BASE
+ORACLE_BASE=/oravl01/oracle; export ORACLE_BASE
+ORACLE_HOME=$ORACLE_BASE/product/10.2.0/db_1; export ORACLE_HOME
+ORACLE_SID=APRMVTNP; export ORACLE_SID
+ORACLE_BIN32=/oravl01/oracle/product/10.2.0/db_1/bin; export ORACLE_BIN32
+ORACLE_BIN64=/oravl01/oracle/product/10.2.0/db_1/bin; export ORACLE_BIN64
+ORACLE_LIB32=/oravl01/oracle/product/10.2.0/db_1/lib32; export ORACLE_LIB32 
+ORACLE_LIB64=/oravl01/oracle/product/10.2.0/db_1/lib; exportORACLE_LIB64
+PATH=$ORACLE_HOME/bin:/aprm/amdocs/aprmoper/tlg_home/bin:$ORACLE_BIN32:$ORACLE_BIN64:$ORACLE_LIB32:$ORACLE_LIB64:$PATH; export PATH
+
+
+###Install package
+pkgadd -d /cdrom/sol_10_113_x86/Solaris_10/Product SUNWi1cs SUNWi15cs
+
+"- Đặt tên Local Host là af  (viết thường)
+- Chi tiết các ổ đĩa như mô tả bên dưới
+- Cài thêm Database 10g Enterprise Edition Release 10.2.0.2.0
+- Các thông số cài đặt Oracle
+ORACLE_BIN32=/oravl01/oracle/product/10.2.0/db_1/bin
+ORACLE_BIN64=/oravl01/oracle/product/10.2.0/db_1/bin
+ORACLE_HOME=/oravl01/oracle/product/10.2.0/db_1
+ORACLE_LIB32=/oravl01/oracle/product/10.2.0/db_1/lib32
+ORACLE_LIB64=/oravl01/oracle/product/10.2.0/db_1/lib
+ORACLE_SID=APRMVTNP"
+"- Đặt tên Local Host là aprm  (viết thường)
+- Chi tiết các ổ đĩa như mô tả bên dưới
+- Cài thêm Database 10g Enterprise Edition Release 10.2.0.2.0 với các thông số cài đặt như sau:
+ORACLETOOLS=/oravl01/oracle/product/10.2.0/db_1
+ORACLE_HOME=/oravl01/oracle/product/10.2.0/db_1
+ORACLE_PATH=/aprm/amdocs/aprmoper/tlg_home/bin
+ORACLE_SID=APRMVTNP
+ORACLE_TERM=vt100
+"
+

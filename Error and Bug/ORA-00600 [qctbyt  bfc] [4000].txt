@@ -1,0 +1,7 @@
+ORA-00600: internal error code, arguments: [qctbyt : bfc], [4000]
+
+CTAS or CREATE / Compile a VIEW = ORA-600[qctbyt : bfc] (Doc ID 2428701.1)
+
+
+Patch 24506534: NVARCHAR COLUMN LENGTH IS 16383 WHEN MAX_STRING_SIZE IS STANDARD
+ 

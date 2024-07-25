@@ -1,0 +1,152 @@
+1. Move (fix) fragment table ( 19c)
+----------------------------------------------------------------------------------
+DECLARE
+cmd VARCHAR2 (4000);
+BEGIN 
+  FOR r IN (
+  select OWNER,table_name,DEFAULT_TABLESPACE
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+and round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>10
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner ='G2FO'
+and PARTITIONED='NO'
+		) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER table "'|| r.OWNER||'"."'|| r.table_name|| '" move online TABLESPACE '|| r.DEFAULT_TABLESPACE; 
+  cmd :='BEGIN DBMS_STATS.gather_table_stats(OwnName =>'''||r.OWNER||''',TabName =>'''||r.table_name||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>8,CASCADE => TRUE,force=>true); END;';
+execute immediate cmd;
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+2. Move (fix) fragment table ( 12c)
+----------------------------------------------------------------------------------
+set lines 200
+set pages 200
+set serveroutput on
+set timing on
+
+
+DECLARE
+   cmd    VARCHAR2 (4000);
+   cmd1   VARCHAR2 (4000);
+
+   CURSOR c_table
+   IS
+		select OWNER,TABLE_NAME,DEFAULT_TABLESPACE 
+		FROM   DBA_TABLES A,  DBA_USERS B 
+		WHERE  A.OWNER=B.USERNAME  
+		AND TABLE_NAME not in ( Select table_name from dba_tab_partitions)  
+		AND A.OWNER NOT IN ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')  
+		AND ROUND((BLOCKS*8/1024),2)>0  
+		AND  ((ROUND((BLOCKS*8/1024),2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2))/ROUND((BLOCKS*8/1024),2))*100 -10>30  
+		AND ROUND((BLOCKS*8)/1024,2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2)>100  
+		ORDER BY OWNER;
+BEGIN
+   FOR r IN c_table
+   LOOP
+    cmd :='alter TABLE "'||r.OWNER||'"."'||r.TABLE_NAME ||'" MOVE  TABLESPACE '||r.DEFAULT_TABLESPACE||' online UPDATE INDEXES'; 
+    DBMS_OUTPUT.put_line (cmd);
+    execute immediate cmd;
+	
+	cmd1 :='BEGIN DBMS_STATS.GATHER_TABLE_STATS(OWNNAME =>'''||r.OWNER||''',TABNAME =>'''||r.TABLE_NAME||''',GRANULARITY => ''AUTO'',ESTIMATE_PERCENT=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE,FORCE=>TRUE,DEGREE => 4  ); END;';
+    DBMS_OUTPUT.put_line (cmd1);
+	execute immediate cmd1;
+    DBMS_OUTPUT.put_line ('-------------------------------------------------------------------');
+    
+    END LOOP;
+END;
+/
+  
+  
+
+
+3. Move (fix) fragment partition table ( 19c)
+----------------------------------------------------------------------------------
+set lines 200
+set pages 200
+set serveroutput on
+set timing on
+
+
+DECLARE
+   cmd    VARCHAR2 (4000);
+   cmd1   VARCHAR2 (4000);
+
+   CURSOR c_table
+   IS
+select TABLE_OWNER,a.TABLE_NAME,PARTITION_NAME,DEFAULT_TABLESPACE from dba_tab_partitions a,  dba_users b, 
+(select  table_name  
+from dba_tables  
+where round((blocks*8/1024),2)>0 
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30 
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100 
+and owner not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB') 
+) c 
+WHERE  a.TABLE_OWNER=b.USERNAME 
+AND a. TABLE_NAME =c.table_name 
+order by 1;
+BEGIN
+   FOR r IN c_table
+   LOOP
+    cmd :='alter TABLE "'||r.TABLE_OWNER||'"."'||r.TABLE_NAME ||'" MOVE  PARTITION '||r.PARTITION_NAME||' TABLESPACE '||r.DEFAULT_TABLESPACE||' online UPDATE INDEXES'; 
+    DBMS_OUTPUT.put_line (cmd);
+    execute immediate cmd;
+	
+	cmd1 :='BEGIN DBMS_STATS.gather_table_stats(OwnName =>'''||r.TABLE_OWNER||''',TabName =>'''||r.TABLE_NAME||''',PartName =>'''|| r.PARTITION_NAME||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE ); END;';
+    DBMS_OUTPUT.put_line (cmd1);
+	execute immediate cmd1;
+    DBMS_OUTPUT.put_line ('-------------------------------------------------------------------');
+    
+    END LOOP;
+END;
+/
+
+
+4. Procedure sub partition table
+----------------------------------------------------------------------------------
+	set lines 200
+	set pages 200
+	set serveroutput on
+	set timing on
+
+
+	DECLARE
+	   cmd    VARCHAR2 (4000);
+	   cmd1   VARCHAR2 (4000);
+
+	   CURSOR c_table
+	   IS
+	select TABLE_OWNER,a.TABLE_NAME,SUBPARTITION_NAME,DEFAULT_TABLESPACE from ALL_TAB_SUBPARTITIONS a,  dba_users b, 
+	(select  table_name  
+	from dba_tables  
+	where round((blocks*8/1024),2)>0 
+	and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30 
+	and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100 
+	and owner not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB') 
+	) c 
+	WHERE  a.TABLE_OWNER=b.USERNAME 
+	AND a. TABLE_NAME =c.table_name 
+	order by 1;
+	BEGIN
+	   FOR r IN c_table
+	   LOOP
+		cmd :='alter TABLE "'||r.TABLE_OWNER||'"."'||r.TABLE_NAME ||'" MOVE  SUBPARTITION  '||r.SUBPARTITION_NAME||' TABLESPACE '||r.DEFAULT_TABLESPACE||' online UPDATE INDEXES'; 
+		DBMS_OUTPUT.put_line (cmd);
+		execute immediate cmd;
+		
+		cmd1 :='BEGIN DBMS_STATS.gather_table_stats(OwnName =>'''||r.TABLE_OWNER||''',TabName =>'''||r.TABLE_NAME||''',PartName =>'''|| r.SUBPARTITION_NAME||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE ); END;';
+		DBMS_OUTPUT.put_line (cmd1);
+		execute immediate cmd1;
+		DBMS_OUTPUT.put_line ('-------------------------------------------------------------------');
+		
+		END LOOP;
+	END;
+	/
+

@@ -1,0 +1,59 @@
+1. Create Tuning Task
+-----------------------------------------------------------------------
+DECLARE
+  l_sql_tune_task_id  VARCHAR2(100);
+BEGIN
+  l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+                          sql_id      => '56y3av88k8vwn',
+                          scope       => DBMS_SQLTUNE.scope_comprehensive,
+                          time_limit  => 3600,
+                          task_name   => 'tuning_task_56y3av88k8vwn',
+                          description => 'Tuning task1 for statement 56y3av88k8vwn');
+  DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+ 
+ 
+ 
+DECLARE
+  l_sql_tune_task_id  VARCHAR2(100);
+BEGIN
+  l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+                          begin_snap  => 235,
+                          end_snap    => 240,
+                          sql_id      => '24pzs2d6a6b13',
+                          scope       => DBMS_SQLTUNE.scope_comprehensive,
+                          time_limit  => 60,
+                          task_name   => '24pzs2d6a6b13_AWR_tuning_task',
+                          description => 'Tuning task for statement 24pzs2d6a6b13  in AWR');
+  DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+ 
+ 
+ 
+ 
+ 
+2. Execute Tuning task:
+-----------------------------------------------------------------------
+ EXEC DBMS_SQLTUNE.execute_tuning_task(task_name => 'tuning_task_56y3av88k8vwn'); 
+ 
+ 
+ 
+3. Get the Tuning advisor report.
+-----------------------------------------------------------------------
+set long 65536
+set longchunksize 65536
+set linesize 100
+select dbms_sqltune.report_tuning_task('tuning_task_56y3av88k8vwn') from dual;
+ 
+ 
+
+4. Get list of tuning task present in database:
+-----------------------------------------------------------------------
+SELECT TASK_NAME, STATUS FROM DBA_ADVISOR_LOG WHERE TASK_NAME ;
+ 
+ 
+5. Drop a tuning task:
+-----------------------------------------------------------------------
+execute dbms_sqltune.drop_tuning_task('87s8z2zzpsg88_tuning_task11');

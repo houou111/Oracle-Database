@@ -1,0 +1,41 @@
+1. Stop file system
+--------------------------------------------------------------
+srvctl stop filesystem -device /dev/asm/vol2-224 -force
+
+
+
+
+
+
+
+
+
+3. Stop file system
+--------------------------------------------------------------
+srvctl stop filesystem -device /dev/asm/vol2-224 -force
+
+
+
+
+3. Remove acfs
+--------------------------------------------------------------
+su - root (node 1)
+/sbin/acfsutil registry -d /mnt/acfsVOL2
+/sbin/acfsutil registry -d /mnt/acfsVOL3
+
+
+su - root (all node)
+/bin/umount /mnt/acfsVOL2
+/bin/umount /mnt/acfsVOL3
+
+
+/sbin/acfsutil rmfs /dev/asm/vol2-224
+/sbin/acfsutil rmfs /dev/asm/acfsvol3-224
+
+
+voldisable -G RECOC1 ACFSVOL3
+voldisable -G RECOC1 VOL2
+
+
+voldelete  -G RECOC1 ACFSVOL3
+voldelete  -G RECOC1 VOL2

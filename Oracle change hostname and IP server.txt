@@ -1,0 +1,161 @@
+How to change Hostname / IP for a Grid Infrastructure Oracle Restart Standalone Configuration (SIHA) 11.2 and Later (Doc ID 1552810.1)	
+If you intend to change only the IP address then we don't need to do anything such as deconfig/reconfig.  See How to Modify Public Network Information including VIP in Oracle Clusterware (Doc ID 276434.1)
+
+
+
+
+Stop all database
+
+/u01/app/19c/grid/crs/install/roothas.sh -deconfig -force
+
+
+ 
+ 
+Give Feedback...
+
+	
+
+Copyright (c) 2022, Oracle. All rights reserved. Oracle Confidential.
+
+
+Click to add to Favorites		How to change Hostname / IP for a Grid Infrastructure Oracle Restart Standalone Configuration (SIHA) 11.2 and Later (Doc ID 1552810.1)	To BottomTo Bottom	
+
+In this Document
+Goal
+Solution
+References
+
+APPLIES TO:
+Oracle Database Cloud Service - Version N/A and later
+Oracle Database - Enterprise Edition - Version 11.2.0.2 to 19.14.0.0.0 [Release 11.2 to 19]
+Oracle Database Cloud Schema Service - Version N/A and later
+Oracle Database Exadata Express Cloud Service - Version N/A and later
+Gen 1 Exadata Cloud at Customer (Oracle Exadata Database Cloud Machine) - Version N/A and later
+Information in this document applies to any platform.
+GOAL
+This document provides (in detail) the required & mandatory steps that need to be executed when changing the hostname.
+
+If you intend to change only the IP address then we don't need to do anything such as deconfig/reconfig.  See How to Modify Public Network Information including VIP in Oracle Clusterware (Doc ID 276434.1)
+
+ 
+
+SOLUTION
+ Therefore, please perform the next steps before the hostname is updated/changed/modified in the Oracle Restart configuration:
+
+
+1) Configure the CSS & OHAS services as root user as follows:
+
+# <Grid Infrastructure Oracle Home>/crs/install/roothas.pl -deconfig -force
+
+
+Please note that from 12.1.0.2 onwards need to run roothas.sh instead of roothas.pl
+
+Now Change the hostname
+
+
+
+# cd <11.2 Grid infrastructure Oracle Home>
+# ./root.sh
+For 12.1.0.2 and later releases ,Please run
+
+<Grid infrastructure Oracle Home>/crs/install/roothas.sh                                                                                                                                        Go to the grid home's bin directory. Use the srvctl add database command with the -c SINGLE flag to add the database in an Oracle Restart configuration.
+Also use the srvctl add command to add the listener, the Oracle ASM instance, all Oracle ASM disk groups, and any database services to the Oracle Restart configuration.
+
+ 
+2) Please perform the next steps as oracle or grid OS user (as the Grid Infrastructure OS owner): 
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl modify resource "ora.cssd" -init -attr "AUTO_START=1"  -unsupported
+ NOTE: "-unsupported" is not required for 11.2 version
+
+
+3) Restart the OHAS stack as grid or oracle OS user (as the Grid Infrastructure OS owner):
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl stop has
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl start has
+
+4) Check the CSS & OHAS state as grid or oracle OS user (as the Grid Infrastructure OS owner):
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl check has
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl check css
+
+$> <Grid Infrastructure Oracle Home>/bin/ crsctl stat resource
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl stat res -t
+
+Note: If the CSS & OHAS service did NOT start, then you will need to reboot the Linux/unix box and check them again.
+
+5) Recreate the default listener (LISTENER) using port 1521 (or using your desired port), thru the NETCA GUI located on the new Grid Infrastructure Oracle Home (or manually if you do not have graphical access) as grid or oracle OS user (as the Grid Infrastructure OS owner):
+
+$> srvctl add listener
+
+$> srvctl start listener
+
+6) Please create the init+ASM.ora file on the <Grid Infrastructure Oracle Home>/dbs directory with the next parameters:
+
+asm_diskgroups= <list of diskgroups>
+
+asm_diskstring= '/dev/oracleasm/disks/*'  
+
+instance_type='asm'
+
+large_pool_size=12M
+
+7) Add the ASM instance as grid or oracle OS user (as the Grid Infrastructure OS owner):
+
+$> <Grid Infrastructure Oracle Home>/bin/srvctl add asm
+$> <12.1 Grid Infrastructure Oracle Home>/bin/srvctl add asm
+
+8) Enable ASM instance Auto Start as grid or oracle OS user (as the Grid Infrastructure OS owner) as follow: 
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl modify resource "ora.asm" -init -attr "AUTO_START=1"  -unsupported
+ NOTE: "-unsupported" is not required for 11.2 version
+
+
+9) Make sure the disks are discovered by kfod as grid or oracle OS user (as the Grid Infrastructure OS owner) as follow:
+
+Example:
+
+
+$> <Grid Infrastructure Oracle Home>/bin/kfod asm_diskstring='ORCL:*' disks=all
+
+Or
+
+$> <Grid Infrastructure Oracle Home>/bin/kfod asm_diskstring='<full path ASM disks location>/*' disks=all
+
+10) If so, then startup the ASM instance as grid or oracle OS user (as the Grid Infrastructure OS owner) as follow:
+
+$> export ORACLE_SID=+ASM
+
+$> <Grid Infrastructure Oracle Home>/bin/sqlplus “/as sysasm”
+
+SQL> startup pfile=init+ASM.ora --#init file from point #6
+
+SQL> show parameter asm
+
+11) Validate that the candidate disks are being discovered:
+
+SQL> select  path  from v$asm_disk;
+
+12) Create a new ASM instance spfile:
+
+SQL> create spfile from pfile;
+
+13) Add the new ASM spfile and listener to the new ASM instance resource:
+
+$> <Grid Infrastructure Oracle Home>/bin/srvctl modify asm  -p <spfile full path>
+
+$> <Grid Infrastructure Oracle Home>/bin/srvctl modify asm  -l LISTENER
+
+14) Validate the OHAS (Oracle Restart) services start as follows: 
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl  stop has
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl  start has
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl  stat res
+
+$> <Grid Infrastructure Oracle Home>/bin/crsctl  stat res -t
+
+

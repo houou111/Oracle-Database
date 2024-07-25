@@ -1,0 +1,12 @@
+1. Verify backup
+----------------------------
+restore spfile validate
+restore controlfile validate
+restore archivelog all validate
+restore database validate
+
+
+restore database preview
+
+
+https://oracle-base.com/articles/misc/detect-and-correct-corruption

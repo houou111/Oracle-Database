@@ -1,0 +1,55 @@
+﻿--Tạo User
+
+SQL> Create user duong identified by 123456 default tablespace duong;
+SQL> Alter user duong ACCOUNT UNLOCK;
+
+--Tạo role 
+SQL> create role test_role; 
+ 
+-- Gán quyền cho role 
+SQL> grant select any table to test_role; 
+SQL> grant dba to test_role; 
+ 
+--Revoke quyền khỏi role 
+SQL> revoke dba from test_role; 
+ 
+-- Gán role cho user 
+SQL> grant test_role to user_app;
+
+-- Chú ý
+- User application thì gán cho role connect, resource, nếu có job thì gán scheduler_admin.
+- Chỉ gán dba cho admin.
+
+SQL> Grant dba to duong;
+
+--Xem các quyền của user hiện tại
+SQL> select * from session_privs;
+
+
+--Tạo profile
+SQL> CREATE PROFILE duong_profile LIMIT
+  SESSIONS_PER_USER DEFAULT
+  CPU_PER_SESSION DEFAULT
+  CPU_PER_CALL DEFAULT
+  CONNECT_TIME DEFAULT
+  IDLE_TIME DEFAULT
+  LOGICAL_READS_PER_SESSION DEFAULT
+  LOGICAL_READS_PER_CALL DEFAULT
+  COMPOSITE_LIMIT DEFAULT
+  PRIVATE_SGA DEFAULT
+  FAILED_LOGIN_ATTEMPTS DEFAULT
+  PASSWORD_LIFE_TIME UNLIMITED
+  PASSWORD_REUSE_TIME DEFAULT
+  PASSWORD_REUSE_MAX DEFAULT
+  PASSWORD_LOCK_TIME DEFAULT
+  PASSWORD_GRACE_TIME DEFAULT;
+
+--Gán Profile
+SQL> Alter user duong profile duong_profile;
+
+--Đổi password
+SQL> alter user duong identified by 123456; 
+
+--Cấp quato cho user trên tablespace
+SQL> ALTER USER <user> quota unlimited on <tablespace name>;
+

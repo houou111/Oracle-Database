@@ -1,0 +1,17 @@
+
+backup.sh  
+#!/bin/bash
+for i in `ps -ef | grep ora_smon_ | cut -f3 -d_`
+  do
+    export ORACLE_SID=$i
+	rman target / nocatalog cmdfile="/home/oracle/backup.rman" 
+done
+
+backup.rman  
+run
+	{
+	backup database;
+	}
+exit  
+  
+  

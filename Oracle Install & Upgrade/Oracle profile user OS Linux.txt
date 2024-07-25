@@ -1,0 +1,51 @@
++ profile
+$ vi /home/oracle/.bash_profile
+export TZ=Asia/Ho_Chi_Minh
+export ORACLE_UNQNAME=obss_rac
+export ORACLE_SID=obss_rac1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+env | grep ORACLE
+umask 022
+
+export SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
+export CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib
+
+
++grid:
+$ vi /home/oracle/bin/grid
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/19c/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP_ASM=$ORACLE_BASE/diag/asm/+asm/$ORACLE_SID/trace
+export DUMP_CRS=$ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log
+alias s="sqlplus / as sysdba"
+alias alert_asm="tail -300f $DUMP_ASM/alert_$ORACLE_SID.log"
+alias alert_crs="tail -300f $ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log"
+env | grep ORACLE
+
+
++oracle_sid:
+$ vi /home/oracle/bin/oracle_sid
+export ORACLE_UNQNAME=cskh
+export ORACLE_SID=cskh1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+env | grep ORACLE
+
+
+$ vi /home/oracle/bin/em13c
+export ORACLE_HOME=/u01/app/agent13c/agent_13.5.0.0.0
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=/u01/app/agent13c/agent_inst/sysman/log

@@ -1,0 +1,29 @@
+How to check and fix file permissions on Grid Infrastructure environment (Doc ID 1931142.1)
+
+
+I. Validate the <GRID_HOME> by using cluvfy tool.
+----------------------------------------------------
+$ cluvfy comp software -n all -verbose
+
+
+
+II. Check the permissions from the following 2 files which are created during Grid Infrastructure installation.
+----------------------------------------------------------------------------------------------------------------
+- crsconfig_dirs 
+- crsconfig_fileperms 
+
+
+III. The permissions can be reverted back to original values with rootcrs.pl or roothas.pl.  
+----------------------------------------------------------------------------------------------------------------
+Please ensure CRS is not running while performing the following commands:
+
+
+For clustered Grid Infrastructure, as root user
+# cd <GRID_HOME>/crs/install/
+# ./rootcrs.pl -init
+
+
+For Standalone Grid Infrastructure, as root user
+# cd <GRID_HOME>/crs/install/
+# ./roothas.pl  -init
+

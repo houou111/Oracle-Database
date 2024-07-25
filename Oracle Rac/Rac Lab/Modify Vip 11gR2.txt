@@ -1,0 +1,154 @@
+Step 1: Check which service is running on current which VIP , we want to change
+[grid@test1 ~]$ srvctl status service -s <database>
+[grid@test1 ~]$ srvctl status service -d orcl
+Service dev is running on instance(s) orcl1
+Service taxi is running on instance(s) orcl1
+Service web is running on instance(s) orcl1
+
+
+Step 2: Stop these services
+[grid@test1 ~]$ srvctl stop service -d <DB_NAME> -s <Service_name1,Service_name2> -n <hostname>
+
+[grid@test1 ~]$ srvctl stop service -d orcl -s dev,taxi,web -n test1
+
+
+Step 3: Find VIP address:
+[grid@test1 ~]$ srvctl config  vip -n <host_name>
+[grid@test1 ~]$ srvctl config vip -n test1
+VIP exists: /test1-vip/192.168.1.106/192.168.1.0/255.255.255.0/eth0, hosting node test1
+
+
+Step 4: Stop VIP of current node
+[grid@test1 ~]$ srvctl stop  vip -n test1 -f
+
+(-f :: forcefully)
+
+
+Step 5: Verify VIP is down:
+[grid@test1 ~]$  /sbin/ifconfig -a | egrep '(eth0|Mask)'
+eth0      Link encap:Ethernet  HWaddr 00:0C:29:39:72:AD
+inet addr:192.168.1.105  Bcast:192.168.1.255  Mask:255.255.255.0
+inet addr:172.16.0.10  Bcast:172.16.255.255  Mask:255.255.0.0
+inet addr:169.254.250.202  Bcast:169.254.255.255  Mask:255.255.0.0
+inet addr:127.0.0.1  Mask:255.0.0.0
+
+
+Step 6: Modify to VIP 
+[root@test1 ~]# srvctl modify nodeapps -n test1 -A 192.168.1.115/255.255.255.0/eth0
+
+
+Step 7: Make changes into /etc/hosts file on all nodes and domain name server,
+New IP address with their respective host name.
+
+
+Step 8: Start VIP
+
+[grid@test1 ~]$ srvctl start  vip -n test1
+
+
+Step 9: Verify VIP
+[grid@test1 ~]$ /sbin/ifconfig -a | egrep '(eth0|Mask)'
+eth0      Link encap:Ethernet  HWaddr 00:0C:29:39:72:AD
+inet addr:192.168.1.105  Bcast:192.168.1.255  Mask:255.255.255.0
+eth0:1    Link encap:Ethernet  HWaddr 00:0C:29:39:72:AD
+inet addr:192.168.1.115  Bcast:192.168.1.255  Mask:255.255.255.0
+inet addr:172.16.0.10  Bcast:172.16.255.255  Mask:255.255.0.0
+inet addr:169.254.250.202  Bcast:169.254.255.255  Mask:255.255.0.0
+inet addr:127.0.0.1  Mask:255.0.0.0
+
+
+Step 10: Start dependent services
+[grid@test1 ~]$ srvctl start service -d orcl -s dev,taxi,web
+
+Check services status
+[grid@test1 ~]$ srvctl status service -d orcl -s dev,taxi,web
+Service dev is running on instance(s) orcl1
+Service taxi is running on instance(s) orcl1
+Service web is running on instance(s) orcl1
+
+
+Step 11: Repeat step-1 to step-9 on the other nodes.
+
+
+Step 12: Verify Node connectivity between all nodes:
+[grid@test1 ~]$ cluvfy comp nodecon -n all -verbose
+Verifying node connectivity
+Checking node connectivity…
+Checking hosts config file…
+Node Name     Status                    Comment
+————  ————————  ————————
+test2         passed
+test1         passed
+Verification of the hosts config file successful
+Interface information for node "test2"
+Name   IP Address      Subnet          Gateway         Def. Gateway    HW Address        MTU
+—— ————— ————— ————— ————— —————– ——
+eth0   192.168.1.107   192.168.1.0     0.0.0.0         192.168.1.1     00:0C:29:39:72:AD 1500
+eth0   192.168.1.116   192.168.1.0     0.0.0.0         192.168.1.1     00:0C:29:39:72:AD 1500
+eth1   172.16.0.11     172.16.0.0      0.0.0.0         192.168.1.1     00:0C:29:39:72:B7 1500
+eth1   169.254.250.202 169.254.0.0     0.0.0.0         192.168.1.1     00:0C:29:39:72:B7 1500
+Interface information for node "test1"
+Name   IP Address      Subnet          Gateway         Def. Gateway    HW Address        MTU
+—— ————— ————— ————— ————— —————– ——
+eth0   192.168.1.105   192.168.1.0     0.0.0.0         192.168.1.1     00:0C:29:F9:B9:1C 1500
+eth0   192.168.1.109   192.168.1.0     0.0.0.0         192.168.1.1     00:0C:29:F9:B9:1C 1500
+eth0   192.168.1.115   192.168.1.0     0.0.0.0         192.168.1.1     00:0C:29:F9:B9:1C 1500
+eth1   172.16.0.10     172.16.0.0      0.0.0.0         192.168.1.1     00:0C:29:F9:B9:26 1500
+eth1   169.254.41.177  169.254.0.0     0.0.0.0         192.168.1.1     00:0C:29:F9:B9:26 1500
+Check: Node connectivity of subnet "192.168.1.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test2[192.168.1.107]            test2[192.168.1.116]            yes
+test2[192.168.1.107]            test1[192.168.1.105]            yes
+test2[192.168.1.107]            test1[192.168.1.109]            yes
+test2[192.168.1.107]            test1[192.168.1.115]            yes
+test2[192.168.1.116]            test1[192.168.1.105]            yes
+test2[192.168.1.116]            test1[192.168.1.109]            yes
+test2[192.168.1.116]            test1[192.168.1.115]            yes
+test1[192.168.1.105]            test1[192.168.1.109]            yes
+test1[192.168.1.105]            test1[192.168.1.115]            yes
+test1[192.168.1.109]            test1[192.168.1.115]            yes
+Result: Node connectivity passed for subnet "192.168.1.0" with node(s) test2,test1
+Check: TCP connectivity of subnet "192.168.1.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test1:192.168.1.105             test2:192.168.1.107             passed
+test1:192.168.1.105             test2:192.168.1.116             passed
+test1:192.168.1.105             test1:192.168.1.109             passed
+test1:192.168.1.105             test1:192.168.1.115             passed
+Result: TCP connectivity check passed for subnet "192.168.1.0"
+Check: Node connectivity of subnet "172.16.0.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test2[172.16.0.11]              test1[172.16.0.10]              yes
+Result: Node connectivity passed for subnet "172.16.0.0" with node(s) test2,test1
+Check: TCP connectivity of subnet "172.16.0.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test1:172.16.0.10               test2:172.16.0.11               passed
+Result: TCP connectivity check passed for subnet "172.16.0.0"
+Check: Node connectivity of subnet "169.254.0.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test2[169.254.250.202]          test1[169.254.41.177]           yes
+Result: Node connectivity passed for subnet "169.254.0.0" with node(s) test2,test1
+Check: TCP connectivity of subnet "169.254.0.0"
+Source                          Destination                     Connected?
+——————————  ——————————  —————-
+test1:169.254.41.177            test2:169.254.250.202           passed
+Result: TCP connectivity check passed for subnet "169.254.0.0"
+Interfaces found on subnet "192.168.1.0" that are likely candidates for VIP are:
+test2 eth0:192.168.1.107 eth0:192.168.1.116
+test1 eth0:192.168.1.105 eth0:192.168.1.109 eth0:192.168.1.115
+
+Interfaces found on subnet "169.254.0.0" that are likely candidates for VIP are:
+test2 eth1:169.254.250.202
+test1 eth1:169.254.41.177
+
+Interfaces found on subnet "172.16.0.0" that are likely candidates for a private interconnect are:
+test2 eth1:172.16.0.11
+test1 eth1:172.16.0.10
+
+Result: Node connectivity check passed
+
+Verification of node connectivity was successful

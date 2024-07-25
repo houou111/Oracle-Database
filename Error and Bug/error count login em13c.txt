@@ -1,0 +1,7 @@
+SELECT TO_CHAR(current_timestamp AT TIME ZONE 'GMT', 'YYYY-MM-DD HH24:MI:SS TZD') AS curr_timestamp, SUM(failed_count) AS failed_count , TO_CHAR(MIN(first_occur_time), 'yyyy-mm-dd hh24:mi:ss') AS first_occur_time, TO_CHAR(MAX(last_occur_time), 'yyyy-mm-dd hh24:mi:ss') AS last_occur_time, name
+FROM (
+SELECT COUNT(username) AS failed_count, MIN(timestamp) AS first_occur_time, MAX(timestamp) AS last_occur_time, c.name
+FROM sys.cdb_audit_session a, v$containers c
+WHERE a.returncode != 0 AND a.ACTION_NAME = 'LOGON' AND a.timestamp >= current_timestamp - TO_DSINTERVAL('0 0:30:00') AND a.con_id = c.con_id GROUP BY c.name ) GROUP BY name
+
+

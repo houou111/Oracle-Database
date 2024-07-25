@@ -1,0 +1,82 @@
+-- in case need linking library
+sh /usr/openv/netbackup/bin/oracle_link
+
+-- add host to Netbackup
+
+-- list backup file in netbackup
+/usr/openv/netbackup/bin/bplist  -C dr-ora-db02.techcombank.com.vn -t 4 -S dr-backup-01.headquarter.techcombank.com.vn -s 03/20/2017 00:00:00 -e 03/21/2017 06:59:59 -l -b -R /
+
+/ctrl_dHRMDB_u5arvfm0h_s1194_p1_t938989585
+
+-- restore controlfile from netbackup
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-ora-db02.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore controlfile from '/ctrl_dHRMDB_u60rvktot_s1216_p1_t939161373';
+release channel t1;
+}
+
+-- convert file name
+alter system set log_file_name_convert='+DATA2/twadr/onlinelog','+DATA01/twatest/onlinelog','+FRA/twadr/onlinelog','+DATA01/twatest/onlinelog' scope=spfile sid='*';
+- alter system set db_file_name_convert=
+
+sql'alter database mount';
+-- restore database
+run {
+set until time "to_date('2017-3-22:12:10:00', 'yyyy-mm-dd:hh24:mi:ss')";
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-ora-db02.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore database;
+release channel t1;
+release channel t2;
+release channel t3;
+release channel t4;
+}
+
+report schema;
+switch database to copy;
+
+-- recover database
+run {
+set UNTIL LOGSEQ 67 THREAD 2;
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-ora-db02.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+recover database;
+release channel t1;
+release channel t2;
+}
+
+-- configure FRA
+ALTER SYSTEM SET DB_RECOVERY_FILE_DEST_SIZE =10G SCOPE=BOTH SID='*';
+ALTER SYSTEM SET DB_RECOVERY_FILE_DEST='+DATA01' SCOPE=BOTH;
+alter system set log_archive_dest_1='LOCATION=USE_DB_RECOVERY_FILE_DEST';
+
+select * from v$logfile;
+select * from v$log;
+ALTER DATABASE CLEAR LOGFILE GROUP 1;
+ALTER DATABASE CLEAR LOGFILE GROUP 2;
+ALTER DATABASE CLEAR LOGFILE GROUP 3;
+ALTER DATABASE CLEAR LOGFILE GROUP 4;
+ALTER DATABASE DROP LOGFILE GROUP 5;
+ALTER DATABASE DROP LOGFILE GROUP 6;
+ALTER DATABASE DROP LOGFILE GROUP 7;
+ALTER DATABASE DROP LOGFILE GROUP 8;
+ALTER DATABASE DROP LOGFILE GROUP 9;
+ALTER DATABASE DROP LOGFILE GROUP 10;
+
+-- active database
+ALTER DATABASE ACTIVATE PHYSICAL STANDBY DATABASE;
+alter database clear unarchived logfile group 42;
+
+-- recreate tempfile
+SELECT tablespace_name, file_name, bytes FROM dba_temp_files WHERE tablespace_name like 'TEMP%';
+alter tablespace temp add tempfile '+DATA01' size 50m reuse autoextend on next 1m maxsize 500m;
+alter database tempfile '+DATA01/twa/datafile/temp02.dbf' drop including datafiles;
+
+-- turn off archivelog mode
+SELECT name, guarantee_flashback_database, scn FROM v$restore_point;
+drop restore point "SNAPSHOT_STANDBY_REQUIRED_02/11/2017 08:39:49";

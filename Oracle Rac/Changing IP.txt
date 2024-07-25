@@ -1,0 +1,157 @@
+I. Current Environment
+-------------------------------------------------------------------------
+1). Machine IP:
+Node1: vmrac01
+Node2: vmrac02
+## eth1-Public
+10.50.96.101	vmrac01	vmrac01.test.com
+10.50.96.102	vmrac02	vmrac02.test.com
+## eth0-Private
+192.168.199.1	vmracprv01	vmracprv01.test.com
+192.168.199.2	vmracprv02	vmracprv02.test.com
+## VIP
+10.50.96.103	vmracvip01	vmracvip01.test.com
+10.50.96.104	vmracvip02	vmracvip02.test.com
+
+
+II). cluster information:
+-------------------------------------------------------------------------
+cluster name	— vm10cls
+database name	— v10c
+Instance 1	— v10c1
+Instance 2	— v10c2
+Node1	— vmrac01
+Node2	— vmrac02
+2. New IP changing map(different subnet mask too):
+10.50.96.101/255.255.255.0	vmrac01	–>	10.50.99.41/255.255.252.0
+10.50.96.102/255.255.255.0	vmrac02	–>	10.50.99.42/255.255.252.0
+10.50.96.103/255.255.255.0	vmracvip01	–>	10.50.99.43/255.255.252.0
+10.50.96.104/255.255.255.0	vmracvip02	–>	10.50.99.44/255.255.252.0
+
+
+
+III). steps 1 — change RAC IP settings
+-------------------------------------------------------------------------
+1). bring service down, make sure everything was offline except css daemon
+bash-3.1$ srvctl stop database -d v10c
+bash-3.1$ srvctl stop nodeapps -n vmrac01
+bash-3.1$ srvctl stop nodeapps -n vmrac02
+bash-3.1$ crs_stat -t
+Name Type Target State Host
+————————————————————
+ora.v10c.db application OFFLINE OFFLINE
+ora….c1.inst application OFFLINE OFFLINE
+ora….c2.inst application OFFLINE OFFLINE
+ora….SM1.asm application OFFLINE OFFLINE
+ora….01.lsnr application OFFLINE OFFLINE
+ora….c01.gsd application OFFLINE OFFLINE
+ora….c01.ons application OFFLINE OFFLINE
+ora….c01.vip application OFFLINE OFFLINE
+ora….SM2.asm application OFFLINE OFFLINE
+ora….02.lsnr application OFFLINE OFFLINE
+ora….c02.gsd application OFFLINE OFFLINE
+ora….c02.ons application OFFLINE OFFLINE
+ora….c02.vip application OFFLINE OFFLINE
+
+
+2). backup OCR and Voting disks
+------------------------------------------------------------------------
+bash-3.1$ ocrcheck|grep -i file
+Device/File Name : /dev/raw/raw1
+bash-3.1$ crsctl query css votedisk
+0. 0 /dev/raw/raw2
+located 1 votedisk(s).
+#dd if=/dev/raw/raw1 of=/database/temp/ocr_vote_bk/ocr.bak
+#dd if=/dev/raw/raw2 of=/database/temp/ocr_vote_bk/vote.bak
+
+
+3). get current config:
+----------------------------------------------------------------------------
+bash-3.1$ oifcfg getif
+eth0 10.50.96.0 global public	–current network for public
+eth1 192.168.199.0 global cluster_interconnect	–we are not going to change this
+
+
+4). delete current public ip:
+------------------------------------------------------------------------------
+bash-3.1$ oifcfg delif -global eth0
+
+
+5). change to new network:
+--------------------------------------------------------------------------------
+bash-3.1$ oifcfg setif -global eth0/10.50.99.0:public
+
+
+6). change vip address:
+-------------------------------------------------------------------------------
+a. check current one
+bash-3.1$ srvctl config nodeapps -n vmrac01 -a
+VIP exists.: /vmracvip01/10.50.96.103/255.255.255.0/eth0
+bash-3.1$ srvctl config nodeapps -n vmrac02 -a
+VIP exists.: /vmracvip02/10.50.96.104/255.255.255.0/eth0
+
+b. Modify VIP component (has to be the css owner, “root” usually)
+#srvctl modify nodeapps -n vmrac01 -A 10.50.99.43/255.255.252.0/eth0
+#srvctl modify nodeapps -n vmrac02 -A 10.50.99.44/255.255.252.0/eth0
+
+c. double verify the changes
+bash-3.1$ srvctl config nodeapps -n vmrac01 -a
+VIP exists.: /vmracvip01/10.50.99.43/255.255.252.0/eth0
+bash-3.1$ srvctl config nodeapps -n vmrac02 -a
+VIP exists.: /vmracvip02/10.50.99.44/255.255.252.0/eth0
+
+
+7). change the hosts file(on both nodes):
+-----------------------------------------------------------------------
+## eth1-Public
+10.50.99.41 vmrac01 vmrac01.test.com
+10.50.99.42 vmrac02 vmrac02.test.com
+## eth0-Private
+192.168.199.1 vmracprv01 vmracprv01.test.com
+192.168.199.2 vmracprv02 vmracprv02.test.com
+## VIP
+10.50.99.43 vmracvip01 vmracvip01.test.com
+10.50.99.44 vmracvip02 vmracvip02.test.com
+
+
+8). if the listener is using any IP address, it also needs to be changed.
+---------------------------------------------------------------------------
+
+
+9. Display the current configuration using the following command as the oracle/grid user.
+--------------------------------------------------------------------------------------
+$ $GRID_HOME/bin/srvctl config scan 
+SCAN name: ol6-112-scan, Network: 1/192.168.0.0/255.255.255.0/eth0
+SCAN VIP name: scan1, IP: /ol6-112-scan/192.168.0.115
+SCAN VIP name: scan2, IP: /ol6-112-scan/192.168.0.116
+SCAN VIP name: scan3, IP: /ol6-112-scan/192.168.0.117
+
+
+10.Turn off the SCAN and SCAN listeners using the following commands as the oracle/grid user.
+------------------------------------------------------------------------------------------------
+$ $GRID_HOME/bin/srvctl stop scan_listener 
+$ $GRID_HOME/bin/srvctl stop scan
+Modify the SCAN name using the following commands as the root user.
+
+# $GRID_HOME/bin/srvctl modify scan -n ol6-112-scan
+
+$ $GRID_HOME/bin/srvctl modify scan_listener -u 
+$ $GRID_HOME/bin/srvctl start scan_listener
+
+$ $GRID_HOME/bin/srvctl config scan 
+SCAN name: ol6-112-scan2, Network: 1/192.168.0.0/255.255.255.0/eth0
+SCAN VIP name: scan1, IP: /ol6-112-scan2/192.168.0.115
+SCAN VIP name: scan2, IP: /ol6-112-scan2/192.168.0.116
+SCAN VIP name: scan3, IP: /ol6-112-scan2/192.168.0.117
+$
+
+IV). restart network (on both node)
+---------------------------------------------------------------------------------------------
+#service network restart
+
+
+
+V). restart crs daemon (on both node)
+---------------------------------------------------------------------------------------------
+#crsctl stop crs
+#crsctl start crs

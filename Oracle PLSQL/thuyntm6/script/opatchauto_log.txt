@@ -1,0 +1,83 @@
+[root@dr-core-db-test02 software]# /u01/app/12.1.0/grid/OPatch/opatchauto apply  /u01/software/27967747 -analyze
+
+OPatchauto session is initiated at Thu Aug 16 16:36:44 2018
+
+System initialization log file is /u01/app/12.1.0/grid/cfgtoollogs/opatchautodb/systemconfig2018-08-16_04-36-49PM.log.
+
+Session log file is /u01/app/12.1.0/grid/cfgtoollogs/opatchauto/opatchauto2018-08-16_04-37-26PM.log
+The id for this session is IWX8
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/12.1.0/grid
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/oracle/product/12.1.0/dbhome_1
+Patch applicability verified successfully on home /u01/app/oracle/product/12.1.0/dbhome_1
+
+Patch applicability verified successfully on home /u01/app/12.1.0/grid
+
+
+Verifying SQL patch applicability on home /u01/app/oracle/product/12.1.0/dbhome_1
+SQL patch applicability verified successfully on home /u01/app/oracle/product/12.1.0/dbhome_1
+
+OPatchAuto successful.
+
+--------------------------------Summary--------------------------------
+
+Analysis for applying patches has failed:
+
+Host:dr-core-db-test02
+RAC Home:/u01/app/oracle/product/12.1.0/dbhome_1
+Version:12.1.0.2.0
+Analysis for patches has failed.
+
+
+==Following patches FAILED in analysis for apply:
+
+Patch: /u01/software/27967747/27547329
+Log: /u01/app/oracle/product/12.1.0/dbhome_1/cfgtoollogs/opatchauto/core/opatch/opatch2018-08-16_16-38-00PM_1.log
+Reason: Failed during Analysis: CheckConflictAgainstOracleHome Failed, [ Prerequisite Status: FAILED, Prerequisite output:
+Summary of Conflict Analysis:
+
+Patches that can be applied now without any conflicts are :
+27762253
+
+Following patches have conflicts. Please contact Oracle Support and get the merged patch of the patches :
+18377986, 27547329
+
+Whole composite patch Conflicts/Supersets are:
+
+Composite Patch : 27547329
+
+        Conflict with 18377986
+
+Detail Conflicts/Supersets for each patch are:
+
+Sub-Pa ...
+
+
+==Following patches were SUCCESSFULLY analyzed to be applied:
+
+Patch: /u01/software/27967747/27762253
+Log: /u01/app/oracle/product/12.1.0/dbhome_1/cfgtoollogs/opatchauto/core/opatch/opatch2018-08-16_16-38-00PM_1.log
+
+
+Host:dr-core-db-test02
+CRS Home:/u01/app/12.1.0/grid
+Version:12.1.0.2.0
+
+
+==Following patches were SUCCESSFULLY analyzed to be applied:
+
+Patch: /u01/software/27967747/27547329
+Log: /u01/app/12.1.0/grid/cfgtoollogs/opatchauto/core/opatch/opatch2018-08-16_16-37-58PM_1.log
+
+Patch: /u01/software/27967747/27762253
+Log: /u01/app/12.1.0/grid/cfgtoollogs/opatchauto/core/opatch/opatch2018-08-16_16-37-58PM_1.log
+
+
+OPATCHAUTO-72053: Analysis for the patches failed.
+OPATCHAUTO-72053: Command execution failed.
+OPATCHAUTO-72053: Please check the summary for more details.
+
+OPatchauto session completed at Thu Aug 16 16:38:24 2018
+Time taken to complete the session 1 minute, 41 seconds
+[root@dr-core-db-test02 software]#

@@ -1,0 +1,5 @@
+
+crsctl start crs -excl -nocrs
+ocrconfig -restore /u01/app/11.2.0/grid/cdata/dr-card-cluster/backup00.ocr
+
+crsctl replace votedisk +CRS

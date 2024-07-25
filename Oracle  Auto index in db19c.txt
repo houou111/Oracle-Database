@@ -1,0 +1,50 @@
+1. Enabling and disabling automatic indexing in a database
+-------------------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','IMPLEMENT');
+
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','REPORT ONLY');
+
+
+2. Enabling and disabling automatic indexing in a database
+-------------------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','OFF');
+
+
+
+3. Exclude schema
+-------------------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'SH', FALSE);
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'HR', FALSE);
+
+
+4. Disable exclude schema
+-------------------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'HR', NULL);
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', NULL, TRUE);
+
+
+5. Config timeline of auto indexing (default 373 day)
+-------------------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_RETENTION_FOR_AUTO', NULL);
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_RETENTION_FOR_AUTO', '90');
+
+
+6. REPORT
+-------------------------------------------------------------------
+declare
+ report clob := null;
+begin
+ report := DBMS_AUTO_INDEX.REPORT_ACTIVITY();
+end;
+
+
+declare
+ report clob := null;
+begin
+ report := DBMS_AUTO_INDEX.REPORT_ACTIVITY(
+ activity_start => TO_TIMESTAMP('2018-11-01', 'YYYY-MM-DD'),
+ activity_end => TO_TIMESTAMP('2018-12-01', 'YYYY-MM-DD'),
+ type => 'HTML',
+ section => 'SUMMARY',
+ level => 'BASIC');
+end;

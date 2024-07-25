@@ -1,0 +1,18 @@
+ORA-27300: OS system dependent operation:fork failed with status: 11
+ORA-27301: OS failure message: Resource temporarily unavailable
+ORA-27302: failure occurred at: skgpspawn3
+Process PZ98 died, see its trace file
+
+
+SOLUTION
+
+su - oracle
+ulimit -u   
+ 
+set to /etc/security/limits.conf
+oracle soft nproc  (ulimit -u)x2
+oracle hard nproc  (ulimit -u)x2
+
+set to /etc/sysctl.conf
+kernel.pid_max = (ulimit -u)x2
+

@@ -1,0 +1,11 @@
+Solution:
+
+1. To start a pre11gR2 database in 11gR2 Grid Infrastructure environment, node(s) must be pinned. To pin node(s), as root execute:
+
+$GRID_HOME/bin/crsctl pin css -n <racnode1> <racnode2> <racnode3>
+To find out whether node(s) is pinned or not:
+
+$GRID_HOME/bin/olsnodes -t -n
+
+
+2. patch 8288490 and 8262786

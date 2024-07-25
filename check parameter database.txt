@@ -1,0 +1,8 @@
+col NAME for a50
+col VALUE for a50
+select NUm,NAME,VALUE from V$PARAMETER where ISDEFAULT='FALSE';
+
+
+col NAME for a50
+col VALUE for a50
+select NUm,NAME,VALUE,ISDEFAULT from V$PARAMETER where NUm='3450';

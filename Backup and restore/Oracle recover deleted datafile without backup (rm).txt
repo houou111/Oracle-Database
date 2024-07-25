@@ -1,0 +1,105 @@
+1. Check DB
+-----------------------------------------------------------------------------------------------------------------
+SQL> REM and we check if table data is accessible:
+SQL> select count(*) from FRANCK;
+
+select * from franck
+*
+ERROR at line 1:
+ORA-01116: error in opening database file 5
+ORA-01110: data file 5: ‘/var/tmp/test_rm.dbf’
+ORA-27041: unable to open file
+Linux Error: 2: No such file or directory
+Additional information: 3
+
+The datafile is lost and data is not accessible.
+
+However, the datafile should still have an open file descriptor by an oracle background process
+
+
+
+2. Check DBW
+-----------------------------------------------------------------------------------------------------------------
+ls -lR | grep ^l | grep /u01/app/oracle/...
+
+
+ps -edf | grep dbw
+oracle 2661 1 0 Mar25 ? 00:00:06 xe_dbw0_XE
+
+
+and we check its opened file descriptors for our file:
+ls -l /proc/2661/fd | grep test_rm
+lrwx—— 1 oracle dba 64 Mar 26 14:02 66 -> /var/tmp/test_rm.dbf (deleted)
+
+here it is:
+ls -l /proc/2661/fd/66
+lrwx—— 1 oracle dba 64 Mar 26 14:02 /proc/2661/fd/66 -> /var/tmp/test_rm.dbf (deleted)
+
+
+In some other unix, lsof may be needed to map the file descriptor with the deleted file name
+
+
+
+
+3. Fix
+-----------------------------------------------------------------------------------------------------------------
+first we set a symbolic link so that oracle can see it as it was before the delete:
+ln -s /proc/2661/fd/66 /var/tmp/test_rm.dbf
+
+here data is accessible, but that will be lost if dbwriter closes it file handle (i.e if the database is closed)
+
+However we can now set the tablespace read only so that it is checkpointed, and no writes occurs on it.
+
+SQL> alter tablespace TEST_RM read only;
+Tablespace altered.
+
+We can now copy the file safely.
+
+then we drop the symbolic link:
+rm /var/tmp/test_rm.dbf
+ls -l /var/tmp/test_rm.dbf
+
+ls: /var/tmp/test_rm.dbf: No such file or directory
+
+and we can now copy the file
+cp -p /proc/2661/fd/66 /var/tmp/test_rm.dbf
+ls -l /var/tmp/test_rm.dbf
+
+-rw-r—– 1 oracle dba 10493952 Mar 26 14:54 /var/tmp/test_rm.dbf
+
+And datafile is now available again.
+
+SQL> REM we have it back, lets put the tablespace back in read/write
+SQL> alter tablespace test_rm read write;
+Tablespace altered.
+
+SQL> REM and we check data is still there:
+SQL> select count(*) from FRANCK;
+
+COUNT(*)
+———-
+12708
+
+This is not to be used like that in production. This is unsupported and may behave differently on different unix/linux or oracle versions.
+
+
+
+
+ARCHVIELOG MODE
+-------------------------------------------
+
+SQL>alter database datafile '/data/oracle/app/oracle/oradata/TESTDB/test1.dbf' offline;
+Database altered.
+
+SQL> alter database rename file '/data/oracle/app/oracle/oradata/TESTDB/test1.dbf' to '/data/oracle/app/oracle/oradata/TESTDB/test1_tmp.dbf';
+Database altered.
+
+SQL> alter database datafile '/data/oracle/app/oracle/oradata/TESTDB/test1_tmp.dbf' online;
+
+alter database datafile '/data/oracle/app/oracle/oradata/TESTDB/test1_tmp.dbf' online
+*
+ERROR at line 1:
+ORA-01113: file 5 needs media recovery
+ORA-01110: data file 5: '/data/oracle/app/oracle/oradata/TESTDB/test1_tmp.dbf'
+
+SQL> recover datafile '/data/oracle/app/oracle/oradata/TESTDB/test1_tmp.dbf'

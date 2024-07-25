@@ -1,0 +1,115 @@
+10.101.5.102
+
+oracle    1954     1  0 Sep05 ?        00:00:06 ora_smon_gcddev2
+oracle    2476     1  0 Sep05 ?        00:00:05 ora_smon_bpfdev2
+oracle    3588     1  0 Sep05 ?        00:00:07 ora_smon_cedev2
+oracle    3861     1  0 Sep05 ?        00:00:06 ora_smon_pedev22
+oracle   18311     1  0 Sep05 ?        00:00:06 ora_smon_capture2
+
+
+oracle   27122     1  0 Sep07 ?        00:00:06 ora_smon_gcddeva
+oracle   17831     1  0 Sep07 ?        00:00:10 ora_smon_bpfdeva
+oracle   26463     1  0 Sep07 ?        00:00:03 ora_smon_gcedeva
+oracle    4464     1  0 Sep07 ?        00:00:05 ora_smon_pedev2a
+oracle   17456     1  0 Sep07 ?        00:00:05 ora_smon_capturea
+
+
+dbca -silent -createDatabase -templateName vpn2_clone.dbc -gdbname vpn2 -SysPassword Oracle#123 -SystemPassword Oracle#123  -emConfiguration NONE  -nodeinfo dc-ora-db01,dc-ora-db02 -storageType ASM -asmSysPassword Oracle#123 -diskGroupName DATA02 
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+backup as compressed backupset format '/u01/app/oracle/backup/%d_%U' database filesperset 4; 
+backup current controlfile format '/u01/app/oracle/backup/ctl_%d_%U';
+}
+
+
+
+
+tcblocal / P@ssw0rd123
+DWHTEST1
+
+export ORACLE_HOME=/u01/app/oracle111/product/11.2.0/dbhome_1
+export PATH=$ORACLE_HOME/bin:$PATH
+export ORACLE_SID=capturea
+
+
+mkdir -p /u01/app/oracle111/admin/capturea/adump
+
+startup nomount pfile='/home/oracle/init_capturea.ora';
+
+------------------------------------------------------------------------------------
+select 'set newname for datafile '|| file# || ' to ''+DWHTEST1'';' from v$datafile;
+select member from v$logfile; 
+-------------------------------------------------------------------------------------
+set newname for datafile 1 to '+DWHTEST1';
+set newname for datafile 2 to '+DWHTEST1';
+set newname for datafile 3 to '+DWHTEST1';
+set newname for datafile 4 to '+DWHTEST1';
+set newname for datafile 5 to '+DWHTEST1';
+
++DATA01/capture/onlinelog/group_2.1438.911756651
++DATA01/capture/onlinelog/group_1.1437.911756649
++DATA01/capture/onlinelog/group_3.1441.911756911
++DATA01/capture/onlinelog/group_4.1442.911756911
+
+alter database add logfile thread 1 group 9 ('+DWHTEST1') size 100m;
+alter database add logfile thread 1 group 10 ('+DWHTEST1') size 100m;
+alter database add logfile thread 2 group 11 ('+DWHTEST1') size 100m;
+alter database add logfile thread 2 group 12 ('+DWHTEST1') size 100m;
+alter database add logfile thread 1 group 7 ('+DWHTEST1') size 100m;
+alter database add logfile thread 2 group 8 ('+DWHTEST1') size 100m;
+
+select  GROUP#,  THREAD# , STATUS from v$log;
+
+restore controlfile from '/home/oracle/duydx/capture_ctl.ctl';
+
+alter database mount
+
+run
+{
+CONFIGURE DEVICE TYPE DISK PARALLELISM 4;
+set newname for datafile 1 to '+DWHTEST1';
+set newname for datafile 2 to '+DWHTEST1';
+set newname for datafile 3 to '+DWHTEST1';
+set newname for datafile 4 to '+DWHTEST1';
+set newname for datafile 5 to '+DWHTEST1';
+
+restore database;
+switch datafile all;
+recover database noredo;
+alter database open resetlogs;
+}
+
+run {
+set newname for datafile 2 to '+DWHTEST1';
+restore datafile 2;
+}
+
+select file#, name, status from v$datafile_header;
+
+
+-------------------------------------------------------------------------------------
+alter database add logfile thread 1 group 9 ('+DATA01') size 100m;
+alter database add logfile thread 1 group 10 ('+DATA01') size 100m;
+alter database add logfile thread 1 group 11 ('+DATA01') size 100m;
+alter database add logfile thread 1 group 12 ('+DATA01') size 100m;
+alter database add logfile thread 2 group 13 ('+DATA01') size 100m;
+alter database add logfile thread 2 group 14 ('+DATA01') size 100m;
+alter database add logfile thread 2 group 15 ('+DATA01') size 100m;
+alter database add logfile thread 2 group 16 ('+DATA01') size 100m;
+
+alter system switch logfile; ( x 5)
+
+
+
+
+oracle    4464     1  0 Sep07 ?        00:00:05 ora_smon_pedev2a
+oracle   17456     1  0 Sep07 ?        00:00:05 ora_smon_capturea
+oracle   17831     1  0 Sep07 ?        00:00:10 ora_smon_bpfdeva
+oracle   26463     1  0 Sep07 ?        00:00:03 ora_smon_gcedeva
+oracle   27122     1  0 Sep07 ?        00:00:06 ora_smon_gcddeva
+
+
+

@@ -1,0 +1,13 @@
+
+
+select blocking_session from gv$session where blocking_session is not null;
+
+select sid, serial# from gv$session where sid='blocking_session';
+
+alter system kill session '20,13235' immediate;
+
+alter system kill session '679,26341' immediate;
+
+alter system kill session '294,28171' immediate;
+
+

@@ -1,0 +1,145 @@
+SYS@mbbdb1 > set autotrace on
+SYS@mbbdb1 > SELECT  paymentins0_.ID_PI AS ID1_835_0_,
+  2         walletentr1_.ID_ENTITY AS ID1_889_1_,
+  3         paymentins0_.DAT_CREATION AS DAT2_835_0_,
+  4         paymentins0_.ID_CUSTOMER_CREATION AS ID3_835_0_,
+  5         paymentins0_.DAT_LAST_UPDATE AS DAT4_835_0_,
+  6         paymentins0_.ID_CUSTOMER_LAST_UPDATE AS ID5_835_0_,
+  7         paymentins0_.CLOB_SPARE_1 AS CLOB6_835_0_,
+  8         paymentins0_.DAT_SPARE_1 AS DAT7_835_0_,
+  9         paymentins0_.DAT_SPARE_2 AS DAT8_835_0_,
+ 10         paymentins0_.DAT_SPARE_3 AS DAT9_835_0_,
+ 11         paymentins0_.DAT_SPARE_4 AS DAT10_835_0_,
+ 12         paymentins0_.DAT_SPARE_5 AS DAT11_835_0_,
+ 13         paymentins0_.BOL_SPARE_1 AS BOL12_835_0_,
+ 14         paymentins0_.BOL_SPARE_2 AS BOL13_835_0_,
+ 15         paymentins0_.BOL_SPARE_3 AS BOL14_835_0_,
+ 16         paymentins0_.BOL_SPARE_4 AS BOL15_835_0_,
+ 17         paymentins0_.BOL_SPARE_5 AS BOL16_835_0_,
+ 18         paymentins0_.INT_SPARE_1 AS INT17_835_0_,
+ 19         paymentins0_.INT_SPARE_2 AS INT18_835_0_,
+ 20         paymentins0_.INT_SPARE_3 AS INT19_835_0_,
+ 21         paymentins0_.INT_SPARE_4 AS INT20_835_0_,
+ 22         paymentins0_.INT_SPARE_5 AS INT21_835_0_,
+ 23         paymentins0_.STR_SPARE_1 AS STR22_835_0_,
+ 24         paymentins0_.STR_SPARE_10 AS STR23_835_0_,
+ 25         paymentins0_.STR_SPARE_2 AS STR24_835_0_,
+ 26         paymentins0_.STR_SPARE_3 AS STR25_835_0_,
+ 27         paymentins0_.STR_SPARE_4 AS STR26_835_0_,
+ 28         paymentins0_.STR_SPARE_5 AS STR27_835_0_,
+ 29         paymentins0_.STR_SPARE_6 AS STR28_835_0_,
+ 30         paymentins0_.STR_SPARE_7 AS STR29_835_0_,
+ 31         paymentins0_.STR_SPARE_8 AS STR30_835_0_,
+ 32         paymentins0_.STR_SPARE_9 AS STR31_835_0_,
+ 33         paymentins0_.ID_CLEARING_MODE AS ID40_835_0_,
+ 34         paymentins0_.ID_CUSTOMER AS ID41_835_0_,
+ 35         paymentins0_.BOL_IS_ACTIVE AS BOL32_835_0_,
+ 36         paymentins0_.BOL_CREDIT_ALLOWED AS BOL33_835_0_,
+ 37         paymentins0_.ID_CURRENCY AS ID34_835_0_,
+ 38         paymentins0_.BOL_DEBIT_ALLOWED AS BOL35_835_0_,
+ 39         paymentins0_.ID_FEE_CLEARING_MODE AS ID42_835_0_,
+ 40         paymentins0_.STR_HASH AS STR36_835_0_,
+ 41         paymentins0_.ID_LIMIT_SET AS ID37_835_0_,
+ 42         paymentins0_.BOL_MULTI_CURRENCY AS BOL38_835_0_,
+ 43         paymentins0_.ID_ENTITY_STATUS AS ID39_835_0_,
+ 44         paymentins0_.ID_PI_TYPE AS ID43_835_0_,
+ 45         walletentr1_.DAT_CREATION AS DAT2_889_1_,
+ 46         walletentr1_.ID_CUSTOMER_CREATION AS ID3_889_1_,
+ 47         walletentr1_.DAT_LAST_UPDATE AS DAT4_889_1_,
+ 48         walletentr1_.ID_CUSTOMER_LAST_UPDATE AS ID5_889_1_,
+ 49         walletentr1_.STR_ALIAS AS STR6_889_1_,
+ 50         walletentr1_.INT_CREDIT_PRIO AS INT7_889_1_,
+ 51         walletentr1_.ID_CUSTOMER AS ID10_889_1_,
+ 52         walletentr1_.INT_DEBIT_PRIO AS INT8_889_1_,
+ 53         walletentr1_.ID_LIMIT_SET AS ID9_889_1_,
+ 54         walletentr1_.ID_PI AS ID11_889_1_
+ 55    FROM MOBR5.MOB_PIS paymentins0_,
+ 56         MOBR5.MOB_WALLET walletentr1_,
+ 57         MOBR5.MOB_PI_TYPES paymentins2_
+ 58   WHERE     paymentins0_.ID_PI_TYPE = paymentins2_.ID_PI_TYPE
+ 59         AND walletentr1_.ID_PI = paymentins0_.ID_PI
+ 60         AND walletentr1_.ID_CUSTOMER = 500049454
+ 61         AND paymentins0_.BOL_IS_ACTIVE = 'Y'
+ 62         AND paymentins0_.ID_ENTITY_STATUS = 0
+ 63         AND (   paymentins0_.BOL_CREDIT_ALLOWED = 'Y'
+ 64              OR     (paymentins0_.BOL_CREDIT_ALLOWED IS NULL)
+ 65                 AND paymentins2_.BOL_CREDIT_ALLOWED = 'Y')
+ 66         AND (paymentins0_.ID_PI_TYPE IN ( 101));
+
+
+
+Execution Plan
+----------------------------------------------------------
+Plan hash value: 3962449593
+
+----------------------------------------------------------------------------------------------------
+---------
+
+| Id  | Operation                      | Name                       | Rows  | Bytes | Cost (%CPU)| T
+ime     |
+
+----------------------------------------------------------------------------------------------------
+---------
+
+|   0 | SELECT STATEMENT               |                            |     1 |   149 |     9   (0)| 0
+0:00:01 |
+
+|   1 |  NESTED LOOPS                  |                            |     1 |   149 |     9   (0)| 0
+0:00:01 |
+
+|   2 |   NESTED LOOPS                 |                            |     2 |   149 |     9   (0)| 0
+0:00:01 |
+
+|   3 |    NESTED LOOPS                |                            |     2 |   162 |     5   (0)| 0
+0:00:01 |
+
+|   4 |     TABLE ACCESS BY INDEX ROWID| MOB_PI_TYPES               |     1 |     6 |     1   (0)| 0
+0:00:01 |
+
+|*  5 |      INDEX UNIQUE SCAN         | PK_PI_TYPES                |     1 |       |     0   (0)| 0
+0:00:01 |
+
+|   6 |     TABLE ACCESS BY INDEX ROWID| MOB_WALLET                 |     2 |   150 |     4   (0)| 0
+0:00:01 |
+
+|*  7 |      INDEX RANGE SCAN          | IDX_UNQ_WALLET_CREDIT_PRIO |     2 |       |     2   (0)| 0
+0:00:01 |
+
+|*  8 |    INDEX UNIQUE SCAN           | PK_PIS                     |     1 |       |     1   (0)| 0
+0:00:01 |
+
+|*  9 |   TABLE ACCESS BY INDEX ROWID  | MOB_PIS                    |     1 |    68 |     2   (0)| 0
+0:00:01 |
+
+----------------------------------------------------------------------------------------------------
+---------
+
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   5 - access("PAYMENTINS2_"."ID_PI_TYPE"=101)
+   7 - access("WALLETENTR1_"."ID_CUSTOMER"=500049454)
+   8 - access("WALLETENTR1_"."ID_PI"="PAYMENTINS0_"."ID_PI")
+   9 - filter("PAYMENTINS0_"."ID_PI_TYPE"=101 AND "PAYMENTINS0_"."BOL_IS_ACTIVE"='Y' AND
+              "PAYMENTINS0_"."ID_ENTITY_STATUS"=0 AND ("PAYMENTINS0_"."BOL_CREDIT_ALLOWED"='Y' OR
+              "PAYMENTINS0_"."BOL_CREDIT_ALLOWED" IS NULL AND "PAYMENTINS2_"."BOL_CREDIT_ALLOWED"='Y
+'))
+
+
+
+Statistics
+----------------------------------------------------------
+        427  recursive calls
+          0  db block gets
+        663  consistent gets
+         37  physical reads
+          0  redo size
+       4742  bytes sent via SQL*Net to client
+        535  bytes received via SQL*Net from client
+          3  SQL*Net roundtrips to/from client
+         37  sorts (memory)
+          0  sorts (disk)
+          1  rows processed
+
+SYS@mbbdb1 > 

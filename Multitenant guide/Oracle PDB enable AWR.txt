@@ -1,0 +1,67 @@
+1. Note for avoid performance issue when multiple PDBs creating snapshots in same time.
+Set the following parameter: For avoid performance issues
+From: CDB
+-------------------------------------------------------------------------
+alter system set AWR_SNAPSHOT_TIME_OFFSET=1000000 scope=both;
+
+
+
+2. Connect to the PDB database with admin option:
+-------------------------------------------------------------------------
+show pdbs
+
+
+alter session set container=&pdb_name; 
+
+
+
+3. Check the AWR parameter set at PDB level.
+-------------------------------------------------------------------------
+SQL> show parameter awr
+
+NAME                          TYPE     VALUE
+----------------------------- -------- --------
+awr_pdb_autoflush_enabled     boolean  FALSE
+awr_pdb_max_parallel_slaves   integer  10
+awr_snapshot_time_offset      integer  0
+
+
+
+4. Enabled the AWR PDB AUTOFLUSH ENABLED parameter.
+-------------------------------------------------------------------------
+alter system set awr_pdb_autoflush_enabled=true;
+
+
+
+
+5. Check AWR Snapshot time and set it for 60 minutes:
+-------------------------------------------------------------------------
+-- Check
+select * from cdb_hist_wr_control;
+
+     DBID  SNAP_INTERVAL     RETENTION         TOPNSQL  CON_ID SRC_DBID   SRC_DBNAME
+---------- ----------------- ----------------- -------- ------ ---------- ----------
+3687486700 +40150 00:01:00.0 +00008 00:00:00.0 DEFAULT  5      3687486700 
+--Set it for 60 minutes
+execute dbms_workload_repository.modify_snapshot_settings(interval => 60);
+
+-- Check
+select * from cdb_hist_wr_control;
+
+     DBID  SNAP_INTERVAL     RETENTION         TOPNSQL  CON_ID SRC_DBID   SRC_DBNAME
+---------- ----------------- ----------------- -------- ------ ---------- ----------
+3687486700 +00000 01:00:00.0 +00008 00:00:00.0 DEFAULT  5      3687486700 
+
+
+
+6. For testing the AWR Report manually create the snapshot and fetch the report:
+-------------------------------------------------------------------------
+-- Manually create snapshots:
+exec dbms_workload_repository.create_snapshot();
+
+--Fetch AWR report:
+@?/rdbms/admin/awrrpt.sql;
+
+Note: For PDB Snapshot view for check snapshot:
+
+select * from awr_pdb_snapshot;

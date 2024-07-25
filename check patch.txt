@@ -1,0 +1,17 @@
+1. Check software
+----------------------------------------------
+opatch patches
+
+
+
+2. Check database
+----------------------------------------------
+col ACTION_TIME     for a35
+col ACTION          for a15
+col NAMESPACE       for a15
+col VERSION         for a15
+col ID              for 999999
+col COMMENTS        for a30
+col BUNDLE_SERIES   for a10
+
+select * from registry$history;

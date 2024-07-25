@@ -1,0 +1,26 @@
+SELECT /* SQL monitor */ dbms_sqltune.report_sql_monitor (sql_id=>'b847571v5x77b', event_detail=>'YES', report_level=>'ALL') from dual;
+
+
+SELECT * FROM table(dbms_xplan.display_cursor(sql_id=>'b847571v5x77b',cursor_child_no=>NULL,format=>'ALLSTATS -OUTLINE +PEEKED_BINDS'));
+
+
+ set line 1000
+ set pages 1000
+ column SESS_INFO format a15
+COLUMN SESS_INFO HEADING 'INST_|SID_SERIAL#'
+col OS_PID for a9
+column USER format a35
+COLUMN USER HEADING 'USER/|MACHINE/|MODULE'
+column event format a30
+column sql_id format a20
+column sql_text format a50
+select /* VIEW SESSION ACTIVE */  distinct s.inst_id|| '_' ||s.sid ||'_'||s.serial# "SESS_INFO",b.spid OS_PID,
+  s.username ||'/'||s.machine ||'/'||substr(s.module,1,15) "USER", s.event,c.sql_id,c.sql_text
+ from gv$session s, gv$sql c,gv$process b
+ where s.username is not null 
+ and s.status='ACTIVE' 
+ and s.sql_id=c.sql_id(+) 
+ and s.inst_id=c.inst_id(+) 
+ and (c.sql_text not like '%VIEW SESSION ACTIVE%' or c.sql_text is null) 
+ and addr=paddr(+) 
+ order by 1,5;

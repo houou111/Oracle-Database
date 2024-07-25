@@ -1,0 +1,29 @@
+Please use the following steps to complete the patching:
+
+Using root
+
+1.  Run the following command as the root user to complete the patching set up behind the scenes:
+#GI_HOME/bin:>  ./clscfg -localpatch
+
+ 
+
+2.  Run the following command as the root user to lock the GI home:
+#GI_HOME/crs/install:>  ./rootcrs.sh -lock
+
+ 
+
+3.  Run the following command as the root user to start the GI:
+#GI_HOME/bin:>  ./crsctl start crs
+
+
+
+4. Continue patching
+
+
+5.  Run the following command as the root user to unlock the GI home:
+#GI_HOME/crs/install:>  ./rootcrs.sh -lock
+
+
+
+6.  Run the following command as the root user to start the GI:
+#GI_HOME/bin:>  ./crsctl start crs

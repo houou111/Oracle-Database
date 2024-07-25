@@ -1,0 +1,14 @@
+select count(1), a.name
+from v$tablespace a, v$datafile b
+where a.TS#=b.TS#
+group by a.name 
+order by 1;
+
+
+select count(1), a.name
+from v$tablespace a, v$tempfile b
+where a.TS#=b.TS#
+group by a.name 
+order by 1;
+
+

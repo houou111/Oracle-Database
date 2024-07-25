@@ -1,0 +1,25 @@
+--------------------How to Move/Recreate GI Management Repository (GIMR / MGMTDB) to Different Shared Storage (Diskgroup, CFS or NFS etc) (Doc ID 1589394.1)
+---STOP  ora.crf RESOURCE
+On each node, as root user:
+# /u01/app/12.2.0/grid/bin/crsctl stat resource ora.crf -init
+# /u01/app/12.2.0/grid/bin/crsctl stop resource ora.crf -init
+# /u01/app/12.2.0/grid/bin/crsctl modify resource ora.crf -attr ENABLED=0 -init
+
+---DELETE MGMTDB
+As grid user, locate the node mgmtdb is running, and run delete on that node
+# $ORACLE_HOME/bin/srvctl status mgmtdb
+# $ORACLE_HOME/bin/dbca -silent -deleteDatabase -sourceDB -MGMTDB
+
+---CREATE MGMTDB --> for 12.2 only
+as grid user, run on any node
+# $ORACLE_HOME/bin/dbca -silent -createDatabase -sid -MGMTDB \
+-createAsContainerDatabase true -templateName MGMTSeed_Database.dbc -gdbName _mgmtdb \
+-storageType ASM -diskGroupName +MGMT -datafileJarLocation \
+$ORACLE_HOME/assistants/dbca/templates -characterset AL32UTF8 -autoGeneratePasswords -skipUserTemplateCheck
+
+# srvctl status MGMTDB
+
+---ENABLE AND START ora.crf RESOURCE
+On each node, as root user:
+# /u01/app/12.2.0/grid/bin/crsctl modify res ora.crf -attr ENABLED=1 -init
+# /u01/app/12.2.0/grid/bin/crsctl start res ora.crf -init

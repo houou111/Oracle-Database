@@ -1,0 +1,86 @@
+[root@dc-core-db-02 software]# /u01/app/grid/product/12.1.0/grid/OPatch/opatchauto apply /u01/software/27967747/27967747 -oh /u01/app/grid/product/12.1.0/grid
+
+OPatchauto session is initiated at Sat Sep 15 11:37:21 2018
+
+System initialization log file is /u01/app/grid/product/12.1.0/grid/cfgtoollogs/opatchautodb/systemconfig2018-09-15_11-37-25AM.log.
+
+Session log file is /u01/app/grid/product/12.1.0/grid/cfgtoollogs/opatchauto/opatchauto2018-09-15_11-37-36AM.log
+The id for this session is NAL2
+
+Executing OPatch prereq operations to verify patch applicability on home /u01/app/grid/product/12.1.0/grid
+Patch applicability verified successfully on home /u01/app/grid/product/12.1.0/grid
+
+
+Bringing down CRS service on home /u01/app/grid/product/12.1.0/grid
+Prepatch operation log file location: /u01/app/grid/product/12.1.0/grid/cfgtoollogs/crsconfig/crspatch_dc-core-db-02_2018-09-15_11-37-49AM.log
+CRS service brought down successfully on home /u01/app/grid/product/12.1.0/grid
+
+
+Start applying binary patch on home /u01/app/grid/product/12.1.0/grid
+Binary patch applied successfully on home /u01/app/grid/product/12.1.0/grid
+
+
+Starting CRS service on home /u01/app/grid/product/12.1.0/grid
+  Postpatch operation log file location: /u01/app/grid/product/12.1.0/grid/cfgtoollogs/crsconfig/crspatch_dc-core-db-02_2018-09-15_11-39-49AM.log
+Failed to start CRS service on home /u01/app/grid/product/12.1.0/grid
+
+Execution of [GIStartupAction] patch action failed, check log for more details. Failures:
+Patch Target : dc-core-db-02->/u01/app/grid/product/12.1.0/grid Type[crs]
+Details: [
+---------------------------Patching Failed---------------------------------
+Command execution failed during patching in home: /u01/app/grid/product/12.1.0/grid, host: dc-core-db-02.
+Command failed:  /u01/app/grid/product/12.1.0/grid/perl/bin/perl -I/u01/app/grid/product/12.1.0/grid/perl/lib -I/u01/app/grid/product/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dc-core-db-02/patchwork/crs/install /u01/app/grid/product/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dc-core-db-02/patchwork/crs/install/rootcrs.pl -postpatch
+Command failure output:
+Using configuration parameter file: /u01/app/grid/product/12.1.0/grid/OPatch/auto/dbtmp/bootstrap_dc-core-db-02/patchwork/crs/install/crsconfig_params
+2018/09/15 11:39:56 CLSRSC-4015: Performing install or upgrade action for Oracle Trace File Analyzer (TFA) Collector.
+
+2018/09/15 11:40:32 CLSRSC-4003: Successfully patched Oracle Trace File Analyzer (TFA) Collector.
+
+2018/09/15 11:40:33 CLSRSC-329: Replacing Clusterware entries in file 'oracle-ohasd.service'
+
+CRS-4123: Oracle High Availability Services has been started.
+CRS-4133: Oracle High Availability Services has been stopped.
+CRS-4123: Starting Oracle High Availability Services-managed resources
+CRS-2672: Attempting to start 'ora.mdnsd' on 'dc-core-db-02'
+CRS-2672: Attempting to start 'ora.evmd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.mdnsd' on 'dc-core-db-02' succeeded
+CRS-2676: Start of 'ora.evmd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.gpnpd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.gpnpd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.gipcd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.gipcd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.cssdmonitor' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.cssdmonitor' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.cssd' on 'dc-core-db-02'
+CRS-2672: Attempting to start 'ora.diskmon' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.diskmon' on 'dc-core-db-02' succeeded
+CRS-2676: Start of 'ora.cssd' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.cluster_interconnect.haip' on 'dc-core-db-02'
+CRS-2672: Attempting to start 'ora.ctssd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.ctssd' on 'dc-core-db-02' succeeded
+CRS-2676: Start of 'ora.cluster_interconnect.haip' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.asm' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.asm' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.storage' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.storage' on 'dc-core-db-02' succeeded
+CRS-2672: Attempting to start 'ora.crsd' on 'dc-core-db-02'
+CRS-2676: Start of 'ora.crsd' on 'dc-core-db-02' succeeded
+Cluster Ready Service aborted due to Oracle Cluster Registry error [PROC-44: Error in network address and interface operations Network address and interface operations error [7]]. Details at (:CRSD00111:) in /u01/base/diag/crs/dc-core-db-02/crs/trace/crsd.trc.
+CRS-2883: Resource 'ora.crsd' failed during Clusterware stack start.
+CRS-4406: Oracle High Availability Services synchronous start failed.
+CRS-4000: Command Start failed, or completed with errors.
+2018/09/15 11:41:56 CLSRSC-117: Failed to start Oracle Clusterware stack
+
+
+After fixing the cause of failure Run opatchauto resume
+
+]
+OPATCHAUTO-68061: The orchestration engine failed.
+OPATCHAUTO-68061: The orchestration engine failed with return code 1
+OPATCHAUTO-68061: Check the log for more details.
+OPatchAuto failed.
+
+OPatchauto session completed at Sat Sep 15 11:41:58 2018
+Time taken to complete the session 4 minutes, 37 seconds
+
+ opatchauto failed with error code 42

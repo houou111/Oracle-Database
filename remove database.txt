@@ -1,0 +1,25 @@
+I.Rac
+---------------------------------------------
+1. Disable cluster:
+---------------------
+SQL>  alter system set cluster_database=FALSE scope=spfile sid='*';
+
+2. Stop database
+---------------------
+[oracle@mnp01 dbs]$ srvctl stop database -d mnp -o immediate
+
+shutdown immediate
+
+3. Start database mount exclusive mode restrict
+---------------------
+SQL> startup mount exclusive restrict;
+
+
+4. Drop database
+---------------------
+SQL> drop database;
+
+
+5. Remove service from cluster 
+---------------------
+srvctl remove database -db idcbac

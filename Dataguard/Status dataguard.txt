@@ -1,0 +1,31 @@
+
+
+--Check Role
+SQL> SELECT DATABASE_ROLE, DB_UNIQUE_NAME INSTANCE, OPEN_MODE, PROTECTION_MODE, PROTECTION_LEVEL, SWITCHOVER_STATUS FROM V$DATABASE;
+
+--Các archive log đang tồn tại trong hệ thống.
+SQL> SELECT SEQUENCE#, FIRST_TIME, NEXT_TIME FROM V$ARCHIVED_LOG ORDER BY SEQUENCE#;
+
+Hoặc
+
+SQL> SELECT THREAD#, MAX(SEQUENCE#) AS "LAST_APPLIED_LOG" FROM V$LOG_HISTORY GROUP BY THREAD#;
+
+Hoặc
+
+SQL> SELECT SEQUENCE#,APPLIED FROM V$ARCHIVED_LOG ORDER BY SEQUENCE#;
+
+--Check xem apply log được chua
+SELECT PROCESS, STATUS, THREAD#, SEQUENCE#, BLOCK#, BLOCKS FROM V$MANAGED_STANDBY;
+
+
+To determine if real-time apply is enabled, query the RECOVERY_MODE column of the V$ARCHIVE_DEST_STATUS view.
+SELECT RECOVERY_MODE FROM V$ARCHIVE_DEST_STATUS;
+The V$DATAGUARD_STATUS fixed view displays events that would typically be triggered by any message to the alert log or server process trace files.
+SELECT MESSAGE FROM V$DATAGUARD_STATUS;
+Determining Which Log Files Were Not Received by the Standby Site.
+SELECT LOCAL.THREAD#, LOCAL.SEQUENCE# FROM (SELECT THREAD#, SEQUENCE# FROM V$ARCHIVED_LOG WHERE DEST_ID=1) LOCAL WHERE LOCAL.SEQUENCE# NOT IN (SELECT SEQUENCE# FROM V$ARCHIVED_LOG WHERE DEST_ID=2 AND THREAD# = LOCAL.THREAD#);
+If a delayed apply has been specified or an archive log is missing then switchover may take longer than expected.
+Check v$managed_standby
+select process, status, sequence# from v$managed_standby;
+OR alternatively:
+select name, applied from v$archived_log;

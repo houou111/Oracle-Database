@@ -1,0 +1,9 @@
+column message format a50
+column status format a9
+column type format a9
+column con_id format 90
+
+select con_id, type, message, status
+  from PDB_PLUG_IN_VIOLATIONS
+ where status<>'RESOLVED'
+ order by time;

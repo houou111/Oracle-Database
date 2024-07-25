@@ -1,0 +1,35 @@
+- revoke privilege from PUBLIC
+select * from 
+(
+select case 
+when owner='SYS' then table_name
+when owner<>'SYS' then owner||'.'||table_name
+end as privs
+from role_tab_privs where 
+(table_name  in ('CREATE EXTERNAL JOB','UTL_TCP','UTL_SMTP','UTL_MAIL','UTL_HTTP','UTL_INADDR','UTL_FILE','DBMS_SQL','DBMS_AW_XML','KUPP$PRO','DBMS_RANDOM','DBMS_SCHEDULER','DBMS_XMLGEN','DBMS_SYS_SQL','DBMS_JOB','DBMS_BACKUP_RESTORE','DBMS_ADVISOR','DBMS_JAVA','DBMS_JAVA_TEST','DBMS_LDAP','DBMS_OBFUSCATION_TOOLKIT','DBMS_XMLQUERY','UTL_DBWS','UTL_ORAMTS','HTTPURITYPE','DBMS_SYS_SQL','DBMS_AQADM_SYSCALLS','DBMS_REPCAT_SQL_UTL','INITJVMAUX','DBMS_STREAMS_ADM_UTL','DBMS_AQADM_SYS','DBMS_STREAMS_RPC','DBMS_PRVTAQIM','LTADM','WWV_EXECUTE_IMMEDIATE','DBMS_IJOB','DBMS_FILE_TRANSFER')
+or (table_name ='ORD_DICOM' and owner='ORDSYS')
+or (table_name ='DRITHSX' and owner='CTXSYS'))
+and role in (SELECT granted_role FROM DBA_ROLE_PRIVS where grantee='PUBLIC'
+)
+union all
+select privilege from role_sys_privs
+where privilege  ='CREATE EXTERNAL JOB'
+and role in (SELECT granted_role FROM DBA_ROLE_PRIVS where grantee='PUBLIC')
+union all
+select case 
+when owner='SYS' then table_name
+when owner<>'SYS' then owner||'.'||table_name
+end as privs
+from dba_tab_privs where
+(table_name  in ('CREATE EXTERNAL JOB','UTL_TCP','UTL_SMTP','UTL_MAIL','UTL_HTTP','UTL_INADDR','UTL_FILE','DBMS_SQL','DBMS_AW_XML','KUPP$PRO','DBMS_RANDOM','DBMS_SCHEDULER','DBMS_XMLGEN','DBMS_SYS_SQL','DBMS_JOB','DBMS_BACKUP_RESTORE','DBMS_ADVISOR','DBMS_JAVA','DBMS_JAVA_TEST','DBMS_LDAP','DBMS_OBFUSCATION_TOOLKIT','DBMS_XMLQUERY','UTL_DBWS','UTL_ORAMTS','HTTPURITYPE','DBMS_SYS_SQL','DBMS_AQADM_SYSCALLS','DBMS_REPCAT_SQL_UTL','INITJVMAUX','DBMS_STREAMS_ADM_UTL','DBMS_AQADM_SYS','DBMS_STREAMS_RPC','DBMS_PRVTAQIM','LTADM','WWV_EXECUTE_IMMEDIATE','DBMS_IJOB','DBMS_FILE_TRANSFER')
+and grantee='PUBLIC')
+or (table_name ='ORD_DICOM' and owner='ORDSYS' and grantee='PUBLIC')
+or (table_name ='DRITHSX' and owner='CTXSYS' and grantee='PUBLIC')
+)
+
+- user in profile default  loại user SCOTT trong kết quả, do để user này để phân biệt với target chưa được collect thông tin
+select rtrim (xmlagg (xmlelement (e, username || '|')).extract ('//text()'), '|') enames
+from    (select username from dba_users
+where profile='DEFAULT'
+and username not in ('ANONYMOUS','APEX_030200','APEX_040200','APEX_PUBLIC_USER','APPQOSSYS','AUDSYS','CTXSYS','DIP','EXFSYS','FLOWS_FILES','GSMADMIN_INTERNAL','GSMCATUSER','GSMUSER','MDDATA','MDSYS','MGMT_VIEW','OJVMSYS','OLAPSYS','ORACLE_OCM','ORDDATA','ORDPLUGINS','ORDSYS','OUTLN','OWBSYS','OWBSYS_AUDIT','SI_INFORMTN_SCHEMA','SPATIAL_CSW_ADMIN_USR','SPATIAL_WFS_ADMIN_USR','SQLTXPLAIN','SYSBACKUP','SYSDG','SYSKM','SYSMAN','WMSYS','XDB','XS$NULL')
+order by username )

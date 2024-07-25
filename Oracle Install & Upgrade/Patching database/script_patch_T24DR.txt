@@ -1,0 +1,137 @@
+------------------------------------------------------
+--1	Check opatch version on [both] node	
+su - grid
+export GI_HOME=/u01/app/grid/product/12.1.0/grid
+cd $GI_HOME/OPatch
+./opatch version 
+./opatch lsinventory -oh $ORACLE_HOME 
+
+su - oracle
+export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+cd $ORACLE_HOME/OPatch
+./opatch version 
+./opatch lsinventory -oh $ORACLE_HOME 
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+cd $ORACLE_HOME
+./opatch version 
+./opatch lsinventory -oh $ORACLE_HOME 
+
+------------------------------------------------------
+--2	Check before apply on both node	"login by [root] user
+su - root
+export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+$ORACLE_HOME/OPatch/opatchauto apply  /u01/software/27967747 -analyze
+
+
+/u01/app/grid/product/12.1.0/grid/OPatch/opatchauto apply  /u01/software/27967747/27967747 -analyze
+/u01/app/oracle/product/12.1.0/dbhome_1/OPatch/opatchauto apply  /u01/software/27967747/27967747 -analyze
+
+--Stop EM13C agent
+su - oraem
+emctl stop agent
+------------------------------------------------------
+--3	Deinstall patch set for bug 18377986 due to confict (update newer version to pass through conflict)	
+su - oracle
+
+su - oracle
+srvctl stop home -o /u01/app/oracle/product/12.1.0/dbhome_1 -s /home/oracle/stat1.txt -n dr-core-db-01
+srvctl stop home -o /u01/app/oracle/product/11.2.0/dbhome_1 -s /home/oracle/stat2.txt -n dr-core-db-01
+
+
+export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+cd $ORACLE_HOME/OPatch
+./opatch rollback -id 18377986
+
+------------------------------------------------------
+--4	Start apply database part in patch set on BOTH node	
+--For home 12.1: 
+
+
+
+
+--
+su - root
+export GI_HOME=/u01/app/grid/product/12.1.0/grid
+export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+
+--$ORACLE_HOME/OPatch/opatchauto apply  /u01/software/27967747 
+node2: 7h40-
+opatchauto apply /u01/software/27967747/27967747 -oh /u01/app/grid/product/12.1.0/grid
+/u01/app/oracle/product/12.1.0/dbhome_1/OPatch/opatchauto apply /u01/software/27967747/27967747 -oh /u01/app/oracle/product/12.1.0/dbhome_1
+
+--> check quyen file oracle va oracle0
+
+------------------------------------------------------
+--6	Apply new patch for bug 18377986 due to confict on BOTH node
+su - oracle
+cd /u01/software/18377986/18377986 
+opatch apply
+
+cd $ORACLE_HOME/OPatch
+./datapatch -verbose
+select * from registry$sqlpatch;
+
+ srvctl start home -o /u01/app/oracle/product/12.1.0/dbhome_1 -statefile /home/oracle/stat11.txt  -n dr-core-db-01
+ srvctl start home -o /u01/app/oracle/product/11.2.0/ -s /home/oracle/stat11.txt  -n dr-core-db-02
+
+--start EM13C agent
+su - oraem
+emctl start agent
+
+----------------------------
+
+--For home 11.2: 
+su - oracle
+
+
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+srvctl stop home -o /u01/app/oracle/product/11.2.0/dbhome_1 -s /home/oracle/sta1.txt -n dr-core-db-02
+
+/u01/software/27967757/27967757/27441052/custom/server/27441052/custom/scripts/prepatch.sh -dbhome /u01/app/oracle/product/11.2.0/dbhome_1
+./opatch napply -oh /u01/app/oracle/product/11.2.0/dbhome_1 -local /u01/software/27967757/27967757/27441052/custom/server/27441052
+/u01/app/oracle/product/11.2.0/dbhome_1/OPatch/opatch apply -oh /u01/app/oracle/product/11.2.0/dbhome_1 -local  /u01/software/27967757/27967757/27734982
+/u01/software/27967757/27967757/27441052/custom/server/27441052/custom/scripts/postpatch.sh -dbhome /u01/app/oracle/product/11.2.0/dbhome_1
+
+ srvctl start home -o /u01/app/oracle/product/11.2.0/ -s /home/oracle/sta1.txt  -n dr-core-db-02
+
+27967757
+------------------------------------------------------
+--5	Start apply database part in patch set on node2	
+--home 11g
+su - oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+cd $ORACLE_HOME/rdbms/admin
+Login database [YEAR12,YEAR13,YEAR14,YEAR15,YEAR16,YEAR17]
+sqlplus /nolog
+SQL> CONNECT / AS SYSDBA
+SQL> STARTUP
+SQL> @catbundle.sql psu apply
+SQL> QUIT
+
+
+
+rman catalog username/password@year12
+RMAN> UPGRADE CATALOG;
+For home 11.2
+# export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+# cd /u01/software/27923163/27923163
+# opatch apply
+# cd $ORACLE_HOME/sqlpatch/27923163
+# sqlplus /nolog
+SQL> CONNECT / AS SYSDBA
+SQL> STARTUP
+SQL> alter system set cluster_database=false scope=spfile;
+SQL> SHUTDOWN
+SQL> STARTUP UPGRADE
+SQL> @postinstall.sql
+SQL> alter system set cluster_database=true scope=spfile;
+SQL> SHUTDOWN
+SQL> STARTUP 
+
+------------------------------------------------------
+--7	Start apply OJVM part in patch set 	
+su - root
+export ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1
+$ORACLE_HOME/crsctl stop crs --2 node at the same time
+cd /u01/software/27923320/27923320
+opatch apply

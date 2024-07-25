@@ -1,0 +1,77 @@
+ADDm -> check performace
+
+
+Segment advisor: 
+- It may advise the use of online table redefinition for tables in dictionary managed tablespace
+- It may advise the use of segment shrink for free list managed tables.
+- It will detect and advise about chained rows.	
+
+
+Variable extent size support for large ASM files
+- The metadata used to track extents in SGA is reduced.
+- An ASM Instance automatically allocates an appropriate extent size.
+
+
+ILM:
+- offline
+- move some block to higher tier
+
+
+Which three functions are performed by the SQL Tuning Advisor?
+- Building and implementing SQL profiles
+- Checking query objects for missing and stale statistics
+- Recommending the restructuring of SQL queries that are using bad plans
+
+
+SQL performace analyzer
+- for OLTP (indexes and materialzed)
+
+
+Which three activities are supported by the Data Recovery Advisor?
+- Advising on invalid block header field values
+- Advising on block checksum failures
+- Advising on inaccessible control files
+
+
+RMAN validate database:
+- check intrablock corruption
+- can detect corrupt spfiles
+
+
+Which two statements are true when row archival management is enabled?
+- The ORA_ARCHIVE_STATE column is visible if referenced in the select list of a query.
+- The ROW ARCHIVAL VISIBILITY session parameter defaults to active rows only.
+
+
+Which three statements are true about Automatic Workload Repository (AWR)?
+- The AWR data is stored in memory and in the database.
+- The snapshots collected by AWR are used by the self-tuning components in the database
+- AWR computes time model statistics based on time usage for activities, which are displayed in the v$SYS time model and V$SESS_TIME_MODEL views.
+
+
+Which two scenarios do you use SQL* Loader to load data?
+- Generate unique sequential key values in specified columns.
+- Load data into multiple tables during the same load statement.
+
+
+ILM: read only
+
+
+Checking and revoking excessive, unused privileges granted to users: Identify the correct sequence of steps.
+- Create a policy to capture the privilege used by a user for privilege analysis
+- Start analyzing the data captured by the policy
+- Stop analyzing the data
+- Generate a report with the data captured for a specified privilege capture
+- Compare the used and unused
+- Revoke the unused privileges
+
+
+Which three statements are true regarding the use of the Database Migration Assistant for Unicode (DMU)?
+- DBA can check specific tables with the DMU
+- The DMU can report columns that are too long in the converted characterset.
+- The DMU can report columns that are not represented in the converted characterset
+
+
+Which two statements are true about variable extent size support for large ASM files?
+- The metadata used to track extents in SGA is reduced.
+- An ASM Instance automatically allocates an appropriate extent size

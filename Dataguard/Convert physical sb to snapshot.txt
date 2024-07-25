@@ -1,0 +1,113 @@
+
+
+
+SQL> alter database recover managed standby database cancel;
+
+SQL> shut immediate
+ 
+SQL> startup mount
+
+SQL> alter database convert to snapshot standby;
+
+SQL> alter database open;
+
+SQL> shut immediate
+
+SQL> startup mount
+
+SQL> alter database convert to physical standby;
+
+SQL> shut immediate
+ 
+SQL> startup
+
+
+
+Service name:
+bpfdr  
+bpfrcdr  
+captudr  
+rptdr
+gcddr  
+pedr  
+cedr
+
+IP address:
+dr-ora-scan
+
+
+primary
+-----------------------------------------------
+dgmgrl /
+show configuration
+convert database rptdr to snapshot standby
+
+
+dgmgrl /
+show configuration
+convert database pedr to physical standby
+
+
+standby
+shutdown immediate
+startup mount
+alter database convert to physical standby;
+shutdown immediate
+startup mount
+alter database recover managed standby database using current logfile disconnect;
+
+
+add database rptdr as connect identifier is rptdr maintained as physical; 
+add database gcddr as connect identifier is gcddr maintained as physical; 
+
+listener for broker
+
+SID_LIST_LISTENER =
+ (SID_LIST =
+  (SID_DESC =
+   (GLOBAL_DBNAME = cedr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = cedr2)
+  )
+ (SID_DESC =
+   (GLOBAL_DBNAME = pedr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = pedr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = bpfdr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = bpfdr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = bpfrcdr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = bpfrcdr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = captudr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = captudr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = rptdr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = rptdr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = gcddr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.1.0/db_1)
+   (SID_NAME = gcddr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = hrmdr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.2.0.4/dbhome_1)
+   (SID_NAME = hrmdr2)
+  )
+  (SID_DESC =
+   (GLOBAL_DBNAME = mbbdr_DGMGRL.techcombank.com.vn)
+   (ORACLE_HOME = /u01/app/oracle/product/11.2.0.4/dbhome_1)
+   (SID_NAME = mbbdr2)
+  )
+ )
+

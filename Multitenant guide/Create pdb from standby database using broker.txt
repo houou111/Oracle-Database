@@ -1,0 +1,105 @@
+PDB Failover in a Data Guard environment: 
+Using Data Guard Broker to Unplug a Single Failed PDB from a Standby Database and Plugging into a New Container or Migrate a Single PDB into a New Container (Doc ID 2088201.1)
+
+
+	
+Migration example:
+
+Connect to the source database and show the PDBs and the current role.  For migration the source database must be the primary
+SQL> show pdbs  
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 <PDB$SEED>                       READ ONLY  NO
+         5 <PDBNAME1>                       READ WRITE NO
+         8 <PDBNAME2>                       READ WRITE NO
+
+SQL> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PRIMARY
+  
+Connect to the source database primary using broker command line on the host shared by instances of both the source database (<SOURCE DB>) and the destination database (<DEST DB>)
+DGMGRL> connect <USERNAME> as sysdba
+Password:
+Connected to "<SOURCE DB>"
+Connected as SYSDBA.
+  
+Execute the migrate command to migrate the PDB from <SOURCE DB> to <DEST DB> In the following command /<path>/<SOURCE DB> is directly accessible to both <SOURCE DB> and <DEST DB> on <DEST_HOSTNAME>.
+DGMGRL> migrate pluggable database <PDBNAME1> to container <dest-cdb-name> using '/<path>/<SOURCE DB>/<PDBNAME1.xml>';
+Username: <USERNAME>@"<dest-cdb-connect-identifer>"
+Password:
+Connected to "<DEST DB>"
+Connected as SYSDBA.
+
+Beginning migration of pluggable database <PDBNAME1>.
+Source multitenant container database is <SOURCE DB>.
+Destination multitenant container database is <DEST DB>.
+
+Closing pluggable database <PDBNAME1> on all instances of multitenant container database <SOURCE DB>.
+Unplugging pluggable database <PDBNAME1> from multitenant container database <SOURCE DB>.
+Pluggable database description will be written to /<path>/<SOURCE DB>/<PDBNAME1.xml>.
+Dropping pluggable database <PDBNAME1> from multitenant container database <SOURCE DB>.
+Creating pluggable database <PDBNAME1> on multitenant container database <DEST DB>.
+Opening pluggable database <PDBNAME1> on all instances of multitenant container database <DEST DB>.
+Unresolved plug in violations found while migrating pluggable database <PDBNAME1> to multitenant container database <DEST DB>.
+Please examine the PDB_PLUG_IN_VIOLATIONS view to see the violations that need to be resolved.
+Migration of pluggable database <PDBNAME1> completed.
+Succeeded.  
+
+
+
+
+Failover example:
+
+SQL> show pdbs
+
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 PDB1                           READ ONLY  NO
+         4 PDB2                           READ ONLY  NO
+         8 PDB3                           READ ONLY  NO
+
+SQL> select database_role from v$database;
+
+DATABASE_ROLE
+----------------
+PHYSICAL STANDBY
+
+
+DGMGRL> connect <USERNAME> as sysdba
+Password:
+Connected to "<cdb1stby>"
+Connected as SYSDBA.
+
+
+DGMGRL> migrate pluggable database <pdb2> immediate to container cdb2 using '/<path>/<cdb1stby>/<pdb2.xml>';
+Username: USERNAME@"desthost/cdb2"
+Password:
+Connected to "<cdb2>"
+Connected as SYSDBA.
+
+Beginning migration of pluggable database <PDB2>.
+Source multitenant container database is <cdb1stby>.
+Destination multitenant container database is <cdb2>.
+
+Connected to "cdb1"
+Closing pluggable database <PDB2> on all instances of multitenant container database <cdb1>.
+Continuing with migration of pluggable database <PDB2> to multitenant container database <cdb2>.
+Stopping Redo Apply services on source multitenant container database <cdb1stby>.
+Succeeded.
+Pluggable database description will be written to /<path>/<cdb1stby>/<pdb2.xml>.
+Closing pluggable database <PDB2> on all instances of multitenant container database <cdb1stby>.
+Disabling media recovery for pluggable database <PDB2>.
+Restarting redo apply services on source multitenant container database <cdb1stby>.
+Succeeded.
+Creating pluggable database <PDB2> on multitenant container database <cdb2>.
+Opening pluggable database <PDB2> on all instances of multitenant container database <CDB2>.
+Unplugging pluggable database <PDB2> from multitenant container database <cdb1>.
+Pluggable database description will be written to /<path>/<pdb2.xml>.
+Dropping pluggable database <PDB2> from multitenant container database <cdb1>.
+Unresolved plug in violations found while migrating pluggable database <PDB2> to multitenant container database <cdb2>.
+Please examine the PDB_PLUG_IN_VIOLATIONS view to see the violations that need to be resolved.
+Migration of pluggable database <PDB2> completed.
+Succeeded.

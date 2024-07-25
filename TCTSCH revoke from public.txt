@@ -1,0 +1,51 @@
+Set serveroutput on
+Set lines 30000
+Set pages 30000
+
+DECLARE
+   cmd1        VARCHAR2 (4000);
+   cmd2        VARCHAR2 (4000);
+   cmd3        VARCHAR2 (4000);
+   cmd4        VARCHAR2 (4000);
+
+   CURSOR c_tab
+   IS
+select OWNER,table_name from dba_tab_privs where
+(table_name  in ('UTL_TCP','UTL_SMTP','UTL_MAIL','UTL_HTTP','UTL_INADDR','UTL_FILE','DBMS_SQL','DBMS_AW_XML','KUPP$PRO','REVOKE CREATE EXTERNAL JOB','DBMS_RANDOM','DBMS_SCHEDULER','DBMS_XMLGEN','DBMS_SYS_SQL','DBMS_JOB','DBMS_BACKUP_RESTORE','DBMS_ADVISOR','DBMS_JAVA','DBMS_JAVA_TEST','DBMS_LDAP','DBMS_OBFUSCATION_TOOLKIT','DBMS_XMLQUERY','UTL_DBWS','UTL_ORAMTS','HTTPURITYPE','DBMS_SYS_SQL','DBMS_AQADM_SYSCALLS','DBMS_REPCAT_SQL_UTL','INITJVMAUX','DBMS_STREAMS_ADM_UTL','DBMS_AQADM_SYS','DBMS_STREAMS_RPC','DBMS_PRVTAQIM','LTADM','WWV_EXECUTE_IMMEDIATE','DBMS_IJOB','DBMS_FILE_TRANSFER')
+and grantee='PUBLIC')
+or (table_name ='ORD_DICOM' and owner='ORDSYS' and grantee='PUBLIC')
+or (table_name ='DRITHSX' and owner='CTXSYS' and grantee='PUBLIC')
+;
+
+BEGIN
+	
+	DBMS_OUTPUT.put_line ('Grant privilege');
+	DBMS_OUTPUT.put_line ('----------------------------------------------------------------');
+	
+   FOR v_tab1 IN c_tab
+   LOOP
+   
+         cmd3 := 'select ''grant execute on '  || v_tab1.OWNER ||'.'|| v_tab1.table_name || ' to  ''|| listagg( USERNAME,'','') WITHIN GROUP (ORDER BY DEFAULT_TABLESPACE) || '';''from dba_users where PROFILE in (''PROFILE_SERVICE_ACCOUNT'',''DEFAULT'') and USERNAME not in (''SYS'',''XS$NULL'')';
+		 --DBMS_OUTPUT.put_line (cmd3);
+             EXECUTE IMMEDIATE cmd3 into cmd4; 
+             DBMS_OUTPUT.put_line (cmd4);
+            -- EXECUTE IMMEDIATE cmd4;   
+	END LOOP;
+	
+	DBMS_OUTPUT.put_line ('#################################################################');
+	DBMS_OUTPUT.put_line ('Revoke privilege');
+	DBMS_OUTPUT.put_line ('-----------------------------------------------------------------');
+	
+	FOR v_tab2 IN c_tab
+	LOOP
+         cmd1 := 'revoke execute on ' || v_tab2.OWNER ||'.'|| v_tab2.table_name || ' from public;';
+         DBMS_OUTPUT.put_line (cmd1);
+         --EXECUTE IMMEDIATE cmd1; 
+           --  DBMS_OUTPUT.put_line (cmd2);
+            -- EXECUTE IMMEDIATE cmd2;   
+   
+  
+
+   END LOOP;
+END;
+/

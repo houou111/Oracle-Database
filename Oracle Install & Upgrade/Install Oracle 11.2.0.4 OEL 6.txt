@@ -1,0 +1,290 @@
+GENERAL INFO
+---------------------------------------------------------------------------
+
++DB:		11.2.0.4
++OS:		Red Hat Enterprise Linux Server release 6.5
++USER OS:	root/Admin@123
+			oracle/oracle
+			grid/grid
+
+			
+1. CHECKING REQUIREMENT
+---------------------------------------------------------------------------
+OS : Oracle Linux 6.8
+RAM > 4GB
+Swap > 4GB
+/tmp > 2GB
+
+L?nh ki?m tra RAM
+# cat /proc/meminfo | grep MemTotal
+MemTotal:      65932788 kB
+
+L?nh ki?m tra Swap
+# cat /proc/swaps
+Filename              Type            Size         Used    Priority
+/dev/sda3             partition       134217720       0          -1
+
+L?nh ki?m tra /tmp
+# df -h /tmp
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda8             7.9G  147M  7.4G   2% /tmp
+
+
+2. CONFIG /etc/hosts: DONE ON NODE1 AND NODE2 USE USER ROOT
+---------------------------------------------------------------------------
++NODE1:
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# Public IPs
+10.30.5.51     meddb01
+10.30.5.52     meddb02
+# Private IPs
+192.168.1.1   meddb01-priv
+192.168.1.2   meddb02-priv
+# VIPs
+10.30.5.53     meddb01-vip
+10.30.5.54     meddb02-vip
+# SCAN
+10.30.5.55     meddb-scan
+
++NODE2:
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# Public IPs
+10.30.5.51     meddb01
+10.30.5.52     meddb02
+# Private IPs
+192.168.1.1   meddb01-priv
+192.168.1.2   meddb02-priv
+# VIPs
+10.30.5.53     meddb01-vip
+10.30.5.54     meddb02-vip
+# SCAN
+10.30.5.55     meddb-scan
+
+
+3. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# echo 2 > /proc/sys/net/ipv4/conf/all/rp_filter
+sua ipv4 1->2
+
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 4294967295
+kernel.shmall = 2097152
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+
+4. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+grid soft nproc 2047
+grid hard nproc 16384
+grid soft nofile 1024
+grid hard nofile 65536
+oracle soft nproc 2047
+oracle hard nproc 16384
+oracle soft nofile 1024
+oracle hard nofile 65536
+
+# vi /etc/pam.d/login
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+
+5. DISABLE FIREWALL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# service iptables save
+# service iptables stop
+# chkconfig iptables off
+
+
+6. DISABLE SElinux: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# echo 0 >/selinux/enforce
+# setenforce Permissive 
+# vi /etc/selinux/config
+SELINUX=disabled
+
+
+7. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CREATE REPO:
+# mount /dev/cdrom /media/
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///media/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# yum install -y xorg-x11-xauth glibc-devel.i686 lftp tigervnc-server compat-libcap1 binutils gcc gcc-c++ gcc.i386 glibc-devel glibc.i686 libgcc libstdc++ make compat-db libXp ksh sysstat libaio-devel compat-libstdc++-33 elfutils-libelf-devel kmod-oracleasm oracleasmlib oracleasm-support smartmontools
+
+Copy and install oracleasmlib
+
+8. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+groupadd -g 2001 oinstall
+useradd -m -u 2000 -g oinstall -d /home/oracle -s /bin/bash oracle
+chage -m 0 -M 99999 -I -1 -E -1 oracle
+usermod -e '' oracle
+chage -l oracle
+
+
+
+9. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/11.2.0.4/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /u01/dump
+# mkdir -p /home/oracle/bin
+# mkdir -p /home/oracle/dbscript/log
+# chown oracle:oinstall /home/oracle/bin
+# chmod -R 775 /home/oracle/bin
+# chmod -R 775 /home/oracle/dbscript
+# chmod -R 775 /u01
+# chown oracle:oinstall -R  /u01
+
+
+11. CONFIG ORACLE .bash_profile: DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
+10. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
++ profile
+$ vi /home/oracle/.bash_profile
+export TZ=Asia/Ho_Chi_Minh
+export SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export ORACLE_UNQNAME=em13cdr
+export ORACLE_SID=em13cdr
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+umask 022
+
+
++grid:
+$ vi /home/oracle/bin/grid
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/11.2.0.4/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP_ASM=$ORACLE_BASE/diag/asm/+asm/$ORACLE_SID/trace
+export DUMP_CRS=$ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log
+alias s="sqlplus / as sysdba"
+alias alert_asm="tail -300f $DUMP_ASM/alert_$ORACLE_SID.log"
+alias alert_crs="tail -300f $ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log"
+
+
++oracle_sid:
+$ vi /home/oracle/bin/oracle_sid
+export ORACLE_UNQNAME=cskh
+export ORACLE_SID=cskh1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+
+
+12. CONFIG ASMLIB DONE ON NODE1 AND NODE2 WITH ROOT:
+---------------------------------------------------------------------------
+# /usr/sbin/oracleasm configure -i
+Configuring the Oracle ASM library driver.
+
+This will configure the on-boot properties of the Oracle ASM library
+driver.  The following questions will determine whether the driver is
+loaded on boot and what permissions it will have.  The current values
+will be shown in brackets ('[]').  Hitting <ENTER> without typing an
+answer will keep that current value.  Ctrl-C will abort.
+
+Default user to own the driver interface []:                                     
+oracle
+Default group to own the driver interface []:                                      
+oinstall
+Start Oracle ASM library driver on boot (y/n) [n]:                                      
+y
+Scan for Oracle ASM disks on boot (y/n) [y]:                                     
+y
+Writing Oracle ASM library driver configuration: done
+
+
+# /usr/sbin/oracleasm init
+Creating /dev/oracleasm mount point: /dev/oracleasm
+Loading module "oracleasm": oracleasm
+Mounting ASMlib driver filesystem: /dev/oracleasm
+
+
++DONE ON NODE 1:
+/usr/sbin/oracleasm createdisk CRS01 /dev/sdb1
+/usr/sbin/oracleasm createdisk CRS02 /dev/mapper/mpathi1
+/usr/sbin/oracleasm createdisk CRS03 /dev/mapper/mpathe1
+/usr/sbin/oracleasm createdisk FRA01 /dev/mapper/mpatha
+/usr/sbin/oracleasm createdisk DATA01 /dev/sdb1
+
++CHECK ON NODE 2:
+[root@racnode2 ~]#  /usr/sbin/oracleasm scandisks
+Reloading disk partitions: done
+Cleaning any stale ASM disks...
+Scanning system for ASM disks...
+Instantiating disk "FRAVOL1"
+Instantiating disk "DATAVOL1"
+Instantiating disk "CRSVOL1"
+
+
+
+13. GRID INSTALLATION
+---------------------------------------------------------------------------
+# cd /u01
+# unzip database_112040_Linux-x86-64_3of7.zip
+# chown -R oracle:oinstall grid
+
+
+14. SOFTWARE INSTALLATION
+---------------------------------------------------------------------------
+# cd /u01
+# unzip database_112040_Linux-x86-64_1of7.zip
+# unzip database_112040_Linux-x86-64_2of7.zip
+# chown -R oracle:oinstall database
+
+
+
+15. CONFIG PARAMETER
+---------------------------------------------------------------------------
+alter system set memory_max_target = 100G scope=spfile sid='*';
+alter system set memory_target = 100G scope=spfile sid='*';
+alter system set sga_max_size = 0 scope=spfile sid='*';
+alter system set sga_target = 0 scope=spfile sid='*';
+alter system set pga_aggregate_target = 0 scope=spfile sid='*';
+alter system set processes = 1000 scope=spfile sid='*';
+alter system set sessions = 500 scope=spfile sid='*';

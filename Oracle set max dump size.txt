@@ -1,0 +1,9 @@
+SQL> show parameter MAX_DUMP_FILE_SIZE ;
+
+NAME             TYPE   VALUE
+------------------------------------ ----------- ------------------------------
+max_dump_file_size         string   unlimited
+SQL>
+
+
+alter system set ...

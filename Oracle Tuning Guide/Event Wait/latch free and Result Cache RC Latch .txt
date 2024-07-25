@@ -1,0 +1,8 @@
+High "Latch Free" Waits with Contention on 'Result Cache: RC Latch' when RESULT_CACHE_MODE = MANUAL on Oracle 12c (Doc ID 2002089.1)
+
+
+alter system set "_optimizer_ads_use_result_cache" = FALSE;
+
+
+
+7m0njck7uam33

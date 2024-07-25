@@ -1,0 +1,81 @@
+1. Nested Loops Join
+-----------------------------------
+Use for:
+- small subsets of data are being joined and if there is an efficient way of accessing the second table (for example an index lookup).
+
+For every row in the first table (the outer table), Oracle accesses all the rows in the second table (the inner table) looking for a match. You can think of it as a set of embedded FOR loops.
+
+Nested Loop Join thường được sử dụng khi một trong hai bảng nhỏ hoặc khi các bảng có các chỉ mục phù hợp. Đây là phương pháp JOIN đơn giản nhất và hoạt động tốt khi số lượng hàng trong bảng nhỏ.
+
+Quy trình Nested Loop Join:
+
+Oracle lặp qua từng hàng của bảng bên ngoài (outer table).
+Với mỗi hàng của bảng bên ngoài, Oracle tìm kiếm các hàng phù hợp trong bảng bên trong (inner table).
+Ví dụ:
+
+
+SELECT e.employee_id, e.name, d.department_name
+FROM employees e
+JOIN departments d
+ON e.department_id = d.department_id;
+
+
+2. Hash Joins
+-----------------------------------
+Hash joins are used for joining large data sets. The Optimizer uses the smaller of the two tables or data sources to build a hash table, based on the join key, in memory. It then scans the larger table and performs the same hashing algorithm on the join column(s). It then probes the previously built hash table for each value and if they match, it returns a row.
+
+
+Hash Join thường được sử dụng khi thực hiện JOIN trên các bảng lớn mà không có các chỉ mục (indexes) phù hợp. Hash Join đặc biệt hiệu quả cho các phép JOIN equi-join (phép JOIN có điều kiện bằng nhau).
+
+Quy trình Hash Join:
+
+Build Phase: Oracle xây dựng một bảng băm (hash table) trên các giá trị từ bảng nhỏ hơn dựa trên điều kiện JOIN.
+Probe Phase: Oracle quét bảng lớn hơn và kiểm tra các giá trị với bảng băm để tìm các cặp phù hợp.
+
+SELECT e.employee_id, e.name, d.department_name
+FROM employees e
+JOIN departments d
+ON e.department_id = d.department_id;
+
+
+
+3. Sort Merge Joins
+-----------------------------------
+Sort Merge joins are useful when the join condition between two tables is an in-equality condition such as, <, <=, >, or >=. Sort merge joins can perform better than nested loop joins for large data sets. The join consists of two steps:
+
+Sort join operation: Both the inputs are sorted on the join key.
+Merge join operation: The sorted lists are merged together.
+A Sort Merge join is more likely to be chosen if there is an index on one of the tables that will eliminate one of the sorts.
+
+Sort-Merge Join thường được sử dụng khi cả hai bảng được sắp xếp theo cột JOIN hoặc khi các bảng lớn mà không có các chỉ mục phù hợp. Phương pháp này hiệu quả cho các phép JOIN equi-join và theta-join (phép JOIN có điều kiện khác nhau).
+
+Quy trình Sort-Merge Join:
+
+Sort Phase: Oracle sắp xếp cả hai bảng theo các cột JOIN.
+Merge Phase: Oracle lặp qua cả hai bảng đã được sắp xếp và tìm các cặp hàng phù hợp.
+
+SELECT e.employee_id, e.name, d.department_name
+FROM employees e
+JOIN departments d
+ON e.department_id = d.department_id;
+Khi nào sử dụng từng loại JOIN?
+Hash Join: Thích hợp cho các bảng lớn và khi không có các chỉ mục phù hợp. Hiệu quả cho các phép JOIN equi-join.
+Nested Loop Join: Hiệu quả cho các bảng nhỏ hoặc khi một trong các bảng có chỉ mục. Thích hợp khi bảng bên ngoài nhỏ và bảng bên trong có chỉ mục trên cột JOIN.
+Sort-Merge Join: Thích hợp khi các bảng đã được sắp xếp hoặc có thể sắp xếp một cách hiệu quả. Hiệu quả cho các phép JOIN equi-join và theta-join trên các bảng lớn.
+
+
+4. Cartesian join
+-----------------------------------
+A Cartesian join or Cartesian product is a join of every row of one table to every row of another table. This normally happens when no matching join columns are specified. For example, if table A with 100 rows is joined with table B with 1000 rows, a Cartesian join will return 100,000 rows.
+
+Note: A Cartesian product may indicate a missing join condition. A query must have at least (N-1) join conditions to prevent a Cartesian product, where N is the number of tables in the query. However a Cartesian product may be something valid; for instance, in a star schema, a Cartesian join between dimension tables is not unusual.
+
+SELECT * FROM emp, dept;
+SELECT * 
+  FROM emp, dept
+ WHERE dept.deptno = 10
+   AND emp.sal > 10000;
+
+SELECT * FROM emp CROSS JOIN dept;
+
+

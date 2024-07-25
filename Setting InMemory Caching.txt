@@ -1,0 +1,35 @@
+
+
+1. Check
+
+buffer cache > data size 
+
+SQL> SELECT sum(cnum_set * blk_size) BC FROM X$KCBWDS; 
+
+SQL> SELECT sum(bytes) Tot_size FROM dba_segments
+WHERE tablespace_name <> 'SYSAUX';
+
+
+2. Setting
+--------------------------------------------------------
+CONN / AS SYSDBA
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT;
+ALTER DATABASE FORCE FULL DATABASE CACHING;
+ALTER DATABASE OPEN;
+
+
+
+3. Backup control file
+--------------------------------------------------------
+RMAN> Backup controlfile
+
+
+
+4. Config Automatic Big Table Caching
+-------------------------------------------------------
+ALTER SYSTEM SET PARALLEL_DEGREE_POLICY=AUTO 
+or 
+ALTER SYSTEM SET PARALLEL_DEGREE_POLICY=ADAPTIVE
+
+ALTER SYSTEM SET DB_BIG_TABLE_CACHE_PERCENT_TARGET=40 SCOPE=BOTH;

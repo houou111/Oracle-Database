@@ -1,0 +1,25 @@
+#!/bin/bash
+ORACLE_SID=VIBRIPON1 ; export ORACLE_SID
+ORACLE_HOME=/u01/app/oracle/11.2.0/db ; export ORACLE_HOME
+LOG=/home/oracle/log/stream.log; export LOG
+EMAIL=/home/oracle/log/email.ora; export EMAIL
+time=`/bin/date +%d-%b-%Y%t%T`
+cat /dev/null > $EMAIL
+result=`$ORACLE_HOME/bin/sqlplus / as sysdba<<EOF
+        select apply_name,status from dba_apply;
+        EOF`
+check_streams ()
+{
+        echo "$result"|egrep -w "DISABLED|ABORTED"| while read alert;
+        do
+                echo $alert|awk '{print $1}' >> $EMAIL
+        done
+        if [ -s $EMAIL ] 
+        then 
+                echo "$time :[STREAMS] Alert! Apply Processes is not working! " >> $LOG
+                cat $EMAIL >> $LOG
+        else
+                echo "File $EMAIL is empty"
+        fi
+}
+check_streams "VIBRIPON1"

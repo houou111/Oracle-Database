@@ -1,0 +1,7 @@
+run
+{
+SQL 'ALTER TABLESPACE duong OFFLINE';
+RESTORE TABLESPACE duong;
+RECOVER TABLESPACE duong until SCN=5363544 auxiliary destination '/home/oracle/auxdb';
+SQL 'ALTER TABLESPACE duong ONLINE';
+}

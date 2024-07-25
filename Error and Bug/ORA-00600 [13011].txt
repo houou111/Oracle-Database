@@ -1,0 +1,22 @@
+	ORA-00600 [13011] when delete from MGMT_SYSTEM_PERFORMANCE_LOG table (Doc ID 2227027.1)
+	
+	rebuild index in tracefile
+	
+	
+	Example :
+
+To check the associated indexes you can use the following command
+
+SQL> select index_name from dba_indexes where table_name='MGMT_SYSTEM_PERFORMANCE_LOG';
+
+Then validate the indexes one by one.
+
+SQL> ANALYZE TABLE SYSMAN.MGMT_SYSTEM_PERFORMANCE_LOG VALIDATE STRUCTURE CASCADE;
+
+SQL> ANALYZE INDEX SYSMAN.MGMT_SYSTEM_PERF_LOG_IDX_01 VALIDATE STRUCTURE;
+
+SQL> ANALYZE INDEX SYSMAN.MGMT_SYSTEM_PERF_LOG_IDX_02 VALIDATE STRUCTURE;
+
+++ Then recreate only the indexes involved in the above failing query.
+
+SQL> alter index <index_name> rebuild online;

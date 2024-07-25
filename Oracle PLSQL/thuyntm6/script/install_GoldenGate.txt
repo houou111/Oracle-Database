@@ -1,0 +1,418 @@
+DROP PRIMARY KEY 
+ALTER TABLE MOBR5.MOB_BENEFICIARIES ADD PRIMARY KEY (ID_BENEFICIARY) USING INDEX MOBR5.MOB_BENEFICIARIES_INDEX2;
+
+
+https://dbaclass.com/article/install-oracle-goldengate-12c-on-linux-7/
+--1. Download file and install
+--2.
+[oracle@localhost gg]$ export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+[oracle@localhost gg]$ ./ggsci
+ 
+
+--3.Create tablespace on BOTH [Source] and [Target]
+SOURCE create tablespace ggate_TBS datafile '+DATA04' size 5g autoextend on next 500m maxsize 10g extent management local segment space management auto;
+TARGET create tablespace ggate_TBS datafile '+DATA01' size 5g autoextend on next 500m maxsize 10g extent management local segment space management auto;
+
+--
+alter system set enable_goldengate_replication=true scope=both sid='*';
+--4.On [Source]
+--Make sure the database is in ARCHIVELOGMODE
+
+--config in tnsname.ora
+MBB11GT=
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-oradb-test-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mbb_taf)
+    )
+  )
+  
+
+--ASM usser
+create user asmgg identified by asmgg ;
+grant sysdba to asmgg ;
+--Create database user for goldengate on
+create user ggate_user identified by ggate_user default tablespace ggate_TBS;
+grant create session, alter session to ggate_user;
+grant connect,resource to ggate_user;
+grant select any dictionary to ggate_user;
+grant flashback any table to ggate_user;
+grant select any table to ggate_user;
+grant create table to ggate_user;
+grant execute on dbms_flashback to ggate_user;
+grant select any TRANSACTION to ggate_user;
+grant LOCK ANY TABLE to ggate_user;
+grant execute on utl_file to ggate_user;
+grant alter any table to ggate_user;
+
+--Enable supplemental logging at database level
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (ALL) COLUMNS;
+--force logging
+alter database force logging;
+select force_logging from v$database;
+
+
+
+ 
+--5.Create database user for goldengate on [Target]
+create user ggate_user identified by ggate_user  default tablespace ggate_TBS;
+GRANT DBA TO GGATE_USER;
+
+ 
+--6.Check the gg login[SOURCE & TARGET]
+GGSCI >  dblogin userid ggate_user, password ggate_user
+Successfully logged into database.
+ 
+--7.Create checkpoint table on REPLICAT side[ TARGET]
+ggsci> add checkpointtable ggate_user.checkpoint
+ 
+--8.Update ./GLOBALS file on REPLICATE side [ TARGET]
+view params ./GLOBALS
+ 
+ EDIT PARAMS ./GLOBALS
+GGSCHEMA ggate_user
+checkpointtable ggate_user.checkpoint
+--ALLOWOUTPUTDIR /u01/gg_data/datacapture/TRG
+ 
+Where ALLOWOUTPUTDIR is the path in the replicate side, where trail files will be copied.
+
+--9.edit mgr
+GGSCI (dr-oradb-test02) 2> edit params mgr
+PORT 7809
+PURGEOLDEXTRACTS /u01/gg_data/dirdat/dc*,USECHECKPOINTS, MINKEEPFILES 50
+
+--------------https://dbaclass.com/article/schema-replication-using-oracle-goldengate/
+
+
+--1. [ SOURCE ] add supplemental for all tables of a schema 
+dblogin userid ggate_user, password ggate_user
+
+GGSCI > ADD TRANDATA MOBR5.*
+
+--The PK for the table is either not enabled or not validated.
+Why OGG Warns me "No unique key is defined" When There Is A PK For The Table (Doc ID 1345152.1)
+
+--https://www.mydbaworld.com/replicate-table-without-primary-key-unique-key-goldengate/
+ select * from dba_tables where table_name not in (
+ select distinct table_name from dba_constraints 
+ where constraint_type  in ('U', 'P') and owner='MOBR5')
+ and owner='MOBR5'
+ 
+ select distinct table_name,validated from dba_constraints 
+ where constraint_type  in ('U', 'P') and owner='MOBR5' and validated <>'VALIDATED'
+ --> alter table sh.products modify constraint PK_PRODUCTS validate;
+
+--2. [ SOURCE ] Prepare extract file 
+
+========
+EXTRACT ET24DC
+SETENV (NLS_LANG="AMERICAN_AMERICA.AL32UTF8")
+SETENV (ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1)
+USERID gg12@t24r14dc, PASSWORD qwerty
+--#EXTTRAIL /u01/app/goldengate/dirdat/dc
+--#DISCARDFILE /u01/app/goldengate/dirrpt/et24dc.dsc, append, megabytes 500
+EXTTRAIL /u01/app/goldengate/dirdat/dc
+DISCARDFILE /u01/app/goldengate/dirrpt/et24dc.dsc, append, megabytes 500
+
+REPORTCOUNT EVERY 5 MINUTES, RATE
+FETCHOPTIONS, NOUSESNAPSHOT, NOUSELATESTVERSION, MISSINGROW REPORT
+STATOPTIONS REPORTFETCH
+WARNLONGTRANS 1H
+-- Exclude Replicat transactions.
+TRANLOGOPTIONS EXCLUDEUSER gg12
+-- Capture before images for conflict resolution:
+GETUPDATEBEFORES
+-- change to Intergrated Replicate DWH -- Hieu
+LOGALLSUPCOLS
+UPDATERECORDFORMAT COMPACT
+
+==============
+EXTRACT PDWDC
+--
+--
+PASSTHRU
+-- RMTHOST defines the target server Extract will transmit to.
+-- <host/ipaddress> is the target server DNS name, or configured
+-- tcp/ip address. MGRPORT is the GoldenGate Manager
+-- Listener port configured in the target mgr.prm file. COMPRESS
+-- states that outgoing blocks of records are to be compressed to
+-- reduce bandwidth requirements. A 4:1 compressioin ratio, or more
+-- is not uncommon; however additional CPU resource is required for
+-- compression on the source side, and decmpression on the target.
+-- Replace <host/ipaddress> with the target GoldenGate server
+-- name or ip address.
+
+RMTHOST 10.99.1.131, MGRPORT 7900
+
+-- RMTTRAIL indentifies the directory/folder and file identifier on the
+-- target server where Extract will write its data. When the
+-- file is created on disk, six digits are appended to the two
+-- character identifier; starting with 000000. As the file reaches
+-- maximum capacity a new file is created and Extract rolls to that
+-- new file. A maximun of 999999 Extract Trail files may exist
+-- per GoldenGate Extract; however, each file name set must be
+-- unique for the server where the Extract runs.
+
+RMTTRAIL /dbfs_gg/CSV_FILES/ggfor11g/dirdat/dc
+--RMTTRAIL /dbfs_direct/CSV_FILES/goldengate/dirdat/dc
+-- TABLE identifies the table list for which this Extract is capture change
+-- date from Oracle Redo..
+-- The table list is of the format <schema/database name>.<filename>
+-- and must be terminated with a semi-colon. Each table must be listed; however,
+-- wildcards are allowed, with the * wildcard denoting all tables in the database.
+
+--TABLE gg12.heartbeat,
+--TOKENS (
+--PMPGROUP = @GETENV ('GGENVIRONMENT','GROUPNAME'),
+--PMPTIME = @DATE ('YYYY-MM-DD HH:MI:SS.FFFFFF','JTS',@GETENV ('JULIANTIMESTAMP'))
+--);
+
+TABLE T24LIVE.GG_STATUS;
+
+USERIDALIAS tiger1 DOMAIN east THREADS (3)
+==========
+dblogin userid ggate_user, password ggate_user
+
+edit params EXT_MOB
+EXTRACT EXT_MOB
+SETENV (ORACLE_SID="mbb11gt2")
+SETENV (ORACLE_HOME="/u01/app/oracle/product/11.2.0/dbhome_1")
+userid ggate_user@mbb11gt, password ggate_user
+TRANLOGOPTIONS DBLOGREADER
+FETCHOPTIONS  FETCHPKUPDATECOLS, USESNAPSHOT, USELATESTVERSION
+DBOPTIONS ALLOWUNUSEDCOLUMN
+CACHEMGR CACHESIZE 500M
+DISCARDFILE /u01/gg_data/dirrpt/ext_mob.dsc, APPEND, MEGABYTES 100
+EXTTRAIL /u01/gg_data/dirdat/dc
+WARNLONGTRANS 1H, CHECKINTERVAL 1H
+TABLE MOBR5.*;
+
+
+
+edit params EXTMOB_P
+ 
+EXTRACT EXTMOB_P
+userid ggate_user@mbb11gt, password ggate_user
+SETENV (ORACLE_HOME="/u01/app/oracle/product/11.2.0/dbhome_1")
+RMTHOST 10.101.5.232, MGRPORT 7809
+RMTTRAIL /u01/gg_data/dirdat/dc
+DBOPTIONS ALLOWUNUSEDCOLUMN
+TABLE MOBR5.*;
+
+--delete EXT_MOB
+add extract EXT_MOB,tranlog,begin now , THREADS 2
+
+add extract ext TRANLOG, THREADS 3, BEGIN {Earliest Recovery Checkpiont timestamp taken in step2}
+--DELETE EXTRACT EXT_MOB
+ ADD EXTRACT EXT_MOB, TRANLOG, BEGIN NOW, THREADS 2
+ ADD EXTTRAIL , EXTRACT LFLXPAR2, SEQNO 
+ ALTER EXTRACT LFLXPAR2, SCN 11212454716
+ INFO EXTRACT LFLXPAR2,detail
+ START EXTRACT LFLXPAR2, ATCSN 11212454716
+--
+
+add exttrail /u01/gg_data/dirdat/dc,extract EXT_MOB
+add extract EXTMOB_P, exttrailsource /u01/gg_data/dirdat/dc
+add rmttrail /u01/gg_data/dirdat/dc,extract EXTMOB_P
+
+
+INFO EXTTRAIL *
+ALTER EXTTRAIL /u01/gg_data/dirdat/dc, EXTRACT EXT_MOB, MEGABYTES 1
+ALTER EXTTRAIL /u01/gg_data/dirdat/dc, EXTRACT EXTMOB_P, MEGABYTES 1
+--3. [TARGET]
+dblogin userid ggate_user, password ggate_user
+
+edit params REP_S1
+ 
+REPLICAT REP_S1
+SETENV (ORACLE_HOME = "/u01/app/oracle/product/12.2.0/dbhome_1")
+SETENV (ORACLE_SID = "mbbtest_2")
+USERID ggate_user, PASSWORD ggate_user
+DBOPTIONS SUPPRESSTRIGGERS,DEFERREFCONST
+ASSUMETARGETDEFS
+HANDLECOLLISIONS
+DISCARDFILE /u01/gg_data/dirrpt/REP_S1.dsc,append
+MAP MOBR5.*,TARGET MOBR5.*;
+
+
+discardcrm
+
+ stop mgr
+ start mgr
+
+add replicat REP_S1, exttrail /u01/gg_data/dirdat/dc --checkpointtable gguser.chkpt
+
+
+--4. [SOURCE]
+START EXT_MOB
+START EXTMOB_P
+
+
+expdp \"/ as sysdba\" dumpfile=initload.dmp logfile=initload.log directory=DATA_PUMP_DIR schemas=MOBR5 cluster=n 
+
+
+expdp \"/ as sysdba\" dumpfile=small_tab.dmp logfile=small_tab.log directory=DATA_PUMP_DIR schemas=MOBR5 cluster=n  INCLUDE=TABLE:\"IN\(select  table_name from dba_tables where table_name not in \(select distinct table_name from dba_constraints where constraint_type  in \(\'U\', \'P\'\) and owner=\'MOBR5\' \)\)\"
+
+"
+-- TRANSFER THE DUMP TO TARGET SERVER:
+ 
+ scp oracle@**********:/archive/dump/initload.dmp .
+ 
+ 
+-- -IMPORT IN TARGET DATABASE:
+ 
+impdp \"/ as sysdba\" dumpfile=initload.dmp logfile=imp_initialload.log directory=DUMP
+
+impdp \"/ as sysdba\" dumpfile=MOB_BENEFICIARIES.dmp logfile=MOB_BENEFICIARIES.log directory=DUMP tables=MOBR5.MOB_BENEFICIARIES 
+ 
+ "
+--4. TARGET
+GGSCI > start REP_S1
+ 
+Sending START request to MANAGER ...
+REPLICAT REP_S1 starting
+
+
+MBB12CT =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-oradb2-test-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mbb12ct)
+    )
+  )
+  
+MBBTEST =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-oradb2-test-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mbb_test)
+    )
+  )  
+  
+---------------------------  https://oracledbwr.com/oracle-12c-configure-step-by-step-goldengate-bidirectional-method/
+1. [BOTH]
+--enable archivelog mode
+
+shu immediate;
+startup mount;
+ALTER DATABASE ARCHIVELOG;
+alter database open;
+select LOG_MODE from v$database;
+
+--supplemental logging and forced logging are set properly.
+ALTER DATABASE FORCE LOGGING;
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA;
+select SUPPLEMENTAL_LOG_DATA_MIN,FORCE_LOGGING from v$database;
+
+--grant privilege for user
+
+2.[TARGET]
+--add trandata
+./ggsci
+dblogin userid ggate_user, password ggate_user
+add tranadata MOBR5.*
+
+ select 'add trandata MOBR5.'||table_name from dba_tables where table_name  in (
+ select distinct table_name from dba_constraints 
+ where constraint_type  in ('U', 'P') and owner='MOBR5')
+ and owner='MOBR5'
+
+ 
+
+2019-05-29 08:53:15  WARNING OGG-01387  Table MOBR5.TCB_CUSTOMER_ORDERS has no valid key columns, added unconditional supplemental log group for all table columns.
+
+https://anjo.pt/wp/keyword-oracle/2013/12/10/goldengate-rac-one-node-and-processthreads-parameter/
+ --Create the primary Extract parameter file
+edit params ext2
+EXTRACT ext2
+SETENV (ORACLE_SID="mbbtest_2")
+SETENV (ORACLE_HOME="/u01/app/oracle/product/12.2.0/dbhome_1")
+userid ggate_user@mbbtest, password ggate_user
+TRANLOGOPTIONS DBLOGREADER
+FETCHOPTIONS  FETCHPKUPDATECOLS, USESNAPSHOT, USELATESTVERSION
+DBOPTIONS ALLOWUNUSEDCOLUMN
+THREADOPTIONS PROCESSTHREADS EXCEPT 2 --> select thread# from v$log where status='CURRENT'; –> current=2
+CACHEMGR CACHESIZE 500M
+DISCARDFILE /u01/gg_data/dirrpt/ext2.dsc, APPEND, MEGABYTES 100
+EXTTRAIL /u01/gg_data/dirdat/ac
+WARNLONGTRANS 1H, CHECKINTERVAL 1H
+TABLE MOBR5.*;
+
+ select 'TABLE MOBR5.'||table_name||';' from dba_tables where table_name  in (
+ select distinct table_name from dba_constraints 
+ where constraint_type  in ('U', 'P') and owner='MOBR5')
+ and owner='MOBR5'
+
+DDL INCLUDE ALL
+
+
+
+
+edit params dpump2
+EXTRACT dpump2
+userid ggate_user@mbbtest, password ggate_user
+SETENV (ORACLE_HOME="/u01/app/oracle/product/12.2.0/dbhome_1")
+RMTHOST 10.101.5.129, MGRPORT 7809
+RMTTRAIL /u01/gg_data/dirdat/ad
+DBOPTIONS ALLOWUNUSEDCOLUMN
+TABLE MOBR5.*;
+
+
+--
+add extract ext2 tranlog begin now
+add extract ext2,tranlog,begin now , THREADS 2
+add exttrail /u01/gg_data/dirdat/ac extract ext2 
+
+info ext2
+
+add extract dpump2 exttrailsource /u01/gg_data/dirdat/ac
+add rmttrail /u01/gg_data/dirdat/ad extract dpump2
+
+alter extract EXT2, extseqno 166
+3.[SOURCE]
+--grant 
+GRANT DBA TO GGATE_USER;
+--
+edit params rep2
+REPLICAT rep2
+SETENV (ORACLE_HOME = "/u01/app/oracle/product/11.2.0/dbhome_1")
+SETENV (ORACLE_SID = "mbb11gt2")
+USERID ggate_user@mbb11gt, PASSWORD ggate_user
+DBOPTIONS SUPPRESSTRIGGERS,DEFERREFCONST
+ASSUMETARGETDEFS
+HANDLECOLLISIONS
+DISCARDFILE /u01/gg_data/dirrpt/rep2.dsc,append
+MAP MOBR5.*,TARGET MOBR5.*;
+
+
+ select 'MAP MOBR5.'||table_name||',TARGET MOBR5.||'||table_name||';' from dba_tables where table_name  in (
+ select distinct table_name from dba_constraints 
+ where constraint_type  in ('U', 'P') and owner='MOBR5')
+ and owner='MOBR5'
+
+add replicat rep2 exttrail /u01/gg_data/dirdat/ad ---checkpointtable gguser.checkpoint
+start rep2
+info rep2
+
+
+2019-05-29 11:41:11  INFO    OGG-01478  Oracle GoldenGate Capture for Oracle, dpump2.prm:  Output file /u01/gg_data/dirdat/ad is using format RELEASE 12.1.
+     2019-05-29 11:42:04  ERROR   OGG-00446  Oracle GoldenGate Capture for Oracle, ext2.prm:  Could not find archived log for sequence 1 thread 1 under default destinations SQL <SELECT  name    FROM v$archived_log   WHERE sequence# = :ora_seq_no AND         thread# = :ora_thread AND         resetlogs_id = :ora_resetlog_id AND         archived = 'YES' AND         deleted = 'NO'         AND standby_dest = 'NO'         order by name DESC>, error retrieving redo file name for sequence 1, archived = 1, use_alternate = 0Not able to establish initial position for begin time 2019-05-29 11:40:39.000000.
+2019-05-29 11:42:04  ERROR   OGG-01668  Oracle GoldenGate Capture for Oracle, ext2.prm:  PROCESS ABENDING.
+
+
+ERROR: Failed creating checkpoint table ggate_user.checkpoint1;.
+
+OCI Error ORA-00922: missing or invalid option (status = 922), SQL <CREATE TABLE ggate_user.checkpoint1; (  group_name VARCHAR2(8) NOT NULL,  group_key NUMBER(19) NOT NULL,  seqno NUMBER(10),  rba NUMBER(19) NOT NULL,  audit_ts VARCHAR2(29),  create_ts DATE NOT NULL,  last_update_ts DATE NOT NULL,  current_dir VARCHAR2(255) NOT NULL,  log_bsn VARCHAR2(128),  log_csn VARCHAR2(128),  log_xid VARCHAR2(128),  log_cmplt_csn VARCHAR2(128),  log_cmplt_xids VARCHAR2(2000),  version NUMBER(3),  PRIMARY KEY (group_name, group_key))>.
+
+
+Exception [type: SIGIOT, unknown code] [ADDR:0x10A30000D431] [PC:0x3FF8F4C0A78, gsignal()+64] [exception issued by pid: 4259, uid: 54321] [flags: 0x0, count: 1]
+Errors in file /u01/app/oracle/diag/rdbms/softtok/softtok1/trace/softtok1_ora_4259.trc  (incident=397497):
+ORA-07445: exception encountered: core dump [gsignal()+64] [SIGIOT] [ADDR:0x10A30000D431] [PC:0x3FF8F4C0A78] [unknown code] []
+Incident details in: /u01/app/oracle/diag/rdbms/softtok/softtok1/incident/incdir_397497/softtok1_ora_4259_i397497.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+2019-05-30T09:03:01.451741+07:00
+Dumping diagnostic data in directory=[cdmp_20190530090301], requested by (instance=1, osid=4259), summary=[incident=397497].

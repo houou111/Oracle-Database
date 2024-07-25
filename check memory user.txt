@@ -1,0 +1,35 @@
+1. Check memory per sesion
+--------------------------------------------------------
+set lines 200
+set pages 200
+SELECT USERNAME, VALUE/1024/1024 Size_MB
+FROM V$SESSION sess, V$SESSTAT stat, V$STATNAME name
+WHERE sess.SID = stat.SID
+AND stat.STATISTIC# = name.STATISTIC#
+AND name.NAME = 'session uga memory'
+order by 2;
+
+
+
+2. Check memory per user
+--------------------------------------------------------
+set lines 200
+set pages 200
+SELECT USERNAME, sum(VALUE/1024/1024) Size_MB
+FROM V$SESSION sess, V$SESSTAT stat, V$STATNAME name
+WHERE sess.SID = stat.SID
+AND stat.STATISTIC# = name.STATISTIC#
+AND name.NAME = 'session uga memory'
+GROUP BY USERNAME
+order by 2;
+
+
+3. Check all memory using
+--------------------------------------------------------
+set lines 200
+set pages 200
+SELECT sum(VALUE/1024/1024) Size_MB
+FROM V$SESSION sess, V$SESSTAT stat, V$STATNAME name
+WHERE sess.SID = stat.SID
+AND stat.STATISTIC# = name.STATISTIC#
+AND name.NAME = 'session uga memory';

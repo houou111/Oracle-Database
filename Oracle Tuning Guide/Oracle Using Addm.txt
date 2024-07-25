@@ -1,0 +1,2 @@
+sqlplus / as sysdba
+SQL> @?/rdbms/admin/addmrpt.sql

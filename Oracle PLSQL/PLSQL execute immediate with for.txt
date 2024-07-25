@@ -1,0 +1,70 @@
+BEGIN 
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a ,dba_users b 
+	  WHERE a.owner=b.username  
+	  AND a.owner not in ('GSMADMIN_INTERNAL')
+	  AND (a.TABLE_NAME like '%\_2014%' escape '\'  
+	  OR a.TABLE_NAME like '%\_2015%' escape '\'  
+	  OR a.TABLE_NAME like '%\_2016%' escape '\'  
+	  OR a.TABLE_NAME like '%\_2017%' escape '\'  
+	  OR a.TABLE_NAME like '%\_2018%' escape '\'  
+	  OR a.TABLE_NAME like '%\_2019%' escape '\')  
+	  AND (COMPRESS_FOR <> 'QUERY HIGH' OR COMPRESS_FOR is null)
+	  AND a.partitioned = 'NO' 
+	  AND TEMPORARY = 'N' 
+	  order by 1 desc ) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.table_name|| '" MOVE TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' COMPRESS FOR QUERY HIGH PARALLEL 4 update indexes'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+BEGIN 
+  FOR r IN (select OWNER,table_name FROM dba_tables a
+	  WHERE a.table_name='TAMTHU_TRATRUOC_052020'
+	  AND a.OWNER like 'CSS%') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'GRANT select on "'|| r.OWNER||'"."'|| r.table_name|| ' to erp_appbh '; 
+  
+  END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+BEGIN 
+  FOR r IN (select OWNER,table_name FROM dba_tables a
+	  WHERE a.table_name='TAMTHU_TRATRUOC_052020'
+	  AND a.OWNER like 'CSS%') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'GRANT select on "'|| r.OWNER||'"."'|| r.table_name|| ' to erp_appbh '; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+BEGIN 
+  FOR r IN (select USERNAME FROM dba_users a
+	  WHERE a.USERNAME like 'CSS%') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'alter user '|| r.USERNAME|| ' profile LIMIT_RESOURCE '; 
+    END; 
+  END LOOP; 
+END; 
+/ 

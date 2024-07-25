@@ -1,0 +1,136 @@
+
+1. Perform Backup CRS
+-------------------------------------------------------------------------------------
+$ ocrconfig -showbackup auto
+
+oradata1a     2015/11/24 15:12:50     /u01/app/11.2.0/grid/cdata/oradata1/backup00.ocr
+oradata1a     2015/11/24 11:12:49     /u01/app/11.2.0/grid/cdata/oradata1/backup01.ocr
+oradata1a     2015/11/24 07:12:48     /u01/app/11.2.0/grid/cdata/oradata1/backup02.ocr
+oradata1a     2015/11/23 15:12:46     /u01/app/11.2.0/grid/cdata/oradata1/day.ocr
+oradata1b     2015/11/13 14:56:59     /u01/app/11.2.0/grid/cdata/oradata1/week.ocr
+
+- The backup frequency and retention policies are:
+	Every four hours: CRS keeps the last three copies.
+	At the end of every day: CRS keeps the last two copies.
+	At the end of every week: CRS keeps the last two copies.
+- Default directory:
+grid@...# $ORACLE_HOME/cdata/<cluster name>
+
+- Physical backup
+# ocrconfig -manualbackup
+
+	To display a list of manual backups:
+$ ocrconfig –showbackup manual
+host02 2009/07/28 16:59:17
+/u01/app/.../cdata/cluster01/backup_20090728_165917.ocr
+
+- To perform a logical backup:
+# ocrconfig -export /home/oracle/ocr.backup
+
+
+
+2. Perform Restore CRS
+-------------------------------------------------------------------------------------
+[root@node1 ~]# oracleasm createdisk CRSVOL1 /dev/mapper/VOTING01
+Writing disk header: done
+Instantiating disk: done
+[root@node1 ~]# oracleasm createdisk CRSVOL2 /dev/mapper/VOTING02
+Writing disk header: done
+Instantiating disk: done
+[root@node1 ~]# oracleasm createdisk CRSVOL3 /dev/mapper/VOTING03
+Writing disk header: done
+Instantiating disk: done
+[root@node1 ~]# oracleasm listdisks
+BACKUP01
+CRSVOL1
+CRSVOL2
+CRSVOL3
+
+[root@node2 ~]# oracleasm scandisks
+Reloading disk partitions: done
+Cleaning any stale ASM disks...
+Scanning system for ASM disks...
+Instantiating disk "CRSVOL1"
+Instantiating disk "CRSVOL3"
+Instantiating disk "CRSVOL2"
+
+[root@node1 ~]# /u01/app/11.2.0/grid/bin/crsctl stop crs -f
+
+[root@node2 ~]# /u01/app/11.2.0/grid/bin/crsctl stop crs -f
+
+[root@node1 ~]# /u01/app/11.2.0/grid/bin/crsctl start crs -excl -nocrs
+
+[grid@node1 ~]$ sqlplus / as sysasm
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jul 24 21:38:53 2015
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Real Application Clusters and Automatic Storage Management options
+
+SQL> 
+SQL> 
+SQL> CREATE DISKGROUP CRS NORMAL REDUNDANCY DISK 'ORCL:CRSVOL1', 'ORCL:CRSVOL2', 'ORCL:CRSVOL3' attribute 'COMPATIBLE.ASM' = '11.2';
+
+Diskgroup created.
+
+SQL> exit
+
+[grid@node1 ~]$ ocrconfig –showbackup
+oradata1     2015/11/24 15:12:50     /u01/app/11.2.0/grid/cdata/oradata1/backup00.ocr
+oradata1     2015/11/24 11:12:49     /u01/app/11.2.0/grid/cdata/oradata1/backup01.ocr
+oradata1     2015/11/24 07:12:48     /u01/app/11.2.0/grid/cdata/oradata1/backup02.ocr
+oradata1     2015/11/23 15:12:46     /u01/app/11.2.0/grid/cdata/oradata1/day.ocr
+oradata2     2015/11/13 14:56:59     /u01/app/11.2.0/grid/cdata/oradata2/week.ocr
+
+[root@node1 ora-data]# cd /u01/app/11.2.0/grid/cdata/ora-data/
+[root@node1 ora-data]# /u01/app/11.2.0/grid/bin/ocrconfig -restore backup00.ocr
+[root@node1 ora-data]# /u01/app/11.2.0/grid/bin/crsctl start res ora.crsd -init 
+CRS-2672: Attempting to start 'ora.crsd' on 'node1'
+CRS-2676: Start of 'ora.crsd' on 'node1' succeeded
+
+[root@node1 ora-data]# /u01/app/11.2.0/grid/bin/crsctl replace votedisk +CRS
+Successful addition of voting disk 6d873cb9ac874fd1bfb34ac6c1a1ce1a.
+Successful addition of voting disk 38a12cebb95a4f3cbf260173c8437473.
+Successful addition of voting disk 5f2a712f883e4fe1bf3413bcbef495b3.
+Successfully replaced voting disk group with +CRS.
+CRS-4266: Voting file(s) successfully replaced
+
+[root@node1 ora-data]# /u01/app/11.2.0/grid/bin/crsctl stop crs -f
+
+[root@node1 ora-data]# /u01/app/11.2.0/grid/bin/crsctl start crs
+
+[root@node2 ~]# /u01/app/11.2.0/grid/bin/crsctl stop crs -f
+
+[grid@node2 ~]$ crsctl check cluster -all
+**************************************************************
+node1:
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+**************************************************************
+node2:
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+**************************************************************
+
+[grid@ora-data-31 ~]$ crsctl check cluster -all
+**************************************************************
+ora-data-31:
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+**************************************************************
+ora-data-32:
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+**************************************************************
+
+
+
+CREATE DISKGROUP CRS NORMAL REDUNDANCY DISK 'ORCL:CRSVOL1', 'ORCL:CRSVOL2', 'ORCL:CRSVOL3' attribute 'COMPATIBLE.ASM' = '11.2';

@@ -1,0 +1,13 @@
+rsaadmin@am81p:~> cd /opt/rsa/am/utils
+rsaadmin@am81p:/opt/rsa/am/utils> ./rsautil manage-secrets -a get com.rsa.db.dba.password
+Please enter OC Administrator username: <enter the Operations Console admin's name>
+Please enter OC Administrator password: <enter the Operations Console admin's password>
+
+com.rsa.db.dba.password: <com.rsa.db.dba.password string>
+
+rsaadmin@am81p:/opt/rsa/am/utils> cd ../pgsql/bin
+rsaadmin@am81p:/opt/rsa/am/pgsql/bin> ./psql -h localhost -p 7050 -d db -U rsa_dba
+Password for user rsa_dba: <enter the com.rsa.db.dba.password captured above>
+
+
+tech!admin

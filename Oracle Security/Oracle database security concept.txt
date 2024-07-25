@@ -1,0 +1,25 @@
+Default Oracle Database features:
+- User accounts. When you create user accounts, you can secure them in a variety of ways. 
+You can also create password profiles to better secure password policies for your site.
+
+- Authentication methods. Oracle Database provides several ways to configure authentication for users and database administrators. 
+For example, you can authenticate users on the database level, from the operating system, and on the network. 
+
+- Privileges and roles. You can use privileges and roles to restrict user access to data. 
+The following chapters describe how to manage privileges and roles:
+	Configuring Privilege and Role Authorization
+	Performing Privilege Analysis to Find Privilege Use
+	Managing Security for Definer's Rights and Invoker's Rights
+	Managing Fine-Grained Access in PL/SQL Packages and Types
+	Managing Security for a Multitenant Environment in Enterprise Manager
+	
+- Application security. The first step to creating a database application is to ensure that it is properly secure. 
+Managing Security for Application Developers, discusses how to incorporate application security into your application security policies
+
+- User session information using application context. An application context is a name-value pair that holds the session information. 
+You can retrieve session information about a user, such as the user name or terminal, and restrict database and application access for that user based on this information. 
+Using Application Contexts to Retrieve User Information, describes how to use application contexts.
+
+- Database access on the row and column level using Virtual Private Database. 
+A Virtual Private Database policy dynamically imbeds a WHERE predicate into SQL statements the user issues. 
+Using Oracle Virtual Private Database to Control Data Access, describes how to create and manage Virtual Private Database policies.

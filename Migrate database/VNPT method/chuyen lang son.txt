@@ -1,0 +1,443 @@
+Các bước thực hiện cơ bản
+
+X7Q node 2 -> dongbac node 2
+
+1. Purge recyclebin + stop tất cả các job/scheduler job
+-------------------------------------------------------------------
+purge dba_recyclebin;
+@?/rdbms/admin/utlrp.sql
+
+
+## exclude table (cololumn space) -> recreate with dblink -> ignore if no error
+col owner for a20
+col TABLE_NAME for a20
+col COLUMN_NAME for a20
+select OWNER,TABLE_NAME,COLUMN_NAME from dba_tab_columns where column_name like '% %';
+
+
+2. Lock user and restart database
+-------------------------------------------------------------------
+alter session set container=PDBLSN;
+
+alter system set job_queue_processes=0;
+select 'alter user "'|| username ||'" account lock;' from dba_users where account_status='OPEN' and ORACLE_MAINTAINED = 'N' AND username not in  ('C##DBA01','C##ERP_SELECT');
+
+
+alter pluggable database PDBLSN close immediate instances=all;
+alter pluggable database PDBLSN open;
+
+
+
+
+
+3. Export full database exclude statistic
+-------------------------------------------------------------------
+create or replace directory log_dump as '/u01/dump/';
+create or replace directory dump as '+RECOC1/DUMP/';
+grant dba to C##DBA01;
+create user C##erp_select identified by erp_select container=all;
+grant dba to C##erp_select;
+
+
+
+expdp C##DBA01/oracle123456@langson parfile=/tmp/expdp_langson.par
+
+EXCLUDE=PROCEDURE:"IN (select object_name from dba_objects where object_type = 'PROCEDURE' and status='INVALID')", FUNCTION:"IN (select object_name from dba_objects where object_type = 'FUNCTION' and status='INVALID')", PACKAGE:"IN (select object_name from dba_objects where object_type = 'PACKAGE' and status='INVALID')",DB_LINK:"LIKE 'CSS_HPG_GOC'"
+exclude=statistics
+cluster=n
+compression=all
+dumpfile=langson_%U.dmp
+parallel=24
+logfile=LOG_DUMP:expdp_langson.log
+full=y
+directory=DUMP
+
+
+
+4. Copy to target (+copy tnsname.ora)
+-------------------------------------------------------------------
+cp --port 1521 +RECOC1/DUMP/langson_01.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_01.dmp
+cp --port 1521 +RECOC1/DUMP/langson_02.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_02.dmp
+cp --port 1521 +RECOC1/DUMP/langson_03.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_03.dmp
+cp --port 1521 +RECOC1/DUMP/langson_04.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_04.dmp
+cp --port 1521 +RECOC1/DUMP/langson_05.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_05.dmp
+cp --port 1521 +RECOC1/DUMP/langson_06.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_06.dmp
+cp --port 1521 +RECOC1/DUMP/langson_07.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_07.dmp
+cp --port 1521 +RECOC1/DUMP/langson_08.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_08.dmp
+cp --port 1521 +RECOC1/DUMP/langson_09.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_09.dmp
+cp --port 1521 +RECOC1/DUMP/langson_10.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_10.dmp
+cp --port 1521 +RECOC1/DUMP/langson_11.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_11.dmp
+cp --port 1521 +RECOC1/DUMP/langson_12.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_12.dmp
+cp --port 1521 +RECOC1/DUMP/langson_13.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_13.dmp
+cp --port 1521 +RECOC1/DUMP/langson_14.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_14.dmp
+cp --port 1521 +RECOC1/DUMP/langson_15.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_15.dmp
+cp --port 1521 +RECOC1/DUMP/langson_16.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_16.dmp
+cp --port 1521 +RECOC1/DUMP/langson_17.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_17.dmp
+cp --port 1521 +RECOC1/DUMP/langson_18.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_18.dmp
+cp --port 1521 +RECOC1/DUMP/langson_19.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_19.dmp
+cp --port 1521 +RECOC1/DUMP/langson_20.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_20.dmp
+cp --port 1521 +RECOC1/DUMP/langson_21.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_21.dmp
+cp --port 1521 +RECOC1/DUMP/langson_22.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_22.dmp
+cp --port 1521 +RECOC1/DUMP/langson_23.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_23.dmp
+cp --port 1521 +RECOC1/DUMP/langson_24.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_24.dmp
+cp --port 1521 +RECOC1/DUMP/langson_25.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_25.dmp
+cp --port 1521 +RECOC1/DUMP/langson_26.dmp copy_sys/Password123@10.159.136.201.+ASM1:+FRA/DUMP/langson_26.dmp
+
+
+5. Prepare in target 
+-------------------------------------------------------------------
+create user C##DBA01 identified by oracle123456;
+create user C##erp_select identified by erp_select;
+
+create or replace directory log_dump as '/u01/dump/';
+create or replace directory dump as '+FRA/DUMP/';
+grant dba to C##DBA01;
+grant dba to C##erp_select;
+create user GIAOTIEP_TBI identified by vnpt2018;
+create user DHSX_BI identified by vnpt2018;
+create user TEST identified by vnpt2018;
+
+
+create temporary tablespace TEMP_TBS tempfile '+FRA' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G autoextend on next 1G; 
+
+create tablespace USERS datafile '+DATA' size 1G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+
+
+create tablespace INDX datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;    
+
+alter system set job_queue_processes=0;
+
+
+6. Import data
+-------------------------------------------------------------------
+impdp C##DBA01/oracle123456@langson directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson1.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N exclude=JAVA_CLASS,JAVA_RESOURCE,index,procedure,function,package,ref_constraint,SCHEMA:"IN('DULIEU_LSN')" transform=segment_attributes:n:table
+
+impdp C##DBA01/oracle123456@langson directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson2.log PARALLEL=1 transform=disable_archive_logging:Y cluster=N include=procedure,function,package,ref_constraint
+
+impdp C##DBA01/oracle123456@langson directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson3.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N SCHEMAS=DULIEU_LSN transform=segment_attributes:n:table
+
+
+7. Import java
+-------------------------------------------------------------------
+impdp C##DBA01/oracle123456@langson directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson_java.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N INCLUDE=JAVA_CLASS,JAVA_RESOURCE sqlfile=log_dump:langson_java.sql
+
+@/u01/dump/langson_java.sql
+
+
+
+8. Import index (pick 3 biggest schema to import seprate)
+-------------------------------------------------------------------
+SELECT owner,sum(bytes) / 1024 / 1024 / 1024 as "Size in GB"
+  FROM dba_segments
+GROUP BY owner
+order by 2 desc;
+
+impdp C##DBA01/oracle123456@langson schemas=BCSS_LSN directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson_index1.log sqlfile=log_dump:langson_index1.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@langson schemas=QLTN_LSN directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson_index2.log sqlfile=log_dump:langson_index2.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@langson schemas=CSS_LSN  directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson_index3.log sqlfile=log_dump:langson_index3.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@langson full=y directory=dump dumpfile=langson_%U.dmp logfile=log_dump:impdp_langson_index4.log sqlfile=log_dump:langson_index4.sql cluster=N include=index PARALLEL=24 EXCLUDE=SCHEMA:"IN('BCSS_LSN','QLTN_LSN','CSS_LSN')"
+
+EXCLUDE=SCHEMA:"IN ('BCSS_LSN','QLTN_LSN','CSS_LSN')"
+
+echo exit >> /u01/dump/langson_index1.sql
+echo exit >> /u01/dump/langson_index2.sql
+echo exit >> /u01/dump/langson_index3.sql
+echo exit >> /u01/dump/langson_index4.sql
+
+vi /u01/dump/langson_index1.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus C##DBA01/oracle123456@langson @/u01/dump/langson_index1.sql > /u01/dump/sqlplus_langson_index1.log &
+nohup sqlplus C##DBA01/oracle123456@langson @/u01/dump/langson_index2.sql > /u01/dump/sqlplus_langson_index2.log &
+nohup sqlplus C##DBA01/oracle123456@langson @/u01/dump/langson_index3.sql > /u01/dump/sqlplus_langson_index3.log &
+nohup sqlplus C##DBA01/oracle123456@langson @/u01/dump/langson_index4.sql > /u01/dump/sqlplus_langson_index4.log &
+
+tail -200f /u01/dump/sqlplus_langson_index4.log |grep ORA
+
+
+9. Compare data
+-------------------------------------------------------------------
+@?/rdbms/admin/utlrp.sql
+dung Toad
+
+select OWNER,OBJECT_TYPE, count(1)
+from dba_objects a, dba_users b
+where a.OWNER = b.USERNAME
+AND b.DEFAULT_TABLESPACE='USERS' AND b.COMMON='NO' 
+AND STATUS='VALID'
+GROUP BY OWNER,OBJECT_TYPE
+order by 1,2;
+
+
+
+10. Cho ứng dụng vào test
+-------------------------------------------------------------------
+create user C##erp_select identified by erp_select container=all;
+grant dba to C##erp_select;
+
+select 'alter user "'|| username ||'" account unlock;' from dba_users where account_status='LOCKED' and ORACLE_MAINTAINED = 'N' AND username <> 'C##DBA01';
+
+langson =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dhsxkd-dongbac-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = langson)
+    )
+  )
+
+10.159.136.201 		dhsxkd-dongbac-db01-vip
+10.159.136.202  	dhsxkd-dongbac-db02-vip
+10.159.136.203   	dhsxkd-dongbac-scan
+
+
+
+11. Bật job
+-------------------------------------------------------------------
+alter system set job_queue_processes=4000;
+revoke dba from C##erp_select;
+
+
+12. Gather database
+-------------------------------------------------------------------
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 8);
+
+
+
+13. Tạo ACL (acls)
+-------------------------------------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl (
+    acl          => '/sys/acls/utl_http.xml');
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => '/sys/acls/utl_http.xml',
+    description  => '/sys/acls/utl_http.xml',
+    principal    => 'WEBSERVICE_HPG',
+    is_grant     => true,
+    privilege    => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => '/sys/acls/utl_http.xml',
+    host        => '*',
+    lower_port  => 1,
+    upper_port  => 9999);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'QLVT_LSN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'QLTN_LSN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'QLVT_LSN',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'ADMIN_LSN',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'BCSS_LSN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'CSS_LSN',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'BCSS_LSN',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'CSS_LSN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => TO_TIMESTAMP_TZ('13-SEP-2018 17:36:29.059693000 +07:00','DD-MON-YYYY HH24:MI:SS.FF TZH:TZM'),
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'WEBSERVICE_HPG',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'QLTN_LSN',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'ADMIN_LSN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+-- -------------------------------------------------
+-- NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4
+-- -------------------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl (
+    acl          => 'NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4');
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => 'NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4',
+    description  => 'NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4',
+    principal    => 'GSMADMIN_INTERNAL',
+    is_grant     => true,
+    privilege    => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => 'NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4',
+    host        => '*',
+    lower_port  => NULL,
+    upper_port  => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => 'NETWORK_ACL_72D134A771735AB3E053AA3410ACE4B4',
+    principal => 'GGSYS',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+

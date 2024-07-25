@@ -1,0 +1,26 @@
+
+
+-- List last 30 sunday of month
+
+SQL>	with data as (select add_months(trunc(sysdate,'Month'),rownum-1) d
+		from dual
+		connect by rownum <= 30)
+		SELECT next_day(last_day(d)-7,'Sunday') sunday
+		from data;
+
+
+-- List first 30 sunday of month
+
+SQL> 	with data as (select add_months(trunc(sysdate,'Month'),rownum-1) d
+		from dual
+		connect by rownum <= 30)
+		SELECT next_day(last_day(d)-7,'Sunday')+7 sunday
+		from data;
+		
+-- List 3 fisrt day of year		
+
+SQL> 	with data as (select last_day(add_months(sysdate,12*(rownum-1) - to_number(to_char(sysdate,'mm'))))+1 fist_day
+		from dual
+		connect by rownum <= 3)
+		SELECT *
+		from data;

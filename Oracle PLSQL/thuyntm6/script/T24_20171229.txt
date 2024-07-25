@@ -1,0 +1,400 @@
+[t24db02@oracle /u01/app/oracle/product/11.2.0.4/dbhome_1/OPatch>]$opatch lsinventory
+Oracle Interim Patch Installer version 11.2.0.3.10
+Copyright (c) 2017, Oracle Corporation.  All rights reserved.
+
+
+Oracle Home       : /u01/app/oracle/product/11.2.0.4/dbhome_1
+Central Inventory : /u01/app/oraInventory
+   from           : /u01/app/oracle/product/11.2.0.4/dbhome_1/oraInst.loc
+OPatch version    : 11.2.0.3.10
+OUI version       : 11.2.0.4.0
+Log file location : /u01/app/oracle/product/11.2.0.4/dbhome_1/cfgtoollogs/opatch/opatch2017-12-30_09-22-27AM_1.log
+
+Lsinventory Output file location : /u01/app/oracle/product/11.2.0.4/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2017-12-30_09-22-27AM.txt
+
+--------------------------------------------------------------------------------
+Local Machine Information::
+Hostname: t24db02
+ARU platform id: 212
+ARU platform description:: IBM_AIX
+
+Installed Top-level Products (1): 
+
+Oracle Database 11g                                                  11.2.0.4.0
+There are 1 products installed in this Oracle Home.
+
+
+Interim patches (2) :
+
+Patch  20831122     : applied on Sun Oct 11 12:28:26 GMT+07:00 2015
+Unique Patch ID:  18935722
+Patch description:  "OCW Patch Set Update : 11.2.0.4.7 (20831122)"
+   Created on 2 Jul 2015, 08:05:02 hrs PST8PDT
+   Bugs fixed:
+     19270660, 18328800, 18691572, 20365005, 17750548, 17387214, 17617807
+     14497275, 17733927, 18180541, 18962892, 17292250, 17378618, 16759171
+     20110156, 17065496, 13991403, 17273020, 17155238, 18261183, 18053580
+     20218012, 17039197, 17947785, 16317771, 10052729, 20340620, 18199185
+     18399991, 20186278, 18024089, 20746251, 20246071, 14270845, 18414137
+     17001914, 17927970, 14378120, 16346413, 15986647, 18068871, 21222147
+     18143836, 16206997, 19168690, 20235511, 18343490, 16613232, 19276791
+     17722664, 12928658, 18520351, 16249829, 18226143, 18265482, 18229842
+     17172091, 17818075, 18231837, 14373486, 17483479, 18120545, 18729166
+     13843841, 21225209, 17405302, 18709496, 18330979, 18744838, 20531190
+     14525998, 18187697, 14385860, 18348155, 19479503, 12928592, 17516024
+     18370031, 17764053, 17551223, 14671408, 18272135, 14207615, 17500165
+     18875012, 18464784, 19558324, 18848125, 19241857, 14851828, 17955615
+     20315294, 14693336, 16284825, 17352230, 20014326, 17238586, 17089344
+     17405605, 17531342, 17159489, 17640316, 16543190, 17983675, 17481314
+     16281493, 18346135, 15986311, 17208793, 18700935, 18999857, 14076173
+     18428146, 18352845, 17435488, 18352846, 17391726, 17387779, 16206882
+     20141091, 17305100, 15832129, 19885321, 16901346, 17985714, 18536826
+     17780903, 18752378, 18946768, 16876500, 16875342, 19955755, 16429265
+     18336452, 17273003, 19319357, 17059927, 17046460, 18053631, 16867761
+     20235486, 15869775, 19642566, 17447588, 15920201
+
+Patch  20760982     : applied on Sun Oct 11 12:26:59 GMT+07:00 2015
+Unique Patch ID:  18926827
+Patch description:  "Database Patch Set Update : 11.2.0.4.7 (20760982)"
+   Created on 4 Jun 2015, 03:15:00 hrs PST8PDT
+Sub-patch  20299013; "Database Patch Set Update : 11.2.0.4.6 (20299013)"
+Sub-patch  19769489; "Database Patch Set Update : 11.2.0.4.5 (19769489)"
+Sub-patch  19121551; "Database Patch Set Update : 11.2.0.4.4 (19121551)"
+Sub-patch  18522509; "Database Patch Set Update : 11.2.0.4.3 (18522509)"
+Sub-patch  18031668; "Database Patch Set Update : 11.2.0.4.2 (18031668)"
+Sub-patch  17478514; "Database Patch Set Update : 11.2.0.4.1 (17478514)"
+   Bugs fixed:
+     16929165, 16220077, 17235750, 18436647, 17468141, 17571039, 18362222
+     12905058, 17375354, 16992075, 17360606, 18273830, 18828868, 17050888
+     19680952, 18704244, 17546973, 17614134, 18868646, 9756271, 17227277
+     13853126, 18260550, 17545847, 19769489, 20777150, 17016369, 19271443
+     17215560, 17302277, 18018515, 16268425, 18280813, 17082359, 14245531
+     17783588, 18094246, 13866822, 17649265, 16943711, 18031668, 18331812
+     13498382, 17082983, 17786278, 18723434, 17767676, 14458214, 19289642
+     17622427, 18482502, 17716305, 18674047, 18744139, 14852021, 19727057
+     16777840, 13645875, 14084247, 17614227, 17705023, 17883081, 20331945
+     16285691, 17393915, 14368995, 17348614, 16180763, 18316692, 17325413
+     19013183, 17343514, 17865671, 17308789, 17811447, 16069901, 19197175
+     16494615, 18783224, 16043574, 17006570, 16903536, 12611721, 18325460
+     14602788, 16579084, 17011832, 17394950, 17752121, 17284817, 17811456
+     17238511, 17042658, 17239687, 17602269, 17672719, 17891946, 15913355
+     18262334, 16721594, 17071721, 17265217, 17761775, 17982555, 12816846
+     19121551, 16384983, 17891943, 11883252, 18436307, 17721717, 18228645
+     17346091, 18614015, 14692762, 16344544, 20631274, 17787259, 18193833
+     19915271, 18306996, 16306373, 18091059, 21051852, 18674024, 21051858
+     18084625, 11733603, 19466309, 20004087, 17037130, 17088068, 18180390
+     17449815, 17877323, 18973907, 17156148, 19544839, 18244962, 17237521
+     16863422, 21051862, 17752995, 16392068, 21067387, 17945983, 14338435
+     18384537, 13609098, 17332800, 18199537, 18765602, 18522509, 21051833
+     18061914, 14133975, 18328509, 16956380, 17587063, 21051840, 19049453
+     20558005, 17586955, 17851160, 17341326, 17571306, 18607546, 17816865
+     17798953, 16833527, 18619917, 17297939, 17299889, 16912439, 15861775
+     14054676, 16595641, 13951456, 16850630, 17478514, 17936109, 14829250
+     17385178, 17443671, 18189036, 18554763, 16901385, 18508861, 17165204
+     19584068, 20142975, 17892268, 16198143, 18384391, 19393542, 18191164
+     13829543, 17006183, 16315398, 17501491, 17634921, 16934803, 13955826
+     17274537, 17288409, 17694209, 17446237, 20299015, 16668584, 16855292
+     18282562, 15990359, 17922254, 20803583, 18051556, 18554871, 17726838
+     19827973, 14015842, 18155762, 16422541, 18673325, 17232014, 17390160
+     18096714, 12747740, 18334586, 18315328, 17786518, 10136473, 16785708
+     18135678, 17311728, 19699191, 17610798, 18293054, 20296213, 12982566
+     16538760, 17477958, 16194160, 20004021, 18673304, 17853456, 19463897
+     19463893, 19211724, 18856999, 20067212, 12364061, 16450169, 17397545
+     17762296, 17824637, 16399083, 17242746, 17174582, 17258090, 18456514
+     18277454, 19006849, 20506699, 17551709, 18000422, 17393683, 20334344
+     17835627, 16042673, 19854503, 18996843, 19972570, 20074391, 16228604
+     17655634, 17596908, 17852463, 18317531, 17600719, 17754782, 17323222
+     18264060, 19730508, 18471685, 17957017, 18098207, 16613964, 18762750
+     17390431, 19615136, 16870214, 19972564, 17282229, 19972566, 19972568
+     19972569, 17027426, 18673342, 17080436, 17186905, 16571443, 13944971
+     14764829, 14354737, 17205719, 14565184, 17389192, 16360112, 20657441
+     17842825, 14106803, 16837842, 18139690, 17313525, 18203837, 18964939
+     18203838, 18203835, 17546761, 21179898, 17344412, 18641451, 18331850
+     16472716, 19309466, 17889549, 18235390, 17588480, 17346671, 13364795
+     14657740, 18641461, 17811438, 17040527, 17612828, 19458377, 19554106
+     18230522, 17811429, 20506715, 18430495, 17951233, 18339044, 20506706
+     17437634, 17465741, 14034426, 17441661, 17848897, 17570240, 16692232
+     18247991, 8322815, 16618694, 18009564, 14285317, 16542886, 17811789
+     17036973, 18641419, 18747196, 19358317, 16524926, 17478145, 17040764
+     18202441, 17889583, 17912217, 17267114, 17025461, 17648596, 14010183
+     17296856, 19788842, 16875449, 18681862, 18440047, 18356166, 17246576
+     17853498, 17201159, 13558557, 17835048, 18441944, 13837378, 16314254
+     16731148, 15979965, 17381384, 18092127, 16091637, 17184721
+
+
+
+Rac system comprising of multiple nodes
+  Local node = t24db02
+  Remote node = t24db01
+
+--------------------------------------------------------------------------------
+
+OPatch succeeded.
+
+
+[t24db02@oracle /u01/app/oracle/product/11.2.0.4/dbhome_1/OPatch>]$uname -a
+AIX t24db02 1 6 00F6C5914C00
+
+
+alter tablespace USERS          read only;
+alter tablespace OER_DATA       read only;
+alter tablespace OER_INDEX      read only;
+alter tablespace OER_LOB        read only;
+alter tablespace DEV_OER_LOB    read only;
+alter tablespace DEV_OER_DATA   read only;
+alter tablespace DEV_IAS_TEMP   read only;
+alter tablespace DEV_STB        read only;
+alter tablespace DEV_OER_INDEX  read only;
+alter tablespace DEV_OER_TEMP   read only;
+
+
+
+Fri Dec 29 19:07:56 2017
+Errors in file /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/trace/t24r14dc2_dbwb_43189084.trc  (incident=741566):
+ORA-00600: internal error code, arguments: [kclrwrite_6], [], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/incident/incdir_741566/t24r14dc2_dbwb_43189084_i741566.trc
+Use ADRCI or Support Workbench to package the incident.
+See Note 411.1 at My Oracle Support for error and packaging details.
+Fri Dec 29 19:07:58 2017
+Dumping diagnostic data in directory=[cdmp_20171229190758], requested by (instance=2, osid=43189084 (DBWB)), summary=[incident=741566].
+Errors in file /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/trace/t24r14dc2_dbwb_43189084.trc:
+ORA-00600: internal error code, arguments: [kclrwrite_6], [], [], [], [], [], [], [], [], [], [], []
+DBWb (ospid: 43189084): terminating the instance due to error 471
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (25625066) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (37224628) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (42795428) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (5439868) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (40829946) as a result of ORA-1092Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (19137512) as a result of ORA-1092
+opiodr aborting process unknown ospid (40632700) as a result of ORA-1092
+
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (29360550) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (45810610) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (29164304) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (41943292) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (33554690) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (39256704) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (5964730) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (12320844) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (31785562) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (28573790) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (37093666) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (41616030) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (29426038) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (33030304) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (23003734) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (38994462) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (13041986) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (42729574) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (34930966) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (34800526) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (39125444) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (7930406) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (19137132) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (10552132) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (17367576) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (23855136) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (26476646) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (21757968) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (22216806) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (18022986) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (22282652) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (5899006) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (42467580) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (5243250) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (28705354) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (23462146) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (18678688) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (6292130) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+opiodr aborting process unknown ospid (21955338) as a result of ORA-1092
+Fri Dec 29 19:07:59 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (33554540) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (35127546) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (6095310) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (20709694) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (11862364) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (5374914) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (17236674) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (44171472) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (35586452) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (28377640) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (32309306) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (25100918) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (15597908) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (5899176) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (14352832) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (3211640) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (26936308) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (13435146) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (40895378) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (33358392) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (38011444) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (41222364) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (23921526) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (25952726) as a result of ORA-1092
+Fri Dec 29 19:08:00 2017
+ORA-1092 : opitsk aborting process
+Fri Dec 29 19:08:00 2017
+opiodr aborting process unknown ospid (43975266) as a result of ORA-1092
+Fri Dec 29 19:08:07 2017
+Instance terminated by DBWb, pid = 43189084
+Fri Dec 29 19:34:11 2017
+Starting ORACLE instance (normal)

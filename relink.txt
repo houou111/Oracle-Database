@@ -1,0 +1,636 @@
+chmod 770 /u01/app/12.2.0.1/grid
+cd /u01/app/12.2.0.1/grid
+chmod -R 775 rootupgrade.sh
+chmod -R 775 root.sh
+chmod -R 775 osysmond
+chmod -R 775 ologgerd
+chmod -R 775 gnsd
+chmod -R 775 ctss
+chmod -R 775 crs
+chmod -R 775 crf
+chmod -R 775 auth
+chmod -R 775 tfa
+chmod -R 775 acfs
+chmod -R 775 bin
+chmod -R 775 suptools
+chmod -R 775 lib
+
+
+1.Relink grid home
+------------------------------------------------------------------------------
+As root:
+cp /u01/app/12.2.0.1/grid/perl/lib/5.22.0/parent.pm /usr/lib64/perl5/vendor_perl/
+cd $ORACLE_HOME/crs/install
+perl rootcrs.pl -unlock
+
+su - oracle
+. grid
+$ORACLE_HOME/bin/relink
+
+As root:
+cd $ORACLE_HOME/rdbms/install/
+./rootadd_rdbms.sh
+
+cd $ORACLE_HOME/crs/install
+./rootcrs.sh -lock
+
+
+2.Relink Oracle home
+------------------------------------------------------------------------------
+What the instructions fail to tell you is that the last call to rootcrs.pl will start Grid Infrastructure, which for most people means an automatic restart of the instances running under GI’s control. But wait a minute! I didn’t get a chance to recompile the Oracle RDBMS software! So here is my modified steps to recompile everything:
+
+As root:
+
+cd $ORACLE_HOME/crs/install
+
+perl rootcrs.pl -unlock
+
+As ORACLE_HOME owner ("oracle" in my case):
+
+export ORACLE_HOME=$ORACLE_HOME
+
+$ORACLE_HOME/bin/relink
+
+export ORACLE_HOME={rdbms home}
+
+$ORACLE_HOME/bin/relink all
+
+As root:
+
+cd $ORACLE_HOME/crs/install
+
+perl rootcrs.pl -patch
+
+
+3. Fix Grid
+---------------------------------------------------------------------------------------
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/IO/String.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/File/Slurp.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Member.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/DirectoryMember.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Tree.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/MemberRead.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Archive.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/StringMember.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/FileMember.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/BufferedFileHandle.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/ZipFileMember.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/NewFileMember.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/MockFileHandle.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/Sys/SigAction.pm 
+chmod 644 /u01/app/12.2.0.1/grid/sqlpatch/lib/XML/Simple.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liboramysql12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libipc1.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libmql1.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libons.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/facility.lis 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libgeneric12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libplc12_pic.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libodm12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libpls12_pic.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libasmclnt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnnetd12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libasmclntsh12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libpls12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liborion12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libmm.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libocci12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libplp12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libxdb.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclntst12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclient12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libagent12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libplp12_pic.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libpsa12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liboramysql12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libplc12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/sysliblist 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnnet12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcommon12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libofs.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libmql1.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippcpemerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippcpmerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liblzopro5.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippsemerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskgxpr.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskgxpd.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippdcemerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskgxpg.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libodmd12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libofs.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippcore.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippdcmerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libzt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libipp_z.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libipc1.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libippsmerged.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liborabz2.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liboraz.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnfsodm12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libipp_bz2.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libowm2.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnnz12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libowm2.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libldapjclnt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libldapclnt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_ecc_non_fips.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_asym.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_ecc_accel_fips.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_base_non_fips.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_base.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnnzst12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_ecc_accel_non_fips.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcryptocme.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcryptocme.sig 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libztkg12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libccme_ecc.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnhost12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libntns12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libn12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/naedhs.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnbeq12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnro12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnzjs12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libntwss12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libncrypt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libntcp12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnus12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libngsmshd12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnsgr12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnoname12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnl12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnjni12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libntcpaio12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libntmq12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnldap12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnque12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libunls12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnls12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsnls12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liblxled.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liborazip.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/scorept.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/s0main.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/sscoreed.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcorejava.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcorejava.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcore12.a 
+chmod 644 /u01/app/12.2.0.1/grid/bin/oerr.pl 
+chmod 644 /u01/app/12.2.0.1/grid/lib/crtbegin.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libirng.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsvml.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libintlc.so.5 
+chmod 644 /u01/app/12.2.0.1/grid/lib/crtend.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libimf.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libirc.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libz-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libuuid.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXaw.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libdl.so.2 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXext.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcom_err.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libBrokenLocale-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libc-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libdl-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libX11.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libnsl.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libX11-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libuuid-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/ld-linux-x86-64.so.2 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libICE.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libpthread-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libstdc++.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libm-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libutil.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXaw.so.7 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXm.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libdl.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcrypt-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libICE-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXmu.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXi.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libresolv.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libSM-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcom_err.so.2 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libBrokenLocale.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXpm-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libSM.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXp-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/librt-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXpm.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/librt.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/librt.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcom_err-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libz.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libm.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libm.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libnsl.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXext.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXm.so.4 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libstdc++.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/ld-linux-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXpm.so.4 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libnsl-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXi-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libgcc_s.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXmu.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXt.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcrypt.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXtst.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libSM.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libBrokenLocale.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libc.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXp.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libresolv.so.2 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXi.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXt.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libaio.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libz.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXmu-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libuuid.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXaw-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXext-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libpthread.tmp 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libpthread.so.0 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXt-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libaio-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libgcc_s-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libX11.so.6 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libcrypt.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libc.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXm-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libpthread.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libaio.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libutil-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libresolv-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXtst-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXp.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libXtst.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libICE.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libgcc_s.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libc.so.tmp 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libutil.so.1 
+chmod 644 /u01/app/12.2.0.1/grid/lib/stubs/libstdc++-2.12.0-stub.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsql12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libslax12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libagfw12.so 
+chmod 644 /u01/app/12.2.0.1/grid/crs/lib/env_has.mk 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclsnsjni12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsrvmcred12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/liboevm.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclscred12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libonsx.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libons.a 
+chmod 644 /u01/app/12.2.0.1/grid/bin/ochadctl.pl 
+chmod 644 /u01/app/12.2.0.1/grid/bin/crscdpd.bin 
+chmod 644 /u01/app/12.2.0.1/grid/bin/cdpc.bin 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcrf_mdb12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libjagent12.so 
+chmod 644 /u01/app/12.2.0.1/grid/crs/lib/caa_regapp.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libCurveFit.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libNeticaJ.so 
+chmod 644 /u01/app/12.2.0.1/grid/bin/orapki.bat 
+chmod 644 /u01/app/12.2.0.1/grid/bin/mkstore.bat 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xsu12.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xmlparserv2.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xmlmesg.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xschema.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xmlcomp2.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xmlparserv2_sans_jaxp_services.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xmlparserv2_jaxp_services.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/xml.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/nigtab.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osntabst.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/nigcon.o 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsqlplus.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libsqlplus.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libwwg.a 
+chmod 644 /u01/app/12.2.0.1/grid/bin/dbgeu_run_action.pl 
+chmod 644 /u01/app/12.2.0.1/grid/bin/aqxmlctl.pl 
+chmod 644 /u01/app/12.2.0.1/grid/lib/mail.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/activation.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libheteroxa12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libocijdbc12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libocijdbc12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libheteroxa12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/http_client.jar 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskjcx12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclsr12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libcell12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libordsdo12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclib_jiio.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libordim12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclib_jiio.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libclib_jiio_client.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libordim12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libordimt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libzx12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libgx12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libctxc12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libctx12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdambr.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdamdu.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdexceptions.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdshare.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdaudit.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmd_disk_header_format 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdxmlexceptions.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdqg.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osbws_installer.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmddiag.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdsys.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdug.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcommand.xml 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdfgrp.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdbase.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/opc_installer.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdpasswd.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdtmpl.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdglobal.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdattr.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_installer.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmddisk.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdvol.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdafd.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/asmcmdparser.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libosbws.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libasmperl12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libnid.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libpatchgensh12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libpatchgensh12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libasmperl12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libopc.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libavstub12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskgxns.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libra.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_aix_ppc64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libserver12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_windows64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_zlinux64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libqsmashr.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libkubsagt12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_solaris_sparc64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskvol12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpkavx212.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpkavx212.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_linux64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libskvol12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpkavx12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_hpux_ia64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpksse4212.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/librqext.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpksse4212.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libkubsagt12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/ra_solaris_x64.zip 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libshpkavx12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_okadriverstate.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfsregistrymount.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfsdriverstate.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_afdload.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfssinglefsmount.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfsload.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_okaload.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfshanfs.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/acfshanfs.pl 
+chmod 644 /u01/app/12.2.0.1/grid/lib/acfslib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libacfs12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_afdroot.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_afddriverstate.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/afdlib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/olfsroot.pl 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfsroot.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libafd12.so 
+chmod 644 /u01/app/12.2.0.1/grid/lib/okalib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/libafd12.a 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_unix_linux_afdlib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_okalib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_acfslib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_okaroot.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_unix_linux_okalib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/olfscmd.pl 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_afdlib.pm 
+chmod 644 /u01/app/12.2.0.1/grid/lib/osds_unix_linux_acfslib.pm 
+chmod 750 /u01/app/12.2.0.1/grid/bin/dbupgrade
+chmod 640 /u01/app/12.2.0.1/grid/lib/libldapjclnt12.so
+chmod 640 /u01/app/12.2.0.1/grid/bin/oradaemonagent
+
+chmod 750 /u01/app/12.2.0.1/grid/bin/orabaseconfig 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genclntsh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/coraenv 
+chmod 750 /u01/app/12.2.0.1/grid/bin/orabasehome 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genoccish 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genclntst 
+chmod 755 /u01/app/12.2.0.1/grid/bin/dbhome 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oraenv 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genagtsh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gennfgt 
+chmod 755 /u01/app/12.2.0.1/grid/bin/echodo 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gennttab 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lxchknlb 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lcsscan 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lxinst 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lxegen 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lmsgen 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genorasdksh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oerr 
+chmod 755 /u01/app/12.2.0.1/grid/bin/linkshlib 
+chmod 755 /u01/app/12.2.0.1/grid/bin/zip 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gensyslib 
+chmod 755 /u01/app/12.2.0.1/grid/bin/unzip 
+chmod 755 /u01/app/12.2.0.1/grid/bin/orald 
+chmod 640 /u01/app/12.2.0.1/grid/lib/libxml12.a 
+chmod 755 /u01/app/12.2.0.1/grid/bin/diskmon.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/odnsd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lsnodes.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/asmproxy 
+chmod 755 /u01/app/12.2.0.1/grid/bin/appagent.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/ocssd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmwatch.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_register.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_profile.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_start.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_relocate.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gsd 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gpnpd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/ocssdrim.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/emcrsp.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmpost.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmmklib.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/racgmain 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oraagent.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oifcfg.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_getperm.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crstmpl.scr 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gipcd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/clsid.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmmkbin.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/sclsspawn 
+chmod 755 /u01/app/12.2.0.1/grid/bin/ghappctl.pl 
+chmod 755 /u01/app/12.2.0.1/grid/bin/clsdiaglsnr.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evminfo.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_stat.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_stop.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oranetmonitor.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/racgevtf 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmlogger.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/gpnptool.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/lsdb.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmshow.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_setperm.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/clssproxy.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evmsort.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crs_unregister.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oprocd 
+chmod 755 /u01/app/12.2.0.1/grid/bin/mdnsd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/racgeut 
+chmod 755 /u01/app/12.2.0.1/grid/bin/racgvip 
+chmod 755 /u01/app/12.2.0.1/grid/bin/scriptagent.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/cemutls.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/evt.sh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/cemutlo.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/olsnodes.bin 
+chmod 755 /u01/app/12.2.0.1/grid/lib/jwcctl_common.pm 
+chmod 755 /u01/app/12.2.0.1/grid/lib/s_jwcctl_lib.pm 
+chmod 755 /u01/app/12.2.0.1/grid/lib/jwcctl_lib.pm 
+chmod 755 /u01/app/12.2.0.1/grid/bin/jwcctl.pl 
+chmod 755 /u01/app/12.2.0.1/grid/bin/orapki   
+chmod 755 /u01/app/12.2.0.1/grid/bin/owm 
+chmod 755 /u01/app/12.2.0.1/grid/bin/mkstore 
+chmod 750 /u01/app/12.2.0.1/grid/bin/xml 
+chmod 750 /u01/app/12.2.0.1/grid/bin/oraxml 
+chmod 750 /u01/app/12.2.0.1/grid/bin/schema 
+chmod 750 /u01/app/12.2.0.1/grid/bin/oraxsl 
+chmod 750 /u01/app/12.2.0.1/grid/bin/orajaxb 
+chmod 755 /u01/app/12.2.0.1/grid/bin/adapters 
+chmod 750 /u01/app/12.2.0.1/grid/bin/dbstart 
+chmod 750 /u01/app/12.2.0.1/grid/bin/dbshut 
+chmod 751 /u01/app/12.2.0.1/grid/bin/osh 
+chmod 751 /u01/app/12.2.0.1/grid/bin/dbfs_client 
+chmod 755 /u01/app/12.2.0.1/grid/bin/crsdiag.pl 
+chmod 755 /u01/app/12.2.0.1/grid/bin/cluvfyrac.sh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/srvconfig 
+chmod 755 /u01/app/12.2.0.1/grid/bin/asmcmdcore 
+chmod 750 /u01/app/12.2.0.1/grid/bin/patchgen 
+chmod 750 /u01/app/12.2.0.1/grid/bin/oraping 
+chmod 750 /u01/app/12.2.0.1/grid/bin/fmputlhp 
+chmod 750 /u01/app/12.2.0.1/grid/bin/asmcmd 
+chmod 750 /u01/app/12.2.0.1/grid/bin/fmputl 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oradnfs 
+chmod 750 /u01/app/12.2.0.1/grid/bin/mtactl 
+chmod 755 /u01/app/12.2.0.1/grid/bin/oradnfs_run.sh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/genksms 
+chmod 755 /u01/app/12.2.0.1/grid/bin/acfsrepl_dupd.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/acfsrepl_dupd 
+chmod 755 /u01/app/12.2.0.1/grid/bin/acfsrm 
+chmod 755 /u01/app/12.2.0.1/grid/bin/acfshanfs 
+chmod 755 /u01/app/12.2.0.1/grid/bin/advmccb 
+chmod 755 /u01/app/12.2.0.1/grid/bin/acfsccm 
+chmod 755 /u01/app/12.2.0.1/grid/bin/afdtool.bin 
+chmod 755 /u01/app/12.2.0.1/grid/bin/afdtool 
+chmod 755 /u01/app/12.2.0.1/grid/bin/olfsroot 
+chmod 755 /u01/app/12.2.0.1/grid/bin/afdboot 
+chmod 755 /u01/app/12.2.0.1/grid/bin/olfscmd 
+chmod 755 /u01/app/12.2.0.1/grid/lib/olfstoolsdriver.sh 
+chmod 755 /u01/app/12.2.0.1/grid/bin/okcreate 
+CVU found following errors with Clusterware setup : PRVG-2029 
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/IO/String.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/File/Slurp.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Member.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/DirectoryMember.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Tree.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/MemberRead.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/Archive.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/StringMember.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/FileMember.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/BufferedFileHandle.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/ZipFileMember.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/NewFileMember.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Archive/Zip/MockFileHandle.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/Sys/SigAction.pm
+chmod 640 /u01/app/12.2.0.1/grid/sqlpatch/lib/XML/Simple.pm
+chmod 644 /u01/app/12.2.0.1/grid/bin/oradaemonagent
+chmod 755 /u01/app/12.2.0.1/grid/bin/orapki 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

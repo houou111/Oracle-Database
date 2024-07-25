@@ -1,0 +1,168 @@
+#!/bin/sh
+# file: /home/oracle/bin/bk_script/bk_twadr
+# -----------------------------------------------------------------
+# Set enviroment agrument
+# -----------------------------------------------------------------
+
+HOSTNAME=dr-cardlinux-db01
+export HOSTNAME
+ORACLE_UNQNAME=twadr
+export ORACLE_UNQNAME
+ORACLE_SID="$ORACLE_UNQNAME"1
+export ORACLE_SID
+ORACLE_SID_DC=twfa
+export ORACLE_SID_DC
+POLICY=Backup-CARD
+export POLICY
+ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export ORACLE_HOME
+TARGET_CONNECT_STR=srv_db_backup/Window#123#Tech@$ORACLE_SID
+export TARGET_CONNECT_STR
+RUN_AS_USER=oracle
+export RUN_AS_USER
+RMAN=$ORACLE_HOME/bin/rman
+export RMAN
+CUSER=`id | cut -d"(" -f2 | cut -d ")" -f1`
+export CUSER
+
+
+RMAN_LOG_FILE=/tmp/rman_"$ORACLE_UNQNAME"_DAILY_$(date '+%Y%m%d_%H%M').log
+export RMAN_LOG_FILE
+BK_LOG=/tmp/bk_db_"$ORACLE_UNQNAME"_DAILY_$(date '+%Y%m%d_%H%M').log
+export BK_LOG
+SWITCHLOG=/home/oracle/bin/bk_script/switchlog_"$ORACLE_SID_DC".sh
+export SWITCHLOG
+
+# -----------------------------------------------------------------
+# switch log DC.
+# -----------------------------------------------------------------
+
+if [ "$CUSER" = "root" ]
+then
+        su - $RUN_AS_USER -c "echo  " > $SWITCHLOG
+        su - $RUN_AS_USER -c "echo export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1" >> $SWITCHLOG
+        su - $RUN_AS_USER -c "echo $ORACLE_HOME/bin/sqlplus -s srv_db_backup/Window#123#Tech@$ORACLE_SID_DC as sysdba \<\<E
+OF " >> $SWITCHLOG
+        su - $RUN_AS_USER -c "echo alter system archive log current\;" >> $SWITCHLOG
+        su - $RUN_AS_USER -c "echo exit" >> $SWITCHLOG
+        su - $RUN_AS_USER -c "echo EOF" >> $SWITCHLOG
+        chmod 775 $SWITCHLOG
+fi
+
+# -----------------------------------------------------------------
+# Initialize the log file.
+# -----------------------------------------------------------------
+
+> $RMAN_LOG_FILE
+chmod 666 $RMAN_LOG_FILE
+
+# -----------------------------------------------------------------
+# Log the start of this script.
+# -----------------------------------------------------------------
+
+echo Script $0 >> $RMAN_LOG_FILE
+echo ==== started on `date` ==== >> $RMAN_LOG_FILE
+echo >> $RMAN_LOG_FILE
+
+
+# -----------------------------------------------------------------
+# Setup Policy
+# -----------------------------------------------------------------
+
+if [ "$NB_ORA_FULL" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=0"
+    SCHED_NAME="Full-Application-Backup"
+	FILES_PER_SET=4
+	TAG_TYPE=DATA_lv0
+elif [ "$NB_ORA_INCR" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=1"
+    SCHED_NAME="Different-Application-Backup"
+	FILES_PER_SET=10
+	TAG_TYPE=DATA_lv1
+elif [ "$NB_ORA_CINC" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=1 CUMULATIVE"
+elif [ "$BACKUP_TYPE" = "" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=0"
+fi
+
+# -----------------------------------------------------------------
+# rman commands for database pub.
+# -----------------------------------------------------------------
+
+CMD="
+ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export ORACLE_HOME
+$RMAN target $TARGET_CONNECT_STR nocatalog msglog $RMAN_LOG_FILE append <<EOF
+
+# -----------------------------------------------------------------
+# RMAN command section
+# -----------------------------------------------------------------
+
+RUN {
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+
+ALLOCATE CHANNEL ch01   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch02   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch03   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch04   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch05   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch06   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch07   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+ALLOCATE CHANNEL ch08   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=$HOSTNAME)' ;
+
+SEND 'NB_ORA_SCHED=$SCHED_NAME,NB_ORA_POLICY=$POLICY,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+
+CROSSCHECK ARCHIVELOG ALL;
+DELETE NOPROMPT EXPIRED ARCHIVELOG ALL;
+CROSSCHECK BACKUP;
+DELETE NOPROMPT EXPIRED BACKUP;
+BACKUP AS COMPRESSED BACKUPSET $BACKUP_TYPE FORMAT 'data_%d_%Y%M%D_%U' DATABASE FILESPERSET $FILES_PER_SET TAG $TAG_TYPE;
+host \"$SWITCHLOG\";
+BACKUP AS COMPRESSED BACKUPSET NOT BACKED UP FORMAT 'arch_%d_%Y%M%D_%U' ARCHIVELOG ALL FILESPERSET 20 TAG ARCH;
+BACKUP AS COMPRESSED BACKUPSET FORMAT 'ctl_%d_%Y%M%D_%U' CURRENT CONTROLFILE TAG CTRL;
+DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-3';
+
+RELEASE CHANNEL ch01;
+RELEASE CHANNEL ch02;
+RELEASE CHANNEL ch03;
+RELEASE CHANNEL ch04;
+RELEASE CHANNEL ch05;
+RELEASE CHANNEL ch06;
+RELEASE CHANNEL ch07;
+RELEASE CHANNEL ch08;
+
+}
+EOF
+"
+
+if [ "$CUSER" = "root" ]
+then
+    su - $RUN_AS_USER -c "$CMD" >> $RMAN_LOG_FILE
+    RSTAT=$?
+else
+    sh -c "$CMD" >> $RMAN_LOG_FILE
+    RSTAT=$?
+fi
+
+
+if [ "$RSTAT" = "0" ]
+then
+    LOGMSG="ended successfully"
+else
+    LOGMSG="ended in error"
+fi
+
+# -----------------------------------------------------------------
+# Log the completion of this script.
+# -----------------------------------------------------------------
+
+echo >> $RMAN_LOG_FILE
+echo Script $0 >> $RMAN_LOG_FILE
+echo ==== $LOGMSG on `date` ==== >> $RMAN_LOG_FILE
+cp $RMAN_LOG_FILE $BK_LOG
+
+exit $RSTAT

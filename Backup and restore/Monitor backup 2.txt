@@ -1,0 +1,21 @@
+set lines 200
+set pages 200
+col OBJECT_TYPE for a15
+col STATUS for a30
+select NVL(object_type,'Unidentified')object_type, 
+	NVL(status,'Unidentified')status, 
+	NVL(round(OUTPUT_GB,3),0) OUTPUT_GB ,
+	NVL(round(b.time,3),0) "time(s)",
+	NVL(round(b.MBPS,3),0) "MBPS",
+	NVL(to_char(end_time, 'mm/dd/yyyy hh24:mi:ss'),'Unidentified') end_time
+from (SELECT a2.OBJECT_TYPE,a2.end_time,a2.status,round(a2.OUTPUT_BYTES/1024/1024/1024,3)OUTPUT_GB,(a2.end_time-a2.start_time)*86400 time,OUTPUT_BYTES/(a2.end_time-a2.start_time)/1024/1024/86400 MBPS
+					FROM (select OBJECT_TYPE,max(end_time) bk_datetime
+						  from V$RMAN_STATUS
+						  where trunc(end_time)= trunc(sysdate-1)and operation = 'BACKUP'
+						  group by OBJECT_TYPE) a1,
+						  (select * 
+						  from V$RMAN_STATUS 
+						  where trunc(end_time)= trunc(sysdate-1) and operation = 'BACKUP' ) a2
+WHERE a1.OBJECT_TYPE= a2.OBJECT_TYPE
+AND a1.bk_datetime=a2.end_time) b;
+	

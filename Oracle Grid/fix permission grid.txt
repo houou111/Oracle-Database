@@ -1,0 +1,54 @@
+How to check and fix file permissions on Grid Infrastructure environment (Doc ID 1931142.1)	To BottomTo Bottom	
+
+In this Document
+Goal
+Solution
+APPLIES TO:
+
+Oracle Database - Enterprise Edition - Version 11.2.0.3 and later
+Oracle Database - Standard Edition - Version 12.1.0.1 to 12.1.0.1 [Release 12.1]
+Information in this document applies to any platform.
+GOAL
+
+To provide ways how to check, find and correct permissions for Grid Infrastructure (GI)  $ORACLE_HOME or <GRID_HOME> .
+
+SOLUTION
+
+1. Validate the <GRID_HOME> by using cluvfy tool.
+
+$ cluvfy comp software -n all -verbose
+This though only validates the binary files and theirs permissions. This is mentioned in unpublished bug 18407533 (closed as not a bug).
+
+
+2. Check the permissions from the following 2 files which are created during Grid Infrastructure installation.
+
+In $GRID_HOME/crs/utl (for 11.2 and 12.1.0.1) and <GRID_HOME>/crs/utl/<hostname> (for 12.1.0.2) directory:
+
+- crsconfig_dirs which has all directories listed in <GRID_HOME> and their permissions
+
+- crsconfig_fileperms which has list of files and their permissions and locations in <GRID_HOME>.
+
+
+3. The permissions can be reverted back to original values with rootcrs.pl or roothas.pl.  For versions 11.2.0.3.6 and higher, there is an option -init:    
+
+Reset the permissions of all files and directories under Oracle <GRID_HOME>. Please ensure CRS is not running while performing the followings:
+
+For 11.2:
+For clustered Grid Infrastructure, as root user
+
+# cd <GRID_HOME>/crs/install/
+# ./rootcrs.pl -init
+For Standalone Grid Infrastructure, as root user
+
+# cd <GRID_HOME>/crs/install/
+# ./roothas.pl  -init
+
+For 12c:
+For clustered Grid Infrastructure, as root user
+
+# cd <GRID_HOME>/crs/install/
+# ./rootcrs.sh -init
+For Standalone Grid Infrastructure, as root user
+
+# cd <GRID_HOME>/crs/install/
+# ./roothas.sh -init

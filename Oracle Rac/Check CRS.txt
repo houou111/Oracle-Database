@@ -1,0 +1,4 @@
+/u01/grid/bin/cluvfy comp crs -n pttb-db1,pttb-db2 -verbose
+/u01/grid/bin/cluvfy comp nodereach -n pttb-db1,pttb-db2 -verbose
+/u01/grid/bin/cluvfy stage -pre crsinst -fixup -n pttb-db1,pttb-db2
+

@@ -1,0 +1,35 @@
+Bitmap Indexes
+
+First session inserts. Second session inserts with the same values for the indexed column.
+ Second session experiences wait event enq: TX – row lock contention until first session commits, then proceeds without error message.
+
+Unique Indexes
+
+First session inserts. Second session inserts with the same values for the indexed column. 
+Second session experiences wait event enq: TX – row lock contention until first session commits, then gets ORA-00001: unique constraint violated.
+
+
+
+"enq: TX - row lock contention" can also occur in mode 4 when a session is waiting on a shared bitmap index fragment.
+
+-> bitmap index fragment.
+
+You Asked
+
+We detected some row lock contention in our database
+
+And we said …
+
+When you issue a SELECT statement against the database to query some records, no locks are placed on the selected rows. In general, this is a useful feature because the number of records locked at any given time is (by default) kept to the absolute minimum: only those records which have been changed but not yet committed are locked. Even then, others will be able to read those records as they appeared before the change (the “before image” of the data).
+
+There are times, however, when you will want to lock a set of records even before you change them in your program. Oracle offers the FOR UPDATE clause of the SELECT statement to perform this locking.
+
+ When you issue a SELECT...FOR UPDATE statement, the RDBMS automatically obtains exclusive row-level locks on all the rows identified by the SELECT statement, holding the records “for your changes only” as you move through the rows retrieved by the cursor. No one else will be able to change any of these records until you perform a ROLLBACK or a COMMIT.
+
+ The TX enqueue is the transaction enqueue (a.k.a. enq: TX - contention) and can also be related to buffer busy waits, in conditions where multiple transaction attempt to update the same data blocks. TX enqueue is issued when a transaction makes its first change, and released when the transaction performs a COMMIT or ROLLBACK.
+
+ The wait event "enq: TX - row lock contention" corresponds to several situations of TX enqueue. Waits for TX in mode 6 occur when a session is waiting for a row level lock that is already held by another session. This occurs when one application is updating or deleting a row that another session is also trying to update or delete. This will generate a wait event "enq: TX - row lock contention". To solve this particular instance, the session holding the lock must perform a COMMIT or ROLLBACK.
+
+ In mode 4, a TX wait can occur if there is a potential duplicate in a unique index. When two sessions try to insert the same key value the second session must wait to see if an ORA-001 should be raised. This can cause the "enq: TX - row lock contention" wait event. This wait event can be handled by having the session holding the lock perform a COMMIT or ROLLBACK.
+
+ The wait event "enq: TX - row lock contention" can also occur in mode 4 when a session is waiting on a shared bitmap index fragment. Bitmap indexes index key values and a range of ROWIDs. Each entry in a bitmap index can cover many rows in the actual table. If two sessions want to update rows covered by the same index fragment, then the second session must wait for the first session to perform either a COMMIT or a ROLLBACK by waiting for the TX lock in mode 4, otherwise it will generate the "enq: TX - row lock contention" wait event.

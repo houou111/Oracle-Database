@@ -1,0 +1,44 @@
+=============================WAIT EVENT=================================
+
+------------gc buffer busy------------
+https://orainternals.wordpress.com/2010/09/27/gc-buffer-busy-waits/
+1. Right hand growth indexes
+ Following query on ASH can provide you with the object_id involved in these waits. 
+ Also, make sure the statement is UPDATE or INSERT statements, not SELECT statement[ SELECT statements are discussed below].
+select sample_time,  sql_id, event, current_obj#,sum (cnt)  from  gv$active_session_history
+   where sample_time between  to_date ('24-SEP-2010 14:28:00','DD-MON-YYYY HH24:MI:SS') and
+     to_date ('24-SEP-2010 14:29:59','DD-MON-YYYY HH24:MI:SS')
+    group by  sample_time,  sql_id, event, current_obj#
+   order by sample_time
+   
+ If this object is an unique index or almost unique index, then you might be running in to a right hand growth indexes.
+
+If you don’t have access to ASH then, you need to sample gv$session_wait (or gv$session from 10g), group by p1, p2 to identify the blocks inducing ‘gc buffer busy’ waits. Then, map those blocks to objects suffering from the issue.
+
+select event,    p1, p2, count(*) from  gv$session s
+where
+event ='gc buffer busy' and state='WAITING'
+group by event, p1, p2
+order by 4
+/
+
+
+2. What if the statement is a SELECT statement?
+This issue typically happens if there is higher concurrency on few blocks. 
+For example, excessive index full scan on an index concurrently from many instances can cause ‘gc buffer busy’ waits. 
+-->In this case, right approach would be tune the SQL statement to avoid excessive access to those index blocks. 
+
+3. Freelists, Freelist groups
+
+What if the object belongs to a table block and the statement is an INSERT statement? 
+-->check to see if that block is a segment header block. If there are many concurrent inserts, and if you don’t use ASSM tablespace, then the inserts need to find free blocks. Segment header of an object stores the free list [ if you don’t use freelist groups]. So, concurrent inserts in to a table will induce excessive activity on the Segment header block of that table leading to ‘gc buffer busy’ waits.
+
+Concurrent inserts in to a table with 1 freelist/1 freelist groups will also have contention in a non-segment header block too. When the session(s) searches for a free block in a freelist, all those sessions can get one or two free blocks to insert. This can lead to contention on that block.
+
+Right approach in this case is to increase freelists, free list groups and initrans on those objects (and might need reorg for these parameters to take effect ). Better yet, use ASSM tablespaces to avoid these issues.
+
+4. Other Scenarios
+
+We discussed just few common issues. But, ‘gc buffer busy’ waits can happen for many reasons. Few of them are: CPU starvation issues, Swapping issues, interconnect issues etc. For example, if the process that opened the request for a block did not get enough CPU, then it might not drain the network buffers to copy the buffer to buffer cache. Other sessions accessing that buffer will wait on ‘gc buffer busy’ waits. Or If there is a network issue and the Global cache messages are slower, then it might induce higher gc buffer busy waits too. Statistics ‘gc lost packets’ is a good indicator for network issues, but not necessarily a complete indicator.
+
+As a special case, if the sequences have been kept with lower cache value, then blocks belonging to seq$ table can be an issue too. Increasing cache for highly used sequence should be considered as a mandatory task in RAC.

@@ -1,0 +1,5 @@
+﻿SELECT t.RECID
+FROM FBNK_CUSTOMER t
+WHERE NVL(NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c23')),0)>=4000 and NVL(NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c23')),0)<=9000 ORDER BYNUMSORT(RECID)
+
+Nó dùng index : NIX_FBNK_CUSTOMER_C23, loại index này là function index nhưng lại là index phủ đinh ( NOT ). 

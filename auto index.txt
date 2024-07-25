@@ -1,0 +1,65 @@
+1. Enable
+---------------------------------------------------------
+alter system set "_exadata_feature_on"=true scope=spfile;
+shutdown immediate;
+startup;
+
+
+2. Display config
+---------------------------------------------------------
+COLUMN parameter_name FORMAT A40
+COLUMN parameter_value FORMAT A15
+
+SELECT con_id, parameter_name, parameter_value 
+FROM   cdb_auto_index_config
+ORDER BY 1, 2;
+
+
+3. Display config
+---------------------------------------------------------
+@auto_index_config.sql
+
+
+
+4. Disable/Enable Index
+---------------------------------------------------------
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','IMPLEMENT');
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','REPORT ONLY');
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_MODE','OFF');
+
+
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_DEFAULT_TABLESPACE','AUTO_INDEXES_TBS');
+
+
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'TEST', allow => TRUE);
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'TEST2', allow => TRUE);
+
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'TEST', allow => FALSE);
+EXEC DBMS_AUTO_INDEX.CONFIGURE('AUTO_INDEX_SCHEMA', 'TEST2', allow => FALSE);
+
+
+
+5. REPORT
+---------------------------------------------------------
+DBMS_AUTO_INDEX.REPORT_ACTIVITY (
+   activity_start  IN  TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP - 1,
+   activity_end    IN  TIMESTAMP WITH TIME ZONE DEFAULT SYSTIMESTAMP,
+   type            IN  VARCHAR2 DEFAULT 'TEXT',
+   section         IN  VARCHAR2 DEFAULT 'ALL',
+   level           IN  VARCHAR2 DEFAULT 'TYPICAL')
+RETURN CLOB;
+
+DBMS_AUTO_INDEX.REPORT_LAST_ACTIVITY (
+   type            IN  VARCHAR2 DEFAULT 'TEXT',
+   section         IN  VARCHAR2 DEFAULT 'ALL',
+   level           IN  VARCHAR2 DEFAULT 'TYPICAL')
+RETURN CLOB;
+
+
+TYPE : Allowable values (TEXT, HTML, XML).
+SECTION : Allowable values (SUMMARY, INDEX_DETAILS, VERIFICATION_DETAILS, ERRORS, ALL). You can also use combinations with the "+" and "-" characters to indicate if something should be included or excluded. For example 'SUMMARY +ERRORS' or 'ALL -ERRORS'.
+LEVEL : Allowable values (BASIC, TYPICAL, ALL).
+
+
+
+SELECT DBMS_AUTO_INDEX.report_activity() FROM dual;

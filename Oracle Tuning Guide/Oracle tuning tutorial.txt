@@ -1,0 +1,127 @@
+1. Check OS - Hardware
+--------------------------------------------------------
+- Config hugepage
+- Make job free cache
+- Config OS parameter
+- Fix all error (/var/log/message)
+dmesg --level=alert,crit -T
+dmesg --level=err,warn -T
+
+- Check location software
+- Create house keeping job
+
+
+
+2. Software patching
+--------------------------------------------------------
+opatch lspatches
+
+
+
+3. Check Rac- ASM
+--------------------------------------------------------
+crsctl stat res -t
+
+asmcmd -p
+lsdg
+
+check INTERCONNECT TRAFFIC
+check GLOBAL CACHE BLOCK STATISTIC
+
+
+
+4. Check DB parameter
+--------------------------------------------------------
+- Check memory: using ASMM (SGA+PGA)
+- controlfile : 2 controlfile in separate diskgroup
+- Redolog: 4 group(2 member each) : size: switch one time for 10-15 min
+- Archive log mode - recovery file dest
+- Using temporary group
+- Undo : undo tablespace, undo retention
+
+alter system set session_cached_cursors=500 scope=spfile ; 
+alter system set open_cursors=1000;
+alter system set processes=1000 scope=spfile;
+alter system set db_securefile='PERMITTED' ;
+alter system set db_files=1000 scope=spfile;
+
+
+create tablespace AUDIT_TBS datafile '+DATA' size 1G autoextend on next 1G;
+BEGIN
+	DBMS_AUDIT_MGMT.SET_AUDIT_TRAIL_LOCATION(
+	audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+	audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+BEGIN
+  DBMS_AUDIT_MGMT.set_audit_trail_location(
+    audit_trail_type           => DBMS_AUDIT_MGMT.AUDIT_TRAIL_FGA_STD,
+    audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+
+Increase the bandwidth network between DB servers and Clients (67983.1) (1377929.1)
+
+
+
+
+5. Check object
+--------------------------------------------------------
+- Gather statistic to enable Oracle generate optimal execution plans. 
+- Rebuild Table high water marks
+- Compress old data
+- recomplie/ remove invalid object -> for patching and
+- review broken job
+- No use parallel for object if have end user in DB (parallel if aas is low)
+- Config profile to limit resource
+- Using partition for table (reduce:  BUFFER BUSY WAITS)
+Range: for time line
+List
+Hash: for other
+- Check sequence cache if Rac (NO-ORDER + cache size)
+
+
+
+6. Check DB workload
+--------------------------------------------------------
+- Aas: AVERAGE ACTIVE SESSION : <CPU
+- Read AWR
+Tuning wait event
+
+
+
+
+
+7. Tuning query
+--------------------------------------------------------
+use AWR and ADDM 
+- Rewrite the application so statements do not continually reparse
+- Use bind variables to reduce parsing
+
+Create index for query
+Using SQL tuning advisor
+Using baseline
+
+DBlink : using driving site for site have most database
+
+
+
+8. Fix error from em13c
+--------------------------------------------------------
+
+
+
+
+9. Check backup 
+--------------------------------------------------------
+- Using parallel backup
+- dump metadata
+
+
+10. Tuning big database
+--------------------------------------------------------
+2336760.1
+1392248.1
+(Doc ID 1619155.1)

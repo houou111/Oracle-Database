@@ -1,0 +1,44 @@
+###############################################################################
+# Name: RMANSetup.rcv
+#
+# Description:
+# Basic Script to setup RMAN for backups
+# This does not actually do a backup but changes the default parameters
+# for every backup in the corresponding controlfiles of the target database
+# For best practices CONTROLFILE AUTOBACKUP ON should be set
+# this includes a controlfile backup as well as a backup of the spfile
+# if backup is written to disk a location RMAN_LOG_LOCATION needs to be specified
+#
+# This script needs to be run for every database once
+# to show the actual content of the controlfile use:
+#     RMAN> SHOW ALL;
+#
+# Note: To avoid known issues, RMAN client should be the same version as server.
+#       The easiest way to avoid client/server mismatches is run the script on the server.
+#
+# Variables:
+# USER               : Username with SYSDBA Privilegue (AS SYSDBA is implied)
+# PWD                : Password (encrypted)
+# DB                 : Database-Connection
+# LOCATION           : Directory to store the Backup
+# RMAN_LOG_LOCATION  : Destination directory for script output
+#
+# Backup Variables used:
+# %F for controlfiles which Combines the DBID, day, month, year, and sequence
+#    into a unique and repeatable generated name
+# %d Name of the database
+# %D Day of the month
+# %M Month in Format MM
+# %Y Year in Format YYYY
+# %p Backup Piece
+# %s Backup Set number
+#
+###############################################################################
+
+SPOOL LOG TO *RMAN_LOG_LOCATION*RMANSetup_*DB*.log;
+CONNECT TARGET *USER*/*PWD*@*DB*;            # Connect to the TARGET Database
+CONFIGURE CONTROLFILE AUTOBACKUP ON;         # Automatically includes controlfile and spfile to all database backups
+CONFIGURE DEFAULT DEVICE TYPE TO DISK;       # change to sbt to use a media management library
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '*RMAN_BACKUP_LOCATION*/%F.bck'; # Filename and Location for Controlfile backup
+CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT '*RMAN_BACKUP_LOCATION*/%d-%Y-%M-%D-%p-%s.bck';        # Filename and Location for Database Backup
+EXIT;

@@ -1,0 +1,218 @@
+ =========================================================================
+Create DG for RAC
+=========================================================================
+1. Create DR database by dbca
+-------------------------------------------------------------------------
+dbca -silent -createDatabase \
+-templateName General_Purpose.dbc \
+-gdbname dongbac -sid dongbac -responseFile NO_VALUE \
+-sysPassword db#dhsxkd#123456 \
+-systemPassword db#dhsxkd#123456 \
+-createAsContainerDatabase true \
+-numberOfPDBs 1 \
+-pdbName AAAA \
+-pdbAdminPassword Password123 \
+-databaseType MULTIPURPOSE \
+-emConfiguration none \
+-redoLogFileSize 8192 \
+-recoveryAreaDestination +RECOC1 \
+-storageType ASM \
+-diskGroupName +DATAC1 \
+-listeners LISTENER \
+-registerWithDirService false \
+-characterSet "AL32UTF8" \
+-nationalCharacterSet "AL16UTF16" \
+-automaticMemoryManagement false \
+-totalMemory 10240 \
+-sampleSchema false \
+-nodeinfo exax5-01-adm,exax5-02-adm \
+-ignorePreReqs
+
+
+alter system set "_kks_parse_error_warning"=0                   scope=spfile;
+alter system set "_px_wif_extend_distribution_keys"=FALSE       scope=spfile;
+alter system set "_session_cached_instantiations"=1001          scope=spfile;
+alter system set "_kgl_large_heap_warning_threshold"=104857600 scope=spfile ; 
+
+alter system set max_dump_file_size='200M'                    scope=spfile;
+alter system set open_cursors=1000                            scope=spfile;
+alter system set log_archive_max_processes=4                  scope=spfile;
+alter system set log_archive_min_succeed_dest=1               scope=spfile;
+alter system set max_dump_file_size='200M'                    scope=spfile;
+alter system set parallel_force_local=TRUE                    scope=spfile;
+alter system set session_cached_cursors=1000                  scope=spfile;
+alter system set temp_undo_enabled=TRUE                       scope=spfile;
+alter system set standby_file_management='auto'               scope=spfile;
+alter system set undo_retention=14400                          scope=spfile;
+alter system set processes=5000                              scope=spfile;
+alter system set db_recovery_file_dest_size=2T    			scope=spfile;
+alter system set db_files=3000 scope=spfile;
+
+alter system set pga_aggregate_limit=32G                      scope=spfile;
+alter system set pga_aggregate_target=16G                     scope=spfile;
+alter system set sga_max_size=32G                             scope=spfile;
+alter system set sga_target=32G                               scope=spfile;
+
+
+
+ 
+ 
+
+2. Copy password file from source to target
+-------------------------------------------------------------------------
+scp $ORACLE_HOME/dbs/orapw$ORACLE_SID
+
+srvctl modify database -db dbscldr -pwfile
+srvctl modify database -db dongnam -pwfile
+
+
+
+3. Config static listener on DC & DR  (for switchover)
+-------------------------------------------------------------------------
+SID_LIST_LISTENER =
+(SID_LIST =
+  (SID_DESC =
+   (GLOBAL_DBNAME = mobsms)
+   (ORACLE_HOME = /u01/app/oracle/product/11.2.0.4/dbhome_1)
+   (SID_NAME = mobsms1)
+  )
+)  
+
+SID_LIST_LISTENER =
+(SID_LIST =
+  (SID_DESC =
+   (GLOBAL_DBNAME = mbsmsdr)
+   (ORACLE_HOME = /u01/app/oracle/product/11.2.0.4/dbhome_1)
+   (SID_NAME = mbsmsdr1)
+  )
+) 
+
+
+4. Config tnsnames.ora on DC & DR
+------------------------------------------------------------------------- 
+MOBSMS =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dc-ora-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mobsms)
+      (UR=A)
+    )
+  )
+
+MOBSMS1 =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dc-ora-db01-vip)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mobsms)
+      (SID = mobsms1)
+      (UR=A)
+    )
+  )
+
+MOBSMSDR =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-ora-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = mbsmsdr)
+      (UR=A)
+    )
+  )
+
+MBSMSDR1 =
+  (DESCRIPTION =
+    (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = dr-ora-db01-vip)(PORT = 1521)))
+    (CONNECT_DATA =
+      (SERVICE_NAME = mbsmsdr)
+      (UR=A)
+    )
+  )
+
+  
+5. Startup nomount in DR
+-------------------------------------------------------------------------
+startup nomount pfile=...'
+
+
+-- Test: 
+- Mount DR in Nomount
+- From DC run command
+sqlplus dbsnmp/...@MBSMSDR1 as sysdba
+
+
+
+
+6. Duplicate
+-------------------------------------------------------------------------
+alter database force logging;
+
+
+rman target / auxiliary sys/Ssi_1234@idsdb
+DUPLICATE TARGET DATABASE TO IDSDB NOOPEN FROM ACTIVE DATABASE;
+
+
+
+
+
+alter database open resetlogs upgrade;
+
+
+11)Execute Manual upgrade scripts.
+
+In 12c manual upgrade can be done parallel using perl utility catctl.pl
+
+$ cd $ORACLE_HOME/rdbms/admin
+$ $ORACLE_HOME/perl/bin/perl  catctl.pl –n 4 –l /<PATH> catupgrd.sql
+
+
+ $ORACLE_HOME/perl/bin/perl  catctl.pl –n 4 –l /<PATH> catuppst.sql
+ 
+ /u01/app/oracle/product/19.0.0/dbhome_1/perl/bin/perl catctl.pl -l /home/oracle/whileupgrade -n 4 catupgrd.sql
+ 
+ 
+ Connect as SYS user to the database
+col comp_id format a10
+col comp_name format a30
+col version format a10
+col status format a8
+select substr(comp_id,1,15) comp_id,substr(comp_name,1,30) comp_name,substr(version,1,10) version,status from dba_registry
+
+
+
+
+@/u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/utlrp.sql
+
+
+@/home/oracle/CID/preupgrade/postupgrade_fixups.sql
+
+
+cd /u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/
+
+
+ls -ltr utltz_countstats.sql utltz_countstar.sql utltz_upg_check.sql utltz_upg_apply.sql
+
+
+SELECT version FROM v$timezone_file;
+@/u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/utltz_upg_check.sql
+
+@/u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/utltz_upg_apply.sql
+
+
+SELECT version FROM v$timezone_file;
+
+
+@/u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/utlusts.sql TEXT
+
+
+
+@/u01/app/oracle/product/19.0.0/dbhome_1/rdbms/admin/catuppst.sql
+
+
+@/home/oracle/CID/preupgrade/postupgrade_fixups.sql
+
+
+
+
+

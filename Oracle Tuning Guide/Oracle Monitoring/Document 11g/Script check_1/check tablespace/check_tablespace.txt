@@ -1,0 +1,29 @@
+#!/bin/bash
+ORACLE_SID=mbf1 ; export ORACLE_SID
+ORACLE_HOME=/app/oracle/db    ; export ORACLE_HOME
+LOG_DIR=/export/home/oracle/tools/out/log; export LOG_DIR
+result=`$ORACLE_HOME/bin/sqlplus / as sysdba<<EOF
+        select df.tablespace_name "Tablespace",
+round(totalusedspace/df.totalspace,2)*100 "%Used"
+from
+(select tablespace_name,
+round(sum(bytes) / 1048576) TotalSpace
+from dba_data_files 
+group by tablespace_name) df,
+(select round(sum(bytes)/(1024*1024)) totalusedspace, tablespace_name
+from dba_segments 
+group by tablespace_name) tu
+where df.tablespace_name = tu.tablespace_name and df.tablespace_name='GGATE_DATA' ;
+        EOF`
+check_tablespace ()
+{
+        alert=`echo "$result"|grep "GGATE_DATA"`
+        echo $alert
+        alert2=`echo "$alert"|awk '{print $2}'`
+        echo $alert2
+        if [ "$alert2" -ge  "98" ];
+        then    
+                sqlplus / as sysdba @/app/oracle/tools/proc_add_df.sql 
+        fi
+}
+check_tablespace "MBF1"

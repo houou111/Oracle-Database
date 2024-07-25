@@ -1,0 +1,70 @@
+1. INDEX
+--------------------------------------------------------------------------------------------------------
+
+BEGIN 
+  FOR r IN (select OWNER,index_name,DEFAULT_TABLESPACE FROM dba_indexes a left join dba_users b 
+		ON  a.OWNER=b.USERNAME
+		WHERE status = 'UNUSABLE') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER index "'|| r.OWNER||'"."'|| r.index_name|| '" rebuild TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' online PARALLEL 16'; 
+  EXECUTE IMMEDIATE 'ALTER index "'|| r.OWNER||'"."'|| r.index_name|| '" NOPARALLEL'; 
+  --EXCEPTION 
+     --WHEN OTHERS THEN 
+       -- /* Your exception handing here. */ 
+       -- NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+2. PARTITION_INDEX
+--------------------------------------------------------------------------------------------------------
+
+BEGIN 
+  FOR r IN 
+  (select INDEX_OWNER,index_name,PARTITION_NAME ,DEFAULT_TABLESPACE
+  FROM dba_ind_partitions a join dba_users b 
+		ON  a.INDEX_OWNER=b.USERNAME
+		WHERE  status = 'UNUSABLE') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER index "'|| r.INDEX_OWNER||'"."'|| r.index_name|| '" rebuild partition '|| r.PARTITION_NAME|| ' TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' online PARALLEL 16'; 
+  EXECUTE IMMEDIATE 'ALTER index "'|| r.INDEX_OWNER||'"."'|| r.index_name|| '" NOPARALLEL '; 
+  --EXCEPTION 
+     --WHEN OTHERS THEN 
+        --/* Your exception handing here. */ 
+        --NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+
+
+BEGIN 
+  FOR r IN (select INDEX_OWNER,index_name,PARTITION_NAME FROM dba_ind_partitions a join dba_users b 
+		ON  a.INDEX_OWNER=b.USERNAME
+		AND a.TABLESPACE_NAME in ('DATA202001','DATA202002','DATA202003','DATA202004','DATA202005','DATA202006','DATA202007')
+		AND a.INDEX_OWNER in ('VINA_IR_SIOT','VINA_IR_OWNER') ) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER index "'|| r.INDEX_OWNER||'"."'|| r.index_name|| '" rebuild partition '|| r.PARTITION_NAME|| ' TABLESPACE INDX online PARALLEL 2'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+select count(1) FROM dba_ind_partitions a join dba_users b 
+		ON  a.INDEX_OWNER=b.USERNAME
+		AND a.TABLESPACE_NAME in ('DATA202001','DATA202002','DATA202003','DATA202004','DATA202005','DATA202006','DATA202007')
+		AND a.INDEX_OWNER in ('VINA_IR_SIOT','VINA_IR_OWNER')

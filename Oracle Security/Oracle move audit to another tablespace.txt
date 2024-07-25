@@ -1,0 +1,71 @@
+1. Check 
+---------------------------------
+SELECT FILE_NAME, TABLESPACE_NAME,BYTES/1024/1024/1024, AUTOEXTENSIBLE,MAXBYTES/1024/1024/1024 FROM DBA_DATA_FILES WHERE TABLESPACE_NAME='AUDIT_TBS';
+CREATE TABLE AUD_BK AS SELECT * FROM AUD$ WHERE NTIMESTAMP# > SYSDATE -2 TABLEPACE AUDIT_TBS;
+
+TRUNCATE TABLE AUD$;
+
+
+
+2. Move Audit to other tablespace
+---------------------------------
+SELECT table_name, tablespace_name FROM dba_tables WHERE table_name IN ('AUD$', 'FGA_LOG$') ORDER BY table_name;
+
+TABLE_NAME                     TABLESPACE_NAME
+------------------------------ ------------------------------
+AUD$                           SYSTEM
+FGA_LOG$                       SYSTEM
+
+SELECT SEGMENT_NAME, bytes/1024/1024/1024 FROM dba_segments WHERE SEGMENT_NAME IN ('AUD$', 'FGA_LOG$') ORDER BY SEGMENT_NAME;
+
+SEGMENT_NAME         SIZE_IN_MEGABYTES
+-------------------- -----------------
+FGA_LOG$                         .0625
+AUD$                                15
+
+--- Find LOB in table
+col owner for a8
+col TABLE_NAME for a7
+col COLUMN_NAME for a15
+select OWNER,TABLE_NAME,COLUMN_NAME,SEGMENT_NAME,TABLESPACE_NAME,INDEX_NAME,DEDUPLICATION,SECUREFILE from dba_lobs where TABLE_NAME='AUD$' and OWNER='SYS';
+
+OWNER    TABLE_NAME COLUMN_NAME     SEGMENT_NAME                             TABLESPACE_NAME                INDEX_NAME                     DEDUPLICATION   SEC
+-------- ---------- --------------- ---------------------------------------- ------------------------------ ------------------------------ --------------- ---
+SYS      AUD$       SQLBIND         SYS_LOB0000000407C00040$$                SYSTEM                         SYS_IL0000000407C00040$$       NONE            NO
+SYS      AUD$       SQLTEXT         SYS_LOB0000000407C00041$$                SYSTEM                         SYS_IL0000000407C00041$$       NONE            NO
+
+select OWNER,TABLE_NAME,COLUMN_NAME,SEGMENT_NAME,TABLESPACE_NAME,INDEX_NAME,DEDUPLICATION,SECUREFILE from dba_lobs where TABLE_NAME='FGA_LOG$' and OWNER='SYS';
+
+
+
+3. Moving all to another tablespace AUDIT_TBS
+-----------------------------------------------
+create tablespace AUDIT_TBS datafile '+DATAC1' size 1G autoextend on next 1G;
+alter tablespace AUDIT_TBS add datafile '+DATAC1' size 1G autoextend on next 1G; 
+
+
+BEGIN
+	DBMS_AUDIT_MGMT.SET_AUDIT_TRAIL_LOCATION(
+	audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+	audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+BEGIN
+  DBMS_AUDIT_MGMT.set_audit_trail_location(
+    audit_trail_type           => DBMS_AUDIT_MGMT.AUDIT_TRAIL_FGA_STD,
+    audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+ 
+select OWNER,TABLE_NAME,COLUMN_NAME,SEGMENT_NAME,TABLESPACE_NAME,INDEX_NAME,DEDUPLICATION,SECUREFILE from dba_lobs where TABLE_NAME in ('AUD$','FGA_LOG$') and OWNER='SYS';
+
+OWNER    TABLE_NAME COLUMN_NAME     SEGMENT_NAME                             TABLESPACE_NAME                INDEX_NAME                     DEDUPLICATION   SEC
+-------- ---------- --------------- ---------------------------------------- ------------------------------ ------------------------------ --------------- ---
+SYS      AUD$       SQLBIND         SYS_LOB0000000407C00040$$                AUDIT_TBS                      SYS_IL0000000407C00040$$       NONE            NO
+SYS      AUD$       SQLTEXT         SYS_LOB0000000407C00041$$                AUDIT_TBS                      SYS_IL0000000407C00041$$       NONE            NO
+SYS      FGA_LOG$   LSQLTEXT        SYS_LOB0000103555C00013$$                AUDIT_TBS                      SYS_IL0000103555C00013$$       NONE            NO
+SYS      FGA_LOG$   LSQLBIND        SYS_LOB0000103555C00028$$                AUDIT_TBS                      SYS_IL0000103555C00028$$       NONE            NO
+
+
+

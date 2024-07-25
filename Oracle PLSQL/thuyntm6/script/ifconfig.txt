@@ -1,0 +1,85 @@
+[grid@dc-oradb-01 ~]$ ifconfig 
+enccw0.0.0600: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.99.1.204  netmask 255.255.255.0  broadcast 10.99.1.255
+        inet6 fe80::3ff:fe30:1  prefixlen 64  scopeid 0x20<link>
+        ether 02:00:03:30:00:01  txqueuelen 1000  (Ethernet)
+        RX packets 24921756012  bytes 7525089559522 (6.8 TiB)
+        RX errors 0  dropped 418  overruns 0  frame 0
+        TX packets 27490195416  bytes 15945819562565 (14.5 TiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+enccw0.0.0600:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.99.1.215  netmask 255.255.255.0  broadcast 10.99.1.255
+        ether 02:00:03:30:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.0600:2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.99.1.217  netmask 255.255.255.0  broadcast 10.99.1.255
+        ether 02:00:03:30:00:01  txqueuelen 1000  (Ethernet)
+
+enccw0.0.f500: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8192
+        inet 192.168.2.5  netmask 255.255.255.252  broadcast 192.168.2.7
+        inet6 fe80::5c00:f5ff:fe03:2  prefixlen 64  scopeid 0x20<link>
+        ether 5e:00:f5:03:00:02  txqueuelen 1000  (Ethernet)
+        RX packets 17780344054  bytes 18084688110483 (16.4 TiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 17508275778  bytes 16535725570047 (15.0 TiB)
+        TX errors 268061  dropped 0 overruns 0  carrier 0  collisions 0
+
+enccw0.0.f500:1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 8192
+        inet 169.254.153.93  netmask 255.255.0.0  broadcast 169.254.255.255
+        ether 5e:00:f5:03:00:02  txqueuelen 1000  (Ethernet)
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1  (Local Loopback)
+        RX packets 3691965348  bytes 885083271301 (824.2 GiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 3691965348  bytes 885083271301 (824.2 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[grid@dc-oradb-01 ~]$ cat /etc/sysconfig/network-scripts/ifcfg-
+ifcfg-enccw0.0.0600  ifcfg-enccw0.0.f500  ifcfg-lo             
+[grid@dc-oradb-01 ~]$ cat /etc/sysconfig/network-scripts/ifcfg-enccw0.0.0600 
+DEVICE=enccw0.0.0600
+ONBOOT=yes
+BOOTPROTO=static
+MTU=1500
+SUBCHANNELS=0.0.0600,0.0.0601,0.0.0602
+NETTYPE=qeth
+PORTNAME=DONTCARE
+OPTIONS="layer2=1 portno=0 buffer_count=128"
+NETMASK=255.255.255.0
+IPADDR=10.99.1.204
+GATEWAY=10.99.1.1
+OPTIONS='layer2=1 portno=0 buffer_count=128'
+[grid@dc-oradb-01 ~]$ cat /etc/sysconfig/network-scripts/ifcfg-enccw0.0.f500 
+USERCTL=no
+NM_CONTROLLED=no
+PREFIX=30
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=no
+IPV4_FAILURE_FATAL=yes
+IPV6INIT=no
+NETTYPE=qeth
+OPTIONS='buffer_count=128 layer2=1'
+ONBOOT=yes
+NETMASK=255.255.255.252
+IPADDR=192.168.2.5
+DEVICE=enccw0.0.f500
+NAME=enccw0.0.f500
+SUBCHANNELS=0.0.f500,0.0.f501,0.0.f502
+[grid@dc-oradb-01 ~]$ cat /etc/sysconfig/network-scripts/ifcfg-lo 
+DEVICE=lo
+IPADDR=127.0.0.1
+NETMASK=255.0.0.0
+NETWORK=127.0.0.0
+# If you're having problems with gated making 127.0.0.0/8 a martian,
+# you can change this to something else (255.255.255.255, for example)
+BROADCAST=127.255.255.255
+ONBOOT=yes
+NAME=loopback
+[grid@dc-oradb-01 ~]$ 

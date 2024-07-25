@@ -1,0 +1,57 @@
+RMAN> DELETE OBSOLETE;
+
+using target database control file instead of recovery catalog
+RMAN retention policy will be applied to the command
+RMAN retention policy is set to redundancy 1
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=3412 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_2
+channel ORA_DISK_2: SID=104 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_3
+channel ORA_DISK_3: SID=3398 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_4
+channel ORA_DISK_4: SID=5052 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_5
+channel ORA_DISK_5: SID=6673 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_6
+channel ORA_DISK_6: SID=8333 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_7
+channel ORA_DISK_7: SID=59 instance=t24test11 device type=DISK
+allocated channel: ORA_DISK_8
+channel ORA_DISK_8: SID=1760 instance=t24test11 device type=DISK
+Deleting the following obsolete backups and copies:
+Type                 Key    Completion Time    Filename/Handle
+-------------------- ------ ------------------ --------------------
+Backup Set           4      01-APR-18         
+  Backup Piece       4      01-APR-18          /stage/bk_lv0_t24test11/data_lv0_T24TEST1_20180401_0jsv8sk6_1_1
+Backup Set           20     02-APR-18         
+  Backup Piece       20     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0lsvagnl_1_1
+Backup Set           19     02-APR-18         
+  Backup Piece       19     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0msvagnl_1_1
+Backup Set           18     02-APR-18         
+  Backup Piece       18     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0nsvagnl_1_1
+Backup Set           17     02-APR-18         
+  Backup Piece       17     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0psvagnm_1_1
+Backup Set           16     02-APR-18         
+  Backup Piece       16     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0qsvagnm_1_1
+Backup Set           14     02-APR-18         
+  Backup Piece       14     02-APR-18          /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0rsvagnm_1_1
+Backup Set           21     02-APR-18         
+  Backup Piece       21     02-APR-18          /stage/bk_lv0_t24test11/ctl_lv0_T24TEST1_20180402_0tsvajus_1_1
+
+Do you really want to delete the above objects (enter YES or NO)? y
+
+RMAN-06207: WARNING: 8 objects could not be deleted for DISK channel(s) due
+RMAN-06208:          to mismatched status.  Use CROSSCHECK command to fix status
+RMAN-06210: List of Mismatched objects
+RMAN-06211: ==========================
+RMAN-06212:   Object Type   Filename/Handle
+RMAN-06213: --------------- ---------------------------------------------------
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/data_lv0_T24TEST1_20180401_0jsv8sk6_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0lsvagnl_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0msvagnl_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0nsvagnl_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0psvagnm_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0qsvagnm_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/arch_lv0_T24TEST1_20180402_0rsvagnm_1_1
+RMAN-06214: Backup Piece    /stage/bk_lv0_t24test11/ctl_lv0_T24TEST1_20180402_0tsvajus_1_1

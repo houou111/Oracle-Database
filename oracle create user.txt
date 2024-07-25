@@ -1,0 +1,5 @@
+create user AAAAAAA identified by xxxxxxxxxxxxxxxxx;
+grant resource, connect, unlimited tablespace to  AAAAAAA;
+grant create PROCEDURE,SELECT ANY DICTIONARY to AAAAAAA;
+grant create table,create view  to AAAAAAA;
+

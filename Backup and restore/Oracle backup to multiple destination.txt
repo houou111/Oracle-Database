@@ -1,0 +1,6 @@
+RUN
+{
+  ALLOCATE CHANNEL c1 DEVICE TYPE DISK;
+  SET BACKUP COPIES = 2;
+  BACKUP DATABASE FORMAT 'c:\backup1\%U', 'c:\backup2\%U';
+}

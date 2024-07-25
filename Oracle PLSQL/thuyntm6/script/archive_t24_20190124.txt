@@ -1,0 +1,500 @@
+update sys.table_archive set keep_year=1, archive_year=0;  
+
+
+
+SELECT table_name,tab_type,del_range,pre_condition,post_condition,sub_type,hint_idx,add_condition,SUBSTR (table_name, 9, LENGTH (table_name))  tab_name
+    FROM sys.table_archive
+   WHERE table_name || sub_type || del_range NOT IN
+   (SELECT DISTINCT a.table_name|| a.sub_type|| a.del_range
+         FROM sys.table_archive a,sys.table_archive_log b
+        WHERE        a.table_name|| a.sub_type|| a.del_range = b.table_name|| b.sub_type|| b.del_range
+           --AND start_time >TRUNC (SYSDATE,'year')
+           AND numrow_del <1000000
+           and archive_year like '%17')
+           and table_name in ('T24LIVE.FBNK_RE_C018','T24LIVE.FBNK_RE_C019')
+   ORDER BY tab_id DESC, del_range;
+
+
+---
+SET DEFINE OFF;
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT01', ' where recid like ''%.CREDIT.', 
+    '01', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT02', ' where recid like ''%.CREDIT.', 
+    '02', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT03', ' where recid like ''%.CREDIT.', 
+    '03', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT04', ' where recid like ''%.CREDIT.', 
+    '04', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT05', ' where recid like ''%.CREDIT.', 
+    '05', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'CREDIT06', ' where recid like ''%.CREDIT.', 
+    '06', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT01', ' where recid like ''%.DEBIT.', 
+    '01', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT02', ' where recid like ''%.DEBIT.', 
+    '02', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT03', ' where recid like ''%.DEBIT.', 
+    '03', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT04', ' where recid like ''%.DEBIT.', 
+    '04', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT05', ' where recid like ''%.DEBIT.', 
+    '05', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (24, 'T24LIVE.FBNK_RE_C019', 1, 'DEBIT06', ' where recid like ''%.DEBIT.', 
+    '06', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY01', ' where recid like ''%.', 
+    '01', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY02', ' where recid like ''%.', 
+    '02', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY03', ' where recid like ''%.', 
+    '03', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY04', ' where recid like ''%.', 
+    '04', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY05', ' where recid like ''%.', 
+    '05', '%''', ' and rownum<1000001');
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, sub_type, pre_condition, 
+    del_range, post_condition, add_condition)
+ Values
+   (25, 'T24LIVE.FBNK_RE_C018', 1, 'YYYY06', ' where recid like ''%.', 
+    '06', '%''', ' and rownum<1000001');
+COMMIT;
+
+   
+---saturday
+SET DEFINE OFF;
+Update SYS.TABLE_ARCHIVE set del_range ='07' ,sub_type='YYYY07' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY01';
+Update SYS.TABLE_ARCHIVE set del_range ='08' ,sub_type='YYYY08' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY02';
+Update SYS.TABLE_ARCHIVE set del_range ='09' ,sub_type='YYYY09' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY03';
+Update SYS.TABLE_ARCHIVE set del_range ='10' ,sub_type='YYYY10' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY04';
+Update SYS.TABLE_ARCHIVE set del_range ='11' ,sub_type='YYYY11' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY05';
+Update SYS.TABLE_ARCHIVE set del_range ='12' ,sub_type='YYYY12' where table_name='T24LIVE.FBNK_RE_C018' and sub_type='YYYY06';
+COMMIT;
+
+Update SYS.TABLE_ARCHIVE set del_range ='07' ,sub_type='CREDIT07' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT01';
+Update SYS.TABLE_ARCHIVE set del_range ='08' ,sub_type='CREDIT08' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT02';
+Update SYS.TABLE_ARCHIVE set del_range ='09' ,sub_type='CREDIT09' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT03';
+Update SYS.TABLE_ARCHIVE set del_range ='10' ,sub_type='CREDIT10' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT04';
+Update SYS.TABLE_ARCHIVE set del_range ='11' ,sub_type='CREDIT11' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT05';
+Update SYS.TABLE_ARCHIVE set del_range ='12' ,sub_type='CREDIT12' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='CREDIT06';
+
+Update SYS.TABLE_ARCHIVE set del_range ='07' ,sub_type='DEBIT07' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT01';
+Update SYS.TABLE_ARCHIVE set del_range ='08' ,sub_type='DEBIT08' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT02';
+Update SYS.TABLE_ARCHIVE set del_range ='09' ,sub_type='DEBIT09' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT03';
+Update SYS.TABLE_ARCHIVE set del_range ='10' ,sub_type='DEBIT10' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT04';
+Update SYS.TABLE_ARCHIVE set del_range ='11' ,sub_type='DEBIT11' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT05';
+Update SYS.TABLE_ARCHIVE set del_range ='12' ,sub_type='DEBIT12' where table_name='T24LIVE.FBNK_RE_C019' and sub_type='DEBIT06';
+
+COMMIT;
+
+
+CREATE procedure SYS.DBA_ARCHIVE_DATA_TEMP as
+   archive_year   NUMBER;
+   cmd            VARCHAR2 (4000);
+   counter        NUMBER;
+   timeStart      DATE;
+   timeEnd        DATE;
+   timeCheck      DATE;
+   elapsed        VARCHAR2 (50);
+   duration       number;
+   post_rebuild number;
+   pre_rebuild number;
+   start_seq    number;
+   end_seq number;
+   CURSOR c_tab
+   IS
+
+  SELECT table_name,tab_type,del_range,pre_condition,post_condition,sub_type,hint_idx,add_condition,SUBSTR (table_name, 9, LENGTH (table_name))  tab_name
+    FROM sys.table_archive
+   WHERE table_name || sub_type || del_range NOT IN
+   (SELECT DISTINCT a.table_name|| a.sub_type|| a.del_range
+         FROM sys.table_archive a,sys.table_archive_log b
+        WHERE        a.table_name|| a.sub_type|| a.del_range = b.table_name|| b.sub_type|| b.del_range
+           AND archive_year like '%17'
+           AND numrow_del <1000000)
+           and table_name in ('T24LIVE.FBNK_RE_C018','T24LIVE.FBNK_RE_C019')
+   ORDER BY tab_id DESC, del_range;
+BEGIN
+select sysdate into timeCheck from dual;
+   FOR tab IN c_tab
+   LOOP
+      IF tab.tab_type = 1
+      THEN
+         archive_year := EXTRACT (YEAR FROM SYSDATE) - 2;
+      END IF;
+
+      cmd :='delete '||tab.hint_idx||' '|| tab.table_name|| tab.pre_condition|| archive_year||tab.del_range|| tab.post_condition||' '||tab.add_condition;
+
+      LOOP
+         DBMS_OUTPUT.put_line (cmd);
+         timeStart := SYSDATE;
+         execute immediate cmd ;
+         timeEnd := SYSDATE;
+         counter := SQL%ROWCOUNT;
+         COMMIT;
+         DBMS_OUTPUT.put_line ( counter|| ' rows deleted('|| tab.sub_type|| archive_year||tab.del_range||  ')');
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+               insert into  sys.table_archive_log (table_name ,sub_type,del_range,archive_year,start_time,numrow_del ,elapsed_time ) values (tab.table_name,
+               tab.sub_type,tab.del_range,to_char(archive_year) ,timeStart,counter, substr(elapsed,10,10));
+               commit;
+         duration := trunc((sysdate -timeCheck)*24);
+         --DBMS_OUTPUT.put_line ( sysdate -timeCheck);
+         exit when  counter < 1000000 or duration >= 34 ;
+      END LOOP;
+
+      --REBUILD INDEX----------
+      IF counter < 1000000
+      THEN
+      FOR c_idx IN (SELECT index_name,partitioned
+                      FROM dba_indexes
+                     WHERE table_name = tab.tab_name AND owner = 'T24LIVE' and index_type not like 'LOB%'
+                     and index_type <> 'FUNCTION-BASED NORMAL'
+                     )
+      LOOP
+      if c_idx.partitioned = 'NO' then
+      SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name
+         GROUP BY segment_name;
+
+         cmd := 'alter index T24LIVE.' || c_idx.index_name || ' rebuild online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         EXECUTE IMMEDIATE cmd;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+           SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name
+         GROUP BY segment_name;
+
+         INSERT INTO sys.rebuild_idx_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)
+              VALUES (tab.table_name, c_idx.index_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);
+         COMMIT;
+
+      else
+
+      FOR c_idx1 IN (SELECT partition_name  FROM dba_ind_partitions
+                    WHERE index_name = c_idx.index_name AND index_owner = 'T24LIVE' )
+      LOOP
+                SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         cmd := 'alter index T24LIVE.' || c_idx.index_name || ' rebuild partition '||c_idx1.partition_name||' online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         EXECUTE IMMEDIATE cmd;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+         SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         INSERT INTO sys.rebuild_idx_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)
+              VALUES (tab.table_name, c_idx.index_name||'.'||c_idx1.partition_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);
+              commit;
+
+      end loop;
+      end if;
+
+      END LOOP;
+      END IF;
+      ---------------
+      duration := trunc((sysdate -timeCheck)*24);
+      exit when  duration >= 34;
+   END LOOP;
+EXCEPTION
+   WHEN OTHERS THEN ROLLBACK;
+END;
+/
+
+BEGIN
+  SYS.DBMS_SCHEDULER.DISABLE
+    (name  => 'SYS.DBA_JOB_ARCHIVE_DATA_YEARLY');
+END;
+/
+
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYS.DBA_ARCHIVE_DATA_TEMP'
+      ,start_date      => TO_TIMESTAMP_TZ('2019/01/26 19:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'STORED_PROCEDURE'
+      ,job_action      => 'SYS.DBA_ARCHIVE_DATA_TEMP'
+      ,comments        => 'Job to archive data yearly of T24LIVE (2017 of C018 and C019)'
+    );
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYS.DBA_ARCHIVE_DATA_TEMP');
+END;
+/
+
+===================SUNDAY
+BEGIN
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name  => 'SYS.DBA_JOB_ARCHIVE_DATA_YEARLY');
+END;
+/
+
+Job Action	SYS.DBA_ARCHIVE_DATA_TEMP
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYS.DBA_JOB_ARCHIVE_DATA_TEMP1'
+      ,start_date      => TO_TIMESTAMP_TZ('2019/01/27 14:20:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'STORED_PROCEDURE'
+      ,job_action      => 'SYS.DBA_ARCHIVE_DATA_YEARLY'
+      ,comments        => 'Job to archive data yearly of T24LIVE '
+    );
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYS.DBA_JOB_ARCHIVE_DATA_TEMP1');
+END;
+/
+
+Job Action	SYS.DBA_DROP_PARTITION_YEARLY
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYS.DBA_JOB_DROP_PARTITION_YEARLY_T1'
+      ,start_date      => TO_TIMESTAMP_TZ('2019/01/27 14:20:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'STORED_PROCEDURE'
+      ,job_action      => 'SYS.DBA_DROP_PARTITION_YEARLY'
+      ,comments        => 'Job to archive data yearly of T24LIVE '
+    );
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYS.DBA_JOB_DROP_PARTITION_YEARLY_T1');
+END;
+/
+
+--check and modify duration
+CREATE OR REPLACE procedure SYS.DBA_archive_data_yearly as
+   archive_year   NUMBER;
+   cmd            VARCHAR2 (4000);
+   counter        NUMBER;
+   timeStart      DATE;
+   timeEnd        DATE;
+   timeCheck      DATE;
+   elapsed        VARCHAR2 (50);
+   duration       number;
+   post_rebuild number;
+   pre_rebuild number;
+   start_seq    number;
+   end_seq number;
+   CURSOR c_tab
+   IS
+
+  SELECT tab_id,table_name,tab_type,del_range,pre_condition,post_condition,sub_type,hint_idx,add_condition,SUBSTR (table_name, 9, LENGTH (table_name))  tab_name
+    FROM sys.table_archive
+   WHERE table_name || sub_type || del_range NOT IN
+   (SELECT DISTINCT a.table_name|| a.sub_type|| a.del_range
+         FROM sys.table_archive a,sys.table_archive_log b
+        WHERE        a.table_name|| a.sub_type|| a.del_range = b.table_name|| b.sub_type|| b.del_range
+           AND start_time >TRUNC (SYSDATE,'year')
+           AND numrow_del <1000000)
+           and table_name not in ('T24LIVE.FBNK_RE_C018','T24LIVE.FBNK_RE_C019')
+   ORDER BY table_name, del_range;
+BEGIN
+select sysdate into timeCheck from dual;
+   FOR tab IN c_tab
+   LOOP
+      --DBMS_OUTPUT.put_line ('====' || tab.table_name);
+      IF tab.tab_type = 1
+      THEN
+         archive_year := EXTRACT (YEAR FROM SYSDATE) - 1;
+      END IF;
+
+      IF tab.tab_type = 2
+      THEN
+         archive_year := SUBSTR (TO_CHAR (EXTRACT (YEAR FROM SYSDATE) - 1), 3, 4);
+      END IF;
+
+      IF tab.tab_type = 3
+      THEN
+         archive_year := TRUNC (SYSDATE, 'YEAR') - TO_DATE ('31/12/1967', 'DD/MM/YYYY');
+      END IF;
+
+      --cmd :='delete '|| tab.table_name|| tab.pre_condition|| archive_year|| tab.del_range || tab.post_condition;
+      cmd :='delete '||tab.hint_idx||' '|| tab.table_name|| tab.pre_condition|| archive_year||tab.del_range|| tab.post_condition||' '||tab.add_condition;
+
+      LOOP
+         DBMS_OUTPUT.put_line (cmd);
+         timeStart := SYSDATE;
+         execute immediate cmd ;
+         timeEnd := SYSDATE;
+         counter := SQL%ROWCOUNT;
+         COMMIT;
+         DBMS_OUTPUT.put_line ( counter|| ' rows deleted('|| tab.sub_type|| archive_year||tab.del_range||  ')');
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+         DBMS_OUTPUT.put_line ( 'Elapsed time: '|| substr(elapsed,10,10));
+               insert into  sys.table_archive_log (table_name ,sub_type,del_range,archive_year,start_time,numrow_del ,elapsed_time ) values (tab.table_name,
+               tab.sub_type,tab.del_range,to_char(archive_year) ,timeStart,counter, substr(elapsed,10,10));
+               commit;
+         duration := trunc((sysdate -timeCheck)*24);
+         DBMS_OUTPUT.put_line ( sysdate -timeCheck);
+         exit when  counter < 1000000 or duration >= 16 ;
+      END LOOP;
+
+      --REBUILD INDEX----------
+      DBMS_OUTPUT.put_line ('check: '|| counter);
+      IF counter < 1000000
+      THEN
+      FOR c_idx IN (SELECT index_name,partitioned
+                      FROM dba_indexes
+                     WHERE table_name = tab.tab_name AND owner = 'T24LIVE' and index_type not like 'LOB%'
+                     and index_type <> 'FUNCTION-BASED NORMAL'
+                     )
+      LOOP
+      if c_idx.partitioned = 'NO' then
+      SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name
+         GROUP BY segment_name;
+
+         cmd := 'alter index T24LIVE.' || c_idx.index_name || ' rebuild online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         --select max(sequence#) into start_seq from v$archived_log;
+         EXECUTE IMMEDIATE cmd;
+         --execute immediate 'alter system archive log current';
+         --select max(sequence#) into end_seq from v$archived_log;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+           SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name
+         GROUP BY segment_name;
+
+         INSERT INTO sys.rebuild_idx_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)--,start_seq,end_seq)
+              VALUES (tab.table_name, c_idx.index_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);--,start_seq,end_seq);
+
+         COMMIT;
+
+      else
+
+      FOR c_idx1 IN (SELECT partition_name  FROM dba_ind_partitions
+                    WHERE index_name = c_idx.index_name AND index_owner = 'T24LIVE' )
+      LOOP
+                SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         cmd := 'alter index T24LIVE.' || c_idx.index_name || ' rebuild partition '||c_idx1.partition_name||' online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         --select max(sequence#) into start_seq from v$archived_log;
+         EXECUTE IMMEDIATE cmd;
+         --execute immediate 'alter system archive log current';
+         --select max(sequence#) into end_seq from v$archived_log;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+         SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = c_idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         INSERT INTO sys.rebuild_idx_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)--,start_seq,end_seq)
+              VALUES (tab.table_name, c_idx.index_name||'.'||c_idx1.partition_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);--,start_seq,end_seq);
+              commit;
+
+      end loop;
+      end if;
+
+      END LOOP;
+      END IF;
+      ---------------
+      duration := trunc((sysdate -timeCheck)*24);
+      exit when  duration >= 16;
+   END LOOP;
+EXCEPTION
+   WHEN OTHERS THEN ROLLBACK;
+END;
+/

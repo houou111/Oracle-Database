@@ -1,0 +1,40 @@
+DECLARE
+   cmd   VARCHAR2 (4000);
+   CURSOR c_table
+   IS
+select TABLESPACE_NAME,trunc(TABLESPACE_SIZE*95/100/1024/1024/1024,0) Keep_size
+FROM   dba_temp_free_space;
+BEGIN
+   FOR r IN c_table
+   LOOP
+    cmd :='alter tablespace '||r.TABLESPACE_NAME||' shrink space keep '||r.Keep_size||'G';
+    DBMS_OUTPUT.put_line (cmd);
+    execute immediate cmd;
+    END LOOP;
+END;
+/
+
+TABLESPACE_SIZE/1024/1024/102
+
+
+sqlplus -s / as sysdba <<EOF
+set lines 200
+set pages 200
+set serveroutput on
+DECLARE
+   cmd   VARCHAR2 (4000);
+   CURSOR c_table
+   IS
+select TABLESPACE_NAME,TABLESPACE_SIZE*9/10/1024/1024/102 Keep_size
+FROM   dba_temp_free_space;
+BEGIN
+   FOR r IN c_table
+   LOOP
+    cmd :='alter tablespace '||r.TABLESPACE_NAME||' shrink space keep '||r.Keep_size||'G'; 
+    DBMS_OUTPUT.put_line (cmd);
+    execute immediate cmd;
+        END LOOP;
+END;
+/
+exit
+EOF

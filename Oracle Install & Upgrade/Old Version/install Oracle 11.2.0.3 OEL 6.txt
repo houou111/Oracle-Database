@@ -1,0 +1,426 @@
+GENERAL INFO
+---------------------------------------------------------------------------
+BSS
++DB:		11.2.0.3
++OS:		Red Hat Enterprise Linux Server release 6.4 (Santiago)
++USER OS:	root/Admin@123
+			oracle/oracle
+			grid/grid
++DB USER:
+
+1. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CHECK PACKAGES:
+# rpm -q --qf '%{NAME}-%{VERSION}-%{RELEASE} (%{ARCH})\n' binutils \
+compat-libstdc++-33 \
+elfutils-libelf \
+elfutils-libelf-devel \
+gcc \
+gcc-c++ \
+glibc \
+glibc-common \
+glibc-devel \
+glibc-headers \
+ksh \
+libaio \
+libaio-devel \
+libgcc \
+libstdc++ \
+libstdc++-devel \
+make \
+sysstat \
+unixODBC \
+unixODBC-devel
+
++INSTALL PACKAGES:
+rpm -Uvh binutils-2*x86_64*
+rpm -Uvh compat-libcap1*x86_64*
+rpm -Uvh compat-libcap1*i686*
+rpm -Uvh compat-libstdc++-33*x86_64*
+rpm -Uvh compat-libstdc++-33*i686*
+rpm -Uvh elfutils-libelf-0*x86_64*
+rpm -Uvh elfutils-libelf-devel-0*x86_64*
+rpm -Uvh gcc-4*x86_64*
+rpm -Uvh gcc-c++-4*x86_64*
+rpm -Uvh glibc-2*x86_64* nss-softokn-freebl-3*x86_64*
+rpm -Uvh glibc-2*i686* nss-softokn-freebl-3*i686*
+rpm -Uvh glibc-common-2*x86_64*
+rpm -Uvh glibc-devel-2*x86_64*
+rpm -Uvh glibc-devel-2*i686*
+rpm -Uvh glibc-headers-2*x86_64*
+rpm -Uvh ksh-*x86_64*
+rpm -Uvh libaio-0*x86_64*
+rpm -Uvh libaio-0*i686*
+rpm -Uvh libaio-devel-0*x86_64*
+rpm -Uvh libaio-devel-0*i686*
+rpm -Uvh libgcc-4*x86_64*
+rpm -Uvh libgcc-4*i686*
+rpm -Uvh libstdc++-4*x86_64*
+rpm -Uvh libstdc++-4*i686*
+rpm -Uvh libstdc++-devel-4*x86_64*
+rpm -Uvh libstdc++-devel-4*i686*
+rpm -Uvh make-3*x86_64*
+rpm -Uvh numactl-devel-2*x86_64*
+rpm -Uvh sysstat-9*x86_64*
+rpm -Uvh unixODBC-2*x86_64*
+rpm -Uvh unixODBC-2*i686*
+rpm -Uvh unixODBC-devel-2*x86_64*
+rpm -Uvh gcc-c++-4.4.7-3.el6.x86_64.rpm
+
+2. CONFIG /etc/hosts: DONE ON NODE1 AND NODE2 USE USER ROOT
+---------------------------------------------------------------------------
++NODE1:
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# Public IPs
+172.16.4.23     C64-01
+172.16.4.24     C64-02
+# Private IPs
+192.168.1.1   C64-01-priv
+192.168.1.2   C64-02-priv
+# VIPs
+172.16.4.25    C64-01-vip
+172.16.4.26    C64-02-vip
+# SCAN
+172.16.4.33    C64-scan
+
++NODE2:
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# Public IPs
+172.16.4.23     C64-01
+172.16.4.24     C64-02
+# Private IPs
+192.168.1.1   C64-01-priv
+192.168.1.2   C64-02-priv
+# VIPs
+172.16.4.25    C64-01-vip
+172.16.4.26    C64-02-vip
+# SCAN
+172.16.4.33    C64-scan
+
+3. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 4294967295
+kernel.shmall = 2097152
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+4. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++FOR GRID:
+# groupadd -g 1000 oinstall
+# groupadd -g 1200 asmadmin
+# groupadd -g 1201 asmdba
+# groupadd -g 1202 asmoper
+# useradd -m -u 1100 -g oinstall -G asmadmin,asmdba,asmoper -d /home/grid -s /bin/bash -c "Grid Infrastructure Owner" grid
+# passwd grid
+
++FOR ORACLE:
+# groupadd -g 1300 dba
+# groupadd -g 1301 oper
+# useradd -m -u 1101 -g oinstall -G dba,oper,asmdba -d /home/oracle -s /bin/bash -c "Oracle Software Owner" oracle
+# passwd oracle
+
+5. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+grid soft nproc 2047
+grid hard nproc 16384
+grid soft nofile 1024
+grid hard nofile 65536
+oracle soft nproc 2047
+oracle hard nproc 16384
+oracle soft nofile 1024
+oracle hard nofile 65536
+
+# vi /etc/pam.d/login	
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+6. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/app/11.2.0/grid
+# chown -R grid:oinstall /u01
+# mkdir -p /u01/app/oracle
+# chown oracle:oinstall /u01/app/oracle
+# chmod -R 775 /u01
+
+7. CONFIG GRID .bash_profile: DONE ON NODE1 AND NODE2 WITH GRID:
+---------------------------------------------------------------------------
++NODE1:
+$ vi .bash_profile
+
+ORACLE_SID=+ASM1
+export ORACLE_SID
+ORACLE_BASE=/u01/app/grid
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/11.2.0/grid
+export ORACLE_HOME
+SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export SHLIB_PATH
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export CLASSPATH
+umask 022
+
++NODE2:
+$ vi .bash_profile
+
+ORACLE_SID=+ASM2
+export ORACLE_SID
+ORACLE_BASE=/u01/app/grid
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/11.2.0/grid
+export ORACLE_HOME
+SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export SHLIB_PATH
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export CLASSPATH
+umask 022
+
+8. CONFIG ORACLE .bash_profile: DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
++NODE1:
+$ vi .bash_profile
+
+ORACLE_BASE=/u01/app/oracle
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/oracle/11.2.0/db
+export ORACLE_HOME
+ORACLE_SID=mediadb1
+export ORACLE_SID
+SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export SHLIB_PATH
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export CLASSPATH
+umask 022
+
++NODE2:
+$ vi .bash_profile
+
+ORACLE_BASE=/u01/app/oracle
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/oracle/11.2.0/db
+export ORACLE_HOME
+ORACLE_SID=mediadb2
+export ORACLE_SID
+SHLIB_PATH=$ORACLE_HOME/lib32:$ORACLE_HOME/rdbms/lib32
+export SHLIB_PATH
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib/:$ORACLE_HOME/network/jlib
+export CLASSPATH
+umask 022
+
+9. DISABLE FIREWALL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# service iptables save
+# service iptables stop
+# chkconfig iptables off
+
+10. DISABLE SElinux: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# echo 0 >/selinux/enforce
+# setenforce Permissive 
+# vi /etc/selinux/config
+SELINUX=disabled
+
+13. CONFIG MULTIPATH: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++ START SERVICE
+# service multipathd start
+# chkconfig multipathd on
+
++ CHECK STATUS
+# /sbin/mpathconf
+multipath is enabled
+find_multipaths is disabled
+user_friendly_names is enabled
+dm_multipath module is not loaded
+multipathd is chkconfiged on
+
++ DERTERMINE UUID OF DEVICE
+# scsi_id --whitelisted /dev/sdb
+36f01faf000dcece1000006515313efb1
+# scsi_id --whitelisted /dev/sdc
+36f01faf000dcec820000083d5313ec47
+# scsi_id --whitelisted /dev/sdd
+36f01faf000dcece1000006535313efe5
+# scsi_id --whitelisted /dev/sde
+36f01faf000dcec820000083f5313ec8b
+
++ CONFIG /etc/multipath.conf
+# vi /etc/multipath.conf
+blacklist  {
+        devnode "^(ram|raw|loop|fd|md|dm-|sr|scd|st)[0-9]*"
+        devnode "^hd[a-z]"
+}
+multipaths {
+        multipath {
+                wwid                    36f01faf000dcece1000006515313efb1
+                alias                   crs1
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcec820000083d5313ec47
+                alias                   crs2
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcece1000006535313efe5
+                alias                   crs3
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcec820000083f5313ec8b
+                alias                   data
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+}
+
++ RESTART MULTIPATHD SERVICE:
+# service multipathd restart
+Stopping multipathd daemon: [  OK  ]
+Starting multipathd daemon: [  OK  ]
+
++ CHECK MULTIPATH SETUP
+# multipath -ll
+crs3 (36f01faf000dcece1000006535313efe5) dm-9 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:2:0 sdd 8:48 active ready running
+crs2 (36f01faf000dcec820000083d5313ec47) dm-8 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:1:0 sdc 8:32 active ready running
+crs1 (36f01faf000dcece1000006515313efb1) dm-7 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:0:0 sdb 8:16 active ready running
+data (36f01faf000dcec820000083f5313ec8b) dm-10 DELL,MD36xxf
+size=1.5T features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:3:0 sde 8:64 active ready running
+
++ DETERMINE PARTITIONED ALIAS
+#  dmsetup ls
+crs3    (253:9)
+crs2    (253:8)
+crs1    (253:7)
+data    (253:10)
+vg_meddb01-lv_setup     (253:3)
+vg_meddb01-lv_home      (253:4)
+vg_meddb01-lv_tmp       (253:5)
+vg_meddb01-lv_u01       (253:6)
+vg_meddb01-lv_swap      (253:1)
+vg_meddb01-lv_root      (253:0)
+vg_meddb01-lv_var       (253:2)
+
++ EDIT /etc/udev/rules.d/12-dm-permissions.rules FILE
+# vi /etc/udev/rules.d/12-dm-permissions.rules
+ENV{DM_NAME}=="crs1", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="crs2", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="crs3", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="data", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+
++ RESTART MULTIPATH SERVICE
+# service multipathd restart
+ok
+Stopping multipathd daemon: [  OK  ]
+Starting multipathd daemon: [  OK  ]
+
++ CHECK PERMISSION
+# ls -l /dev/dm*
+brw-rw---- 1 root disk     253,  0 Mar  4 17:29 /dev/dm-0
+brw-rw---- 1 root disk     253,  1 Mar  4 17:29 /dev/dm-1
+brw-rw---- 1 grid asmadmin 253, 10 Mar  5 08:57 /dev/dm-10
+brw-rw---- 1 root disk     253,  2 Mar  4 17:29 /dev/dm-2
+brw-rw---- 1 root disk     253,  3 Mar  4 17:29 /dev/dm-3
+brw-rw---- 1 root disk     253,  4 Mar  4 17:29 /dev/dm-4
+brw-rw---- 1 root disk     253,  5 Mar  4 17:29 /dev/dm-5
+brw-rw---- 1 root disk     253,  6 Mar  4 17:29 /dev/dm-6
+brw-rw---- 1 grid asmadmin 253,  7 Mar  5 08:57 /dev/dm-7
+brw-rw---- 1 grid asmadmin 253,  8 Mar  5 08:57 /dev/dm-8
+brw-rw---- 1 grid asmadmin 253,  9 Mar  5 08:57 /dev/dm-9
+
+# ls -l /dev/iscsi/*
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs1 -> ../dm-7
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs2 -> ../dm-8
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs3 -> ../dm-9
+lrwxrwxrwx 1 root root 8 Mar  5 08:57 /dev/iscsi/oraasm-data -> ../dm-10
+
+14. GRID INSTALLATION
+---------------------------------------------------------------------------
+
+15. SOFTWARE INSTALLATION
+---------------------------------------------------------------------------
+
+16. CONFIG PARAMETER
+---------------------------------------------------------------------------
+alter system set memory_max_target = 19G scope=spfile sid='*';
+alter system set memory_target = 19G scope=spfile sid='*';
+alter system set sga_max_size = 0 scope=spfile sid='*';
+alter system set sga_target = 0 scope=spfile sid='*';
+alter system set pga_aggregate_target = 0 scope=spfile sid='*';
+alter system set processes = 300 scope=spfile sid='*';
+alter system set sessions = 500 scope=spfile sid='*';
+
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+# Public IPs
+172.16.4.27     C72-01
+172.16.4.28     C72-02
+# Private IPs
+192.168.1.1   C72-01-priv
+192.168.1.2   C72-02-priv
+# VIPs
+172.16.4.30    C72-01-vip
+172.16.4.31    C72-02-vip
+# SCAN
+172.16.4.34    C72-scan		

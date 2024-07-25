@@ -1,0 +1,49 @@
+crsctl stop crs
+rm -rf /etc/init.d/init.ohasd
+rm -rf /tmp/.oracle /var/tmp/.oracle /usr/tmp/.oracle 
+rm -rf /usr/local/bin/dbhome /usr/local/bin/oraenv /usr/local/bin/coraenv
+rm -rf /u01/app/oracle
+
+
+
+
+rm -rf /u01/app/19c/grid
+rm -rf /u01/app/grid
+rm -rf /tmp/.oracle /var/tmp/.oracle /usr/tmp/.oracle 
+rm -rf /usr/local/bin/dbhome /usr/local/bin/oraenv /usr/local/bin/coraenv
+mv /etc/oratab /etc/oratab.old
+mv /etc/oracle /etc/oracle.old
+
+
+rm -rf crsdata
+
+
+
+
+
+To remove manually
+===============
+Check and remove the below directories/files.
+/etc/oracle
+/etc/init.d/init.ohasd
+/etc/init.d/init.crsd
+/etc/init.d/init.tfa
+/etc/oraInst.loc
+remove the ohasd entry (move this file /etc/init.d/init.ohasd to different location and comment in /etc/inittab )
+
+Clean remaining files as below.
+========================
+a) Clean socket files.
+rm -f /usr/tmp/.oracle/*
+rm -f /tmp/.oracle/*
+rm -f /var/tmp/.oracle/*
+
+b) Clean oratab and other entries manually if exists.
+===============================
+rm -f /etc/oratab
+rm -rf /var/opt/oracle
+rm -rf /etc/oracle/*
+rm -rf <ORACLE_BASE/*> *********this is your $ORACLE_BASE
+rm -rf <central_inventory> ****this is the central inventory loc pointed to by oraInst.loc
+rm -rf </u01/app/19c/grid*> **********assuming this is the Grid Home, if not same replace with appropriate path
+ls -altr </u01/app/19c/grid*> ****** remove if any hidden folders here ( .patch_storage .opatchauto_storage)

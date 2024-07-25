@@ -1,0 +1,5 @@
+select sum(bytes)/1024/1024/1024 from dba_data_files 
++
+select sum(bytes)/1024/1024/1024 from dba_temp_files
++
+select sum(bytes)/1024/1024/1024 from v$log 

@@ -1,0 +1,29 @@
+
+Wait Tm contention : missing fk_index
+
+
+
+set serveroutput on size 1000000
+declare
+  type a_schemas IS VARRAY(50) OF VARCHAR2(100);
+  type IndxCur IS REF CURSOR;
+  c_idx_gen IndxCur;
+  v_schemas a_schemas;
+  v_numb number;
+    v_table_name varchar2(200);
+    v_fk_columns varchar2(200);
+  v_sql varchar2(2000);
+begin
+  v_sql := 'select rownum, table_name, fk_columns from (select case when b.table_name is null then ''unindexed'' else ''indexed'' end as status, a.table_name as table_name, a.constraint_name as fk_name, a.fk_columns as fk_columns, b.index_name as index_name, b.index_columns as index_columns from (select a.table_name, a.constraint_name, listagg(a.column_name, '','') within group (order by a.position) fk_columns from dba_cons_columns a, dba_constraints b where a.constraint_name = b.constraint_name and b.constraint_type = ''R'' and a.owner = :schema_owner and a.owner = b.owner group by a.table_name, a.constraint_name ) a ,( select table_name, index_name, listagg(c.column_name, '','') within group (order by c.column_position) index_columns from dba_ind_columns c where c.index_owner = :schema_owner group by table_name, index_name ) b where a.table_name = b.table_name(+) and b.index_columns(+) like a.fk_columns || ''%'' order by 1 desc, 2) where status=''unindexed''';
+  
+  v_schemas := a_schemas('CSS_HCM');
+  for i in 1..v_schemas.count loop
+    open c_idx_gen for v_sql using v_schemas(i), v_schemas(i);
+    loop
+      fetch c_idx_gen into v_numb,v_table_name,v_fk_columns;
+      dbms_output.put_line('create index '||v_schemas(i)||'.'||'IDX_TUNING_'||v_numb||' on '||v_schemas(i)||'.'|| v_table_name||'('||v_fk_columns||') nologging;');
+      exit when c_idx_gen%notfound;
+    end loop;
+  end loop;
+end;
+/

@@ -1,0 +1,9 @@
+ ORA-04063: string has errors reported on Data Dictionary objects	
+ 
+ 
+ SRDC - ORA-4063 : Checklist of Evidence to Supply (Doc ID 2369144.1)
+ 
+ 
+ 
+ 
+ quick win: recreate object

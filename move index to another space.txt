@@ -1,0 +1,121 @@
+DECLARE
+  -- SETTING   
+  SOURCE_TS VARCHAR2(30) := 'DWH_CURRENT_TBS'; -- SOURCE TABLESPACE
+  DEST_TS   VARCHAR2(30) := 'DWH_IND_TBS'; --DESCTINATION TABLESPACE
+  User VARCHAR2(30):='';
+  -- SHOULD_DROPINDEX           BOOLEAN := FALSE;
+  ----------------------------------------------
+  TOP                  NUMBER := 2;
+  COUNTER              NUMBER := 0;
+  SHOULD_MOVEINDEX     BOOLEAN := TRUE;
+  PARALLEL_DEGREE      NUMBER := 4;
+  ENABLE_PARALLEL      BOOLEAN := TRUE;
+  INDEX_NAMES_TO_SCAPE VARCHAR2(1000) := '';
+  ----------------------------------------------   
+  -- VARIABLES   
+  SQLCMD    VARCHAR2(1000);
+  STARTTIME NUMBER;
+BEGIN
+
+  STARTTIME := DBMS_UTILITY.GET_TIME();
+
+  DBMS_OUTPUT.PUT_LINE('STARTING TIME : ' ||
+                       TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS'));
+
+  DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
+
+  FOR IDXS IN (SELECT OWNER || '.' || INDEX_NAME FN,
+                      INDEX_NAME IDN,
+                      INDEX_TYPE IDT,
+                      PARTITIONED,
+                      (CASE
+                        WHEN UNIQUENESS = 'UNIQUE' THEN
+                         'Y'
+                        ELSE
+                         'N'
+                      END) ISUNIQUE,
+                      OWNER
+                 FROM DBA_INDEXES
+                WHERE (TABLESPACE_NAME = SOURCE_TS OR
+                      INDEX_NAME IN
+                      (SELECT DISTINCT SEGMENT_NAME
+                          FROM DBA_SEGMENTS
+                         WHERE TABLESPACE_NAME = SOURCE_TS
+								And OWNER='User' ) OR
+                      INDEX_NAME IN
+                      (SELECT DISTINCT INDEX_NAME
+                          FROM DBA_IND_PARTITIONS
+                         WHERE TABLESPACE_NAME = SOURCE_TS
+						 And INDEX_OWNER='User'))
+                ORDER BY OWNER ASC, INDEX_NAME ASC               
+               ) LOOP
+
+    IF COUNTER >= TOP THEN
+      DBMS_OUTPUT.PUT_LINE('EXIT ON COUNTER EXCEED');
+      EXIT;
+    END IF;
+
+    IF INSTR(INDEX_NAMES_TO_SCAPE, IDXS.IDN) >= 1 THEN
+      CONTINUE;
+    END IF;
+
+    IF IDXS.PARTITIONED = 'YES' THEN
+
+      FOR PIDX IN (SELECT *
+                     FROM DBA_IND_PARTITIONS
+                    WHERE INDEX_OWNER = IDXS.OWNER
+                      AND INDEX_NAME = IDXS.IDN
+                      AND TABLESPACE_NAME = SOURCE_TS) LOOP
+        -- ** EXECUTE LOCAL (PARTITIONED) INDEX REBUILD COMMAND **
+        SQLCMD := 'ALTER INDEX ' || IDXS.FN || ' REBUILD PARTITION ' ||
+                  PIDX.PARTITION_NAME || ' TABLESPACE ' || DEST_TS;
+
+        IF ENABLE_PARALLEL = TRUE THEN
+          SQLCMD := SQLCMD || ' PARALLEL ' || PARALLEL_DEGREE;
+        END IF;
+
+        --SQLCMD := SQLCMD || ' NONLOGGING ';
+        DBMS_OUTPUT.PUT_LINE(SQLCMD);
+        EXECUTE IMMEDIATE SQLCMD;
+      END LOOP;
+
+      IF ENABLE_PARALLEL = TRUE THEN
+        SQLCMD := 'ALTER INDEX ' || IDXS.FN || ' NOPARALLEL ';
+        DBMS_OUTPUT.PUT_LINE(SQLCMD);
+        EXECUTE IMMEDIATE SQLCMD;
+      END IF;
+
+    ELSE
+      -- ** EXECUTE INDEX REBUILD COMMAND **
+      SQLCMD := 'ALTER INDEX ' || IDXS.FN || ' REBUILD TABLESPACE ' ||
+                DEST_TS;
+
+      IF ENABLE_PARALLEL = TRUE THEN
+        SQLCMD := SQLCMD || ' PARALLEL ' || PARALLEL_DEGREE;
+      END IF;
+
+      --SQLCMD := SQLCMD || ' NONLOGGING ';
+      DBMS_OUTPUT.PUT_LINE(SQLCMD);
+      EXECUTE IMMEDIATE SQLCMD;
+
+      IF ENABLE_PARALLEL = TRUE THEN
+        SQLCMD := 'ALTER INDEX ' || IDXS.FN || ' NOPARALLEL ';
+        DBMS_OUTPUT.PUT_LINE(SQLCMD);
+        EXECUTE IMMEDIATE SQLCMD;
+      END IF;
+
+    END IF;
+    COUNTER := COUNTER + 1;
+    DBMS_OUTPUT.PUT_LINE('#');
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
+
+  DBMS_OUTPUT.PUT_LINE('END TIME : ' ||
+                       TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS'));
+  DBMS_OUTPUT.PUT_LINE('DURATION: ' ||
+                       TO_CHAR(DBMS_UTILITY.GET_TIME() - STARTTIME) ||
+                       ' MS.');
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('ERR MSG: ' || SQLERRM || ', CODE: ' || SQLCODE);
+END;

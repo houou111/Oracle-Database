@@ -1,0 +1,101 @@
+﻿
+1. Cài đặt Opatch p6880880_112000_SOLARIS64 cho hai node trên Basic và hệ thống single Dataguard
+     - Copy p6880880_112000_SOLARIS64.zip lên folder /u01/app/oracle/patchs và /golbal/ora/patchs
+     - Unzip p6880880_112000_SOLARIS64.zip
+     /* as user grid, unzip trên hai node */
+     +unzip /u01/app/oracle/patchs/p6880880_112000_SOLARIS64.zip -d /u01/app/11.2.0/grid (GRID_HOME)
+     /* as user oradb,unzip trên hai node */
+     +unzip /u01/app/oracle/patchs/p6880880_112000_SOLARIS64.zip/p6880880_112000_SOLARIS64.zip -d /u01/app/oracle/product/11.2.0/db (ORACLE_HOME)
+     /* as user oracle */
+     +unzip /golbal/ora/patchs/p6880880_112000_SOLARIS64.zip -d /golbal/ora (ORACLE_HOME)
+
+2.OCM Configuration
+     /* Thực hiện trên cả hai node và trên standby */
+     #cd $GRID_HOME/OPatch
+     #ocm/bin/emocmrsp
+     #ls -ltr ocm.rsp
+     #cd $ORACLE_HOME/OPatch
+     #ocm/bin/emocmrsp
+     #ls -ltr ocm.rsp
+
+3. Stop dataguard
+
+4.APPLY PATCH
+4.1 Apply patch cho standby
+     - Copy p17082367_112020_for_database_SOLARIS64 lên folder /golbal/ora/patchs
+     /* as user oracle */
+     +cd /golbal/ora/patchs
+     +Unzip p17082367_112020_for_database_SOLARIS64.zip
+     + stop dataguard
+     + stop database
+          sqlplus / as sysdba
+          shutdown immediate
+     - Apply patch
+     +cd $ORACLE_HOME/OPatch
+     /* as user root*/
+     +./opatch auto /golbal/ora/patchs -oh $ORACLE_HOME -ocmrf $ORACLE_HOME/OPatch/ocm.rsp
+     - Check $ORACLE_HOME/OPatch/opatch lsinventory -detail -oh $ORACLE_HOME
+     -Start database standby
+          sqlplus / as sysdba
+          startup
+4.2 Apply patch cho primary
+     - Copy p17272753_112020__for_grid_include_db_SOLARIS64.zip lên folder /u01/app/oracle/patchs
+     /* as user grid */
+     +cd /u01/app/oracle/patchs
+     +Unzip p17272753_112020__for_grid_include_db_SOLARIS64.zip
+     - Apply patch cho node1
+     + stop instance trên node1
+          sqlplus / as sysdba
+          shutdown immediate
+     - /*stop EM Agent Processes */ emctl stop agent nếu có
+     - /*restart GRID tren node can patch */ su - root: <GRID_HOME>/bin/crsctl stop crs,<GRID_HOME>/bin/crsctl start crs,
+     - /*check session oracle tren node can patch neu ton tai thi kill */ ps -ef|grep oracle
+     +/*Patch grid*/
+     cd $GRID_HOME/OPatch
+     /* as user root*/
+     +./opatch auto /u01/app/oracle/patchs -ocmrf $GRID_HOME/OPatch/ocm.rsp
+
+     +/*Patch oracle database*/
+     cd $ORACLE_HOME/OPatch
+     /* as user root*/
+     +./opatch auto /u01/app/oracle/patchs -ocmrf $ORACLE_HOME/OPatch/ocm.rsp
+
+     -Update patch cho Database
+     +cd $ORACLE_HOME/rdbms/admin
+     +sqlplus /nolog
+     +CONNECT / AS SYSDBA
+     +STARTUP restrict
+     +@$ORACLE_HOME/rdbms/admin/catbundle.sql psu apply
+     +alter system register;
+     +alter system disable restricted session;
+     +check:
+          select ACTION_TIME,ACTION,NAMESPACE,VERSION,BUNDLE_SERIES,ID from registry$history;
+
+     - Check $ORACLE_HOME/OPatch/opatch lsinventory -detail -oh $GRID_HOME
+     - Check $ORACLE_HOME/OPatch/opatch lsinventory -detail -oh $ORACLE_HOME
+
+     - Apply patch cho node2
+     + stop instance trên node2
+          sqlplus / as sysdba
+          shutdown immediate
+     - /*stop EM Agent Processes */ emctl stop agent nếu có
+     - /*restart GRID tren node can patch */ su - root: <GRID_HOME>/bin/crsctl stop crs,<GRID_HOME>/bin/crsctl start crs,
+     - /*check session oracle tren node can patch neu ton tai thi kill */ ps -ef|grep oracle
+     +/*Patch grid*/
+     cd $GRID_HOME/OPatch
+     /* as user root*/
+     +./opatch auto /u01/app/oracle/patchs -ocmrf $GRID_HOME/OPatch/ocm.rsp
+
+     +/*Patch oracle database*/
+     cd $ORACLE_HOME/OPatch
+     /* as user root*/
+     +./opatch auto /u01/app/oracle/patchs -ocmrf $ORACLE_HOME/OPatch/ocm.rsp
+
+     + start instance trên node2
+          sqlplus / as sysdba
+          startup
+
+     - Check $ORACLE_HOME/OPatch/opatch lsinventory -detail -oh $GRID_HOME
+     - Check $ORACLE_HOME/OPatch/opatch lsinventory -detail -oh $ORACLE_HOME
+
+5. start dataguard

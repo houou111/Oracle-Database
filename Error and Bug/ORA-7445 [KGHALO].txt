@@ -1,0 +1,10 @@
+Apply patch (27878327,30755348) 
+
+
+==> p30755348_12201191015DBOCT2019RU_Linux-x86-64.zip
+https://updates.oracle.com/Orion/Services/download/p30755348_12201191015DBOCT2019RU_Linux-x86-64.zip?aru=23783678&patch_file=p30755348_12201191015DBOCT2019RU_Linux-x86-64.zip
+
+
+==> p27878327_12201191015DBOCT2019RU_Linux-x86-64.zip
+https://updates.oracle.com/Orion/Services/download/p27878327_12201191015DBOCT2019RU_Linux-x86-64.zip?aru=23783677&patch_file=p27878327_12201191015DBOCT2019RU_Linux-x86-64.zip
+

@@ -1,0 +1,4 @@
+resync catalog from db_unique_name all;
+recover copy of database with tag 'dgbkup';
+backup device type disk incremental level 1 
+for recover of copy with tag 'dgbkup' database;

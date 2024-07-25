@@ -1,0 +1,100 @@
+select * from v$resource_limit;
+
+TWA
+RESOURCE_NAME                  CURRENT_UTILIZATION MAX_UTILIZATION INITIAL_ALLOCATION     LIMIT_VALUE
+------------------------------ ------------------- --------------- ---------------------- -------------
+processes                                      112             116       2000                   2000
+sessions                                       131             139       3040                   3040
+enqueue_locks                                  121             131      37183                  37183
+enqueue_resources                               67             112      13596              UNLIMITED
+ges_procs                                      107             110       2000                   2000
+ges_ress                                     14296           31192      38812              UNLIMITED
+ges_locks                                      590            2795      72467              UNLIMITED
+ges_cache_ress                                6260            7461          0              UNLIMITED
+ges_reg_msgs                                     0               0       4730              UNLIMITED
+ges_big_msgs                                     0               0       1888              UNLIMITED
+ges_rsv_msgs                                     0               0       1000                   1000
+gcs_resources                               374792          444519  UNLIMITED              UNLIMITED
+gcs_shadows                                   1200            1200  UNLIMITED              UNLIMITED
+smartio_overhead_memory                          0               0          0              UNLIMITED
+smartio_buffer_memory                            0               0          0              UNLIMITED
+smartio_metadata_memory                          0               0          0              UNLIMITED
+smartio_sessions                                 0               0          0              UNLIMITED
+dml_locks                                        0              44      13376              UNLIMITED
+temporary_table_locks                            0               0  UNLIMITED              UNLIMITED
+transactions                                     0               3       3344              UNLIMITED
+branches                                         0               2       3344              UNLIMITED
+cmtcallbk                                        0               2       3344              UNLIMITED
+max_rollback_segments                           15              15       3344                  65535
+sort_segment_locks                               2               5  UNLIMITED              UNLIMITED
+k2q_locks                                        0               2       6080              UNLIMITED
+max_shared_servers                               1               1  UNLIMITED              UNLIMITED
+parallel_max_servers                             0               0       1280                   3600
+
+
+
+TWO
+RESOURCE_NAME                  CURRENT_UTILIZATION MAX_UTILIZATION INITIAL_AL LIMIT_VALU
+------------------------------ ------------------- --------------- ---------- ----------
+processes                                     1359            1366       7000       7000
+sessions                                      1314            1346      10528      10528
+enqueue_locks                                 1287            1295     122063     122063
+enqueue_resources                               70             143      46540  UNLIMITED
+ges_procs                                     1354            1360       7000       7000
+ges_ress                                     33395           89940     125848  UNLIMITED
+ges_locks                                     2956            8577     236471  UNLIMITED
+ges_cache_ress                               22555           23518          0  UNLIMITED
+ges_reg_msgs                                     0               0      14730  UNLIMITED
+ges_big_msgs                                     0               0       3776  UNLIMITED
+ges_rsv_msgs                                     0               0       1000       1000
+gcs_resources                              1233633         1390641  UNLIMITED  UNLIMITED
+gcs_shadows                                   1200            1200  UNLIMITED  UNLIMITED
+smartio_overhead_memory                          0           71704          0  UNLIMITED
+smartio_buffer_memory                            0               0          0  UNLIMITED
+smartio_metadata_memory                          0               0          0  UNLIMITED
+smartio_sessions                                 0               1          0  UNLIMITED
+dml_locks                                       28              87      46320  UNLIMITED
+temporary_table_locks                            0              10  UNLIMITED  UNLIMITED
+transactions                                     4               8      11580  UNLIMITED
+branches                                         0               4      11580  UNLIMITED
+cmtcallbk                                        5              20      11580  UNLIMITED
+max_rollback_segments                           20              24      11580      65535
+sort_segment_locks                              58              59  UNLIMITED  UNLIMITED
+k2q_locks                                        0               6      21056  UNLIMITED
+max_shared_servers                               1               1  UNLIMITED  UNLIMITED
+parallel_max_servers                             0               0       1280       3600
+
+TWR
+RESOURCE_NAME                  CURRENT_UTILIZATION MAX_UTILIZATION INITIAL_AL LIMIT_VALU
+------------------------------ ------------------- --------------- ---------- ----------
+processes                                      289             351       2000       2000
+sessions                                       312             449       3040       3040
+enqueue_locks                                 1076            1090      37183      37183
+enqueue_resources                              365             518      13596  UNLIMITED
+ges_procs                                      284             345       2000       2000
+ges_ress                                     15499           62195      38812  UNLIMITED
+ges_locks                                    29573           44925      72467  UNLIMITED
+ges_cache_ress                                6596           13514          0  UNLIMITED
+ges_reg_msgs                                     0               0       4730  UNLIMITED
+ges_big_msgs                                     0               0       3776  UNLIMITED
+ges_rsv_msgs                                     0               0       1000       1000
+gcs_resources                              1436993         1485055  UNLIMITED  UNLIMITED
+gcs_shadows                                   1200            1200  UNLIMITED  UNLIMITED
+smartio_overhead_memory                          0           71704          0  UNLIMITED
+smartio_buffer_memory                            0               0          0  UNLIMITED
+smartio_metadata_memory                          0               0          0  UNLIMITED
+smartio_sessions                                 0               1          0  UNLIMITED
+dml_locks                                      157             234      13376  UNLIMITED
+temporary_table_locks                            0            1246  UNLIMITED  UNLIMITED
+transactions                                    53              53       3344  UNLIMITED
+branches                                         0               4       3344  UNLIMITED
+cmtcallbk                                        9              41       3344  UNLIMITED
+max_rollback_segments                           74              74       3344      65535
+sort_segment_locks                             804             840  UNLIMITED  UNLIMITED
+k2q_locks                                        0               4       6080  UNLIMITED
+max_shared_servers                               1               1  UNLIMITED  UNLIMITED
+parallel_max_servers                             0              64       1280       3600
+
+
+/u01/app/oracle/product/11.2.0/dbhome_1
+/u01/app/oracle/product/11.2.0/dbhome_1

@@ -1,0 +1,61 @@
+###House keeping Database
+00 01 * * * sh /home/oracle/dbscript/clean_db_logs.sh tsedb1 >> /home/oracle/dbscript/log/clean_db_logs.out 2>&1
+
+###Backup Database
+00 21 * * * sh /home/oracle/dbscript/backup_db_lv0.sh tsedb1 >> /home/oracle/dbscript/log/backup_db_lv0.log 2>&1
+
+###Clear crontab log
+00 04 * * * find /home/oracle/dbscript/log/* -mtime +14 -exec rm {} \;
+
+
+KS!CPGhkv*q3
+
+
+###Gather statistic
+00 12 * * * sh /home/oracle/dbscript/gather_dwprd.sh >> /home/oracle/dbscript/gather_dwprd.log 2>&1
+
+###Auto compress table DWH
+00 12 * * * sh /home/oracle/dbscript/auto_compress_table_dwprd.sh >> /home/oracle/dbscript/auto_compress_table_dwprd.log 2>&1
+
+###Auto compress partition table DWH
+00 13 * * 0 sh /home/oracle/dbscript/auto_compress_part_dwprd.sh DWH >> /home/oracle/dbscript/auto_compress_part_DWH.log 2>&1
+00 14 * * * sh /home/oracle/dbscript/auto_compress_part_dwprd.sh EDW_SOR >> /home/oracle/dbscript/auto_compress_part_EDW_SOR.log 2>&1
+00 15 * * * sh /home/oracle/dbscript/auto_compress_part_dwprd.sh EDW_DMT >> /home/oracle/dbscript/auto_compress_part_EDW_DMT.log 2>&1
+00 16 * * * sh /home/oracle/dbscript/auto_compress_part_dwprd.sh EDW_STG >> /home/oracle/dbscript/auto_compress_part_EDW_STG.log 2>&1
+00 17 * * * sh /home/oracle/dbscript/auto_compress_part_dwprd.sh KRM_APP >> /home/oracle/dbscript/auto_compress_part_KRM_APP.log 2>&1
+00 18 * * * sh /home/oracle/dbscript/auto_compress_part_dwprd.sh TCB_DWH_VAS >> /home/oracle/dbscript/auto_compress_part_VAS.log 2>&1
+
+
+###Fix compress partition DWH
+00 19 * * 0 sh /home/oracle/dbscript/fix_compress_dwprd.sh DWH >> /home/oracle/dbscript/fix_compress_DWH.log 2>&1
+00 20 * * * sh /home/oracle/dbscript/fix_compress_dwprd.sh EDW_DMT >> /home/oracle/dbscript/fix_compress_EDW_DMT.log 2>&1
+00 21 * * * sh /home/oracle/dbscript/fix_compress_dwprd.sh EDW_SOR >> /home/oracle/dbscript/fix_compress_EDW_SOR.log 2>&1
+00 22 * * * sh /home/oracle/dbscript/fix_compress_dwprd.sh KRM_APP >> /home/oracle/dbscript/fix_compress_KRM_APP.log 2>&1
+00 23 * * * sh /home/oracle/dbscript/fix_compress_dwprd.sh TCB_DWH_VAS >> /home/oracle/dbscript/fix_compress_VAS.log 2>&1
+
+
+###House keeping Database
+00 00 * * * sh /home/oracle/dbscript/clean_all_logs.sh dbfs1 >> /home/oracle/dbscript/log/clean_all_logs_dbfs.out 2>&1
+00 01 * * * sh /home/oracle/dbscript/clean_all_logs.sh dwprd1 >> /home/oracle/dbscript/log/clean_all_logs_dwprd.out 2>&1
+00 02 * * * sh /home/oracle/dbscript/clean_all_logs.sh pcadb1 >> /home/oracle/dbscript/log/clean_all_logs_pcadb.out 2>&1
+00 03 * * * sh /home/oracle/dbscript/clean_all_logs.sh dwhyear1 >> /home/oracle/dbscript/log/clean_all_logs_dwhyear.out 2>&1
+
+00 04 * * * find /home/oracle/dbscript/log/* -mtime +14 -exec rm {} \;
+
+
+###House keeping DBFS
+00 01 * * 0 find /dbfs_direct/CSV_FILES/banca/mnl_tcb/mnl_tcb_bk/* -mtime +30 -exec rm -f {} \;
+00 02 * * 0 cd /dbfs_direct/CSV_FILES/ETL_DIR/ && find *  -name "*" ! -name "*.zip" -mtime +30 -exec zip -rm "$(date +"%d_%m_%Y")" {} \;
+00 02 * * 0 cd /dbfs_direct/CSV_FILES/vna/processed/bk && find *  -name "*" ! -name "*.zip" -mtime +30 -exec zip -rm "$(date +"%d_%m_%Y")" {} \;
+00 03 * * 0 cd /dbfs_direct/CSV_FILES/EXPDIR/ && find *  -name "*" ! -name "*.zip" -mtime +30 -exec zip -rm "$(date +"%d_%m_%Y")" {} \;
+00 04 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/LOSENQ/* && find *  -mtime +30 -exec rm -f {} \;
+00 05 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/GU/* && find *  -mtime +30 -exec rm -f {} \;
+00 06 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/LN/* && find *  -mtime +30 -exec rm -f {} \;
+00 07 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/CM/* && find *  -mtime +30 -exec rm -f {} \;
+00 08 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/AC/* && find *  -mtime +30 -exec rm -f {} \;
+00 09 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/CA/* && find *  -mtime +30 -exec rm -f {} \;
+00 10 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/FT/* && find *  -mtime +30 -exec rm -f {} \;
+00 11 * * 0 find /dbfs_direct/CSV_FILES/Z_RPT_FILES/Other/OUTPUT/OT/* && find *  -mtime +30 -exec rm -f {} \;
+
+
+

@@ -1,0 +1,100 @@
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/12.2.0.1/grid
+export DAY_AFTER=3
+export HOSTNAME=exax7q-01-adm
+export ORACLE_SID=+ASM1
+export PATH=$ORACLE_HOME/bin:$PATH
+
+###################Running script######################################################
+mkdir -p /home/grid/dbscript/log
+
+### Backup and clean listener log file
+mv $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener/trace/listener.log $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener/trace/listener_`date '+%Y%m%d'`.log
+mv $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/asmnet1lsnr_asm/trace/asmnet1lsnr_asm.log $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/asmnet1lsnr_asm/trace/asmnet1lsnr_asm.log_`date '+%Y%m%d'`.log
+mv $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan1/trace/listener_scan1.log $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan1/trace/listener_scan1_`date '+%Y%m%d'`.log
+mv $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan2/trace/listener_scan2.log $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan2/trace/listener_scan2_`date '+%Y%m%d'`.log
+mv $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan3/trace/listener_scan3.log $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan3/trace/listener_scan3_`date '+%Y%m%d'`.log
+
+
+find $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener/trace/*.log -mtime +3 -exec rm {} \;
+find $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/asmnet1lsnr_asm/trace/*.log -mtime +3 -exec rm {} \;
+find $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan1/trace/*.log -mtime +3 -exec rm {} \;
+find $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan2/trace/*.log -mtime +3 -exec rm {} \;
+find $ORACLE_BASE/diag/tnslsnr/$HOSTNAME/listener_scan3/trace/*.log -mtime +3 -exec rm {} \;
+
+
+### Clean trace file by ADRCI - manual modify base on Homepaths of server
+CMD="set homepath diag/tnslsnr/$HOSTNAME/listener;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/tnslsnr/$HOSTNAME/asmnet1lsnr_asm;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/tnslsnr/$HOSTNAME/listener_scan1;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/tnslsnr/$HOSTNAME/listener_scan2;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/tnslsnr/$HOSTNAME/listener_scan3;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/asm/+asm/$ORACLE_SID;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+set homepath diag/crs/$HOSTNAME/crs;
+show homes;
+migrate schema;
+purge -age 4320 -type ALERT;
+purge -age 4320 -type INCIDENT;
+purge -age 4320 -type TRACE;
+purge -age 4320 -type CDUMP;
+purge -age 4320 -type HM;
+purge -age 4320 -type UTSCDMP;
+
+echo 'Clean';"
+
+echo $CMD > /tmp/clean_listener.adrci
+adrci script=/tmp/clean_listener.adrci

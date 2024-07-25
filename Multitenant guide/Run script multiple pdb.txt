@@ -1,0 +1,57 @@
+1. run all pdb exclude root and seed
+------------------------------------------------
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b  tempjob -f temp.sql
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b  grant2 -f grant2.sql
+
+
+2. run all pdb exclude some PDB
+------------------------------------------------
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b failjob -f failjob.sql
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b failjob -f -C 'PDB$SEED 'failjob.sql
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -s -b failjob -f failjob.sql
+
+
+
+3. run some PDB
+------------------------------------------------
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -b failjob -c 'PDB1 PDB3' failjob.sql
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -b failjob -C 'PDBBH119 PDBTEST' failjob.sql
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b compress_histable -C 'PDBBH119 PDBTEST' compress_histable.sql
+
+
+Options
+-u for username and password connect with PDB’s or CDB for execute SQL queries or scripts.
+-U for username and password with special privileges to perform internal tasks like modified metadata.
+-d Directory containing SQL script
+-l directory on which log file written.
+-c list the containers in which SQL script is run.
+-C list the containers in which SQL script is not run.
+-p degree of parallelism.
+-e means echo on when script running.
+-s spool on
+-E When ON, errors are written to the table SPERRORLOG in the current schema.
+-I Identifier for Error logging option
+-g generating debugging information.
+-f ignore if PDB’s database is closed.
+-b base name of log file (mandatory)
+
+
+truncate table sys.aud$;
+create tablespace AUDIT_TBS datafile '+DATAC1' size 1G autoextend on next 1G;
+BEGIN
+	DBMS_AUDIT_MGMT.SET_AUDIT_TRAIL_LOCATION(
+	audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+	audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+BEGIN
+  DBMS_AUDIT_MGMT.set_audit_trail_location(
+    audit_trail_type           => DBMS_AUDIT_MGMT.AUDIT_TRAIL_FGA_STD,
+    audit_trail_location_value => 'AUDIT_TBS');
+END;
+/

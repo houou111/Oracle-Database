@@ -1,0 +1,1 @@
+select stat_name, value/1000000 SEC from v$sess_time_model where sid = &1;

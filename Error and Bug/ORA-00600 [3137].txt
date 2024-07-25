@@ -1,0 +1,6 @@
+2. Apply interim patch for Bug 27949947
+
+Patch 27949947: ORA-600 ERROR DURING REFRESH MV OVER DATABASE LINK
+
+Release Oracle Database 12.2.0.1.0
+Platform Linux x86-64

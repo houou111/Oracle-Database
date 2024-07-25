@@ -1,0 +1,58 @@
+https://docs.oracle.com/cd/E18283_01/server.112/e17120/tables012.htm
+
+
+What Are Index-Organized Tables?
+An index-organized table has a storage organization that is a variant of a primary B-tree. 
+Unlike an ordinary (heap-organized) table whose data is stored as an unordered collection (heap), data for an index-organized table is stored in a B-tree index structure in a primary key sorted manner. Each leaf block in the index structure stores both the key and nonkey columns.
+
+The structure of an index-organized table provides the following benefits:
+
+Fast random access on the primary key because an index-only scan is sufficient. And, because there is no separate table storage area, changes to the table data (such as adding new rows, updating rows, or deleting rows) result only in updating the index structure.
+
+Fast range access on the primary key because the rows are clustered in primary key order.
+
+Lower storage requirements because duplication of primary keys is avoided. They are not stored both in the index and underlying table, as is true with heap-organized tables.
+
+Index-organized tables have full table functionality. They support features such as constraints, triggers, LOB and object columns, partitioning, parallel operations, online reorganization, and replication. And, they offer these additional features:
+
+Key compression
+
+Overflow storage area and specific column placement
+
+Secondary indexes, including bitmap indexes.
+
+
+
+CREATE TABLE admin_docindex(
+        token char(20), 
+        doc_id NUMBER,
+        token_frequency NUMBER,
+        token_offsets VARCHAR2(2000),
+        CONSTRAINT pk_admin_docindex PRIMARY KEY (token, doc_id))
+    ORGANIZATION INDEX 
+    TABLESPACE admin_tbs
+    PCTTHRESHOLD 20
+    OVERFLOW TABLESPACE admin_tbs2;
+	
+
+CREATE OR REPLACE TYPE admin_typ AS OBJECT (col1 NUMBER, col2 VARCHAR2(6));
+
+CREATE TABLE admin_iot (c1 NUMBER primary key, c2 admin_typ) ORGANIZATION INDEX;
+	
+CREATE TABLE admin_iot2 OF admin_typ (col1 PRIMARY KEY) ORGANIZATION INDEX;
+	
+	
+	
+
+
+CREATE TYPE project_t AS OBJECT(pno NUMBER, pname VARCHAR2(80));
+/
+
+CREATE TYPE project_set AS TABLE OF project_t;
+/
+
+CREATE TABLE proj_tab (eno NUMBER, projects PROJECT_SET)
+    NESTED TABLE projects STORE AS emp_project_tab
+                ((PRIMARY KEY(nested_table_id, pno)) 
+    ORGANIZATION INDEX)
+    RETURN AS LOCATOR;

@@ -1,0 +1,26 @@
+select
+   p.spid,
+   s.sid,
+   s.process cli_process,
+   s.status,t.disk_reads,
+   s.last_call_et/3600 last_call_et_Hrs,
+   s.action,
+   s.program,
+   s.inst_id,
+   s.machine,
+   s.sql_id,
+   t.sql_text
+from
+   gv$session s,
+   gv$sqlarea t,
+   gv$process p
+where
+   s.sql_address = t.address
+and
+   s.sql_hash_value = t.hash_value
+and
+   p.addr = s.paddr
+-- and
+--t.disk_reads > 10
+order by
+   t.disk_reads desc;

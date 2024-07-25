@@ -1,0 +1,51 @@
+CREATE OR REPLACE TRIGGER audit_IP AFTER LOGON ON DATABASE
+DECLARE
+ipinfo VARCHAR2(30);
+BEGIN
+SELECT SYS_CONTEXT('USERENV','IP_ADDRESS') INTO ipinfo FROM DUAL;
+DBMS_APPLICATION_INFO.SET_CLIENT_INFO(ipinfo);
+END;
+/
+
+
+select distinct CLIENT_INFO from gv$session;
+
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/rdbms/admin/catcon.pl -d /home/oracle/dbscript -l /tmp -S -s -b  trigger -f trigger.sql
+
+
+/home/oracle/dbscript/trigger.sql
+
+
+
+
+
+set colsep ,
+set pagesize 0   
+set trimspool on 
+set headsep off  
+set linesize 1000
+SPOOL /tmp/ip_client2.csv append
+
+select distinct b.name db_name,USERNAME,OSUSER,MACHINE,PROGRAM,CLIENT_INFO
+from gv$session a,v$containers b
+where USERNAME not in ('SYS','DBSNMP','DBA01','C##DBA01','ZABBIX')
+AND CLIENT_INFO is not null
+AND OSUSER not in ('grid')
+AND a.con_id=b.con_id
+order by CLIENT_INFO;
+
+SPOOL OFF;
+SET DEFINE ON
+SET SERVEROUTPUT OFF
+
+
+
+set pagesize 0 
+set linesize 1000  
+select distinct USERNAME,OSUSER,MACHINE,PROGRAM,CLIENT_INFO
+from gv$session a
+where USERNAME not in ('SYS','DBSNMP','DBA01','C##DBA01','ZABBIX')
+AND CLIENT_INFO is not null
+AND OSUSER not in ('grid')
+order by CLIENT_INFO;

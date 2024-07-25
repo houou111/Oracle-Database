@@ -1,0 +1,143 @@
+1. Current memory
+----------------------------------------------------------	----------------------------------------------------------	
+select INST_ID,sum(value)/1024/1024/1024 as GB from gv$sga
+group by INST_ID
+
+select INST_ID,sum(value) as GB 
+from gv$pgastat
+where 1=1
+and name = 'total PGA allocated'
+group by INST_ID
+
+select INST_ID, sum(GB)/1024/1024/1024 as "Total PGA+SGA Gbytes" 
+from
+(select INST_ID,sum(value) as GB from gv$sga
+group by INST_ID
+union all
+select INST_ID,sum(value) as GB 
+from gv$pgastat
+where 1=1
+and name = 'total PGA allocated'
+group by INST_ID
+)
+group by INST_ID;
+
+
+2. Current Recommend value
+--------------------------------------------------------------------------------------------------------------------				 
+select * from v$sga_target_advice order by sga_size;
+select * from v$pga_target_advice order by 1;
+
+select * from v$pga_target_advice_histogram order by 1;
+
+select name,value/1024/1024 inMB from v$pgastat where name in ('total PGA allocated','maximum PGA allocated');
+
+
+
+3. Check size sga detail
+--------------------------------------------------------------------------------------------------------------------	
+SELECT component, current_size/1024/1024 as size_mb, min_size/1024/1024 as min_size_mb
+FROM v$sga_dynamic_components
+WHERE current_size > 0
+ORDER BY component;
+
+
+COMPONENT                        SIZE_MB MIN_SIZE_MB
+----------------------------- ---------- -----------
+DEFAULT buffer cache                5120        5120
+Shared IO Pool                       512         512
+java pool                           3584        1024
+large pool                          3584        3072
+shared pool                        88064       68608
+streams pool                        1024        1024
+
+
+
+SELECT SUM(current_size)/1024/1024
+FROM v$sga_dynamic_components
+/
+
+SUM(CURRENT_SIZE)/1024/1024
+---------------------------
+                     101888
+
+					 
+					 
+					 
+4. Setup
+-----------------------------------------------------------
+alter system set sga_max_size= 16G scope=spfile sid='*';
+alter system set sga_target= 16G scope=spfile sid='*';
+alter system set pga_aggregate_target= 4G sid='*';
+
+alter system set sga_max_size= 8G scope=spfile sid='*';
+alter system set sga_target= 8G scope=spfile sid='*';
+alter system set pga_aggregate_target= 4G sid='*';
+
+alter system set sga_max_size= 128G scope=spfile sid='*';
+alter system set sga_target= 128G scope=spfile sid='*';
+alter system set pga_aggregate_target= 48G sid='*';
+alter system set pga_aggregate_limit= 96G sid='*';
+
+
+alter system set sga_max_size= 256G scope=spfile sid='*';
+alter system set sga_target= 256G scope=spfile sid='*';
+alter system set pga_aggregate_target= 128G sid='*';
+alter system set pga_aggregate_limit= 256G sid='*';
+
+
+
+alter system set sga_max_size= 96G scope=spfile sid='*';
+alter system set sga_target= 96G scope=spfile sid='*';
+alter system set pga_aggregate_target= 48G sid='*';
+alter system set pga_aggregate_limit= 96G sid='*';
+
+
+
+alter system set sga_max_size=12G scope=spfile sid='*';
+alter system set sga_target=12G scope=spfile sid='*';
+alter system set pga_aggregate_target=6G sid='*';
+alter system set pga_aggregate_limit=12G sid='*';
+
+alter system set sga_max_size=8G scope=spfile sid='*';
+alter system set sga_target=8G scope=spfile sid='*';
+alter system set pga_aggregate_target=4G sid='*';
+alter system set pga_aggregate_limit=8G sid='*';
+
+alter system set sga_max_size=4G scope=spfile sid='*';
+alter system set sga_target=4G scope=spfile sid='*';
+alter system set pga_aggregate_target=2G sid='*';
+alter system set pga_aggregate_limit=6G sid='*';
+
+
+
+
+alter system set sga_max_size=6G scope=spfile sid='*';
+alter system set sga_target=6G scope=spfile sid='*';
+alter system set pga_aggregate_target=3G sid='*';
+alter system set pga_aggregate_limit=6G sid='*';
+
+
+alter system set sga_max_size=110G scope=spfile sid='*';
+alter system set sga_target=110G scope=spfile sid='*';
+
+
+
+
+
+** Change AMM to ASMM
+--------------------------------------------------------------------------
+alter system set sga_target=3G scope=spfile sid='*';
+alter system set sga_max_size=3G scope=spfile sid='*';
+
+alter system reset memory_max_target scope=spfile  sid='*';
+alter system reset memory_target  scope=spfile  sid='*';
+
+alter system set pga_aggregate_target=200M scope=spfile;
+
+
+
+alter system set sga_max_size=3G scope=spfile sid='*';
+alter system set sga_target=3G scope=spfile sid='*';
+alter system set pga_aggregate_target=2G sid='*';
+alter system set pga_aggregate_limit=4G sid='*';

@@ -1,0 +1,83 @@
+--====Check ESBDATA 
+--Check dong bo
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+esbdata21
+
+SQL> select *  from v$dataguard_stats where name ='apply lag';
+
+NAME
+--------------------------------
+VALUE
+----------------------------------------------------------------
+UNIT                           TIME_COMPUTED
+------------------------------ ------------------------------
+DATUM_TIME
+------------------------------
+apply lag
++00 00:00:00
+day(2) to second(0) interval   04/28/2017 23:58:35
+04/28/2017 23:58:34
+
+--check session
+SQL> select inst_id, count(*) from gv$session group by  inst_id;
+
+   INST_ID   COUNT(*)
+---------- ----------
+         1        118
+         2        127
+
+SQL> select inst_id,status, count(*) from gv$session group by  inst_id,status
+  2  ;
+
+   INST_ID STATUS     COUNT(*)
+---------- -------- ----------
+         1 ACTIVE           59
+         1 INACTIVE         61
+         2 ACTIVE           57
+         2 INACTIVE         71
+
+
+================================================================		 
+==Check ESBINFRA 
+--Check dong bo 
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+esbinf11
+
+SQL>  select *  from v$dataguard_stats where name ='apply lag';
+
+NAME
+--------------------------------
+VALUE
+----------------------------------------------------------------
+UNIT                           TIME_COMPUTED
+------------------------------ ------------------------------
+DATUM_TIME
+------------------------------
+apply lag
++00 00:00:00
+day(2) to second(0) interval   04/28/2017 23:59:01
+04/28/2017 23:59:00
+
+--check session
+SQL> select inst_id, count(*) from gv$session group by  inst_id
+  2  ;
+
+   INST_ID   COUNT(*)
+---------- ----------
+         1         97
+         2        117
+
+SQL> select inst_id,status, count(*) from gv$session group by  inst_id,status;
+
+   INST_ID STATUS     COUNT(*)
+---------- -------- ----------
+         1 ACTIVE           65
+         1 INACTIVE         32
+         2 ACTIVE           79
+         2 INACTIVE         38		 

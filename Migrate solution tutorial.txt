@@ -1,0 +1,14 @@
+I. Backup and restore
+-----------------------
+
+
+
+II. Datapump: expdp and impdp
+-------------------------------
+Copy tnsname file
+Tang stream pool size
+
+
+
+III. Transport tablespace
+---------------------------

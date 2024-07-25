@@ -1,0 +1,12 @@
+Transaction Guard (new in 12.2) -> protect the transactions
+• After outages, users know what happened to their in-flight
+transactions, such as fund transfers, flight bookings, and
+bill payments.
+• Transaction Guard provides better performance and
+reliability than home-built code for idempotence.
+
+
+Server configuration:
+– Set the COMMIT_OUTCOME=TRUE service attribute
+– Optionally, set the RETENTION_TIMEOUT service attribute
+

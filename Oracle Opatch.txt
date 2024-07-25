@@ -1,0 +1,6 @@
+https://updates.oracle.com/download/6880880.html
+
+unzip xxxxxxx.zip -d $ORACLE_HOME/OPatch
+
+opatch version
+

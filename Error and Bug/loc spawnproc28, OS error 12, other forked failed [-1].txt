@@ -1,0 +1,6 @@
+loc: spawnproc28, OS error: 12, other: forked failed [-1]
+
+lack of memory
+
+
+OS system dependent operation:fork failed with status

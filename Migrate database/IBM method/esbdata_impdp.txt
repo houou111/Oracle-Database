@@ -1,0 +1,113 @@
+alter system set job_queue_processes=0;
+
+select name, open_mode, log_mode, force_logging from v$database;
+
+create or replace directory ibmexpdir as '/stage/Dump/esbdata';
+
+
+spool drp_user_esbdata.sql
+select 'drop user ' || username || ' cascade;' from dba_users where created > to_date('10-JAN-18','DD-MON-YY');
+spool off;
+
+
+cd /stage/Dump/esbdata
+nohup impdp "'/ as sysdba'" directory=ibmexpdir dumpfile=expdp_esbdata1_%U.dmp logfile=impdp_esbdata_02Feb2018.log full=y CLUSTER=N EXCLUDE=SCHEMA:\"IN \(\'ORDDATA\',\'SYSMAN\',\'APEX_030200\'\,\'OWBSYS_AUDIT\',\'OUTLN\',\'OWBSYS\',\'SCOTT\',\'FLOWS_FILES\',\'OE\'\,\'OLAPSYS\',\'MDDATA\',\'SPATIAL_WFS_ADMIN_USR\',\'SPATIAL_CSW_ADMIN_USR\',\'MGMT_VIEW\',\'APEX_PUBLIC_USER\'\)\" PARALLEL=5 &
+
+nohup impdp "'/ as sysdba'" directory=ibmexpdir dumpfile=expdp_resesb1_%U.dmp logfile=impdp_resesb1_29Jan2018.log full=y CLUSTER=N EXCLUDE=SCHEMA:\"IN \(\'ORDDATA\',\'SYSMAN\',\'APEX_030200\'\,\'OWBSYS_AUDIT\',\'OUTLN\',\'OWBSYS\',\'SCOTT\',\'FLOWS_FILES\',\'OE\'\,\'OLAPSYS\',\'MDDATA\',\'SPATIAL_WFS_ADMIN_USR\',\'SPATIAL_CSW_ADMIN_USR\',\'MGMT_VIEW\',\'APEX_PUBLIC_USER\'\)\" PARALLEL=5 &
+cat impdp_esbdata_02Feb2018.log | grep ORA- | grep -v ORA-31684
+
+cd /stage/Dump/esbdata
+imp file=exp_statsbkp_esbdata1.dmp log=/stage/Dump/esbdata/imp_stats_table_esbdata.log full=y buffer=1000000000 commit=y feedback=10000
+
+##imp file=exp_statsbkp_resesb1.dmp log=/tmp/imp_stats_table_ebsdata_Jan29.log full=y buffer=1000000000 commit=y feedback=10000
+
+select distinct statid from IBM_MIG_STATS_BKP;
+
+exec dbms_stats.import_database_stats(statown=>'SYS', stattab=>'IBM_MIG_STATS_BKP', statid=>'STAT_03FEB18_0055');
+
+@?/rdbms/admin/utlrp.sql
+
+cd /stage/Dump/esbdata
+sqlplus "/ as sysdba" <<EOF
+@data_consistency.sql
+exit;
+EOF
+
+sqlplus "/ as sysdba" <<EOF
+@row_count.sql
+exit;
+EOF
+
+sqlplus "/ as sysdba" <<EOF
+select name, open_mode, log_mode, force_logging from v\$database;
+select instance_number, instance_name, host_name from gv\$instance;
+exit;
+EOF
+
+alter system set job_queue_processes=1000;
+
+
+-- Copy password files to DR & second node.
+
+cd $ORACLE_HOME/dbs/
+scp -pr orapw${ORACLE_SID} dc-esb-db-01:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/orapwesbdata2
+scp -pr orapw${ORACLE_SID} 10.109.1.208:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/orapwesbdatadr1
+scp -pr orapw${ORACLE_SID} 10.109.1.209:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/orapwesbdatadr2
+
+
+
+Object Comparison
+==========================
+
+#### Objects Comparison
+
+break on report
+set lines 300 pages 50000
+compute sum of diff on report
+select b.owner, b.object_type, b.cnt source, a.cnt target, b.cnt-a.cnt diff
+from
+(select owner, object_type, count(1) cnt from dba_objects where owner in
+        (select username from dba_users where created>trunc(sysdate) union all select 'PUBLIC' from dual)
+ group by owner, object_type) a
+full outer join
+(select owner, object_type, count(1) cnt from IBM_MIG_SRC_OBJECTS where owner in
+        (select username from dba_users where created>trunc(sysdate) union all select 'PUBLIC' from dual)
+group by owner, object_type) b
+on a.object_type = b.object_type
+and a.owner = b.owner
+order by 2,1;
+
+
+
+OWNER                          OBJECT_TYPE             SOURCE     TARGET       DIFF
+------------------------------ ------------------- ---------- ---------- ----------
+PUBLIC                         SYNONYM                  28045      34021      -5976
+                                                                         ----------
+sum                                                                           -5976
+
+
+
+#### Constraints Comparison
+
+break on report
+set lines 300 pages 50000
+compute sum of diff on report
+col owner for a30
+select b.owner, b.constraint_type, b.cnt source, a.cnt target, b.cnt-a.cnt diff
+from
+(select owner, constraint_type, count(1) cnt from dba_constraints where owner in
+        (select username from dba_users where created>trunc(sysdate) union all select 'PUBLIC' from dual)
+ group by owner, constraint_type) a
+full outer join
+(select owner, constraint_type, count(1) cnt from IBM_MIG_SRC_CONSTR where owner in
+        (select username from dba_users where created>trunc(sysdate) union all select 'PUBLIC' from dual)
+group by owner, constraint_type) b
+on a.constraint_type = b.constraint_type
+and a.owner = b.owner
+order by 2,1;
+
+
+
+select OWNER, object_name from IBM_MIG_SRC_OBJECTS where owner='&owner' and object_type='SYNONYM'
+minus
+select OWNER, object_name from dba_objects where owner='&owner' and object_type='SYNONYM';

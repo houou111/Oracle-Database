@@ -1,0 +1,1 @@
+set homepath diag/rdbms/dwhyear/dwhyear1; show homes; PURGE -age 4320 -type ALERT; purge -age 4320 -type INCIDENT; purge -age 4320 -type TRACE; purge -age 4320 -type CDUMP; purge -age 4320 -type HM; purge -age 4320 -type UTSCDMP; echo 'Clean';

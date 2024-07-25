@@ -1,0 +1,3 @@
+https://logicalread.com/2012/11/08/oracle-latch-free-wait-dr01/#.XkTiFWgzaUk
+
+alter system set session_cached_cursors=150 scope=spfile;

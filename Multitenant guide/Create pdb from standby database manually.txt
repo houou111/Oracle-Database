@@ -1,0 +1,139 @@
+I. Create DG
+------------------------------------------------------------------
+
+
+
+II. Primary: Close PDB in primary
+------------------------------------------------------------------
+alter pluggable database HUE close immediate instances=all;
+
+alter system archive log current;
+
+
+III. Standby: 
+------------------------------------------------------------------
+1. Open snapshot database in standby
+--------------------------------------
+alter database recover managed standby database cancel;
+alter database convert to snapshot standby;
+
+2. Unplug the closed PDB and then specify the path and name of the XML file.
+--------------------------------------
+alter pluggable database HUE unplug into '/u01/dump/HUE.xml';
+
+
+
+IV. New DB: 
+------------------------------------------------------------------
+1. Create new PDB
+--------------------------------------
+create pluggable database HUE using '/u01/dump/HUE.xml' COPY;
+
+
+2. Verify the status of the unplugged PDB.
+--------------------------------------
+show pdbs
+
+
+
+V.Standby: 
+------------------------------------------------------------------
+1. Verify the status of the unplugged PDB.
+--------------------------------------
+show pdbs
+
+2. Convert to physical standby
+--------------------------------------
+shut immediate
+startup mount
+alter database convert to physical standby;
+startup
+
+3. Sync dg
+--------------------------------------
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION; 
+
+
+
+
+alter pluggable database KONTUM 	unplug into '/u01/dump/KONTUM.xml';
+alter pluggable database NGHEAN 	unplug into '/u01/dump/NGHEAN.xml';
+alter pluggable database BACGIANG 	unplug into '/u01/dump/BACGIANG.xml';
+alter pluggable database DANANG   	unplug into '/u01/dump/DANANG.xml';
+alter pluggable database BINHDINH 	unplug into '/u01/dump/BINHDINH.xml';
+alter pluggable database NINHTHUAN 	unplug into '/u01/dump/NINHTHUAN.xml';
+alter pluggable database BINHTHUAN 	unplug into '/u01/dump/BINHTHUAN.xml';
+alter pluggable database DONGTHAP  	unplug into '/u01/dump/DONGTHAP.xml';
+
+
+create pluggable database KONTUM 	 using '/u01/dump/KONTUM.xml' COPY;
+
+
+create pluggable database NGHEAN 	 using '/u01/dump/NGHEAN.xml' COPY;
+create pluggable database BACGIANG  using '/u01/dump/BACGIANG.xml' COPY;
+
+create pluggable database DANANG    using '/u01/dump/DANANG.xml' COPY;
+create pluggable database BINHDINH  using '/u01/dump/BINHDINH.xml' COPY;
+
+create pluggable database NINHTHUAN using '/u01/dump/NINHTHUAN.xml' COPY;
+create pluggable database BINHTHUAN using '/u01/dump/BINHTHUAN.xml' COPY;
+create pluggable database DONGTHAP  using '/u01/dump/DONGTHAP.xml' COPY;
+
+
+
+alter pluggable database PDBTNH 	unplug into '/u01/dump/TAYNINH.xml';
+alter pluggable database PDBKGG 	unplug into '/u01/dump/KIENGIANG.xml';
+alter pluggable database PDBBTE 	unplug into '/u01/dump/BENTRE.xml';
+alter pluggable database PDBTVH   	unplug into '/u01/dump/TRAVINH.xml';
+alter pluggable database PDBLAN 	unplug into '/u01/dump/LONGAN.xml';
+
+alter pluggable database HUE 	unplug into '/u01/dump/HUE.xml';
+alter pluggable database THAINGUYEN 	unplug into '/u01/dump/THAINGUYEN.xml';
+
+
+create pluggable database HUE using '/u01/dump/HUE.xml' COPY;
+create pluggable database THAINGUYEN using '/u01/dump/THAINGUYEN.xml' COPY;
+
+create pluggable database TAYNINH  using '/u01/dump/TAYNINH.xml' COPY;
+
+
+
+
+alter pluggable database PDBBINHPHUOC 	unplug into '/u01/dump/BINHPHUOC.xml';
+alter pluggable database PDBVTU 	unplug into '/u01/dump/VUNGTAU.xml';
+alter pluggable database PDBBDG   	unplug into '/u01/dump/BINHDUONG.xml';
+alter pluggable database PDBDNI 	unplug into '/u01/dump/DONGNAI.xml';
+alter pluggable database PDBBINHPHUOC 	unplug into '/u01/dump/BINHPHUOC.xml';
+alter pluggable database PDBVTU 	unplug into '/u01/dump/VUNGTAU.xml';
+alter pluggable database PDBBDG   	unplug into '/u01/dump/BINHDUONG.xml';
+alter pluggable database PDBDNI 	unplug into '/u01/dump/DONGNAI.xml';
+
+
+create pluggable database BINHPHUOC  using '/u01/dump/BINHPHUOC.xml' COPY;
+create pluggable database VUNGTAU using '/u01/dump/VUNGTAU.xml' COPY;
+create pluggable database BINHDUONG using '/u01/dump/BINHDUONG.xml' COPY;
+create pluggable database DONGNAI  using '/u01/dump/DONGNAI.xml' COPY;
+create pluggable database BINHPHUOC  using '/u01/dump/BINHPHUOC.xml' COPY;
+create pluggable database VUNGTAU using '/u01/dump/VUNGTAU.xml' COPY;
+create pluggable database BINHDUONG using '/u01/dump/BINHDUONG.xml' COPY;
+create pluggable database DONGNAI  using '/u01/dump/DONGNAI.xml' COPY;
+
+
+
+
+
+BINHPHUOC
+VUNGTAU
+BINHDUONG
+DONGNAI
+
+
+PDBTVH
+PDBBTE
+PDBKGG
+PDBTNH
+PDBLAN
+
+
+
+

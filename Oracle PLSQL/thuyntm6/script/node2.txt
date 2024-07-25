@@ -1,0 +1,139 @@
+SQL> select count(*) from  v$asm_diskgroup g, v$asm_disk d where g.name='T24R14_DC';
+
+  COUNT(*)
+----------
+        37
+
+SQL> select g.name, d.path from v$asm_diskgroup g, v$asm_disk d where g.name='T24R14_DC';
+
+NAME                           PATH
+------------------------------ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+T24R14_DC                      /dev/rhdisk125
+T24R14_DC                      /dev/rhdisk126
+T24R14_DC                      /dev/rhdisk127
+T24R14_DC                      /dev/rhdisk128
+T24R14_DC                      /dev/rhdisk129
+T24R14_DC                      /dev/rhdisk130
+T24R14_DC                      /dev/rhdisk131
+T24R14_DC                      /dev/rhdisk132
+T24R14_DC                      /dev/rhdisk133
+T24R14_DC                      /dev/rhdisk134
+T24R14_DC                      /dev/rhdisk135
+
+NAME                           PATH
+------------------------------ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+T24R14_DC                      /dev/rhdisk136
+T24R14_DC                      /dev/rhdisk137
+T24R14_DC                      /dev/rhdisk138
+T24R14_DC                      /dev/rhdisk139
+T24R14_DC                      /dev/rhdisk140
+T24R14_DC                      /dev/rhdisk141
+T24R14_DC                      /dev/rhdisk142
+T24R14_DC                      /dev/rhdisk143
+T24R14_DC                      /dev/rhdisk144
+T24R14_DC                      /dev/rhdisk145
+T24R14_DC                      /dev/rhdisk146
+
+NAME                           PATH
+------------------------------ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+T24R14_DC                      /dev/rhdisk147
+T24R14_DC                      /dev/rhdisk148
+T24R14_DC                      /dev/rhdisk149
+T24R14_DC                      /dev/rhdisk150
+T24R14_DC                      /dev/rhdisk151
+T24R14_DC                      /dev/rhdisk152
+T24R14_DC                      /dev/rhdisk153
+T24R14_DC                      /dev/rhdisk154
+T24R14_DC                      /dev/rhdisk155
+T24R14_DC                      /dev/rhdisk156
+T24R14_DC                      /dev/rhdisk157
+
+NAME                           PATH
+------------------------------ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+T24R14_DC                      /dev/rhdisk158
+T24R14_DC                      /dev/rhdisk159
+T24R14_DC                      /dev/rhdisk160
+T24R14_DC                      /dev/rhdisk161
+
+37 rows selected.
+
+SQL> 
+
+
+============
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk125;
+crw-rw-r--    1 grid     oinstall     25,125 Nov 27 16:45 /dev/rhdisk125
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk126;
+crw-rw-r--    1 grid     oinstall     25,126 Nov 27 16:45 /dev/rhdisk126
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk127;
+crw-rw-r--    1 grid     oinstall     25,127 Nov 27 16:45 /dev/rhdisk127
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk128;
+crw-rw-r--    1 grid     oinstall     25,129 Nov 27 16:37 /dev/rhdisk128
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk129;
+crw-rw-r--    1 grid     oinstall     25,130 Nov 27 16:45 /dev/rhdisk129
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk130;
+crw-rw-r--    1 grid     oinstall     25,128 Nov 27 16:44 /dev/rhdisk130
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk131;
+crw-rw-r--    1 grid     oinstall     25,133 Nov 27 16:42 /dev/rhdisk131
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk132;
+crw-rw-r--    1 grid     oinstall     25,137 Nov 27 16:42 /dev/rhdisk132
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk133;
+crw-rw-r--    1 grid     oinstall     25,134 Nov 27 16:32 /dev/rhdisk133
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk134;
+crw-rw-r--    1 grid     oinstall     25,132 Nov 27 16:45 /dev/rhdisk134
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk135;
+crw-rw-r--    1 grid     oinstall     25,141 Nov 27 16:40 /dev/rhdisk135
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk136;
+crw-rw-r--    1 grid     oinstall     25,131 Nov 27 16:39 /dev/rhdisk136
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk137;
+crw-rw-r--    1 grid     oinstall     25,139 Nov 27 16:45 /dev/rhdisk137
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk138;
+crw-rw-r--    1 grid     oinstall     25,136 Nov 27 16:45 /dev/rhdisk138
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk139;
+crw-rw-r--    1 grid     oinstall     25,135 Nov 27 16:45 /dev/rhdisk139
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk140;
+crw-rw-r--    1 grid     oinstall     25,140 Nov 27 16:43 /dev/rhdisk140
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk141;
+crw-rw-r--    1 grid     oinstall     25,138 Nov 27 16:44 /dev/rhdisk141
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk142;
+crw-rw-r--    1 grid     oinstall     25,142 Nov 27 16:43 /dev/rhdisk142
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk143;
+crw-rw-r--    1 grid     oinstall     25,143 Nov 27 16:45 /dev/rhdisk143
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk144;
+crw-rw-r--    1 grid     oinstall     25,144 Nov 27 16:45 /dev/rhdisk144
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk145;
+crw-rw-r--    1 grid     oinstall     25,145 Nov 27 16:45 /dev/rhdisk145
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk146;
+crw-rw-r--    1 grid     oinstall     25,146 Nov 27 16:45 /dev/rhdisk146
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk147;
+crw-rw-r--    1 grid     oinstall     25,147 Nov 27 16:45 /dev/rhdisk147
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk148;
+crw-rw-r--    1 grid     oinstall     25,148 Nov 27 16:45 /dev/rhdisk148
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk149;
+crw-rw-r--    1 grid     oinstall     25,149 Nov 27 16:45 /dev/rhdisk149
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk150;
+crw-rw-r--    1 grid     oinstall     25,150 Nov 27 16:45 /dev/rhdisk150
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk151;
+crw-rw-r--    1 grid     oinstall     25,151 Nov 27 16:45 /dev/rhdisk151
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk152;
+crw-rw-r--    1 grid     oinstall     25,152 Nov 27 16:45 /dev/rhdisk152
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk153;
+crw-rw-r--    1 grid     oinstall     25,153 Oct 28 01:37 /dev/rhdisk153
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk154;
+crw-rw-r--    1 grid     oinstall     25,154 Oct 28 01:36 /dev/rhdisk154
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk155;
+crw-rw-r--    1 grid     oinstall     25,155 Sep 09 11:15 /dev/rhdisk155
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk156;
+crw-rw-r--    1 grid     oinstall     25,156 Sep 09 11:15 /dev/rhdisk156
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk157;
+crw-rw-r--    1 grid     oinstall     25,157 Sep 09 11:15 /dev/rhdisk157
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk158;
+crw-rw-r--    1 grid     oinstall     25,158 Oct 28 01:36 /dev/rhdisk158
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk159;
+crw-rw-r--    1 grid     oinstall     25,159 Sep 09 11:24 /dev/rhdisk159
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk160;
+crw-rw-r--    1 grid     oinstall     25,161 Sep 09 11:24 /dev/rhdisk160
+[t24db02@grid /home/grid>]$ls -ltr /dev/rhdisk161;
+crw-rw-r--    1 grid     oinstall     25,160 Sep 09 11:24 /dev/rhdisk161
+[t24db02@grid /home/grid>]$
+[t24db02@grid /home/grid>]$

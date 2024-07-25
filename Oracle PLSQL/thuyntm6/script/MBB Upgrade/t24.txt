@@ -1,0 +1,250 @@
+1.	Bảng 35 : FBNK_STMT_PRINTED ko thực hiện archive  do cần check lại bảng này liên quan đến truy vấn thông tin các năm,
+2.	Bảng 42 : FBNK_VCBM000 cần thực hiện vào T7 hoặc Chủ nhật  do ko có giao dịch về 2 ngày này.
+3.	Bảng 44 : F_LCR_AUTO_WRK_TCB cần thực hiện vào T7 hoặc Chủ nhật  do ko có giao dịch 2 ngày này.
+
+
+--Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (35, 'T24LIVE.FBNK_STMT_PRINTED', 1, ' where recid like ''%-', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    hint_idx, keep_year, archive_year)
+ Values
+   (42, 'T24LIVE.FBNK_VCBM000', 1, ' t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),''/row/c3'')),0))like ''', '%''', 
+    '/*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (44, 'T24LIVE.F_LCR_AUTO_WRK_TCB', 3, ' where recid < ''', '%''', 
+    ' and rownum<1000001', 2, 1);
+
+--HANGING : T24LIVE.FBNK_PM_DRILL_DOWN và T24LIVE.F_DC_NEW_003 , T24LIVE.FBNK_AI_T000 
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (36, 'T24LIVE.FBNK_PM_DRILL_DOWN', 1, ' where recid like ''%.TR%.', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (37, 'T24LIVE.F_DC_NEW_003', 1, ' where recid like ''%-', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (41, 'T24LIVE.FBNK_AI_T000', 2, ' where recid like ''TR', '%''', 
+    ' and rownum<1000001', 2, 8);
+
+=====================	
+SET DEFINE OFF;
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (35, 'T24LIVE.F_EB_JOUR000', 1, ' where recid like ''%-', '%''', 
+    ' and rownum<1000001', 2, 8);
+
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (37, 'T24LIVE.F_DC_NEW_003', 1, ' where recid like ''%-', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (39, 'T24LIVE.FBNK_RE_STAT_LINE_MVMT', 1, ' where recid like ''SBVGL-%-%-', '%*%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (40, 'T24LIVE.FBNK_IC_C015', 1, ' where recid like ''%-', '%''', 
+    ' and rownum<1000001', 2, 8);
+
+
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (38, 'T24LIVE.FBNK_POS_MVMT_HIST', 1, ' where recid like ''%*', '____*%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (42, 'T24LIVE.F_ATM_OFFUS_TXN', 1, ' where recid like ''%*', '%*%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (43, 'T24LIVE.F_ST_AMOU002', 3, ' where recid < ''', '%''', 
+    ' and rownum<1000001', 2, 1);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (44, 'T24LIVE.FBNK_FTBULK_TCB#HIS', 2, ' where recid like ''BC', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (45, 'T24LIVE.F_EB_ARC_TEMP_1', 2, ' where recid like ''AI', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (46, 'T24LIVE.F_AI_CORP_REPORT_TCB', 2, ' where recid like ''CAR', '%''', 
+    ' and rownum<1000001', 2, 8);
+Insert into SYS.TABLE_ARCHIVE
+   (tab_id, table_name, tab_type, pre_condition, post_condition, 
+    add_condition, keep_year, archive_year)
+ Values
+   (47, 'T24LIVE.FBNK_QUAN006', 2, ' where recid like ''BNK', '%''', 
+    ' and rownum<1000001', 2, 8);
+COMMIT;
+
+
+
+
+
+
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2017%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2016%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2015%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2014%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2013%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2012%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2011%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2010%'  and rownum<1000001
+delete  T24LIVE.FBNK_STMT_PRINTED where recid like '%-2009%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2017%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2016%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2015%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2014%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2013%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2012%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2011%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2010%'  and rownum<1000001
+delete  T24LIVE.F_EB_JOUR000 where recid like '%-2009%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2017%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2016%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2015%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2014%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2013%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2012%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2011%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2010%'  and rownum<1000001
+delete  T24LIVE.FBNK_PM_DRILL_DOWN where recid like '%.TR%.2009%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2017%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2016%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2015%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2014%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2013%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2012%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2011%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2010%'  and rownum<1000001
+delete  T24LIVE.F_DC_NEW_003 where recid like '%-2009%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2017*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2016*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2015*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2014*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2013*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2012*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2011*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2010*%'  and rownum<1000001
+delete  T24LIVE.FBNK_POS_MVMT_HIST where recid like '%*2009*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2017%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2016%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2015%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2014%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2013%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2012%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2011%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2010%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_RE_STAT_LINE_MVMT where recid like 'SBVGL-%-%-2009%*%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2017%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2016%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2015%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2014%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2013%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2012%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2011%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2010%'  and rownum<1000001
+delete  T24LIVE.FBNK_IC_C015 where recid like '%-2009%'  and rownum<1000001
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2017%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2016%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2015%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2014%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2013%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2012%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2011%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2010%' 
+delete /*+index (t /*+index (t NIX_FBNK_VCBM000_C3)*/ T24LIVE.FBNK_VCBM000 t WHERE (NVL("T24LIVE"."NUMCAST"(EXTRACTVALUE(SYS_MAKEXML("SYS_NC00003$"),'/row/c3')),0))like '2009%' 
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR17%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR16%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR15%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR14%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR13%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR12%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR11%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR10%'  and rownum<1000001
+delete  T24LIVE.FBNK_AI_T000 where recid like 'TR09%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2017%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2016%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2015%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2014%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2013%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2012%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2011%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2010%*%'  and rownum<1000001
+delete  T24LIVE.F_ATM_OFFUS_TXN where recid like '%*2009%*%'  and rownum<1000001
+delete  T24LIVE.F_ST_AMOU002 where recid < '18629%'  and rownum<1000001
+delete  T24LIVE.F_ST_AMOU002 where recid < '18629%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC17%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC16%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC15%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC14%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC13%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC12%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC11%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC10%'  and rownum<1000001
+delete  T24LIVE.FBNK_FTBULK_TCB#HIS where recid like 'BC09%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI17%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI16%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI15%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI14%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI13%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI12%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI11%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI10%'  and rownum<1000001
+delete  T24LIVE.F_EB_ARC_TEMP_1 where recid like 'AI09%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR17%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR16%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR15%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR14%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR13%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR12%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR11%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR10%'  and rownum<1000001
+delete  T24LIVE.F_AI_CORP_REPORT_TCB where recid like 'CAR09%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK17%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK16%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK15%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK14%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK13%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK12%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK11%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK10%'  and rownum<1000001
+delete  T24LIVE.FBNK_QUAN006 where recid like 'BNK09%'  and rownum<1000001

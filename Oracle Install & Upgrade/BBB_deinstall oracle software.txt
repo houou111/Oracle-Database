@@ -1,0 +1,29 @@
+Delete the files and directories below the $ORACLE_HOME.
+
+# cd $ORACLE_HOME
+# rm -rf *
+
+With the exception of the product directory, delete directories below the $ORACLE_BASE.
+# cd $ORACLE_BASE
+# rm -rf admin doc jre o*
+
+Delete the /etc/oratab file. If using 9iAS delete the /etc/emtab file also.
+# rm /etc/oratab /etc/emtab
+
+
+
+crsctl stop crs
+rm -rf /etc/init.d/init.ohasd
+rm -rf /tmp/.oracle /var/tmp/.oracle /usr/tmp/.oracle 
+rm -rf /usr/local/bin/dbhome /usr/local/bin/oraenv /usr/local/bin/coraenv
+rm -rf /u01/app/oracle
+
+
+rm -rf /u01/app/12.2/grid
+rm -rf /tmp/.oracle /var/tmp/.oracle /usr/tmp/.oracle 
+mv /etc/oratab /etc/oratab.old
+cd /etc/oracle
+mv maps maps.bk
+mv maps setasmgid.bk
+cd /u01/app/oracle
+rm -rf crsdata

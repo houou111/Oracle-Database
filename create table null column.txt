@@ -1,0 +1,15 @@
+
+
+create table abc.xyc parallel 8  as select * from abcd.xyzo;
+
+
+create table abc.xyc parallel 8  as select * from abcd.xyzo partition (SYS_1234);
+
+
+create table abc.xyc parallel 8
+as
+select 
+  cast( null as varchar2(10) ) a, 
+  cast( null as date ) b, 
+  cast( null as number ) ccreate or replace view test_vw
+from dual

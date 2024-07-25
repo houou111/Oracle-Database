@@ -1,0 +1,34 @@
+Option 1: Config ASM with Oracle ASM Filter Driver (Grid 19.3 AFD not support RHEL 7.7)
+====================================================
+Copy and unzip Grid Install file to Grid_Home on Node1 and Node2:
+
+Format partition on Node1:
+#fdisk /dev/sdb
+#fdisk /dev/sdc
+#fdisk /dev/sdd
+
+
+On Node2:
+# partprobe
+
+On Node1:
+# export ORACLE_HOME=/u01/app/19c/grid
+# export ORACLE_BASE=/u01/app/grid
+cd $ORACLE_HOME/bin
+
+
+
+Set disk label on Node1:
+
+
+./asmcmd afd_label CRS1 /dev/sdb1 --init
+./asmcmd afd_label DATA1 /dev/sdc1 --init
+./asmcmd afd_label FRA1 /dev/sdd1 --init
+
+
+
+Verify on Node1 and Node2:
+
+
+
+./asmcmd afd_lslbl /dev/

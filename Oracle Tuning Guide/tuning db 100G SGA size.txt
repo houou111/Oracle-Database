@@ -1,0 +1,7 @@
+2336760.1
+1619155.1
+1392248.1
+
+Download orachk (19c)and run
+
+./orachk -check F8C5100AD8226F42E04313C0E50AA9C0

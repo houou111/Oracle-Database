@@ -1,0 +1,21 @@
+select  case 
+when target_name='+ASM_dw01-cluster' then 'DWH DC'
+when target_name='+ASM_dw02-cluster' then 'DWH DR'
+end as target_name ,
+key_value "Disk Group", 
+max(case when metric_column = 'total_mb' then round(average/1024,2) else null end ) "Total Size(GB)",
+max(case when metric_column = 'free_mb' then round(average/1024,2) else null end ) "Free Size GB",
+max(case when metric_column = 'total_mb' then round(average/1024,2) else null end )
+-max(case when metric_column = 'free_mb' then round(average/1024,2) else null end ) "Allocated Size (GB)",
+max(case when metric_column = 'percent_used' then round(average,2) else null end ) "Allocated Capacity (%)",
+max(case when metric_column = 'required_mirror_free_mb' then round(average/1024,2) else null end ) "required_mirror_free_GB",
+max(case when metric_column = 'Usable_file_MB' then round(average/1024,2) else null end )"Usable_file_GB"
+from
+(
+select target_name,key_value, metric_column, average
+from mgmt$metric_daily where metric_name in ( 'ME$DG_Mirror_DWH' , 'DiskGroup_Usage')
+and target_name  in ('+ASM_dw01-cluster','+ASM_dw02-cluster')
+and rollup_timestamp = trunc(sysdate) - extract(day from sysdate) +1
+)
+group by target_name,key_value
+order by target_name,key_value desc

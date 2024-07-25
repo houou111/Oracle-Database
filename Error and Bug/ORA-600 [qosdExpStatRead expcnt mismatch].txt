@@ -1,0 +1,12 @@
+With b as (
+select count(*) cnt,objn,snapshot_id from sys.exp_stat$ es group by objn,snapshot_id)
+select * from sys.exp_obj$ a, b where a.objn=b.objn and a.snapshot_id=b.snapshot_id
+and a.EXP_CNT<>b.CNT;
+
+
+update sys.exp_obj$ a set exp_cnt=(select count(*) from sys.exp_stat$ b where
+a.objn=b.objn and a.snapshot_id=b.snapshot_id ) where a.objn=9121073;
+
+commit;
+
+

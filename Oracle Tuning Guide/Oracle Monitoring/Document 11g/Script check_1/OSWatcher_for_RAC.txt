@@ -1,0 +1,30 @@
+#!/bin/bash
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export PATH=$ORACLE_HOME/jdk/jre/bin:$ORACLE_HOME/bin:$PATH   
+export ORACLE_SID=bhttdg2
+export NODE1=csdb1
+export RDA_HOME=/export/home/oracle/tools/rda
+export REPORT=/export/home/oracle/tools/out
+export OSWHOME=/export/home/oracle/tools/oswbb
+
+LOG_PATH=/u01/app/oracle/admin/bhttdg/bdump
+SERVICE='OSW'
+
+MONTH=`date +%m`
+if test `date "+%d%H"` -eq 1802; then
+        LAST_MONTH=`expr $MONTH `
+        # Kill OSWatcher process
+        kill -9 `ps -ef|grep -v grep |grep $SERVICE|awk '{print $2}'`
+        # Start OSW
+        cd $OSWHOME
+        scp -r archive $NODE1:$REPORT/thang$LAST_MONTH/archive_$ORACLE_SID
+        # cp -r archive $REPORT/thang$LAST_MONTH/archive_$ORACLE_SID
+        rm -rf archive
+        nohup ./startOSWbb.sh 60 23 &
+else
+        cd $OSWHOME
+        # Kill OSWatcher process
+        kill -9 `ps -ef|grep -v grep |grep $SERVICE|awk '{print $2}'`
+        # Start OSW
+        nohup ./startOSWbb.sh 60 23 &
+fi

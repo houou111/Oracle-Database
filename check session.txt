@@ -1,0 +1,24 @@
+1) check v$session
+sqlplus> select sid, serial#, username, command, lockwait, osuser from v$session where lockwait is not null
+
+set linesize 300
+SELECT INST_ID,DECODE(request,0,'Holder: ','Waiter: ') ||sid 
+id1, id2, lmode, request, type
+FROM GV$LOCK WHERE (id1, id2, type) IN (SELECT id1, id2, type FROM
+GV$LOCK WHERE request > 0) ORDER BY id1, request;
+
+2) To kill a locked session, first need to find sid, serial and use
+sqlplus>alter system kill session 'sid, serial#';
+*** you need have dba priviledge to kill sessions
+
+
+alter system kill session '1258, 4573';
+
+
+alter system kill session 'sid,serial#';
+3. To find which SQL has lock wait
+
+select sql_text from v$sqltext where (address,hash_value) in (select sql_address,sql_hash_value from v$session where lockwait is not null) order by address, hash_value, piece
+
+
+select sql_text from v$sqltext where (address,hash_value) in (select sql_address,sql_hash_value from v$session where sid=1258) order by address, hash_value, piece

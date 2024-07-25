@@ -1,0 +1,69 @@
+﻿
+#Check CRS Status
+[grid@racnode3 ~]$ crsctl check crs
+CRS-4638: Oracle High Availability Services is online
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+
+
+#Check Clusterware Resources
+[grid@racnode3 ~]$ crs_stat -t -v
+
+
+#Check Cluster Nodes
+[grid@racnode3 ~]$ olsnodes -n
+racnode1        1
+racnode2        2
+racnode3        3
+
+
+#Check ASM for Oracle Clusterware Files
+[grid@racnode3 ~]$ srvctl status asm -a
+ASM is running on racnode3,racnode1,racnode2
+ASM is enabled.	
+
+
+#Check Oracle Cluster Registry (OCR)
+[grid@racnode3 ~]$ ocrcheck
+
+
+#Check Voting Disk
+[grid@racnode3 ~]$ crsctl query css votedisk
+##  STATE    File Universal Id                File Name Disk group
+--  -----    -----------------                --------- ---------
+ 1. ONLINE   7fe9ad5212f84fb5bf48192cede68454 (ORCL:CRSVOL1) [CRS]
+Located 1 voting disk(s).
+
+#Check database information
+[grid@racnode3 ~]$ srvctl  config database -d racdb
+Database unique name: racdb
+Database name: racdb
+Oracle home: /u01/app/oracle/product/11.2.0/dbhome_1
+Oracle user: oracle
+Spfile: +DATA/racdb/spfileracdb.ora
+Domain: 
+Start options: open
+Stop options: immediate
+Database role: PRIMARY
+Management policy: AUTOMATIC
+Server pools: racdb
+Database instances: racdb1,racdb2
+Disk Groups: DATA,FRA
+Services: 
+Database is administrator managed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

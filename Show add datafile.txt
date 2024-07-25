@@ -1,0 +1,41 @@
+﻿SQL> Create or replace procedure check_tablespaces(threshold_used number,size_file number, name_diskgroup varchar2)
+is
+l_sql varchar2(200);
+free_diskgroup number;
+begin
+for item in (SELECT a.tablespace_name,ROUND(100*(a.maxbytes - NVL (b.bytes_free, 0))/a.maxbytes,0) pct_used  FROM (  SELECT f.tablespace_name,
+                 SUM (f.bytes) bytes_alloc,
+                 SUM (
+                    DECODE (f.autoextensible,
+                            'YES', f.maxbytes,
+                            'NO', f.bytes))
+                    maxbytes
+            FROM dba_data_files f
+        GROUP BY tablespace_name) a,
+       (  SELECT f.tablespace_name, SUM (f.bytes) bytes_free
+            FROM dba_free_space f
+        GROUP BY tablespace_name) b
+WHERE a.tablespace_name = b.tablespace_name(+)
+and ROUND(100*(a.maxbytes - NVL (b.bytes_free, 0))/a.maxbytes,0) > threshold_used) loop
+begin
+            select round(free_mb/1024,0) into free_diskgroup from v$asm_diskgroup where name=name_diskgroup;
+           
+            if (size_file<free_diskgroup) then
+                        l_sql:='alter tablespace '||item.tablespace_name||' add datafile ' || '''+' || name_diskgroup ||''' size '||size_file||'G';
+--          execute immediate l_sql;
+                        dbms_output.put_line('tablespace_name '||item.tablespace_name||' add datafile '||l_sql);
+            else
+                        l_sql:='alter tablespace '||item.tablespace_name||' add datafile ' || '''+' || name_diskgroup ||''' size '||free_diskgroup||'G';
+                        dbms_output.put_line('tablespace_name '||item.tablespace_name||' add datafile '||l_sql);
+--          execute immediate l_sql;
+            end if; 
+end;
+end loop;
+ 
+end;
+/
+ 
+Test:
+ 
+Sql>set serveroutput on
+Sql>exec check_tablespaces(90,6,'DATANEW');

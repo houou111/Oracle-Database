@@ -1,0 +1,22 @@
+run {
+   allocate channel prmy1 type disk;
+   allocate channel prmy2 type disk;
+   allocate channel prmy3 type disk;
+   allocate channel prmy4 type disk;
+   allocate auxiliary channel stby type disk;
+   duplicate target database for standby from active database
+     spfile
+       parameter_value_convert 'pc01prmy','pc01sby1'
+       set db_unique_name='pc01sby1'
+       set db_file_name_convert='/pc01prmy/','/pc01sby1/'
+       set log_file_name_convert='/pc01prmy/','/pc01sby1/'
+       set control_files='/u01/app/oracle/oradata/pc01sby1.ctl'
+       set log_archive_max_processes='5'
+       set fal_client='pc01sby1'
+       set fal_server='pc01prmy'
+       set standby_file_management='AUTO'
+       set log_archive_config='dg_config=(pc01prmy,pc01sby1)'
+       set log_archive_dest_1='service=pc01prmy ASYNC 
+ valid_for=(ONLINE_LOGFILE,PRIMARY_ROLE) db_unique_name=pc01prmy'
+    ;
+    }

@@ -1,0 +1,8 @@
+1. A cssdagent failure results in Oracle Clusterware restarting the node.( check )
+
+2. Lỗi đồng bộ thời gian Crs
+
+3. Lỗi restart cluster ( HP - máy chủ )
+	vi /boot/grub/grub.conf
+	intel_iommu=igfx_off
+		Disable tính năng intelgraphic

@@ -1,0 +1,44 @@
+DROP DISKGROUP COBR14_DR INCLUDING CONTENTS;
+DROP DISKGROUP FRACOBR14_DR INCLUDING CONTENTS;
+DROP DISKGROUP T24R14_DR INCLUDING CONTENTS;
+
+alter diskgroup FRAT24R14_DR drop disk FRAT24R14_DR_0005,FRAT24R14_DR_0006,FRAT24R14_DR_0007,FRAT24R14_DR_0008,FRAT24R14_DR_0009,FRAT24R14_DR_0010,FRAT24R14_DR_0011,FRAT24R14_DR_0012;
+======FRAT24R14_DR
+/dev/rhdisk267
+/dev/rhdisk268
+/dev/rhdisk269
+/dev/rhdisk270
+/dev/rhdisk271
+/dev/rhdisk272
+/dev/rhdisk273
+/dev/rhdisk274
+
+======COBR14_DR
+/dev/rhdisk310
+/dev/rhdisk308
+/dev/rhdisk309
+/dev/rhdisk14
+/dev/rhdisk311
+
+======FRACOBR14_DR
+/dev/rhdisk315
+/dev/rhdisk312
+/dev/rhdisk313
+/dev/rhdisk314
+
+======T24R14_DR
+/dev/rhdisk262
+/dev/rhdisk263
+/dev/rhdisk264
+/dev/rhdisk265
+/dev/rhdisk266
+/dev/rhdisk261
+/dev/rhdisk260
+/dev/rhdisk259
+/dev/rhdisk258
+/dev/rhdisk257
+/dev/rhdisk256
+/dev/rhdisk255
+/dev/rhdisk254
+/dev/rhdisk253
+/dev/rhdisk252

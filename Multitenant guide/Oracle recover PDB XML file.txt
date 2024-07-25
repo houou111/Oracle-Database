@@ -1,0 +1,8 @@
+begin
+   dbms_pdb.recover(
+   pdb_descr_file => '/u01/dump/KONTUM.xml',
+   pdb_name => 'KONTUM',
+   filenames => '+DATAC1/KTM/963079599740D90EE053353410AC3559'
+ );
+end;
+/

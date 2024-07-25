@@ -1,0 +1,248 @@
+1. IP
+------------------------------------------------------------------------
+vi /etc/hosts
+# Public IPs
+10.100.100.80           dc-cardlinux-db01       dc-cardlinux-db01.techcombank.com.vn
+10.100.100.81           dc-cardlinux-db02       dc-cardlinux-db02.techcombank.com.vn
+
+2. Config ntp server
+---------------------------------------------------------------------------
+vi /etc/sysconfig/ntpd
+#OPTIONS="-g"
+OPTIONS="-x -g -p /var/run/ntpd.pid"
+
+
+3. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 68610528000
+kernel.shmall = 16700000
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+kernel.pid_max = 4000000
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 10
+vm.nr_hugepages = 20480
+vm.hugetlb_shm_group=1100
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+
+4. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+oracle soft nproc 16000
+oracle hard nproc 32000
+oracle soft nofile 1024
+oracle hard nofile 65536
+
+* soft memlock unlimited
+* hard memlock unlimited
+
+# vi /etc/pam.d/login
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+# vi /etc/security/limits.d/20-nproc.conf
+*         	soft    nproc     16000
+
+5. DISABLE FIREWALL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# systemctl stop firewalld
+# systemctl disable firewalld
+
+
+6. DISABLE SElinux: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/selinux/config 
+SELINUX=permissive
+
+
+
+7. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CREATE REPO:
+subscription-manager clean
+# mount /dev/cdrom /media/
+# cd /media/Packages
+# rpm -Uvh  deltarpm-*
+# rpm -Uvh  python-deltarpm-*
+# rpm -Uvh  createrepo-*
+# mkdir /u01/repo
+# cp * /u01/repo/
+# cd ..
+# rpm --import  RPM-GPG-KEY-redhat-beta  RPM-GPG-KEY-redhat-release
+# cd /u01/repo/
+# createrepo /u01/repo/
+
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///u01/repo/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# cd /u01/repo/
+# yum install -y java-1.6.0* glibc-devel.i686 lftp tigervnc-server compat-libcap1 binutils gcc gcc-c++ gcc.i386 glibc-devel glibc.i686 libgcc libstdc++ make compat-db libXp ksh sysstat libaio-devel compat-libstdc++-33 elfutils-libelf-devel 
+
+# for ODI
+yum install -y binutils compat-libcap1 compat-libstdc++-33 compat-libstdc++-33.i686 gcc gcc-c++ glibc glibc.i686 glibc-devel libaio libaio-devel libgcc libgcc.i686 libstdc++ libstdc++.i686 libstdc++-devel ksh make sysstat numactl numactl-devel libXext.i686 libXtst.i686 libXi.i686 openmotif openmotif22 redhat-lsb
+
+8. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++FOR ORACLE:
+# groupadd -g 1100 oinstall
+# useradd -m -u 1002 -g oinstall -d /home/oracle -s /bin/bash oracle
+# chage -m 0 -M 99999 -I -1 -E -1 oracle
+# usermod -e '' oracle
+# chage -l oracle
+
+
++FOR GGUSER:
+# useradd -m -u 101 -g oinstall -d /home/gguser -s /bin/bash gguser
+# chage -m 0 -M 99999 -I -1 -E -1 gguser
+# usermod -e '' gguser
+# chage -l gguser
+
+
+
+9. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/12.2.0/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /home/oracle/bin
+# chown oracle:oinstall /home/oracle/bin
+# chmod -R 775 /home/oracle/bin
+# chmod -R 775 /u01
+# chown oracle:oinstall -R  /u01
+
+
+11. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
++grid:
+$ vi /home/oracle/bin/grid
+ORACLE_SID=+ASM1
+export ORACLE_SID
+ORACLE_BASE=/u01/app/grid
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/11.2.0/grid
+export ORACLE_HOME
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+umask 022
+
+
++oracle:
+$ vi /home/oracle/bin/oracle
+ORACLE_BASE=/u01/app/oracle
+export ORACLE_BASE
+ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export ORACLE_HOME
+PATH=$PATH:$ORACLE_HOME/bin
+export PATH
+DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+export DUMP
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+umask 022
+
+
+12. Using raw device
+---------------------------------------------------------------------------
+vi /etc/udev/rules.d/12-dm-permissions.rules
+
+# Example content:
+ENV{DM_NAME}=="mpathb", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+...
+ENV{DM_NAME}=="mpaths", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+
+# STEP 4: RUN BELOW COMMANDS ONCE /ETC/UDEV/RULES.D/12-DM-PERMISSIONS.RULES FILE IS UPDATED
+$ udevadm control --reload-rules
+$ udevadm trigger
+
+
+13. INSTALLATION
+---------------------------------------------------------------------------
+. Install java
+----------------------------------------------
+yum install - y java-1.6.0-openjdk
+
+
+. Install grid
+----------------------------------------------
+# cd /u01
+# unzip database_112040_Linux-x86-64_3of7.zip
+# chown -R oracle:oinstall grid
+
+patch 19404309 ( copy cac file)
+cp grid/cvu_prereq.xml $ORA_SHIPS/grid/stage/cvu
+cp database/cvu_prereq.xml $ORA_SHIPS/database/stage/cvu
+
+# cd /u01/setup/grid
+# ./runInstaller -jreloc /usr/lib/jvm/jre-1.6.0-openjdk
+
+
+. Install database
+----------------------------------------------
+
+# unzip database_112040_Linux-x86-64_1of7.zip
+# unzip database_112040_Linux-x86-64_2of7.zip
+# chown -R oracle:oinstall database
+# cd /u01/setup/database
+# ./runInstaller -jreloc /usr/lib/jvm/jre-1.6.0-openjdk
+
+(bug tren 7.2)
+vi $ORACLE_HOME/sysman/lib/ins_emagent.mk
+search for the line $(MK_EMAGENT_NMECTL)
+Change it to $(MK_EMAGENT_NMECTL) -lnnz11
+
+cd $ORACLE_HOME
+mv jdk jdk.old
+ln -s /lib/jvm/java-1.6.0-openjdk-1.6.0.41 jdk
+
+
+
+14. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+patch to 11.2.0.4.17
+---user grid
+/u01/app/11.2.0/grid/OPatch/ocm/bin/emocmrsp -no_banner -output /tmp/file.rsp
+
+---user root
+/u01/app/11.2.0/grid/OPatch/opatch auto /u01/setup/23274134/ -ocmrf /tmp/file.rsp
+
+
+SQL> @$ORACLE_HOME/rdbms/admin/catbundle.sql psu apply
+
+alter system set db_block_checking=FULL sid='*';
+alter system set db_block_checksum=FULL sid='*';
+alter system set db_lost_write_protect=typical sid='*';
+
+

@@ -1,0 +1,9 @@
+1. Using toad
+----------------------------------------------------------------------------------------------
+SELECT DBMS_SQLTUNE.REPORT_SQL_MONITOR (sql_id         => '2hyh938cwzhkj',
+                                        event_detail   => 'YES',
+                                        report_level   => 'ALL')
+  FROM DUAL;
+  
+  
+Double click in grid tab

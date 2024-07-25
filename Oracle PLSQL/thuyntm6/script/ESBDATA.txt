@@ -1,0 +1,188 @@
+CREATE OR REPLACE FORCE VIEW SYS.DBA_TYPE_XMLSCHEMA_DEP
+(
+   TYPE_NAME,
+   TYPE_OWNER,
+   SCHEMA_URL,
+   SCHEMA_OWNER,
+   SCHEMA_OID
+)
+AS
+   SELECT DISTINCT po.name,
+                   u.name,
+                   x.schema_url,
+                   x.owner,
+                   x.schema_id
+     FROM dependency$ dep,
+          dba_xml_schemas x,
+          obj$ do,
+          obj$ po,
+          user$ u
+    WHERE     do.obj# = dep.d_obj#
+          AND po.obj# = dep.p_obj#
+          AND do.type# = 55
+          AND do.name = x.int_objname
+          AND po.type# = 13
+          AND po.owner# = u.user#;
+
+
+CREATE OR REPLACE PUBLIC SYNONYM DBA_TYPE_XMLSCHEMA_DEP FOR SYS.DBA_TYPE_XMLSCHEMA_DEP;
+
+
+GRANT SELECT ON SYS.DBA_TYPE_XMLSCHEMA_DEP TO SELECT_CATALOG_ROLE;
+
+
+CREATE OR REPLACE FORCE VIEW SYS.GDM_$PARAMETER
+(
+   NAME,
+   VALUE
+)
+AS
+   SELECT n.KSPPINM NAME, v.KSPPSTVL VALUE
+     FROM X$KSPPI n, X$KSPPCV v
+    WHERE v.INDX = n.INDX;
+
+
+CREATE OR REPLACE PUBLIC SYNONYM GDM$PARAMETER FOR SYS.GDM_$PARAMETER;
+
+
+GRANT SELECT ON SYS.GDM_$PARAMETER TO GDMMONITOR;
+
+
+CREATE OR REPLACE FORCE VIEW SYS.XML_TABNAME2OID_VIEW
+(
+   NAME,
+   OWNER,
+   OID$
+)
+AS
+   SELECT DISTINCT o.name, x.owner, o.oid$
+     FROM obj$ o, dba_xml_tables x, dba_users u
+    WHERE     x.table_name = o.name
+          AND x.owner = u.username
+          AND u.user_id = o.owner#
+          AND x.owner = 'XDB'
+   UNION
+   SELECT DISTINCT o.name, x.owner, o.oid$
+     FROM obj$ o, dba_xml_tab_cols x, dba_users u
+    WHERE     x.table_name = o.name
+          AND x.owner = u.username
+          AND u.user_id = o.owner#
+          AND x.owner = 'XDB';
+
+
+CREATE OR REPLACE PUBLIC SYNONYM XML_TABNAME2OID_VIEW FOR SYS.XML_TABNAME2OID_VIEW;
+
+
+GRANT SELECT ON SYS.XML_TABNAME2OID_VIEW TO SELECT_CATALOG_ROLE;
+====================================
+
+CREATE TABLE SYSTEM.SCHEMA_VERSION_REGISTRY$
+(
+  COMP_ID     VARCHAR2(30 BYTE)                 NOT NULL,
+  COMP_NAME   VARCHAR2(255 BYTE),
+  MRC_NAME    VARCHAR2(30 BYTE)                 NOT NULL,
+  MR_NAME     VARCHAR2(30 BYTE),
+  MR_TYPE     VARCHAR2(30 BYTE),
+  OWNER       VARCHAR2(30 BYTE),
+  VERSION     VARCHAR2(30 BYTE),
+  STATUS      VARCHAR2(11 BYTE),
+  CUSTOM1     NUMBER,
+  CUSTOM2     VARCHAR2(30 BYTE),
+  UPGRADED    CHAR(1 BYTE)                      DEFAULT 'N',
+  START_TIME  TIMESTAMP(6),
+  MODIFIED    TIMESTAMP(6)
+)
+TABLESPACE SYSTEM
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    40
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            FREELISTS        1
+            FREELIST GROUPS  1
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+SET DEFINE OFF;
+Insert into SYSTEM.SCHEMA_VERSION_REGISTRY$
+   (COMP_ID, COMP_NAME, MRC_NAME, MR_NAME, MR_TYPE, 
+    OWNER, VERSION, STATUS, UPGRADED, MODIFIED)
+ Values
+   ('SOAINFRA', 'SOA Infrastructure Services', 'PROD', 'SOAINFRA', 'SOAINFRA', 
+    'PROD_SOAINFRA', '11.1.1.7.0', 'VALID', 'N', TO_TIMESTAMP('5/27/2013 2:18:42.874353 PM','fmMMfm/fmDDfm/YYYY fmHH12fm:MI:SS.FF AM'));
+Insert into SYSTEM.SCHEMA_VERSION_REGISTRY$
+   (COMP_ID, COMP_NAME, MRC_NAME, MR_NAME, MR_TYPE, 
+    OWNER, VERSION, STATUS, UPGRADED, MODIFIED)
+ Values
+   ('MDS', 'Metadata Services', 'PROD', 'MDS', 'MDS', 
+    'PROD_MDS', '11.1.1.7.0', 'VALID', 'N', TO_TIMESTAMP('5/27/2013 2:17:48.608322 PM','fmMMfm/fmDDfm/YYYY fmHH12fm:MI:SS.FF AM'));
+COMMIT;
+
+
+
+
+CREATE OR REPLACE FORCE VIEW SYSTEM.SCHEMA_VERSION_REGISTRY
+(
+   COMP_ID,
+   COMP_NAME,
+   MRC_NAME,
+   MR_NAME,
+   MR_TYPE,
+   OWNER,
+   VERSION,
+   STATUS,
+   UPGRADED,
+   START_TIME,
+   MODIFIED
+)
+AS
+     SELECT comp_id,
+            comp_name,
+            mrc_name,
+            mr_name,
+            mr_type,
+            owner,
+            version,
+            status,
+            upgraded,
+            start_time,
+            modified
+       FROM SYSTEM.SCHEMA_VERSION_REGISTRY$
+   ORDER BY comp_id;
+
+
+CREATE OR REPLACE PUBLIC SYNONYM SCHEMA_VERSION_REGISTRY FOR SYSTEM.SCHEMA_VERSION_REGISTRY;
+
+
+GRANT SELECT ON SYSTEM.SCHEMA_VERSION_REGISTRY TO DBA;
+
+GRANT SELECT ON SYSTEM.SCHEMA_VERSION_REGISTRY TO PROD_MDS;
+
+GRANT SELECT ON SYSTEM.SCHEMA_VERSION_REGISTRY TO PROD_SOAINFRA;
+
+
+==========================
+ALTER INDEX ESBDATA.ACCOUNTING_TRANSACTION_IND2 REBUILD NOCOMPRESS NOPARALLEL TABLESPACE USERS;
+		
+ALTER INDEX ESBDATA.ACCOUNTING_TRANSACTION_IND3 REBUILD NOCOMPRESS NOPARALLEL TABLESPACE USERS;
+
+ALTER INDEX ESBDATA.ACCOUNTING_TRANSACTION_U01 REBUILD NOCOMPRESS NOPARALLEL TABLESPACE USERS;		
+
+ALTER INDEX ESBDATA.ACC_TRAN_STATUS_IDX REBUILD NOCOMPRESS NOPARALLEL TABLESPACE USERS;
+
+ALTER INDEX ESBDATA.SYS_C0023728 REBUILD NOCOMPRESS NOPARALLEL TABLESPACE USERS;

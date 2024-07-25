@@ -1,0 +1,63 @@
+
+
+1. Shutdown DB, DBconsole (if any), Cluster, ASMlib (if any in Linux)
+---------------------------------------------------------------------
+As RDBMS owner id “oracle”:
+$ srvctl stop database -d -o immediate #– run once in any node
+$ emctl stop dbconsole #– run on all nodes
+As UNIX/Linux “root”:
+# /bin/crsctl stop crs #– run on all nodes
+# /bin/crsctl disable crs #– run on all nodes
+# /etc/init.d/oracleasm stop #– run on all nodes
+# /etc/init.d/oracleasm disable #– run on all nodes
+
+
+2.Backup filesystem for GI ORACLE_HOME & RDBMS ORACLE_HOME
+--------------------------------------------------------------------
+
+
+3. O/S upgrade
+--------------------------------------------------------------------
+
+
+4. Upgrade ASMlib (if any in Linux, run on all nodes)
+--------------------------------------------------------------------
+# rpm -Uvh oracleasm-support-xxx
+# rpm -Uvh oracleasm-2.6.xxx
+# rpm -Uvh oracleasmlib-xxx
+# /etc/init.d/oracleasm enable
+# /etc/init.d/oracleasm lisdisks
+
+
+5. Relink RDBMS ORACLE_HOME Binary
+--------------------------------------------------------------------
+Note: complete full steps in onde node, then proceed to next
+As RDBMS owner id “oracle”:
+$ /bin/relink all
+
+
+6. Relink GI ORACLE_HOME Binary
+--------------------------------------------------------------------
+Note: complete full steps in onde node, then proceed to next
+As UNIX/Linux “root”:
+# cd /crs/install
+# ./rootcrs.pl -unlock
+
+As RDBMS owner id “oracle”:
+$ cd /bin
+$ ./relink all
+
+As UNIX/Linux “root”:
+# cd /rdbms/install
+# ./rootadd_rdbms.sh
+# cd /crs/install
+# ./rootcrs.pl -patch
+
+
+7. Enable CRS auto-startup and start CRS on all nodes
+--------------------------------------------------------------------
+Note: complete full steps in onde node, then proceed to next
+As UNIX/Linux “root”:
+# /bin/crsctl start crs
+# /bin/crsctl enable crs
+

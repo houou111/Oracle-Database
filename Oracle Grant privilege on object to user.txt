@@ -1,0 +1,45 @@
+﻿
+# Tạo DDL grant quyền cho các object
+SQL> Select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO compare;'
+From all_objects
+Where owner = 'IBPS'
+And object_type='PACKAGE';
+
+
+
+SQL> 
+Select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO FOJBSV;'
+From all_objects
+Where owner = 'BOJBSV'
+And object_type='PACKAGE';
+
+
+Select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO BOJBSV;'
+From all_objects
+Where owner = 'FOJBSV'
+And object_type='PACKAGE';
+
+
+Select distinct 'GRANT select,insert,delete,update ON 'owner'.'object_name' TO BOJBSV;'
+From all_objects
+Where owner = 'FOJBSV'
+And object_type like '%TABLE%';
+
+
+
+grant execute on BOJBSV.PKG_LOAN to FOJBSV;
+
+
+
+Select owner,object_name,object_type
+from dba_objects
+where owner = ('BOJBSV','FOJBSV')
+and object_name like '%2023%'
+
+drop PROCEDURE BOJBSV.BATCH_CUSTOMER_TOTALASSET_MKT
+
+
+BATCH_CUSTOMER_TOTALASSET_MKT
+
+
+PROCEDURE

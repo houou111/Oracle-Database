@@ -1,0 +1,24 @@
+. t24r14dr
+
+
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE cancel;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+rman  auxiliary  dbsnmp/PAssw0rd@t24drodg  target dbsnmp/PAssw0rd@t24r14dr
+
+rman TARGET / AUXILIARY dbsnmp/PAssw0rd@t24drodg
+
+RMAN > run {
+ALLOCATE CHANNEL tgt10 TYPE DISK;
+ALLOCATE CHANNEL tgt20 TYPE DISK;
+ALLOCATE CHANNEL tgt30 TYPE DISK;
+ALLOCATE AUXILIARY CHANNEL dup1 TYPE DISK;
+ALLOCATE AUXILIARY CHANNEL dup2 TYPE DISK;
+ALLOCATE AUXILIARY CHANNEL dup3 TYPE DISK;
+duplicate target database for standby from active database nofilenamecheck;
+}
+
+start time:  Sat Dec 23 10:54:30 2017
+Sun Dec 24 10:46:21 2017
+
+'+T24R14_DC/t24r14dr/tempfile','/datat24/T24DR/datafile','+T24R14_DR/t24r14dr/tempfile','/datat24/T24DR/datafile'

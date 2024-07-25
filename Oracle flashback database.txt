@@ -1,0 +1,64 @@
+shutdown immediate 
+startup mount 
+alter database flashback on; (off) 
+alter database open;
+
+
+CREATE RESTORE POINT before_import GUARANTEE FLASHBACK DATABASE;
+
+CREATE RESTORE POINT before_test2 GUARANTEE FLASHBACK DATABASE;
+
+
+
+SET PAGESIZE 60
+SET LINESIZE 300
+SET VERIFY OFF
+ 
+COLUMN scn FOR 999,999,999,999,999
+COLUMN Incar FOR 99
+COLUMN name FOR A25
+COLUMN storage_size FOR 999,999,999,999
+COLUMN guarantee_flashback_database FOR A3
+ 
+SELECT 
+      database_incarnation# as Incar,
+      scn,
+      name,
+      time,
+      storage_size,
+      guarantee_flashback_database
+FROM 
+      v$restore_point
+ORDER BY 4
+/
+
+
+drop restore point before_upgrade_g2_27082022;
+
+select * from V$FLASHBACK_DATABASE_LOG;
+
+flashback database to restore point BEFORE_INDEXX;
+
+-- check flashback log
+SELECT log# as "Log No", thread# as "Thread No", sequence# as "Seq No", name, bytes/1024/1024 as "Size(MB)", first_change# as "First Chg No", first_time from v$flashback_database_logfile order by first_time;
+
+
+
+alter pluggable database QUANGBINH_TEST close immediate instances=all;
+FLASHBACK PLUGGABLE DATABASE QUANGBINH_TEST TO RESTORE POINT before_import;
+ALTER PLUGGABLE DATABASE QUANGBINH_TEST OPEN RESETLOGS;
+ALTER PLUGGABLE DATABASE QUANGBINH_TEST OPEN instances=all;
+
+
+
+
+
+alter database recover managed standby database cancel;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+
+
+alter pluggable database BACGIANG_TEST close immediate instances=all;
+FLASHBACK PLUGGABLE DATABASE BACGIANG_TEST TO RESTORE POINT before_import;
+ALTER PLUGGABLE DATABASE BACGIANG_TEST OPEN RESETLOGS;
+ALTER PLUGGABLE DATABASE BACGIANG_TEST OPEN instances=all;

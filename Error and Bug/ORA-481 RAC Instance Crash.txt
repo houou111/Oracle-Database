@@ -1,0 +1,8 @@
+1. Bug 11875294 has been fixed in 11.2.0.3, workaround is:
+Disable read-mostly locking by setting:
+_gc_read_mostly_locking=FALSE.
+Please refer Document 11875294.8 for more information.
+
+2. Fix HAIP issue per Document 1383737.1
+
+

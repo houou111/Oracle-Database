@@ -1,0 +1,164 @@
+﻿I. Kiểm tra chế độ archivelog
+-------------------------------------
+SQL> archive log list
+
+alter session set nls_date_format="yyyy-mm-dd hh24:mi:ss"
+
+select * from (
+SELECT SEQUENCE#, FIRST_TIME, NEXT_TIME FROM V$ARCHIVED_LOG ORDER BY SEQUENCE# desc )
+where rownum <200
+
+
+II. Ước lượng archivelog sinh ra mỗi ngày( nếu chưa dùng archivelog mode)
+---------------------------------------------------------------------------
+Select bytes/1024/1024 "size_redolog" from v$log;
+
+
+
+SELECT  trunc(first_time) ARCHIVED_DATE ,count(1)*(Select bytes/1024/1024/1024 from v$log where rownum=1) Size_GB
+From v$log_history group by trunc(first_time) order by 1;
+
+
+
+set lines 120;
+set pages 999;
+SELECT
+to_char(first_time,'YYYY-MON-DD') day,
+to_char(sum(decode(to_char(first_time,'HH24'),'00',1,0)),'99') "00",
+to_char(sum(decode(to_char(first_time,'HH24'),'01',1,0)),'99') "01",
+to_char(sum(decode(to_char(first_time,'HH24'),'02',1,0)),'99') "02",
+to_char(sum(decode(to_char(first_time,'HH24'),'03',1,0)),'99') "03",
+to_char(sum(decode(to_char(first_time,'HH24'),'04',1,0)),'99') "04",
+to_char(sum(decode(to_char(first_time,'HH24'),'05',1,0)),'99') "05",
+to_char(sum(decode(to_char(first_time,'HH24'),'06',1,0)),'99') "06",
+to_char(sum(decode(to_char(first_time,'HH24'),'07',1,0)),'99') "07",
+to_char(sum(decode(to_char(first_time,'HH24'),'08',1,0)),'99') "0",
+to_char(sum(decode(to_char(first_time,'HH24'),'09',1,0)),'99') "09",
+to_char(sum(decode(to_char(first_time,'HH24'),'10',1,0)),'99') "10",
+to_char(sum(decode(to_char(first_time,'HH24'),'11',1,0)),'99') "11",
+to_char(sum(decode(to_char(first_time,'HH24'),'12',1,0)),'99') "12",
+to_char(sum(decode(to_char(first_time,'HH24'),'13',1,0)),'99') "13",
+to_char(sum(decode(to_char(first_time,'HH24'),'14',1,0)),'99') "14",
+to_char(sum(decode(to_char(first_time,'HH24'),'15',1,0)),'99') "15",
+to_char(sum(decode(to_char(first_time,'HH24'),'16',1,0)),'99') "16",
+to_char(sum(decode(to_char(first_time,'HH24'),'17',1,0)),'99') "17",
+to_char(sum(decode(to_char(first_time,'HH24'),'18',1,0)),'99') "18",
+to_char(sum(decode(to_char(first_time,'HH24'),'19',1,0)),'99') "19",
+to_char(sum(decode(to_char(first_time,'HH24'),'20',1,0)),'99') "20",
+to_char(sum(decode(to_char(first_time,'HH24'),'21',1,0)),'99') "21",
+to_char(sum(decode(to_char(first_time,'HH24'),'22',1,0)),'99') "22",
+to_char(sum(decode(to_char(first_time,'HH24'),'23',1,0)),'99') "23"
+from
+v$log_history
+GROUP by
+to_char(first_time,'YYYY-MON-DD')
+order by 1;
+
+
+
+III. Kiểm tra dung lượng phát sinh của archivelog
+---------------------------------------------------------------------------
+#Mỗi ngày
+SQL> select trunc(COMPLETION_TIME) TIME, SUM(BLOCKS * BLOCK_SIZE)/1024/1024/1024 SIZE_GB 
+	 from V$ARCHIVED_LOG group by trunc (COMPLETION_TIME) order by 1;
+	
+ARCHIVED_DATE SIZE(GB)
+------------- ----------
+26-Jan-11     293.642249
+27-Jan-11     260.688605
+28-Jan-11     301.309071
+29-Jan-11     278.268036
+30-Jan-11     885.013779
+
+#hoặc
+SQL>SELECT TRUNC(FIRST_TIME), round(SUM((BLOCKS*BLOCK_SIZE)/1024/1024/1024),0) AS TOTAL
+	FROM V$ARCHIVED_LOG
+	WHERE 1=1
+	--and TRUNC(FIRST_TIME) BETWEEN TO_DATE('01/07/2012','DD/MM/YYYY') AND TO_DATE('31/08/2012','DD/MM/YYYY')
+	GROUP BY TRUNC(FIRST_TIME)
+	ORDER BY 1;
+
+
+#Mỗi giờ
+SQL> alter session set nls_date_format = 'YYYY-MM-DD HH24';
+
+Session altered.
+
+SQL> 	SELECT TRUNC(COMPLETION_TIME, 'HH') ARCHIVED_DATE_HOUR, SUM(BLOCKS * BLOCK_SIZE)/1024/1024 Size_MB
+		FROM V$ARCHIVED_LOG
+		GROUP BY TRUNC(COMPLETION_TIME, 'HH')
+		ORDER BY 1;
+
+ARCHIVED_DATE SIZE(MB)
+------------- ----------
+2011-01-26 00 13304.7856
+2011-01-26 01 7262.39209
+2011-01-26 02 4444.78613
+2011-01-26 03 7229.76367
+2011-01-26 04 9936.16553
+2011-01-26 05 6468.24316
+
+
+#Mỗi ngày, mỗi instance(RAC)
+SQL> SELECT
+            TRUNC(COMPLETION_TIME) ARCHIVED_DATE,
+            THREAD#,
+            SUM(BLOCKS * BLOCK_SIZE) / 1024 / 1024 SIZE_IN_MB
+       FROM V$ARCHIVED_LOG
+      GROUP BY TRUNC(COMPLETION_TIME), THREAD#
+      ORDER BY 1, 2;
+
+ARCHIVED_    THREAD# SIZE_IN_MB
+--------- ---------- ----------
+26-JAN-11          1 148411.591
+26-JAN-11          2 145230.658
+27-JAN-11          1 171689.525
+27-JAN-11          2 88999.0806
+28-JAN-11          1 168748.924
+28-JAN-11          2 132560.147
+29-JAN-11          1 153350.945
+29-JAN-11          2 124917.091
+30-JAN-11          1 39691.7251
+30-JAN-11          2 48809.6528
+31-JAN-11          1 125617.452
+31-JAN-11          2 119977.382
+01-FEB-11          1  46182.313
+01-FEB-11          2 235871.665
+02-FEB-11          1 39296.0962
+02-FEB-11          2  84730.332
+:
+
+
+
+Archivelog size by hour
+select
+   Start_Date,
+   Start_Time,
+   Num_Logs,
+   Round(Num_Logs * (Vl.Bytes / (1024 * 1024)), 2) AS Mbytes,
+   Vdb.NAME AS Dbname
+FROM 
+   (SELECT To_Char(Vlh.First_Time, 'YYYY-MM-DD') AS Start_Date, To_Char(Vlh.First_Time, 'HH24') || ':00' AS Start_Time,
+   COUNT(Vlh.Thread#) Num_Logs
+FROM 
+   V$log_History Vlh
+GROUP BY 
+   To_Char(Vlh.First_Time, 'YYYY-MM-DD'),
+   To_Char(Vlh.First_Time, 'HH24') || ':00') Log_Hist,
+   V$log Vl,
+   V$database Vdb
+WHERE 
+   Vl.Group# = 1
+ORDER BY 
+   Log_Hist.Start_Date,
+   Log_Hist.Start_Time;
+
+
+
+--- Between time
+
+select TRUNC(FIRST_TIME), round(SUM((BLOCKS*BLOCK_SIZE)/1024/1024/1024),0) AS TOTAL
+FROM V$ARCHIVED_LOG
+WHERE TRUNC(FIRST_TIME) BETWEEN TO_DATE('01/07/2012′,'DD/MM/YYYY') AND TO_DATE('31/08/2012′,'DD/MM/YYYY')
+GROUP BY TRUNC(FIRST_TIME)
+ORDER BY 1;

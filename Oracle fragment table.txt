@@ -1,0 +1,82 @@
+1. Check fragment table
+-----------------------------------------
+set lines 200
+set pages 200
+col owner for a15
+col table_name for a30
+col "Fragmented size (mb)" for 999,999.00
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2) "Reclaim size (mb)",
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "Reclaimable space % " 
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>10
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS')
+order by 1,6 desc;
+
+
+2. Gather table
+-----------------------------------------
+SET LINES 1000
+SET PAGES 1000
+SELECT 'EXECUTE DBMS_STATS.GATHER_TABLE_STATS(OWNNAME =>'''||OWNER||''',TABNAME =>'''||TABLE_NAME||''',GRANULARITY => ''AUTO'',ESTIMATE_PERCENT=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE,FORCE=>TRUE,DEGREE => 4 );'
+FROM DBA_TABLES 
+WHERE ROUND((BLOCKS*8/1024),2)>0
+AND TABLE_NAME NOT IN ( SELECT TABLE_NAME FROM DBA_TAB_PARTITIONS)
+AND  ((ROUND((BLOCKS*8/1024),2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2))/ROUND((BLOCKS*8/1024),2))*100 -10>30
+AND ROUND((BLOCKS*8)/1024,2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2)>100
+AND OWNER NOT IN ('SYS')
+ORDER BY OWNER;
+
+SELECT 'EXECUTE DBMS_STATS.GATHER_TABLE_STATS(OWNNAME =>'''||a.TABLE_OWNER||''',TABNAME =>'''||a.TABLE_NAME||''',partname =>'''||a.PARTITION_NAME||''',DEGREE => 4 );'
+from dba_tab_partitions a,  dba_users b, 
+(
+select  table_name
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+) c
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a. TABLE_NAME =c.table_name
+order by 1;
+
+
+
+3. Fix for table
+-----------------------------------------
+SELECT 'ALTER TABLE '||OWNER||'.'||TABLE_NAME ||' MOVE  TABLESPACE '||DEFAULT_TABLESPACE||'  ONLINE PARALLEL 2;'
+FROM   DBA_TABLES A,  DBA_USERS B
+WHERE  A.OWNER=B.USERNAME
+AND TABLE_NAME not in ( Select table_name from dba_tab_partitions)
+AND A.OWNER NOT IN ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+AND ROUND((BLOCKS*8/1024),2)>0
+AND  ((ROUND((BLOCKS*8/1024),2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2))/ROUND((BLOCKS*8/1024),2))*100 -10>10
+AND ROUND((BLOCKS*8)/1024,2)-ROUND((NUM_ROWS*AVG_ROW_LEN/1024/1024),2)>100
+ORDER BY OWNER;
+
+
+
+4. Fix for partition table
+-----------------------------------------
+select distinct'ALTER TABLE ' ||TABLE_OWNER|| '.'||c.TABLE_NAME||' MOVE PARTITION '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||' PARALLEL 4;'
+from dba_tab_partitions a,  dba_users b, 
+(
+select  table_name
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+) c
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a. TABLE_NAME =c.table_name
+order by 1;
+
+
+
+
+

@@ -1,0 +1,26 @@
+
+--Tạo Trigger
+
+SQL>	CREATE TRIGGER scott.emp_permit_changes
+		BEFORE
+		DELETE OR INSERT OR UPDATE
+		ON scott.emp
+		.
+		.
+		pl/sql block 
+		.
+		.
+				
+		
+--Enable/Disable Trigger
+
+SQL> ALTER TRIGGER reorder ENABLE;
+
+SQL> ALTER TRIGGER reorder DISABLE;
+
+
+--Enable/Disable Trigger on table
+
+SQL> ALTER TABLE inventory ENABLE ALL TRIGGERS;
+	
+SQL> ALTER TABLE inventory DISABLE ALL TRIGGERS;

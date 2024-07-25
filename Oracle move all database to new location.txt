@@ -1,0 +1,58 @@
+1. Mount san to new mountpoint
+----------------------------------------------------------------------
+
+
+2. Open DB in mount mode ( disable MRP process )
+----------------------------------------------------------------------
+Startup mount
+
+
+
+3. Backup as copy datafile
+----------------------------------------------------------------------
+RMAN>
+run
+{
+SET NEWNAME FOR DATABASE TO '<new_mount_point>/%b';
+BACKUP AS COPY DATABASE;
+}
+
+
+RMAN>
+switch database to copy;
+
+
+
+RMAN>
+recover database;
+
+
+4. Move controlfile ( backup spfile- pfile first) and restart DB
+---------------------------------------------------------------------
+alter system set controlfile='','';
+alter system set control_files='<new_mount_point>/control01.ctl','<new_mount_point>/control02.ctl' scope=spfile;
+
+
+shutdown immediate
+
+
+startup nommount
+
+restore controlfile from '/u01/app/oracle/fast_recovery_area/FLEXDG/controlfile/control02.ctl';
+
+alter database mount;
+
+
+5. Add new standby redo logfile and remove old standby redo logfile
+---------------------------------------------------------------------
+
+
+
+
+
+6. change parameter create file dest and enable MRP
+---------------------------------------------------------------------
+show parameter create
+
+alter system set 
+RMAN> delete copy of database;

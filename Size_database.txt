@@ -1,0 +1,16 @@
+
+#Dung lượng database ( tính theo datafile)
+SQL> Select sum(bytes / (1024*1024*1024)) "DB Size in GB" from dba_data_files;
+
+#Dung lượng database ( tính tất cả các thành phần)
+
+SQL> Select DF.TOTAL/1073741824 "DataFile Size GB", LOG.TOTAL/1073741824 "Redo Log Size GB", CONTROL.TOTAL/1073741824 "Control File Size GB", (DF.TOTAL + LOG.TOTAL + CONTROL.TOTAL)/ 1073741824 "Total Size GB" 
+	 From dual, (select sum(a.bytes) TOTAL from dba_data_files a) DF, (select sum(b.bytes) TOTAL from v$log b) LOG, (select sum((cffsz+1)*cfbsz) TOTAL from x$kcccf c) CONTROL;
+	 
+#Hoặc
+
+SQL> Select sum(bytes)/1024/1024/1024 from dba_data_files 
++
+SQL> Select sum(bytes)/1024/1024/1024 from dba_temp_files
++
+SQL> Select sum(bytes)/1024/1024/1024 from v$log 

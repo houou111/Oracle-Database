@@ -1,0 +1,11 @@
+set linesize 170 
+set pagesize 999 
+set long 30000000 
+longchunksize 1000 
+serverout on 
+variable cap_rpt clob; 
+exec :cap_rpt := dbms_workload_capture.report(capture_id=>26, format=> dbms_workload_capture.type_html);
+ select :cap_rpt from dual; 
+ spool /tmp/capture_n1.html 
+ print :cap_rpt 
+ spool off

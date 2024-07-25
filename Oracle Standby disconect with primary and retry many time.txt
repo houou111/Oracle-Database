@@ -1,0 +1,18 @@
+1. Clear standby redo log
+
+Alter database clear log group 111;
+
+
+2. Copy archivelog from primary to standby 
+- copy via file system ( if ASM bug)
+
+cp xxxxxxxxx /u01/dump
+
+
+3. Catalog archivelog
+
+catalog start with '/u01/dump/';
+
+
+
+4. enable MRP

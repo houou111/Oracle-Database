@@ -1,0 +1,48 @@
+-- Enable row movement.
+ALTER TABLE scott.emp ENABLE ROW MOVEMENT;
+
+-- Recover space and amend the high water mark (HWM).
+ALTER TABLE scott.emp SHRINK SPACE;
+
+-- Recover space, but don't amend the high water mark (HWM).
+ALTER TABLE scott.emp SHRINK SPACE COMPACT;
+
+-- Recover space for the object and all dependant objects.
+ALTER TABLE scott.emp SHRINK SPACE CASCADE;
+
+
+-- Shrink a LOB segment (basicfile only until 21c).
+ALTER TABLE table_name MODIFY LOB(lob_column) (SHRINK SPACE);
+ALTER TABLE table_name MODIFY LOB(lob_column) (SHRINK SPACE CASCADE);
+
+-- Shrink an IOT overflow segment.
+ALTER TABLE iot_name OVERFLOW SHRINK SPACE;
+
+
+
+ALTER TABLE scott.emp SHRINK SPACE;
+ALTER TABLE scott.emp ENABLE ROW MOVEMENT;
+
+ALTER DATABASE DATAFILE '/home/tibero/tibero6/database/db_test/usr001.dtf' RESIZE 1G;
+ALTER DATABASE DATAFILE '/home/tibero/tibero6/database/db_test/usr002.dtf' RESIZE 1G;
+
+
+
+/home/tibero/tibero6/database/db_test/system001.dtf
+/home/tibero/tibero6/database/db_test/undo001.dtf
+/home/tibero/tibero6/database/db_test/usr001.dtf
+/home/tibero/tibero6/database/db_test/tpr_ts.dtf
+/home/tibero/tibero6/database/db_test/tblhnx001.dbf
+/home/tibero/tibero6/database/db_test/users_001.dtf
+/home/tibero/tibero6/database/db_test/TS_BOJBSV_A01_001.dtf
+/home/tibero/tibero6/database/db_test/TS_FOJBSV_A01_001.dtf
+/home/tibero/tibero6/database/db_test/TS_QUOTE_A01_001.dtf
+/home/tibero/tibero6/database/db_test/usr002.dtf
+
+
+select 'alter table ' ||table_owner||'.'||table_name || ' modify default attributes lob ('||column_name ||') (tablespace '||DEFAULT_TABLESPACE||') ; '
+from dba_part_lobs a, dba_users b 
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by a.TABLE_OWNER;

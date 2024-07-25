@@ -1,0 +1,95 @@
+Kịch bản bắt câu lệnh gây lỗi ORA-00001
+
+1.	Tạo bảng test để insert dữ liệu vào
+SQL> CREATE TABLE dba01.test_unq_const_vio
+  (
+     id     CHAR (2) PRIMARY KEY,
+     name   VARCHAR2 (90)
+  );
+
+Table created.
+
+2.	Tạo bảng lưu log lỗi
+SQL> CREATE TABLE dba01.unq_const_vio_errors
+	(
+		id             NUMBER,
+		exec_date      DATE,
+		user_name      VARCHAR2 (30),
+		err_code       NUMBER,
+		captured_sql   VARCHAR2 (4000)
+	);
+
+Table created.
+
+3.	Tạo sequence cho bảng lưu log lỗi
+SQL> CREATE SEQUENCE dba01.unq_const_vio_seq MINVALUE 1
+		MAXVALUE 9999999999999999999999999999
+		INCREMENT BY 1
+		START WITH 1
+		CACHE 20
+		NOORDER
+		NOCYCLE;
+
+Sequence created.
+
+4.	Tạo trigger bắt lỗi ORA-00001
+SQL> CREATE OR REPLACE TRIGGER dba01.unq_const_vio
+     AFTER SERVERERROR 
+     ON SCHEMA
+  DECLARE
+     v_id         NUMBER;
+     v_stmt       LONG;
+     v_sql_text   ora_name_list_t;
+     v_num        NUMBER;
+     v_err_code   NUMBER := ora_server_error (1);
+  BEGIN
+     v_num := ora_sql_txt (v_sql_text);
+  
+     FOR i IN 1 .. v_num
+     LOOP
+       v_stmt := v_stmt || v_sql_text (i);
+     END LOOP;
+  
+     FOR i IN 1 .. ora_server_error_depth
+     LOOP
+        IF (ora_server_error (i) IN ('1'))
+        THEN
+           SELECT unq_const_vio_seq.NEXTVAL INTO v_id FROM DUAL;    --- seq no's
+  
+           INSERT INTO unq_const_vio_errors (id,
+                                             exec_date,
+                                             user_name,
+                                             err_code,
+                                             captured_sql)
+           VALUES (v_id,SYSDATE, ora_login_user, v_err_code, v_stmt);
+           COMMIT;
+        END IF;
+     END LOOP;
+  END unq_const_vio;
+  /
+
+Trigger created.
+
+5.	Insert dữ liệu và giả lập lỗi unique constraint () violated
+SQL> INSERT INTO dba01.test_unq_const_vio VALUES ('hi', 'Duong Duc Dat');
+
+1 row created.
+
+SQL>  INSERT INTO dba01.test_unq_const_vio VALUES ('hi', 'Duong Duc Dat');
+INSERT INTO dba01.test_unq_const_vio VALUES ('hi', 'Duong Duc Dat')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (DBA01.SYS_C0011094) violated
+
+6.	Kiểm tra bảng log lỗi
+SQL> set line 120
+SQL> col user_name for a10
+SQL> col ERR_CODE for 999999
+SQL> col CAPTURED_SQL for a50
+SQL> ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY MM DD HH24:MI:SS'; 
+Session altered.
+
+DBA01@maskdb1 > SELECT * FROM dba01.unq_const_vio_errors;
+ID EXEC_DATE           USER_NAME  ERR_CODE CAPTURED_SQL
+-- ------------------- ---------- -------- ------------------------------------------------------------------
+ 1 2018 05 24 13:39:22 DBA01             1 INSERT INTO dba01.test_unq_const_vio VALUES ('hi','Duong Duc Dat')

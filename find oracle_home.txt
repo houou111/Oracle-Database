@@ -1,0 +1,45 @@
+*** Using root
+
+I. Linux & Solaris
+------------------------------
+$ pgrep  -lf _pmon_
+
+12546 ora_pmon_mysid
+ 
+ORACLE_SID is mysid
+ 
+$ pwdx 12546
+
+12586: /u01/oracle/10.2.0.4/ee1/dbs
+
+
+oracle ALL = NOPASSWD: /usr/bin/pwdx
+
+
+II.AIX
+------------------------------
+$ ps -ef | grep pmon
+
+ora1024   262366        1   0   Mar 23      -  0:12 ora_pmon_mysid
+ 
+ORACLE_SID is mysid
+ 
+$ ls -l /proc/262366/cwd
+
+lr-x------   2 ora1024  dba  0 Mar 23 19:31 cwd -> /data/opt/app/product/10.2.0.4/db_1/dbs/
+ 
+
+ 
+II.HP/UX
+------------------------------
+
+$ ps -ef | grep pmon
+ 
+ora1024 25441     1  0  Mar 21  ?         0:24 ora_pmon_itanic10
+ 
+ORACLE_SID is itanic10
+ 
+$ pfiles 25441 | grep  bin
+ 
+25441:                  /opt/ora/app/db_1/bin/oracle
+ 

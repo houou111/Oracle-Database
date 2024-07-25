@@ -1,0 +1,202 @@
+-- thuc hien multilplex controlfile
+
+mkdir -p /u01/app/oracle/oradata
+
+SQL> shutdown immediate
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+SQL>
+
+mo 1 session khac thuc hien copy controlfile tu ASM sang file system
+
+[oracle@student ~]$ . .bash_profileasm
+[oracle@student ~]$ asmcmd
+ASMCMD> cd data
+ASMCMD> ls
+ASM/
+DB_UNKNOWN/
+ORCL/
+ASMCMD> cd orcl
+ls
+ASMCMD> CONTROLFILE/
+DATAFILE/
+ONLINELOG/
+TEMPFILE/
+spfileorcl.ora
+ASMCMD> cd controlfile
+ASMCMD> pwd
++data/orcl/controlfile
+ASMCMD> ls
+Current.260.851601003
+ASMCMD> cp Current.260.851601003 /u01/app/oracle/oradata
+copying +data/orcl/controlfile/Current.260.851601003 -> /u01/app/oracle/oradata/Current.260.851601003
+ASMCMD> exit
+[oracle@student ~]$ cd /u01/app/oracle/oradata
+[oracle@student oradata]$ ls
+Current.260.851601003
+[oracle@student oradata]$ mv Current.260.851601003 controlfile3.ctl
+[oracle@student oradata]$ ls
+controlfile3.ctl
+[oracle@student oradata]$
+
+
+-- mo 1 session Oracle Instance
+
+SQL> startup nomount
+ORACLE instance started.
+
+Total System Global Area  627732480 bytes
+Fixed Size                  1338336 bytes
+Variable Size             339739680 bytes
+Database Buffers          281018368 bytes
+Redo Buffers                5636096 bytes
+SQL> show parameter control
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+control_file_record_keep_time        integer     7
+control_files                        string      +DATA/orcl/controlfile/current
+                                                 .260.851601003, +FRA/orcl/cont
+                                                 rolfile/current.256.851601003
+control_management_pack_access       string      DIAGNOSTIC+TUNING
+SQL> alter system set control_files='+DATA/orcl/controlfile/current.260.851601003','+FRA/orcl/controlfile/current.256.851601003','/u01/app/oracle/oradata/controlfile3.ctl' scope=spfile;
+
+System altered.
+
+SQL> shutdown database;
+SP2-0717: illegal SHUTDOWN option
+SQL> shutdown immediate
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area  627732480 bytes
+Fixed Size                  1338336 bytes
+Variable Size             339739680 bytes
+Database Buffers          281018368 bytes
+Redo Buffers                5636096 bytes
+Database mounted.
+Database opened.
+SQL>
+
+
+-- cau hinh FRA
+
+SQL> show parameter db_recover
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_recovery_file_dest                string      +FRA
+db_recovery_file_dest_size           big integer 10G
+
+SQL> alter system set db_recovery_file_dest_size=15G scope=both;
+
+System altered.
+
+SQL>
+
+
+-- multiplex redolog member
+
+SQL> select GROUP#,MEMBER from v$logfile;
+
+
+    GROUP# MEMBER
+---------- --------------------------------------------------
+         3 +DATA/orcl/onlinelog/group_3.263.851601013
+         3 +FRA/orcl/onlinelog/group_3.259.851601013
+         2 +DATA/orcl/onlinelog/group_2.262.851601009
+         2 +FRA/orcl/onlinelog/group_2.258.851601011
+         1 +DATA/orcl/onlinelog/group_1.261.851601005
+         1 +FRA/orcl/onlinelog/group_1.257.851601007
+
+6 rows selected.
+                                        DATE
+
+SQL> select BYTES/1024/1024 from v$log;
+
+BYTES/1024/1024
+---------------
+             50
+             50
+             50
+
+SQL>
+
+thu hien add logfile group 4 co 1 redolog member
+
+
+SQL> alter database add logfile group 4 ('+DATA') size 50M;
+
+Database altered.
+
+SQL>ALTER DATABASE ADD LOGFILE MEMBER '/u01/app/oracle/oradata/redo4_2.log' TO GROUP 4;
+
+-- chuyen sang archivelog mode
+
+SQL> archive log list
+Database log mode              No Archive Mode
+Automatic archival             Disabled
+Archive destination            USE_DB_RECOVERY_FILE_DEST
+Oldest online log sequence     85
+Current log sequence           87
+SQL> shutdown immediate
+Database closed.
+ORA-00210: cannot open the specified control file
+ORA-00202: control file: '/u01/app/oracle/oradata/controlfile3.ctl'
+ORA-27041: unable to open file
+Linux Error: 2: No such file or directory
+Additional information: 3
+
+
+SQL> select status from v$instance;
+
+STATUS
+------------
+MOUNTED
+
+SQL> shutdown immediate
+ORA-00210: cannot open the specified control file
+ORA-00202: control file: '/u01/app/oracle/oradata/controlfile3.ctl'
+ORA-27041: unable to open file
+Linux Error: 2: No such file or directory
+Additional information: 3
+SQL> shutdown abort
+ORACLE instance shut down.
+SQL> startup mount
+ORACLE instance started.
+
+Total System Global Area  627732480 bytes
+Fixed Size                  1338336 bytes
+Variable Size             339739680 bytes
+Database Buffers          281018368 bytes
+Redo Buffers                5636096 bytes
+Database mounted.
+
+SQL> alter database archivelog;
+
+Database altered.
+
+SQL> archive log list
+Database log mode              Archive Mode
+Automatic archival             Enabled
+Archive destination            USE_DB_RECOVERY_FILE_DEST
+Oldest online log sequence     85
+Next log sequence to archive   87
+Current log sequence           87
+SQL> alter database open;
+
+Database altered.
+
+SQL>
+
+
+
+
+
+
+

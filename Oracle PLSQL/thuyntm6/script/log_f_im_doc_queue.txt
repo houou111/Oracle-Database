@@ -1,0 +1,39 @@
+SYS@t24r14dc1 > select segment_name,sum(bytes/1024/1024/1024) from dba_segments where
+segment_name in ('F_IM_DOC_QUEUE_TCB','PK_F_IM_DOC_QUEUE_TCB','IX_F_IM_DOC_QUEUE_TCB_C17','SYS_LOB0102137029C00003$$')
+group by segment_name;
+  2    3
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+F_IM_DOC_QUEUE_TCB                                                                                                                              5.72753906
+IX_F_IM_DOC_QUEUE_TCB_C17                                                                                                                       .000183105
+SYS_LOB0102137029C00003$$                                                                                                                       .000061035
+PK_F_IM_DOC_QUEUE_TCB                                                                                                                           .370117188
+
+SYS@t24r14dc1 > SYS@t24r14dc1 > alter table t24live.F_IM_DOC_QUEUE_TCB move tablespace DATAT24LIVE;
+
+alter index t24live.PK_F_IM_DOC_QUEUE_TCB rebuild tablespace INDEXT24LIVE online;
+
+alter index t24live.IX_F_IM_DOC_QUEUE_TCB_C17 rebuild tablespace INDEXT24LIVE;
+
+
+Table altered.
+
+SYS@t24r14dc1 > SYS@t24r14dc1 >
+Index altered.
+
+SYS@t24r14dc1 > SYS@t24r14dc1 >
+Index altered.
+
+SYS@t24r14dc1 > SYS@t24r14dc1 >
+SYS@t24r14dc1 > select segment_name,sum(bytes/1024/1024/1024) from dba_segments where
+segment_name in ('F_IM_DOC_QUEUE_TCB','PK_F_IM_DOC_QUEUE_TCB','IX_F_IM_DOC_QUEUE_TCB_C17','SYS_LOB0102137029C00003$$')
+group by segment_name;
+  2    3
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+F_IM_DOC_QUEUE_TCB                                                                                                                              .000061035
+IX_F_IM_DOC_QUEUE_TCB_C17                                                                                                                       .000061035
+SYS_LOB0102137029C00003$$                                                                                                                       .000061035
+PK_F_IM_DOC_QUEUE_TCB                                                                                                                           .000061035

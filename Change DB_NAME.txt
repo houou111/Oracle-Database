@@ -1,0 +1,125 @@
+Change the database DB_NAME with NID
+http://www.online-database.eu/index.php/backup-a-recovery/58-nid-change-dbname 
+
+Whereras changing the DBID with nid has a non reversable impact on your backup and recovery possibilities, changing only the database DB_NAME has significantly less consequences since,
+
+1. it does not invalidate previously taken backups
+
+2. it does not invalidate previously generated archivelogs
+
+3. it does not require opening the database with the resetlogs option.
+
+ 
+
+Let us change the database db_name without changing the database dbid, nevertheless you shuld be aware of the impact as well.
+
+ 
+
+SQL> shutdown immediate;
+Database dismounted.
+ORACLE instance shut down.
+SQL> startup mount;
+ORACLE instance started.
+
+Total System Global Area 1073741824 bytes
+Fixed Size                  2050856 bytes
+Variable Size             247465176 bytes
+Database Buffers          817889280 bytes
+Redo Buffers                6336512 bytes
+Database mounted.
+SQL> exit
+
+nid target=sys/secret_password dbname=COCONUT SETNAME=YES
+
+DBNEWID: Release 10.2.0.3.0 - Production on Tue Mar 18 15:50:35 2008
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+Connected to database COCONUT (DBID=3976866604)
+
+Connected to server version 10.2.0
+
+Control Files in database:
+    +DG1/COCONUT/controlfile/current.509.649687193
+    +DG2/COCONUT/controlfile/current.645.649687201
+
+Change database name of database COCONUT to COCONUT? (Y/N) => Y
+
+Proceeding with operation
+Changing database name from COCONUT to COCONUT
+    Control File +DG1/COCONUT/controlfile/current.509.649687193 - modified
+    Control File +DG2/COCONUT/controlfile/current.645.649687201 - modified
+    Datafile +DG1/COCONUT/datafile/system.646.649688265 - wrote new name
+    Datafile +DG1/COCONUT/datafile/undotbs1.647.649688265 - wrote new name
+    Datafile +DG1/COCONUT/datafile/sysaux.648.649688267 - wrote new name
+    Datafile +DG1/COCONUT/datafile/users.649.649688267 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_admin_code.658.649688267 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_data_0208.674.649688267 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_data_0308.656.649688267 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_data_0408.675.649688269 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_data_0508.518.649688277 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_data_0608.511.649688297 - wrote new name
+    Datafile +DG1/COCONUT/datafile/ts_my_db_logging_indx.512.649688299 - wrote new name
+    Datafile +DG1/COCONUT/tempfile/temp.643.649688777 - wrote new name
+    Datafile +DG1/COCONUT/tempfile/temp01.642.649688777 - wrote new name
+    Datafile +DG1/COCONUT/tempfile/temp02.641.649688779 - wrote new name
+    Control File +DG1/COCONUT/controlfile/current.509.649687193 - wrote new name
+    Control File +DG1/COCONUT/controlfile/current.645.649687201 - wrote new name
+    Instance shut down
+
+Database name changed to COCONUT.
+Modify parameter file and generate a new password file before restarting.
+Succesfully changed database name.
+DBNEWID - Completed succesfully.
+
+cd $ORACLE_HOME/dbs
+oracle@myhost:/opt/oracle/ORA_HOME/dbs $ cp spfileMYDB.ora spfileCOCONUT.ora
+oracle@myhost:/opt/oracle/ORA_HOME/dbs $ cp orapwMYDB
+
+orapwCOCONUT
+oracle@myhost:/opt/oracle/ORA_HOME/dbs $ export ORACLE_SID=COCONUT
+oracle@myhost:/opt/oracle/ORA_HOME/dbs $ sqlplus / as sysdba
+
+SQL*Plus: Release 10.2.0.3.0 - Production on Tue Mar 18 15:53:39 2008
+
+Copyright (c) 1982, 2006, Oracle.  All Rights Reserved.
+
+Connected to an idle instance.
+
+SQL> startup nomount;
+ORACLE instance started.
+
+Total System Global Area 1073741824 bytes
+Fixed Size                  2050856 bytes
+Variable Size             239076568 bytes
+Database Buffers          826277888 bytes
+Redo Buffers                6336512 bytes
+SQL> alter system set db_name=coconut scope=spfile;
+
+System altered.
+
+SQL> alter system set db_unique_name=coconut scope=spfile;
+
+System altered.
+
+SQL> shutdown immediate;
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup;
+ORACLE instance started.
+
+Total System Global Area 1073741824 bytes
+Fixed Size                  2050856 bytes
+Variable Size             239076568 bytes
+Database Buffers          826277888 bytes
+Redo Buffers                6336512 bytes
+Database mounted.
+Database opened.
+
+SQL> select name from v$database;
+
+NAME
+
+COCONUT

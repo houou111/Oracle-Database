@@ -1,0 +1,56 @@
+  GRANT ALTER ANY TABLE TO THUYNTM_DBA;
+  GRANT DROP ANY TABLE TO THUYNTM_DBA;
+  GRANT UNLIMITED TABLESPACE TO THUYNTM_DBA;
+  -- 4 Object Privileges for THUYNTM_DBA 
+    GRANT SELECT ON SYS.DBA_CONSTRAINTS TO THUYNTM_DBA;
+    GRANT SELECT ON SYS.DBA_INDEXES TO THUYNTM_DBA;
+    GRANT SELECT ON SYS.DBA_TABLES TO THUYNTM_DBA;
+    GRANT SELECT ON SYS.DBA_TAB_PARTITIONS TO THUYNTM_DBA;
+
+
+SQL> set linesize 999
+SQL> select table_owner, table_name, partition_name,high_value from dba_tab_partitions where table_owner ='ESBLOG_TEST'
+  2  order by table_owner, table_name, partition_name
+  3  ;
+
+TABLE_OWNER                    TABLE_NAME                     PARTITION_NAME                 HIGH_VALUE
+------------------------------ ------------------------------ ------------------------------ --------------------------------------------------------------------------------
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          MESS_CARDV1_QUERY_P1           TIMESTAMP' 2016-01-01 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P80                        TIMESTAMP' 2017-02-18 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P81                        TIMESTAMP' 2017-02-21 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P82                        TIMESTAMP' 2017-02-24 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P83                        TIMESTAMP' 2017-02-27 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P84                        TIMESTAMP' 2017-03-02 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P85                        TIMESTAMP' 2017-03-05 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P86                        TIMESTAMP' 2017-03-08 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P87                        TIMESTAMP' 2017-03-11 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P88                        TIMESTAMP' 2017-03-14 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P89                        TIMESTAMP' 2017-03-17 00:00:00'
+
+TABLE_OWNER                    TABLE_NAME                     PARTITION_NAME                 HIGH_VALUE
+------------------------------ ------------------------------ ------------------------------ --------------------------------------------------------------------------------
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P90                        TIMESTAMP' 2017-03-20 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P91                        TIMESTAMP' 2017-03-23 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P92                        TIMESTAMP' 2017-03-26 00:00:00'
+ESBLOG_TEST                    MESSAGES_CARDV1_QUERY          SYS_P93                        TIMESTAMP' 2017-03-29 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           MESSAGES_OSBV1_QUERY_P1        TIMESTAMP' 2015-01-01 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P134                       TIMESTAMP' 2017-02-19 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P135                       TIMESTAMP' 2017-02-22 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P136                       TIMESTAMP' 2017-02-25 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P137                       TIMESTAMP' 2017-02-28 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P138                       TIMESTAMP' 2017-03-03 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P139                       TIMESTAMP' 2017-03-06 00:00:00'
+
+TABLE_OWNER                    TABLE_NAME                     PARTITION_NAME                 HIGH_VALUE
+------------------------------ ------------------------------ ------------------------------ --------------------------------------------------------------------------------
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P140                       TIMESTAMP' 2017-03-09 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P141                       TIMESTAMP' 2017-03-12 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P142                       TIMESTAMP' 2017-03-15 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P143                       TIMESTAMP' 2017-03-18 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P144                       TIMESTAMP' 2017-03-21 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P145                       TIMESTAMP' 2017-03-24 00:00:00'
+ESBLOG_TEST                    MESSAGES_OSBV1_QUERY           SYS_P146                       TIMESTAMP' 2017-03-27 00:00:00'
+
+29 rows selected.
+
+SQL> 

@@ -1,0 +1,14 @@
+DECLARE
+   isclean   BOOLEAN;
+BEGIN
+   isclean := FALSE;
+
+   WHILE isclean = FALSE
+   LOOP
+      isclean :=
+         DBMS_REPAIR.ONLINE_INDEX_CLEAN (DBMS_REPAIR.all_index_id,
+                                         DBMS_REPAIR.lock_wait);
+      DBMS_LOCK.sleep (10);
+   END LOOP;
+END;
+/

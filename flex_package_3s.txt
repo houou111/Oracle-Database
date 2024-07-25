@@ -1,0 +1,46 @@
+JBPKS_AUTO
+
+////////////////////// Methods ////////////////////// 
+procedure pr_gen_ci_buffer;
+procedure pr_gen_se_buffer;
+procedure pr_gen_od_buffer;
+procedure pr_process_od_bankaccount;
+procedure pr_trg_account_log( p_acctno in VARCHAR2, p_mod  varchar2);
+procedure pr_gen_buf_ci_account( p_acctno  varchar2);
+procedure pr_gen_buf_se_account( p_acctno  varchar2);
+procedure pr_gen_buf_od_account( p_acctno  varchar2);
+function fn_GetRootOrderID( p_OrderID IN VARCHAR2);
+procedure pr_gen_rm_transfer;
+
+///////////////////// Source ///////////////////// 
+
+
+IS
+    /*----------------------------------------------------------------------------------------------------
+     ** Module   : COMMODITY SYSTEM
+     ** and is copyrighted by FSS.
+     **
+     **    All rights reserved.  No part of this work may be reproduced, stored in a retrieval system,
+     **    adopted or transmitted in any form or by any means, electronic, mechanical, photographic,
+     **    graphic, optic recording or otherwise, translated in any language or computer language,
+     **    without the prior written permission of Financial Software Solutions. JSC.
+     **
+     **  MODIFICATION HISTORY
+     **  Person      Date           Comments
+     **  FSS      20-mar-2010    Created
+     ** (c) 2008 by Financial Software Solutions. JSC.
+     ----------------------------------------------------------------------------------------------------*/
+
+  PROCEDURE pr_gen_ci_buffer;
+  PROCEDURE pr_gen_se_buffer;
+  PROCEDURE pr_gen_od_buffer;
+  PROCEDURE pr_process_od_bankaccount;
+  PROCEDURE pr_trg_account_log (p_acctno in VARCHAR2, p_mod varchar2);
+  procedure pr_gen_buf_ci_account(p_acctno varchar2 default null);
+  procedure pr_gen_buf_se_account(p_acctno varchar2 default null);
+  PROCEDURE pr_gen_buf_od_account(p_acctno varchar2 default null);
+  FUNCTION fn_GetRootOrderID
+    (p_OrderID       IN  VARCHAR2
+    ) RETURN VARCHAR2; -- HAM THUC HIEN LAY SO HIEU LENH GOC CUA LENH
+  PROCEDURE pr_gen_rm_transfer;
+END;

@@ -1,0 +1,26 @@
+col SID for 999999
+col SERIAL# for 999999
+col INST_ID for 9
+col USERNAME for a10
+col machine for a10
+col SQL_ID for 99
+col status for a8
+
+col SCHEMANAME for a10
+col OSUSER for a10
+col TERMINAL for a10
+col PROGRAM for a10
+col LOGON_TIME for a10
+col EVENT for a10
+
+
+select s.sid,s.SERIAL#,s.INST_ID,s.USERNAME,s.machine,s.SQL_ID,s.status,s.SCHEMANAME,s.OSUSER,s.TERMINAL,s.PROGRAM,s.LOGON_TIME,s.EVENT
+from gv$session s
+where s.sql_id like '%&SQL_ID%';
+
+
+select SQL_TEXT fulltext
+from v$sqltext a,gv$session b
+where a.sql_id=b.sql_id
+and sid=&sid
+order by PIECE;

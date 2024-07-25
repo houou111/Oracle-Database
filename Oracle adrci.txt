@@ -1,0 +1,27 @@
+$adrci
+
+adrci> set home diag/rdbms/nhsmppr/NHsmPPr
+
+adrci> show problem
+adrci> show incident
+
+PROBLEM_ID PROBLEM_KEY LAST_INCIDENT LASTINC_TIME
+——– ———- ————- ————
+2 ORA 4030 146025 2014-09-17 22:16:08.625000 -04:00
+1 ORA 445 144125 2014-09-18 09:24:12.998000 -04:00
+
+adrci> show incident -p “problem_key=’ORA 4030′”
+
+ADR Home = /u01a/diag/rdbms/nhsmppr/NHsmPPr:
+*************************************************************************
+INCIDENT_ID PROBLEM_KEY CREATE_TIME
+—————- ————– —————————————-
+145585 ORA 4030 2014-09-17 22:16:05.493000 -04:00
+144217 ORA 4030 2014-09-17 22:16:05.523000 -04:00
+145441 ORA 4030 2014-09-17 22:16:05.639000 -04:00
+144577 ORA 4030 2014-09-17 22:16:05.782000 -04:00
+145985 ORA 4030 2014-09-17 22:16:05.919000 -04:00
+5 rows fetched
+
+adrci> ips pack incident 145585 in /tmp
+Generated package 1 in file /tmp/ORA4030_20140918102208_COM_1.zip, mode complete

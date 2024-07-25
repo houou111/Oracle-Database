@@ -1,0 +1,7 @@
+select * 
+from dba_hist_sqlplan
+where sql_id=''
+
+using toad
+
+monitor -> AWR -> SQL awr

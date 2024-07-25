@@ -1,0 +1,46 @@
+I. Window Groups
+--------------------------------------------------------------------------------------------------------
+1. Create/drop Window Groups
+--------------------------------------------------------
+BEGIN
+  DBMS_SCHEDULER.create_window_group (
+    group_name  => 'test_window_group',
+    window_list => 'test_window_1, test_window_2',
+    comments    => 'A test window group');
+END;
+/
+
+BEGIN
+  DBMS_SCHEDULER.drop_window_group (
+    group_name => 'test_window_group',
+    force      => TRUE);
+END;
+/
+
+
+2. Check window group and member
+--------------------------------------------------------
+select window_group_name, enabled, number_of_windowS
+from dba_scheduler_window_groups ;
+
+
+select window_group_name, window_name
+from dba_scheduler_wingroup_members;
+
+
+
+
+3. Check window
+--------------------------------------------------------
+select window_name, resource_plan, enabled, active
+from dba_scheduler_windows;
+
+
+
+4. Disable window
+--------------------------------------------------------
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."WINDOW_150PHUT"',
+force=>TRUE);
+END;

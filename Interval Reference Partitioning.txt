@@ -1,0 +1,172 @@
+SQL> CREATE TABLE intRef_p
+  2    (pkcol number not null,
+  3     col2  varchar2(200),
+  4     CONSTRAINT pk_intref PRIMARY KEY (pkcol))
+  5     PARTITION by range (pkcol) interval (10)
+  6    (PARTITION p1 values less than (10));
+  
+  
+	CREATE TABLE intRef_c1
+  2    (pkcol number not null,
+  3     col2  varchar2(200),
+  4     fkcol number not null,
+  5     CONSTRAINT pk_c1 PRIMARY KEY (pkcol),
+  6     CONSTRAINT fk_c1 FOREIGN KEY (fkcol)
+  7     REFERENCES intRef_p(pkcol) ON DELETE CASCADE)
+  8     PARTITION by reference (fk_c1);
+  
+  
+  SQL> CREATE TABLE intRef_c2
+  2    (pkcol number PRIMARY KEY not null,
+  3     col2  varchar2(200),
+  4     fkcol number not null,
+  5     CONSTRAINT fk_c2 FOREIGN KEY (fkcol)
+  6     REFERENCES intRef_p(pkcol) ON DELETE CASCADE)
+  7     PARTITION by reference (fk_c2);
+  
+  
+  
+  CREATE TABLE intRef_gc1
+     (col1 number not null,
+      col2 varchar2(200),
+      fkcol number not null,
+      CONSTRAINT fk_gc1 FOREIGN KEY (fkcol)
+      REFERENCES intRef_c1(pkcol) ON DELETE CASCADE)
+      PARTITION by reference (fk_gc1);
+	  
+	  
+	CREATE TABLE intRef_gc2
+ (col1  number not null,
+  col2  varchar2(200),
+  fkcol number not null,
+  CONSTRAINT fk_gc2 FOREIGN KEY (fkcol)
+  REFERENCES intRef_c1(pkcol))
+  PARTITION by reference (fk_gc2);  
+
+  
+
+SELECT table_name, partition_name
+FROM   user_tab_partitions
+WHERE  table_name like 'INTREF%'
+order by 1,2;
+
+INSERT into intref_p values (1,'a'); 
+INSERT into intref_p values (11,'a');
+INSERT into intref_p values (111,'a');
+INSERT into intref_c1 values (27,'aa',111);
+INSERT into intref_gc1 values (222,'bb',27);
+COMMIT;
+
+SQL> CREATE TABLE intRef_p
+  2     (pkcol number not null,
+  3      col2  varchar2(200),
+  4      CONSTRAINT pk_intref PRIMARY KEY (pkcol))
+  5      PARTITION by range (pkcol) interval (10)
+  6     (PARTITION p1 VALUES less than (10));
+
+
+
+SQL> CREATE TABLE intRef_c1
+    (pkcol number not null,
+     col2  varchar2(200),
+     fkcol number not null,
+     CONSTRAINT pk_c1 PRIMARY KEY (pkcol),
+     CONSTRAINT fk_c1 FOREIGN KEY (fkcol)
+     REFERENCES intRef_p(pkcol) ON DELETE CASCADE)
+     PARTITION by reference (fk_c1);
+
+Table created.
+
+SQL> 
+SQL> REM    Create the INTREF_C2 child table
+SQL> CREATE TABLE intRef_c2
+    (pkcol number PRIMARY KEY not null,
+     col2  varchar2(200),
+     fkcol number not null,
+     CONSTRAINT fk_c2 FOREIGN KEY (fkcol)
+     REFERENCES intRef_p(pkcol) ON DELETE CASCADE)
+     PARTITION by reference (fk_c2);
+
+
+SQL> 
+SQL> REM    Create the INTREF_GC1 grandchild table
+SQL> CREATE TABLE intRef_gc1
+    (col1  number not null,
+     col2  varchar2(200),
+     fkcol number not null,
+     CONSTRAINT fk_gc1 FOREIGN KEY (fkcol)
+     REFERENCES intRef_c1(pkcol) ON DELETE CASCADE)
+     PARTITION by reference (fk_gc1);
+
+Table created.
+
+SQL> 
+SQL> REM    Create the INTREF_GC2 grandchild table
+SQL> CREATE TABLE intRef_gc2
+    (col1  number not null,
+     col2  varchar2(200),
+     fkcol number not null,
+     CONSTRAINT fk_gc2 FOREIGN KEY (fkcol)
+     REFERENCES intRef_c2(pkcol) ON DELETE CASCADE)
+     PARTITION by reference (fk_gc2);
+
+	 
+	 INSERT INTO intRef_p
+      VALUES (999,' data for truncate - p');
+
+
+
+
+ INSERT INTO intRef_c1
+    VALUES (1999,' data for truncate - c1',999);
+
+
+INSERT INTO intRef_c2
+   VALUES (2999,' data for truncate - c2',999);
+
+
+ INSERT INTO intRef_gc1
+    VALUES (1999,' data for truncate - gc1',1999);
+
+
+
+ INSERT INTO intRef_gc2
+    VALUES (2999,' data for truncate - gc2',2999);
+
+
+ INSERT INTO intRef_p
+    VALUES (333,' data for truncate - p');
+
+
+INSERT INTO intRef_c1
+   VALUES (1333,' data for truncate - c1',333);
+
+
+ INSERT INTO intRef_c2
+    VALUES (2333,' data for truncate - c2',333);
+
+
+INSERT INTO intRef_gc1
+   VALUES (1333,' data for truncate - gc1',1333);
+
+
+INSERT INTO intRef_gc2
+   VALUES (2333,' data for truncate - gc1',2333);
+
+   
+col parent     format a25
+col child1     format a25
+col child2     format a25
+col grandchild1    format a25
+col grandchild2    format a25
+
+   SELECT p.pkcol, p.col2 parent, c1.col2 child1, c2.col2 child2, gc1.col2 grandchild1, gc2.col2 grandchild2
+ FROM intRef_p p, intRef_c1 c1, intRef_c2 c2, intRef_gc1 gc1, intRef_gc2 gc2
+ where p.pkcol  = c1.fkcol
+   and p.pkcol  = c2.fkcol
+   and c1.pkcol = gc1.fkcol
+   and c2.pkcol = gc2.fkcol
+   and p.pkcol=999;
+
+	 
+	 

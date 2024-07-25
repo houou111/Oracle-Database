@@ -1,0 +1,20 @@
+
+1. Recover tablespace point in time
+------------------------------------------------------------------------------------
+run
+{
+ALTER TABLESPACE duong OFFLINE;
+RESTORE TABLESPACE duong;
+RECOVER TABLESPACE duong until SCN=5363544 auxiliary destination '/home/oracle/auxdb';
+SQL 'ALTER TABLESPACE duong ONLINE';
+}
+
+
+2. Recover table point in time
+--------------------------------------------------------------------------------------
+run
+{
+ALTER TABLE duong OFFLINE;
+RECOVER TABLE hr.test_table1 UNTIL SCN 2146235 AUXILIARY DESTINATION '/u01/app/oracle/backup_test';
+ALTER TABLE duong ONLINE;
+}

@@ -1,0 +1,9 @@
+Every day at midnight=TRUNC(SYSDATE+1)
+Every 7 days at midnight=TRUNC(SYSDATE+7)
+Every 30 days at midnight=TRUNC(SYSDATE+30)
+Every Sunday at midnight=NEXT_DAY(TRUNC(SYSDATE), 'SUNDAY')
+Every day at 6am=TRUNC(SYSDATE+1)+6/24
+Every 30 minutes=SYSDATE+30/1440 
+Every 1st of the month at midnight=TRUNC(LAST_DAY(SYSDATE)) + 1
+Every 1st of the month at 8:30 am=TRUNC(LAST_DAY(SYSDATE)) + 1 + 8/24 + 30/1440
+

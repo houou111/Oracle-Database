@@ -1,0 +1,12 @@
+ORA-00600: Internal Error Code, Arguments: [17285], [0x9FFFFFFFBDBC1038], [2], [0xC00000036D06E7C0], (Doc ID 1638330.1)
+
+
+At the instance level, issue:
+
+alter system set "_session_cached_instantiations"= <open_cursors+1> scope=spfile;
+where a value must be entered for <open_cursors+1>
+
+
+alter system set "_session_cached_instantiations"= 1001 scope=spfile;
+
+Then restart the instance.

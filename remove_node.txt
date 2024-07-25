@@ -1,0 +1,52 @@
+Các bu?c delete node 1 ( t24db01 ) , database instance: t24r14dc1
+
+1.	 crsctl remove instance
+srvctl remove instance -d t24r14dc -i t24r14dc1
+crsctl stop resource ora.t24db01.vip
+
+2.	su - root
+/u01/app/11.2.0/grid/bin/crsctl delete resource ora.t24db01.vip
+
+3.	Update the installer repository ( remove t24db01 node )
+cd $ORACLE_HOME/oui/bin
+$ORACLE_HOME/oui/bin/runInstaller -updateNodeList ORACLE_HOME=/u01/app/11.2.0/grid "CLUSTER_NODES={dr-ora-db01}" CRS=TRUE
+
+4.	Verify current cluster nodes and delete the related cluster node
+$ olsnodes
+
+5.	Drop t24db01 from the cluster 
+$GRID_HOME/bin/crsctl delete node -n t24db01
+
+6.	Verify:
+$GRID_HOME/bin/olsnodes -t –s
+cluvfy stage -post nodedel -n t24db01
+
+Các bu?c add node :
+
+1.	Verify add new node
+cluvfy stage -pre nodeadd -n t24db01
+2.	Add new node
+Ði?u ch?nh memory: JRE_MEMORY_OPTIONS to ” -mx1024m”
+
+[root@dr-ora-db02 ~]# rm -rf /usr/local/bin/*
+
+[root@dr-ora-db02 ~]# cd /u01/app/11.2.0/grid/crs/install/
+/u01/app/11.2.0/grid/crs/install/roothas.pl -deconfig -force -verbose
+
+
+
+export IGNORE_PREADDNODE_CHECKS=Y
+grid} /u01/app/11.2.0/grid/oui/bin/addNode.sh "CLUSTER_NEW_NODES={dr-ora-db02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dr-ora-db02-vip}"
+
+Run Oracle_home/root.sh script on t24db01 as root, where Oracle_home is the Oracle RAC home
+
+3.	Run the Grid_home/root.sh script on the t24db01 as root and run the subsequent script, as instructed.
+
+4.	Verify 
+
+$ cluvfy stage -post nodeadd -n node3 [-verbose]
+
+
+
+
+

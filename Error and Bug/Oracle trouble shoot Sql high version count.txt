@@ -1,0 +1,27 @@
+
+
+"_cursor_obsolete_threshold"  to 100 
+
+
+select count(*) as version_count, sql_id
+from v$sql
+where is_obsolete = 'N'
+group by sql_id
+having count(*) > 125;
+
+
+
+alter system set "_cursor_obsolete_threshold"=100 scope=spfile;
+
+
+
+SELECT x.ksppinm "Parameter",
+       Y.ksppstvl "Session Value",
+       Z.ksppstvl "Instance Value"
+FROM   x$ksppi X,
+       x$ksppcv Y,
+       x$ksppsv Z
+WHERE  x.indx = Y.indx
+AND    x.indx = z.indx
+AND    x.ksppinm LIKE '%_cursor_obsolete_threshold%'
+order by x.ksppinm;

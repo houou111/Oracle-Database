@@ -1,0 +1,42 @@
+SQL> create undo tablespace UNDO0001 datafile '+TESTR1401' size 1G autoextend on next 1G; 
+
+Tablespace created.
+
+SQL> 
+SQL> 
+SQL> show parameter undo
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+undo_management                      string      MANUAL
+undo_retention                       integer     54000
+undo_tablespace                      string
+SQL> 
+SQL> 
+SQL> create rollback segment R10 tablespace UNDO0001;
+
+Rollback segment created.
+
+SQL> create rollback segment R11 tablespace UNDO0001;
+
+Rollback segment created.
+
+SQL>  create rollback segment R12 tablespace UNDO0001;
+
+Rollback segment created.
+
+SQL> create rollback segment R13 tablespace UNDO0001;
+
+Rollback segment created.
+
+SQL> show parameter roll
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+fast_start_parallel_rollback         string      LOW
+rollback_segments                    string
+transactions_per_rollback_segment    integer     5
+
+
+vi init.ora
+rollback_segments=(R01,R02,R03,R04)

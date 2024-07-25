@@ -1,0 +1,28 @@
+1. Unzip OPatch
+--------------------------------------------------------------------------
+su - oracle
+unzip /u01/setup/database/OPatch_122010_Linux-x86-64.zip -d $ORACLE_HOME
+
+su - grid
+unzip /u01/setup/database/OPatch_122010_Linux-x86-64.zip -d $ORACLE_HOME
+
+
+
+2. Check TFA
+--------------------------------------------------------------------------
+su - root
+/u01/app/12.2.0.1/grid/tfa/bin/tfactl status
+
+
+
+3. Chmod 777
+--------------------------------------------------------------------------
+cd /u01/setup/
+chmod -R 777 database
+
+
+4. Makre sure grid/db in all nodes is running
+--------------------------------------------------------------------------
+
+
+

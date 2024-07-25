@@ -1,0 +1,33 @@
+select con_id,name,segment_name, status 
+from dba_rollback_segs,v$containers
+ where STATUS='NEEDS RECOVERY';
+
+
+
+
+FEB
+10
+Step By Step To Recover From Undo Tablespace Corruption
+
+1. Mount the database. (shutdown the database if it is running).
+Make UNDO TABLESPACE' datafile offline drop
+ALTER DATABASE DATAFILE 'LOCATION\TO\DATAFILE' OFFLINE DROP;
+Open your database.
+List all rollback segments that need recovery by query the name and status from dba_rollback_segs
+Alter the following hidden parameter in the spfile to list all rollback segments listed from step 4 (_CORRUPTED_ROLLBACK_SEGMENTS)
+ALTER SYSTEM SET "_Corrupted_rollback_SEGMENTS"='_SYSSMU1$','_SYSSMU2$','_SYSSMU3$' SCOPE=SPFILE;
+Shutdown the database (ABORT OR IMMEDIATE).
+Startup the database.
+Make new UNDO TABLESPACE and make it the default undo for the databas 
+ALTER SYSTEM SET  UNDO_TABLESPACE=UNDO2
+Remove the corrupted rollback segments listed before
+DROP ROLLBACK SEGMENT “_SYSSMU1$”;
+DROP ROLLBACK SEGMENT “_SYSSMU2$”;
+DROP ROLLBACK SEGMENT “_SYSSMU3$”; 
+
+
+
+
+_corrupted_rollback_segments = ('_SYSSMU1$','_SYSSMU2$','_SYSSMU3$','_SYSSMU4$',
+                                '_SYSSMU5$','_SYSSMU6$','_SYSSMU7$',
+                                '_SYSSMU8$','_SYSSMU9$','_SYSSMU10$')

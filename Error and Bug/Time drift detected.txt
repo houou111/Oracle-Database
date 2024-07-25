@@ -1,0 +1,3 @@
+Time drift detected. Please check VKTM trace file for more details. (Doc ID 1347586.1)
+
+https://support.oracle.com/epmos/faces/DocumentDisplay?_afrLoop=442667868775746&id=1347586.1&_afrWindowMode=0&_adf.ctrl-state=heritbq2l_4

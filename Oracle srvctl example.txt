@@ -1,0 +1,74 @@
+1. Add database to clusterware
+-------------------------------------------------------------
+srvctl add database -d sktddb -n dbfs -o /u01/app/oracle/product/12.2.0.1/dbhome_1  -s OPEN -y AUTOMATIC -t IMMEDIATE
+srvctl add instance -d dbfs -i dbfs1 -n dw01db01
+srvctl add instance -d dbfs -i dbfs2 -n dw01db02
+srvctl add service -d two -s twouat -r orcl1
+
+
+srvctl modify instance -db minhdr -instance minhdr1 -node exax5-03-adm
+srvctl modify instance -db minhdr -instance minhdr2 -node exax5-04-adm
+
+
+srvctl modify instance -db dbscl -instance DBSCL1 -node exax7q-03-adm
+srvctl modify instance -db dbscl -instance DBSCL2 -node exax7q-04-adm
+
+
+
+
+srvctl add database -d two -n twodr -o /u01/app/oracle/product/11.2.0/dbhome_1 -p 'SPFILE=+DATA2/twouat/spfiletwouat.ora' -s OPEN -y AUTOMATIC -a "DATA2" -t IMMEDIATE
+srvctl add database -d twr -n twrdr -o /u01/app/oracle/product/11.2.0/dbhome_1 -p 'SPFILE=+DATA2/twouat/spfiletwruat.ora' -s OPEN -y AUTOMATIC -a "DATA2" -t IMMEDIATE
+srvctl add instance -d two -i twouat -n dr-card-upgr-db
+srvctl add service -d two -s twouat -r orcl1
+
+
+
+srvctl remove database -d db_name
+
+$ srvctl stop database -d test
+
+
+$ srvctl status database -d TEST
+
+
+
+2. Modify database
+-------------------------------------------------------------
+srvctl modify database -db yendb -pwfile
+
+
+
+To add database to Oracle clusterware,use below commands using "oracle" user(Oracle software owner).
+
+$ srvctl add database -d dwprdx6 -o /u01/app/oracle/product/11.2.0.4/dbhome_1
+$ srvctl config database -d dwprdx6
+
+
+$ srvctl start database -d dwprdx6
+Database dwprdx6 cannot be started since it has no configured instances.
+
+So register the database instances as below
+
+$ srvctl add instance -d dwprdx6 -i dwprdx61 -n dw01db01
+$ srvctl add instance -d dwprdx6 -i dwprdx62 -n dw01db02
+$ srvctl start database -d dwprdx6
+$ srvctl config database -d dwprdx6
+
+[oracle@dw01db01 bin]$ srvctl modify database -d dwprdx6 -p '+DATAC1/dwprdx6/spfiledwprdx62.ora'
+
+srvctl add database -d pcadbdr      -o /u01/app/oracle/product/11.2.0.4/dbhome_1      -p +HST_DG/pcadr/spfilepcadr.ora     -c RAC       -r PHYSICAL_STANDBY     -s MOUNT -t immediate
+
+
+srvctl modify database -d idcnew -p '+DATAC1/dwprdx6/spfiledwprdx62.ora'
+
+srvctl modify database -d erptest -p '+DATAC1/ERPTEST/spfileERPTEST.ora'
+
+SPFILE=+DATAC1/ERPTEST/spfileERPTEST.ora
+
+srvctl modify database -db yendr -pwfile +DATA/CMSPRODNEW/PASSWORD/pwdcmsprodnew
+	 
+	 
+	 
+
+
+PWFILE=+DATAC1/YENDR/PASSWORD/pwdyendr.17843.1024063663

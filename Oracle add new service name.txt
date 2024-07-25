@@ -1,0 +1,46 @@
+srvctl add service -database gweb -service gphoneweb -preferred preferred_list -available available_list
+
+
+1. Service name for ONE instance
+-------------------------------------------------------------
+srvctl add service -d dwprddr -s dwprd -r dwprddr1 -a dwprddr2
+srvctl start service -d dwprddr -s dwprd
+
+srvctl add service -d g2fotest -s saas -r dwprddr1 -a dwprddr2
+srvctl start service -d dwprddr -s dwprd
+
+
+
+
+2. Service name for both instance 
+-------------------------------------------------------------
+srvctl add service -d g2fotest -s g2test -r g2fotest1,g2fotest2
+srvctl start service -d g2fotest -s g2test
+
+srvctl add service -d saas -s saasdb -r saas1,saas2
+srvctl start service -d saas -s saasdb
+
+
+
+3. Monitor Service name
+-------------------------------------------------------------
+SET PAGESIZE 60 COLSEP '|' NUMWIDTH 8 LINESIZE 132 VERIFY OFF FEEDBACK OFF
+COLUMN service_name FORMAT A20 TRUNCATED HEADING 'Service'
+COLUMN begin_time HEADING 'Begin Time' FORMAT A10
+COLUMN end_time HEADING 'End Time' FORMAT A10
+COLUMN instance_name HEADING 'Instance' FORMAT A10
+COLUMN service_time HEADING 'Service Time|mSec/Call' FORMAT 999999999
+COLUMN throughput HEADING 'Calls/sec'FORMAT 99.99
+BREAK ON service_name SKIP 1
+SELECT
+service_name
+, TO_CHAR(begin_time, 'HH:MI:SS') begin_time , TO_CHAR(end_time,
+'HH:MI:SS') end_time
+, instance_name
+, elapsedpercall service_time
+, callspersec throughput
+FROM
+gv$instance i , gv$active_services s
+, gv$servicemetric m WHERE s.inst_id = m.inst_id AND s.name_hash =
+m.service_name_hash AND i.inst_id = m.inst_id AND m.group_id = 10 ORDER
+BY service_name , i.inst_id , begin_time ;

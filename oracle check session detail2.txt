@@ -1,0 +1,14 @@
+ set line 200
+ set pagesize 0
+ column SESS_INFO format a15
+COLUMN SESS_INFO HEADING 'INST_|SID_SERIAL#'
+column USER format a20
+COLUMN USER HEADING 'USER/|MACHINE/|MODULE'
+column PADDR format a16
+column event format a20
+column sql_id format a15
+column sql_text format a80
+select /* VIEW SESSION ACTIVE */  distinct s.inst_id|| '_' ||s.sid ||'_'||s.serial# "SESS_INFO",
+  s.username ||'/'||s.machine ||'/'||substr(s.module,1,15) "USER", s.PADDR, s.event,c.sql_id,c.sql_text
+ from gv$session s, gv$sql c
+ where s.username is not null and s.status='ACTIVE' and s.sql_id=c.sql_id(+) and s.inst_id=c.inst_id(+) and (c.sql_text not like '%VIEW SESSION ACTIVE%' or c.sql_text is null) order by 1,4;

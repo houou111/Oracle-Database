@@ -1,0 +1,81 @@
+SYS@cobr14dc1 > select * from v$restore_point;
+
+       SCN DATABASE_INCARNATION# GUA STORAGE_SIZE TIME                                                                        RESTORE_POINT_TIME                       PRE
+---------- --------------------- --- ------------ --------------------------------------------------------------------------- --------------------------------------------------------------------------- ---
+NAME                                                                                                                                 CON_ID
+-------------------------------------------------------------------------------------------------------------------------------- ----------
+1.0674E+13                     2 YES   2.4279E+12 22-MAY-18 02.32.58.000000000 AM                                                                                      YES
+SNAPSHOT_STANDBY_REQUIRED_05/22/2018 02:32:51                                                                                             0
+
+
+SYS@cobr14dc1 > select open_mode,database_role,flashback_on from v$database;
+
+OPEN_MODE            DATABASE_ROLE    FLASHBACK_ON
+-------------------- ---------------- ------------------
+READ ONLY WITH APPLY PHYSICAL STANDBY RESTORE POINT ONLY
+
+SYS@cobr14dc1 > alter database flashback off;
+
+Database altered.
+
+SYS@cobr14dc1 > select * from v$restore_point;
+
+       SCN DATABASE_INCARNATION# GUA STORAGE_SIZE TIME                                                                        RESTORE_POINT_TIME                       PRE
+---------- --------------------- --- ------------ --------------------------------------------------------------------------- --------------------------------------------------------------------------- ---
+NAME                                                                                                                                 CON_ID
+-------------------------------------------------------------------------------------------------------------------------------- ----------
+1.0674E+13                     2 YES   2.4279E+12 22-MAY-18 02.32.58.000000000 AM                                                                                      YES
+SNAPSHOT_STANDBY_REQUIRED_05/22/2018 02:32:51                                                                                             0
+
+
+SYS@cobr14dc1 >  select open_mode,database_role,flashback_on from v$database;
+
+OPEN_MODE            DATABASE_ROLE    FLASHBACK_ON
+-------------------- ---------------- ------------------
+READ ONLY WITH APPLY PHYSICAL STANDBY RESTORE POINT ONLY
+
+SYS@cobr14dc1 > DROP RESTORE POINT "SNAPSHOT_STANDBY_REQUIRED_05/22/2018 02:32:51";
+
+Restore point dropped.
+
+SYS@cobr14dc1 > select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD#   from v$managed_standby;
+select name, value from v$dataguard_stats;
+PROCESS   STATUS           BLOCK#     BLOCKS  SEQUENCE#    THREAD#
+--------- ------------ ---------- ---------- ---------- ----------
+ARCH      CLOSING          927488         83       7410          2
+ARCH      CLOSING          921856        188       8329          1
+ARCH      CONNECTED             0          0          0          0
+ARCH      CLOSING          921088         39       8331          1
+RFS       IDLE              50887          1       8332          1
+RFS       RECEIVING        551359          4       7411          2
+RFS       IDLE                  0          0          0          0
+RFS       IDLE                  0          0          0          0
+RFS       IDLE                  0          0          0          0
+RFS       IDLE                  0          0          0          0
+MRP0      APPLYING_LOG      50878    1048576       8332          1
+
+11 rows selected.
+
+SYS@cobr14dc1 > 
+
+NAME                             VALUE
+-------------------------------- ----------------------------------------------------------------
+transport lag                    +00 00:00:00
+apply lag                        +00 00:00:00
+apply finish time                +00 00:00:00.000
+estimated startup time           20
+
+SYS@cobr14dc1 > /
+
+NAME                             VALUE
+-------------------------------- ----------------------------------------------------------------
+transport lag                    +00 00:00:00
+apply lag                        +00 00:00:03
+apply finish time                +00 00:00:00.090
+estimated startup time           20
+
+SYS@cobr14dc1 >  select open_mode,database_role,flashback_on from v$database;
+
+OPEN_MODE            DATABASE_ROLE    FLASHBACK_ON
+-------------------- ---------------- ------------------
+READ ONLY WITH APPLY PHYSICAL STANDBY NO

@@ -1,0 +1,2 @@
+[root@DB ~]$ cd /usr/local/guardium/modules/STAP/9.0.0_r85844_1-146244 
+[root@DB 9.0.0_r85844_1-1462447508]$ ./rc stop 

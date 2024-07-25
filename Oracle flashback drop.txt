@@ -1,0 +1,29 @@
+0. using log miner to find name
+------------------------------------------------------------
+
+
+1. Flashback
+------------------------------------------------------------
+FLASHBACK TABLE DROP_TABLE_NAME TO BEFORE DROP;
+
+
+
+2. Using toad if many
+------------------------------------------------------------
+
+
+
+
+
+
+SELECT object_name, original_name, createtime 
+FROM   recyclebin;    
+
+OBJECT_NAME                    ORIGINAL_NAME   CREATETIME
+------------------------------ --------------- -------------------
+BIN$yrMKlZaLMhfgNAgAIMenRA==$0 TEMP_EMPLOYEES  2007-02-05:21:05:52
+BIN$yrMKlZaVMhfgNAgAIMenRA==$0 TEMP_EMPLOYEES  2007-02-05:21:25:13
+BIN$yrMKlZaQMhfgNAgAIMenRA==$0 TEMP_EMPLOYEES  2007-02-05:22:05:53
+You can use the following command to retrieve the middle table:
+
+FLASHBACK TABLE BIN$yrMKlZaVMhfgNAgAIMenRA==$0 TO BEFORE DROP;

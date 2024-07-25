@@ -1,0 +1,192 @@
+upgrade to 12c
+
+1. Check DB before upgrade
+-----------------------------------------------------------------------------
+a. Check XDB user 
+-----------------
+select username, account_status from dba_users where username = 'ANONYMOUS';
+no rows selected
+
+-> Fix
+Create new XDB user
+---------------------------
+create user anonymous identified by values Abcd#12345 default tablespace USERS;
+
+Add XS$NULL to XDB schema list
+-------------------------------
+
+BEGIN
+dbms_registry.loading('XDB', 'Oracle XML Database', 
+  'dbms_regxdb.validateXDB', 'XDB',
+  dbms_registry.schema_list_t('ANONYMOUS'));
+END;
+/
+
+grant create session to anonymous;
+alter user anonymous account lock;
+
+
+Add XS$NULL to XDB schema list
+-------------------------------
+BEGIN
+ dbms_registry.update_schema_list('XDB',
+ dbms_registry.schema_list_t('ANONYMOUS', 'XS$NULL'));
+END;
+/
+
+
+b. Check DBID 
+-------------
+select * from sys.dam_last_arch_ts$ ;
+
+AUDIT_TRAIL_TYPE# RAC_INSTANCE# LAST_ARCHIVE_TIMESTAMP DATABASE_ID CONTAINER_GUID
+1 0 7/18/2016 10:06:09.000000 PM 0 00000000000000000000000000000000 >>>> Remove the entry with DBID is 0.
+1 0 11/9/2016 10:00:03.000000 PM 68838207 4149018A566C43D799374DF6842B3A3F >>>DBID is 68838207
+
+select name, dbid from v$database ;
+FCITEST4 68838207 >>>DBID is 68838207
+
+SQL> delete from sys.dam_last_arch_ts$ where dbid = 0 ;
+SQL>commit ;
+
+
+c. delete em13c
+----------------
+su - oraem
+
+emctl stop agent
+set echo on;
+set serveroutput on;
+@/u01/app/oracle/product/12.2.0.1/dbhome_1/rdbms/admin/emremove.sql
+
+
+
+2. Set up parameter 
+------------------------------------------------------------------------------
+alter system set resource_limit=TRUE;
+
+PURGE RECYCLEBIN;
+
+alter system set db_recovery_file_dest_size=10000G;
+
+
+
+
+3. Fix invalid object
+------------------------------------------------------------------------------
+fix script
+- Remove OLAP catalog
+@?/olap/admin/catnoamd.sql
+
+- complie invalid object
+@?/rdbms/admin/utlrp.sql
+
+set serveroutput on;
+execute dbms_preup.invalid_objects
+
+
+
+4. Upgrade
+------------------------------------------------------------------------------
+gui:
+. 12c
+dbua
+
+
+
+SQL> SELECT OWNER, TRIGGER_NAME FROM DBA_TRIGGERS WHERE BASE_OBJECT_TYPE='DATABASE' AND OWNER NOT IN (SELECT GRANTEE FROM DBA_SYS_PRIVS WHERE PRIVILEGE='ADMINISTER DATABASE TRIGGER');
+
+OWNER                          TRIGGER_NAME
+------------------------------ ------------------------------
+SYSMAN                         MGMT_STARTUP
+
+SQL> grant ADMINISTER DATABASE TRIGGER to sysman;
+
+
+
+5. Post upgrade
+------------------------------------------------------------------------------
+a. Post upgrade script
+------------------------------------
+SQL> SPOOL postupgrade.log
+SQL> @postupgrade_fixups.sql
+SQL> SPOOL OFF
+
+$ORACLE_HOME/rdbms/admin/utluptabdata.sql
+
+EXECUTE DBMS_STATS.GATHER_DICTIONARY_STATS;
+
+EXECUTE DBMS_STATS.GATHER_FIXED_OBJECTS_STATS;
+
+
+b. Config connection from 11g
+-----------------------------
+cd $ORACLE_HOME/network/admin/
+vi sqlnet.ora
+SQLNET.ALLOWED_LOGON_VERSION_SERVER=11
+
+
+c. Enable rep for GG
+-----------------------------
+alter system set enable_goldengate_replication=TRUE scope=spfile;
+
+
+
+6. Alter compatible
+-----------------------------------------------------------------
+SET PAGESIZE 60
+SET LINESIZE 300
+SET VERIFY OFF
+ 
+COLUMN scn FOR 999,999,999,999,999
+COLUMN Incar FOR 99
+COLUMN name FOR A25
+COLUMN storage_size FOR 999,999,999,999
+COLUMN guarantee_flashback_database FOR A3
+ 
+SELECT 
+      database_incarnation# as Incar,
+      scn,
+      name,
+      time,
+      storage_size,
+      guarantee_flashback_database
+FROM 
+      v$restore_point
+ORDER BY 4
+/
+
+
+drop restore point before_upgrade;
+alter system set compatible='12.2.0.1' scope=spfile sid='*';
+
+
+
+
+7. Optional
+----------------------------------------------------------------
+---varchar 32k
+CONN / AS SYSDBA
+SQL> alter system set cluster_database=false scope=spfile;
+SHUTDOWN IMMEDIATE;
+STARTUP UPGRADE;
+ALTER SYSTEM SET max_string_size=extended;
+@?/rdbms/admin/utl32k.sql
+SQL> alter system set cluster_database=true scope=spfile;
+SHUTDOWN IMMEDIATE;
+STARTUP;
+
+
+
+8. Issue
+-------------------------------------------------------------------
+dbca -> compatible.asm of version (12.1.0.0.0) or higher
+ALTER DISKGROUP DATA_DG SET ATTRIBUTE 'compatible.asm' = '12.1';
+
+
+Maximum of 148 enabled roles exceeded for user SYS. Not loading all the roles.
+select from dba_role_privs where grantee='SYS' and default_role='YES';*
+select from dba_role_privs where grantee='SYSTEM' and default_role='YES';*
+
+
+

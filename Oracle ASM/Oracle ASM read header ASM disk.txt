@@ -1,0 +1,4 @@
+dd if=/dev/hdisk10 of=/tmp/d10.out bs=4096 count=100
+dd if=/dev/hdisk14 of=/tmp/d14.out bs=4096 count=100
+
+kfed /dev/rasm

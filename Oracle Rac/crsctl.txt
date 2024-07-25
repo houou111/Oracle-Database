@@ -1,0 +1,73 @@
+1. Check CRS
+---------------------------
+crsctl stat res -t
+crsctl stat res -t -init
+
+
+2. Start-stop crs
+---------------------------
+crsctl start crs
+crsctl stop crs -f
+
+crsctl enable crs
+crsctl disable crs
+
+
+
+2. Verify config cluster
+---------------------------
+cluvfy comp crs -n pttb-db1,pttb-db2 -verbose
+cluvfy comp nodereach -n pttb-db1,pttb-db2 -verbose
+cluvfy stage -pre crsinst -fixup -n pttb-db1,pttb-db2
+
+
+3. Query
+---------------------------
+crsctl query css votedisk
+
+ocrcheck
+
+cat /etc/oracle/ocr.loc
+
+
+
+4. Check the ocssd.log for voting disks issues.
+------------------------------------------------------
+grep voting <grid_home>/log/<hostname>/cssd/ocssd.log
+
+
+
+5. Backup and Restore CRS
+---------------------------
+---Backup---
+$ ocrconfig -showbackup auto
+
+ttdl-coredb1a     2015/11/24 15:12:50     /u01/app/11.2.0/grid/cdata/ttdl-coredb1/backup00.ocr
+ttdl-coredb1a     2015/11/24 11:12:49     /u01/app/11.2.0/grid/cdata/ttdl-coredb1/backup01.ocr
+ttdl-coredb1a     2015/11/24 07:12:48     /u01/app/11.2.0/grid/cdata/ttdl-coredb1/backup02.ocr
+ttdl-coredb1a     2015/11/23 15:12:46     /u01/app/11.2.0/grid/cdata/ttdl-coredb1/day.ocr
+ttdl-coredb1b     2015/11/13 14:56:59     /u01/app/11.2.0/grid/cdata/ttdl-coredb1/week.ocr
+
+
+ocrconfig -manualbackup
+
+
+
+---Restore---
+crsctl start crs -excl -nocrs
+ocrconfig -restore /u01/app/11.2.0/grid/cdata/dr-card-cluster/backup00.ocr
+
+crsctl replace votedisk +CRS
+
+
+
+crsctl modify resource ora.two.db -attr "SPFILE=/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfiletwouat.ora"
+crsctl modify resource ora.twr.db -attr "SPFILE=/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfiletwruat.ora"
+
+
+crsctl modify resource xag.goldengate_app.goldengate -attr "FAILOVER_DELAY=3600"
+crsctl modify resource xag.goldengate_app.goldengate -attr "FAILOVER_DELAY=3600"
+
+
+crsctl modify resource ora.two.db -attr "SPFILE=/u01/app/oracle/product/11.2.0/dbhome_1/dbs/spfiletwouat.ora"
+

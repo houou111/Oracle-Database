@@ -1,0 +1,185 @@
+1. Disable the automatic tuning process:
+---------------------------------------------------------------------
+connect / as sysdba
+
+BEGIN
+DBMS_AUTO_TASK_ADMIN.DISABLE(
+client_name => 'sql tuning advisor',
+operation => NULL,
+window_name => NULL);
+END;
+/
+
+
+
+2. Disabling the Automated SQL Tuning Advisor does not cancel a TASK that is currently running.
+---------------------------------------------------------------------
+Check whether there is a taks currently executing
+SQL> SELECT status FROM DBA_ADVISOR_TASKS WHERE task_name = 'SYS_AUTO_SQL_TUNING_TASK';
+
+STATUS
+-----------
+EXECUTING
+  
+If there is a task executing, cancel it:
+SQL> exec DBMS_SQLTUNE.CANCEL_TUNING_TASK('SYS_AUTO_SQL_TUNING_TASK');
+
+PL/SQL procedure successfully completed.
+  
+Check the task has indeed been cancelled
+SQL> SELECT status FROM DBA_ADVISOR_TASKS WHERE task_name = 'SYS_AUTO_SQL_TUNING_TASK';
+
+STATUS
+-----------
+CANCELLED
+  
+  
+  
+  
+3. Modify the parameter as desired
+---------------------------------------------------------------------
+SQL> BEGIN
+  DBMS_SQLTUNE.set_tuning_task_parameter('SYS_AUTO_SQL_TUNING_TASK', 'LOCAL_TIME_LIMIT', 21600);
+  END;
+  /
+
+
+
+4. Re-Enable the automatic tuning process: 
+---------------------------------------------------------------------
+BEGIN
+DBMS_AUTO_TASK_ADMIN.ENABLE(
+client_name => 'sql tuning advisor',
+operation => NULL,
+window_name => NULL);
+END;
+/
+  
+
+5. Check current SYS_AUTO_SQL_TUNING_TASK parameters, run following:
+---------------------------------------------------------------------
+SQL> SELECT parameter_name,parameter_value FROM DBA_ADVISOR_PARAMETERS WHERE task_name='SYS_AUTO_SQL_TUNING_TASK';
+
+
+
+
+6. Change window time
+---------------------------------------------------------------------
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."MONDAY_WINDOW"',
+force=>TRUE);
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.SET_ATTRIBUTE(
+name=>'"SYS"."MONDAY_WINDOW"',
+attribute=>'DURATION',
+value=>numtodsinterval(360, 'minute'));
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.ENABLE(
+name=>'"SYS"."MONDAY_WINDOW"');
+END;
+/
+
+
+
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."TUESDAY_WINDOW"',
+force=>TRUE);
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.SET_ATTRIBUTE(
+name=>'"SYS"."TUESDAY_WINDOW"',
+attribute=>'DURATION',
+value=>numtodsinterval(360, 'minute'));
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.ENABLE(
+name=>'"SYS"."TUESDAY_WINDOW"');
+END;
+/
+
+
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."WEDNESDAY_WINDOW"',
+force=>TRUE);
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.SET_ATTRIBUTE(
+name=>'"SYS"."WEDNESDAY_WINDOW"',
+attribute=>'DURATION',
+value=>numtodsinterval(360, 'minute'));
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.ENABLE(
+name=>'"SYS"."WEDNESDAY_WINDOW"');
+END;
+/
+
+
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."THURSDAY_WINDOW"',
+force=>TRUE);
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.SET_ATTRIBUTE(
+name=>'"SYS"."THURSDAY_WINDOW"',
+attribute=>'DURATION',
+value=>numtodsinterval(360, 'minute'));
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.ENABLE(
+name=>'"SYS"."THURSDAY_WINDOW"');
+END;
+/
+
+
+BEGIN
+DBMS_SCHEDULER.DISABLE(
+name=>'"SYS"."FRIDAY_WINDOW"',
+force=>TRUE);
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.SET_ATTRIBUTE(
+name=>'"SYS"."FRIDAY_WINDOW"',
+attribute=>'DURATION',
+value=>numtodsinterval(360, 'minute'));
+END;
+/
+
+BEGIN
+DBMS_SCHEDULER.ENABLE(
+name=>'"SYS"."FRIDAY_WINDOW"');
+END;
+/
+
+
+
+MONDAY_WINDOW
+TUESDAY_WINDOW
+WEDNESDAY_WINDOW
+THURSDAY_WINDOW		
+FRIDAY_WINDOW		
+

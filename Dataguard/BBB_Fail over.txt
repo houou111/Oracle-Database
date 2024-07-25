@@ -1,0 +1,33 @@
+Step:1 Check the database role and open_mode
+Select name,open_mode,database_role from v$database;
+
+
+
+Step:2 Cancel the MRP process
+alter database recover managed standby database cancel;
+
+
+
+
+
+Step:3 The below commands will help to bring up standby as primary
+
+alter database recover managed standby database finish;
+
+
+
+alter database activate standby database;
+
+
+
+Managed recovery process has been stopped between primary and standby database and standby becomes primary database.
+
+Step:5 Bounce your database and verify database name its open mode and its role.
+
+shutdown immediate;
+
+Startup
+
+Step:6
+select name,open_mode,database_role from v$database;
+

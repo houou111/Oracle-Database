@@ -1,0 +1,27 @@
+Scan if need:
+echo "- - -" > /sys/class/scsi_host/host0/scan
+echo "- - -" > /sys/class/scsi_host/host1/scan
+echo "- - -" > /sys/class/scsi_host/host2/scan
+echo "- - -" > /sys/class/scsi_host/host3/scan
+echo "- - -" > /sys/class/scsi_host/host4/scan
+
+############
+1. 3.5Tb partition (the same on both nodes):
+a. umount
+umount /backupdata
+b. mount
+mount /dev/mapper/vg_backupdata-lv_backupdata /backupdata
+
+#############
+2. 200Gb partition:
+a. umount (do the same on both nodes)
+umount /backup200
+b. mount:
+- Server 10.99.1.62
+mount /dev/mapper/mpath32 /backup200
+- Server 10.99.1.204
+mount /dev/mapper/mpathv /backup200
+
+
+$ chmod -R 777 /backupdata
+$ chmod -R 777 /backup200

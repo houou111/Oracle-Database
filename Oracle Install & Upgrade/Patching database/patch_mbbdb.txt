@@ -1,0 +1,42 @@
+
+== more ~/.bash_profile
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+export ORACLE_HOME=/u01/app/12.2.0/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+==
+opatchauto apply  /u01/software/patch20190416/29301687/
+
+
+--opatchauto rollback -id  /u01/software/OJVM20190416/29249637
+--opatchauto rollback -id 
+
+stop crs on the remote node
+opatchauto apply  /u01/software/OJVM20190416/29249637 -nonrolling
+
+
+cd /u01/app/oracle/product/12.2.0/dbhome_1/bin
+ls -lrt oracle*
+
+chown oracle:oinstall oracleO
+chown oracle:asmadmin oracle
+chmod 6751 oracleO
+chmod 6751 oracle
+
+cd /u01/app/12.2.0/grid/bin
+ls -lrt oracle*
+
+chown grid:oinstall oracleO
+chown grid:oinstall  oracle
+chmod 6751 oracleO
+chmod 6751 oracle

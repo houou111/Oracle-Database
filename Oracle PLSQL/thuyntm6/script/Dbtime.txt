@@ -1,0 +1,853 @@
+T24LIVE@t24test31 > T24LIVE@t24test31 > 15:49:57 T24LIVE@t24test31 >                                                                                                      BEGIN convert_blob_file('FBNK_RE_CONSOL_PROFIT',4,1000); END;
+
+*
+ERROR at line 1:
+ORA-01403: no data found
+ORA-06512: at "T24LIVE.CONVERT_BLOB_FILE", line 34
+ORA-06512: at line 1
+
+
+Elapsed: 09:12:11.27
+01:02:08 T24LIVE@t24test31 >
+
+
+AMS_CLEARING_CONFIG(ID_CLEARING_PI)
+MOB_TXNS(ID_PAYEE_PI)
+MOB_TXNS(ID_PAYER_PI)
+MOB_COMMISSION_CONFIGURATIONS(ID_COMMISSION_PI)
+MOB_INTEREST_PRODUCT(ID_PI_INCOME_ACCOUNT)
+MOB_INTEREST_PRODUCT(ID_PI_EXPENSE_ACCOUNT)
+MOB_INTEREST_PRODUCT(ID_PI_DEBIT_CLEARING_ACCOUNT)
+MOB_INTEREST_PRODUCT(ID_PI_CREDIT_CLEARING_ACCOUNT)
+MOB_INTEREST_PRODUCT(ID_PI_CREDIT_TAX_ACC)
+MOB_INV_CONFIG(ID_DEFAULT_PI)
+MOB_INV_TYPES(ID_DEFAULT_PI)
+MOB_PI_TYPES(ID_SETTLEMENT_INSTRUMENT)
+MOB_SVA(ID_AUTOREFUND_PI)
+MOB_SVA(ID_PI)
+MOB_WALLET(ID_PI)
+MBA_FAVOURITE_ACCOUNTS(ID_PI)
+MBA_PI_ATTRIBUTES(ID_MOB_PI)
+
+
+ /home/oracle/DBSCRIPT/clean_all_logs.sh 
+
+DBA_JOB_DROP_PARTITION_YEARLY
+
+Connected to: Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+ ORA-39006: internal error
+ORA-39065: unexpected master process exception in DISPATCH
+ORA-04052: error occurred when looking up remote object SYS.KUPM$MCP@EXP_LINK
+ORA-00604: error occurred at recursive SQL level 3
+ORA-01017: invalid username/password; logon denied
+ORA-02063: preceding line from EXP_LINK
+ORA-06512: at "SYS.KUPM$MCP", line 2305
+
+
+Connected to: Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+ORA-39006: internal error
+ORA-39065: unexpected master process exception in DISPATCH
+ORA-04054: database link EXPLINK does not exist
+ORA-06512: at "SYS.KUPM$MCP", line 2305
+
+ORA-39097: Data Pump job encountered unexpected error -4054
+
+
+DBSNMP@test_1 > select * from MOBR5.MOB_TRACEABLE_REQUESTS@LINK;    
+select * from MOBR5.MOB_TRACEABLE_REQUESTS@LINK
+                    *
+ERROR at line 1:
+ORA-01031: insufficient privileges
+ORA-02063: preceding line from LINK
+
+select time, ADMINISTRATIVE/3600,APPLICATION/3600,CPU/3600,CLUST/3600,COMMIT/3600,CONCURRENCY/3600,CONFIGURATION/3600,NETWORK/3600,OTHER/3600
+    ,                              QUEUEING /3600,   SCHEDULER  /3600,  SYSTEMIO/3600,    USERIO/3600
+from(
+select TO_CHAR (sample_time, 'yyyymmdd hh24') time, DECODE(session_state,'ON CPU',DECODE(session_type,'BACKGROUND','BCPU','ON CPU'), wait_class) AS wait_class
+ FROM dba_hist_active_sess_history where sample_time>sysdate-40
+ )
+ PIVOT (COUNT(*) FOR wait_class IN (
+'Administrative' AS administrative,'Application' AS application
+ ,'ON CPU' AS cpu,'Cluster' AS CLUST,'Commit' AS COMMIT, 'Concurrency' AS concurrency,'Configuration' AS configuration ,'Network' AS network
+ ,'Other' AS other,'Queueing' AS queueing, 'Scheduler' AS scheduler,'System I/O' AS SYSTEMIO,'User I/O' AS USERIO))
+
+
+
+select SID,serial#,username,machine from v$session where blocking_session is not null
+
+SELECT inst_starttime, sum(round(DB_TIME,2)) as "DB_TIME" , sum(round(DB_CPU,2)) as "DB_CPU",sum(EXECUTION) EXECUTION,
+sum(round(CLUSTER_Min,2)) as "Cluster(min)",sum(round(USERIO_Min,2)) as "UserIO(min)",sum(round(COMMIT_Min,2)) as "Commit(min)",
+sum(TOTAL_WAIT_CLUSTER) TOTAL_WAIT_CLUSTER,sum(TOTAL_WAIT_USERIO) TOTAL_WAIT_USERIO,sum(TOTAL_WAIT_COMMIT) TOTAL_WAIT_COMMIT
+  FROM (SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd-hh24') AS inst_starttime, ROUND (sum(VALUE), 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time ,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'                       
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits User I/O' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Commit' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time AS begin_interval_time_N,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Cluster' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            ) 
+         WHERE begin_interval_time_N > trunc(sysdate) -31 and begin_interval_time_N < trunc(sysdate)-1
+                  and to_number(substr(to_char (begin_interval_time_N,'yyyymmddhh24'),9,2)) not between 7 and 17
+       --and to_number(substr(to_char (begin_interval_time_N,'yyyymmddhh24'),9,2)) not  in (12)  
+           --     and extract(hour from begin_interval_time_N) not between 7 and 22
+         and to_char( begin_interval_time_N,'d') not in (1)
+         group by INSTANCE_NUMBER,TO_CHAR (begin_interval_time_N, 'yyyymmdd-hh24'), STAT_NAME     
+                   ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU,'execute count' EXECUTION,'Cluster' CLUSTER_Min,'Total_waits Cluster' TOTAL_WAIT_CLUSTER,'User I/O' USERIO_Min,
+                          'Total_waits User I/O' TOTAL_WAIT_USERIO,'Commit' COMMIT_Min,'Total_waits Commit' TOTAL_WAIT_COMMIT))
+                          group by inst_starttime
+                          order by 1
+
+
+BEGIN
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name  => 'SYS.DBA_JOB_DROP_PARTITION_YEARLY');
+END;
+/
+
+
+
+
+
+T24TEST6 =
+  (DESCRIPTION =
+    (SDU = 32767)
+    (TDU = 32767)
+    (MDU = 32767)
+    (ADDRESS_LIST =
+      (LOAD_BALANCE = ON)
+      (FAILOVER = ON)
+      (ADDRESS = (PROTOCOL = tcp)(HOST = 10.101.5.149)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = tcp)(HOST = 10.101.5.150)(PORT = 1521))
+    )
+    (SEND_BUF_SIZE = 32767)
+    (RECV_BUF_SIZE = 32767)
+    (TCP.NODELAY = YES)
+    (CONNECT_DATA =
+      (SERVICE_NAME = t24test6)
+    )
+  )
+  
+
+
+Tue Jul 17 21:34:33 2018
+Dump of system resources acquired for SHARED GLOBAL AREA (SGA) 
+
+http://amit7oracledba.blogspot.com/2013/08/db-time-in-awr-report.html
+
+
+https://it.toolbox.com/blogs/yurigorelik/oracle-a-query-to-get-the-wait-events-part-of-the-awr-report-081209
+
+DB Time in AWR report is the total time for which all user process are either working or waiting in Database. In other words , DB Time is the time spent in database by all user processes including CPU time, I/O time and Wait time and excludes idle time for a particular Snap Interval.
+
+When We generate AWR report for a particular time interval. DB time can be less than AWR generation time interval or greater than. If DB time is too high as compared to AWR generation time interval then heavy activity is going on database and if less, then database is in idle state for most of the time.
+
+Query to generate DB time of all Snap Intervals in a week  :-
+
+===================check PGA  
+========================================================================================= 
+select instance_number,avg(value)/1024/1024/1024 from (
+select begin_interval_time,A.instance_number,value from dba_hist_snapshot A, DBA_HIST_PGASTAT B
+where name ='total PGA allocated'
+and  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and to_char(begin_interval_time,'d')  not in (1,7)  
+and extract(hour from begin_interval_time)  between 7 and 17
+)group by instance_number
+
+
+select begin_interval_time,A.instance_number,value/1024/1024/1024 from dba_hist_snapshot A, DBA_HIST_PGASTAT B
+where name ='total PGA allocated'
+and  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and begin_interval_time>trunc(sysdate-16/24)
+
+===================load average (CPU)
+select instance_number,start_time, load,num_cpus
+from
+(
+select to_char(begin_interval_time,'yyyymmdd-hh24:mi') start_time,stat_name,b.instance_number,value
+from dba_hist_snapshot A, DBA_HIST_OSSTAT B
+where  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and stat_name in ('LOAD','NUM_CPUS')
+) PIVOT (MAX (value)  FOR STAT_NAME IN ('LOAD' LOAD, 'NUM_CPUS' NUM_CPUS))
+          order by 1
+
+
+===================check interconnect 
+=========================================================================================
+select * from DBA_HIST_CLUSTER_INTERCON
+
+select A.INSTANCE_NUMBER,
+MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS begin_interval_time_N,B.if_name, 
+  B.send_errors - LAG (B.send_errors,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS send_errors,
+  B.sends_dropped - LAG (B.sends_dropped,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS sends_dropped 
+from dba_hist_snapshot A, DBA_HIST_IC_DEVICE_STATS B
+where  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and if_name='enccw0.0.a900'
+and a.instance_number=1
+
+select 
+MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS begin_interval_time_N,
+  --B.send_errors - LAG (B.send_errors,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS send_errors,
+  B.sends_dropped - LAG (B.sends_dropped,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS sends_dropped ,
+    B.bytes_sent - LAG (B.bytes_sent,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS bytes_sent,
+  B.packets_sent - LAG (B.packets_sent,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS packets_sent 
+from dba_hist_snapshot A, DBA_HIST_IC_DEVICE_STATS B
+where  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and if_name in ('enccw0.0.a800')--,'enccw0.0.a800')
+--and begin_interval_time> sysdate-3
+and a.instance_number=1
+
+
+select to_char(begin_interval_time_N,'yyyymmdd-hh24mi') Begin_time,if_name,send_errors,sends_dropped
+from(
+select A.INSTANCE_NUMBER,
+MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS begin_interval_time_N,B.if_name, 
+  B.send_errors - LAG (B.send_errors,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS send_errors,
+  B.sends_dropped - LAG (B.sends_dropped,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.if_name, A.SNAP_ID) AS sends_dropped 
+from dba_hist_snapshot A, DBA_HIST_IC_DEVICE_STATS B
+where  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER = B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+and if_name in ('enccw0.0.a900','enccw0.0.a800')
+and a.instance_number=1
+)
+
+===================check number execute of sql
+=========================================================================================
+select sql_id,count(*) from (
+select distinct sql_id,plan_hash_value from dba_hist_sql_plan where object_owner='MOBR5'
+)
+having count(*)>1
+group by sql_id
+
+select * from dba_hist_sql_plan where sql_id='7yx66jg0uf8an'
+
+select * from dba_hist_sqltext where sql_id='7yx66jg0uf8an'
+
+395191911
+633249752
+
+select * from dba_hist_sqlstat where sql_id='7q9szcdgq7kpx'
+
+/* SQL Analyze(1431,1) */ select * from mobr5.MOB_AUDIT_LOGS where STR_ACTION = 'RegSoftTokenRequest' 
+and DAT_CREATION > '25-MAR-19' and STR_ACTION_RESULT_CODE = '25111'
+order by DAT_CREATION desc
+
+
+select * from DBA_HIST_SQLTEXT where upper(sql_text) like '%NEXTVAL%'
+
+--plan history
+select * from dba_hist_sqlstat where sql_id='4wmxqpwjwphmc'
+
+--plan detail
+select * from dba_hist_sql_plan where plan_hash_value='123308768' and sql_id='1q58jzc9ych5g'
+
+set linesize 10000
+col object_owner for a20
+col object_name for a20
+select  plan_hash_value,ID,operation,options,object_owner,object_name from dba_hist_sql_plan where sql_id='9t36vp7sdabj0'
+order by 1,2;
+
+SELECT t.plan_table_output
+  FROM (SELECT DISTINCT sql_id, plan_hash_value, dbid
+          FROM dba_hist_sql_plan WHERE sql_id = '4wmxqpwjwphmc') v,
+       TABLE(DBMS_XPLAN.DISPLAY_AWR(v.sql_id, v.plan_hash_value, v.dbid, 'ADVANCED')) t;
+
+--by hour
+select to_char(begin_interval_time,'yyyymmdd hh24'), sum( executions_delta) executions from DBA_HIST_SQLSTAT a, dba_hist_snapshot b
+where sql_id='7uas45vamu5bv' --and a.snap_id=78712
+and a.snap_id||a.dbid||a.instance_number=b.snap_id||b.dbid||b.instance_number
+group by to_char(begin_interval_time,'yyyymmdd hh24')
+order by 1 desc
+
+select to_char(begin_interval_time,'yyyymmdd hh24'), sum( executions_delta) executions,sum(elapsed_time_delta) total_elapsed_time  from DBA_HIST_SQLSTAT a, dba_hist_snapshot b
+where sql_id='1q58jzc9ych5g' --and a.snap_id=78712
+and a.snap_id||a.dbid||a.instance_number=b.snap_id||b.dbid||b.instance_number
+group by to_char(begin_interval_time,'yyyymmdd hh24')
+order by 1 desc
+
+--by min (interval 30 min)
+select to_char(begin_interval_time,'yyyymmdd hh24mi'), sum( executions_delta) executions from DBA_HIST_SQLSTAT a, dba_hist_snapshot b
+where sql_id='cfktmjq1d5q9m' --and a.snap_id=78712
+and a.snap_id||a.dbid||a.instance_number=b.snap_id||b.dbid||b.instance_number
+and extract(hour from begin_interval_time)  between 7 and 17
+and to_char( begin_interval_time,'d') not in (1,7)
+group by to_char(begin_interval_time,'yyyymmdd hh24mi')
+order by 1 
+
+select sql_id,sum(executions_delta) 
+from DBA_HIST_SQLSTAT where snap_id=80384
+group by sql_id
+order by 2 desc
+===================check physical/logical read 
+=========================================================================================
+select to_char(begin_interval_time,'yyyymmdd hh24'),sum(value) from (
+SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.stat_name))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, stat_name,sum(value) total_waits
+                  FROM  dba_hist_sysstat 
+                 WHERE     stat_name in ('physical reads' )
+                 group by instance_number,DBID,snap_id, stat_name) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                 and begin_interval_time>sysdate-10
+            ) where extract(hour from begin_interval_time)  between 7 and 17
+         and to_char( begin_interval_time,'d') not in (1,7)
+            group by to_char(begin_interval_time,'yyyymmdd hh24')
+            order by 1
+			
+			
+select to_char(begin_interval_time,'yyyymmdd-hh24'),sum(value) from (
+SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.stat_name))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, stat_name,sum(value) total_waits
+                  FROM  dba_hist_sysstat 
+                 WHERE     stat_name in ('physical reads' )
+                 group by instance_number,DBID,snap_id, stat_name) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                 and begin_interval_time>sysdate-10
+            ) where begin_interval_time>sysdate-10
+            group by to_char(begin_interval_time,'yyyymmdd-hh24')
+            order by 1			
+
+
+select to_char(begin_interval_time,'yyyymmdd hh24'),sum(value) from (
+SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.stat_name))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, stat_name,sum(value) total_waits
+                  FROM  dba_hist_sysstat 
+                 WHERE     stat_name in ('session logical reads' )
+                 group by instance_number,DBID,snap_id, stat_name) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                 and begin_interval_time>sysdate-10
+            ) where extract(hour from begin_interval_time)  between 7 and 17
+         and to_char( begin_interval_time,'d') not in (1,7)
+            group by to_char(begin_interval_time,'yyyymmdd hh24')
+            order by 1			
+			
+			
+select      to_char(begin_interval_time,'yyyymmdd hh24'),sum(physical_reads_delta),sum(logical_reads_delta)
+from dba_hist_snapshot a, dba_hist_seg_stat b, dba_objects c
+where b.obj#=c.object_id and c.object_name='A'
+and  A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+group by to_char(begin_interval_time,'yyyymmdd hh24')
+		
+===================check gc blocks lost 
+=========================================================================================
+select to_char(begin_interval_time,'yyyymmdd hh24'),sum(value) from (
+SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.stat_name))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, stat_name,sum(value) total_waits
+                  FROM  dba_hist_sysstat 
+                 WHERE     stat_name in ('gc blocks lost' )
+                 group by instance_number,DBID,snap_id, stat_name) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                 and begin_interval_time>sysdate-10
+            )group by to_char(begin_interval_time,'yyyymmdd hh24')
+            order by 1			
+
+ SELECT A.INST_ID "INSTANCE", A.VALUE "GC BLOCKS LOST",
+  B.VALUE "GC CUR BLOCKS SERVED",
+  C.VALUE "GC CR BLOCKS SERVED",
+  A.VALUE/(B.VALUE+C.VALUE) RATIO
+FROM GV$SYSSTAT A, GV$SYSSTAT B, GV$SYSSTAT C
+ WHERE A.NAME='gc blocks lost' AND
+    B.NAME='gc current blocks served' AND
+    C.NAME='gc cr blocks served' and
+    B.INST_ID=a.inst_id AND
+    C.INST_ID = a.inst_id;
+	
+===================DB time
+=========================================================================================
+---Standalone Database
+ col begin_interval_time_N format A35 trunc
+ col end_interval_time_N format A35 trunc
+ col HOST_NAME format A20 trunc
+ col INSTANCE_NUMBER format 9 heading “I”
+ col begin_interval_time_N 
+ col end_interval_time_N 
+ select  A.SNAP_ID , A.INSTANCE_NUMBER , C.HOST_NAME  , MIN(A.begin_interval_time) OVER (partition by A.dbid, A.snap_id) AS begin_interval_time_N  
+ , MIN(A.end_interval_time) OVER (partition by A.dbid, A.snap_id) AS end_interval_time_N  , (B.VALUE - LAG(B.VALUE,1,0) OVER
+ (ORDER BY A.SNAP_ID))/1000000/60 as DB_TIME  from dba_hist_snapshot A , DBA_HIST_SYS_TIME_MODEL B,dba_hist_database_instance C
+ where A.SNAP_ID=B.SNAP_ID  and A.DBID=B.DBID  And A.INSTANCE_NUMBER=B.INSTANCE_NUMBER  and B.STAT_NAME Like 'DB time'  
+ and A.DBID=C.DBID  and A.INSTANCE_NUMBER=C.INSTANCE_NUMBER  and A.startup_time = C.startup_time  and 
+ A.begin_interval_time >= trunc(sysdate) - 1 and A.begin_interval_time <= trunc(sysdate) ;
+
+---RAC Database , We have to generate instance wise
+ col begin_interval_time_N format A35 trunc
+ col end_interval_time_N format A35 trunc
+ col HOST_NAME format A20 trunc
+ col INSTANCE_NUMBER format 9 heading “I”
+ col begin_interval_time_N 
+ col end_interval_time_N 
+SELECT A.SNAP_ID,
+       A.INSTANCE_NUMBER,
+       C.HOST_NAME,
+       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)
+          AS begin_interval_time_N,
+       MIN (A.end_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)
+          AS end_interval_time_N,
+         (B.VALUE - LAG (B.VALUE, 1, 0) OVER (ORDER BY A.SNAP_ID)) / 1000000  / 60 AS DB_TIME
+  FROM dba_hist_snapshot A,
+       DBA_HIST_SYS_TIME_MODEL B,
+       dba_hist_database_instance C
+ WHERE     A.SNAP_ID = B.SNAP_ID
+       AND A.DBID = B.DBID
+       AND A.INSTANCE_NUMBER = B.INSTANCE_NUMBER
+       AND B.STAT_NAME LIKE 'DB time'
+       AND A.DBID = C.DBID
+       AND A.INSTANCE_NUMBER = C.INSTANCE_NUMBER
+       AND A.startup_time = C.startup_time
+       AND A.begin_interval_time >= TRUNC (SYSDATE) - 1
+       AND A.begin_interval_time <= TRUNC (SYSDATE)
+       AND A.INSTANCE_NUMBER = 1;
+
+	     SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS begin_time,round(DB_TIME,2) , round(DB_CPU,2)
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id) AS begin_interval_time_N,
+                       MIN (A.end_interval_time) OVER (PARTITION BY A.dbid, A.snap_id) AS end_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS DB_TIME
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+                       AND A.begin_interval_time >= SYSDATE - 10
+                ) PIVOT (MAX (DB_TIME)  FOR STAT_NAME IN ('DB time' DB_TIME, 'DB CPU' DB_CPU))
+          order by 1
+===================EM13C
+=========================================================================================
+  --> old way
+select inst_starttime, DB_TIME||'|'||DB_CPU from (
+select  INSTANCE_NUMBER||'|'||to_char(begin_interval_time_N,'yyyymmdd hh24mi')||'|' as inst_starttime,round(DB_TIME,5) DB_TIME,time_min
+from (
+SELECT A.INSTANCE_NUMBER, 'DB time' as time_min,
+       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)  AS begin_interval_time_N,
+       MIN (A.end_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)  AS end_interval_time_N,
+       (B.VALUE - LAG (B.VALUE, 1, 0) OVER (ORDER BY A.INSTANCE_NUMBER,A.SNAP_ID)) / 1000000  / 60 AS DB_TIME
+  FROM dba_hist_snapshot A,
+       DBA_HIST_SYS_TIME_MODEL B
+ WHERE     A.SNAP_ID||A.DBID||A.INSTANCE_NUMBER = B.SNAP_ID||B.DBID||B.INSTANCE_NUMBER
+       AND B.STAT_NAME LIKE 'DB time' --'DB time'
+       AND A.begin_interval_time >= SYSDATE - 1/24 - (select extract(hour from snap_interval) +extract(minute from snap_interval)/60 from dba_hist_wr_control)/12
+union
+SELECT A.INSTANCE_NUMBER, 'DB CPU' as time_min,
+       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)  AS begin_interval_time_N,
+       MIN (A.end_interval_time) OVER (PARTITION BY A.dbid, A.snap_id)  AS end_interval_time_N,
+       (B.VALUE - LAG (B.VALUE, 1, 0) OVER (ORDER BY A.INSTANCE_NUMBER,A.SNAP_ID)) / 1000000  / 60 AS DB_TIME
+  FROM dba_hist_snapshot A,
+       DBA_HIST_SYS_TIME_MODEL B
+ WHERE     A.SNAP_ID||A.DBID||A.INSTANCE_NUMBER = B.SNAP_ID||B.DBID||B.INSTANCE_NUMBER
+       AND B.STAT_NAME LIKE 'DB CPU' --'DB time'
+       AND A.begin_interval_time >= SYSDATE - 1/24 - (select extract(hour from snap_interval) +extract(minute from snap_interval)/60 from dba_hist_wr_control)/12           
+       ) where begin_interval_time_N >=SYSDATE - 1/24 - (select extract(hour from snap_interval) +extract(minute from snap_interval)/60 from dba_hist_wr_control)/24
+       ) PIVOT (
+           MAX(DB_TIME) 
+  FOR time_min in ('DB time' DB_TIME, 'DB CPU' DB_CPU)); 	
+
+--> new (EM13C)
+SELECT inst_starttime, DB_TIME || '|' || DB_CPU
+  FROM (SELECT    INSTANCE_NUMBER|| '|'|| TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS inst_starttime,
+               ROUND (DB_TIME, 5) DB_TIME, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id) AS begin_interval_time_N,
+                       MIN (A.end_interval_time) OVER (PARTITION BY A.dbid, A.snap_id) AS end_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS DB_TIME
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+                       AND A.begin_interval_time >= SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12)
+         WHERE begin_interval_time_N >= SYSDATE- 1 / 24-   (SELECT   EXTRACT (HOUR FROM snap_interval)+ EXTRACT (MINUTE FROM snap_interval) / 60 FROM dba_hist_wr_control)/ 24
+                    ) PIVOT (MAX (DB_TIME)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU))
+	order by 1
+	
+SELECT inst_starttime, DB_TIME || '|' || DB_CPU||'|'||EXECUTION
+  FROM (SELECT    INSTANCE_NUMBER|| '|'|| TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS inst_starttime, ROUND (VALUE, 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.dbid, A.snap_id) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+                       AND A.begin_interval_time >= SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time AS begin_interval_time_N,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'
+                         AND D.begin_interval_time >= SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12                       
+            )
+         WHERE begin_interval_time_N >= SYSDATE- 1 / 24-   (SELECT   EXTRACT (HOUR FROM snap_interval)+ EXTRACT (MINUTE FROM snap_interval) / 60 FROM dba_hist_wr_control)/ 24
+                    ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU, 'execute count' EXECUTION))	
+--> IMPORTANCE EM13C
+SELECT INSTANCE_NUMBER,inst_starttime, round(DB_TIME,2) , round(DB_CPU,2),EXECUTION,
+round(CLUSTER_Min,2),round(USERIO_Min,2),round(COMMIT_Min,2),TOTAL_WAIT_CLUSTER,TOTAL_WAIT_USERIO,TOTAL_WAIT_COMMIT
+  FROM (SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS inst_starttime, ROUND (VALUE, 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+                       AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time ,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'
+                         AND D.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12                       
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits User I/O' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Commit' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time AS begin_interval_time_N,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Cluster' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                    AND A.begin_interval_time > SYSDATE - 1 / 24 -   (SELECT   EXTRACT (HOUR FROM snap_interval) +   EXTRACT ( MINUTE FROM snap_interval)/ 60 FROM dba_hist_wr_control)/ 12
+            )
+         WHERE begin_interval_time_N > SYSDATE- 1 / 24-   (SELECT   EXTRACT (HOUR FROM snap_interval)+ EXTRACT (MINUTE FROM snap_interval) / 60 FROM dba_hist_wr_control)/ 24
+                    ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU,'execute count' EXECUTION,'Cluster' CLUSTER_Min,'Total_waits Cluster' TOTAL_WAIT_CLUSTER,'User I/O' USERIO_Min,
+                          'Total_waits User I/O' TOTAL_WAIT_USERIO,'Commit' COMMIT_Min,'Total_waits Commit' TOTAL_WAIT_COMMIT))
+                          order by 1
+
+===================Manual check
+=========================================================================================
+SELECT inst_starttime, sum(round(DB_TIME,2)) as "DB_TIME" , sum(round(DB_CPU,2)) as "DB_CPU",sum(EXECUTION) EXECUTION,
+sum(round(CLUSTER_Min,2)) as "Cluster(min)",sum(round(USERIO_Min,2)) as "UserIO(min)",sum(round(COMMIT_Min,2)) as "Commit(min)",
+sum(TOTAL_WAIT_CLUSTER) TOTAL_WAIT_CLUSTER,sum(TOTAL_WAIT_USERIO) TOTAL_WAIT_USERIO,sum(TOTAL_WAIT_COMMIT) TOTAL_WAIT_COMMIT
+  FROM (SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24') AS inst_starttime, ROUND (sum(VALUE), 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time ,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'                       
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits User I/O' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Commit' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time AS begin_interval_time_N,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Cluster' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            ) 
+         WHERE begin_interval_time_N > sysdate -10 
+         group by INSTANCE_NUMBER,TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24'), STAT_NAME     
+                   ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU,'execute count' EXECUTION,'Cluster' CLUSTER_Min,'Total_waits Cluster' TOTAL_WAIT_CLUSTER,'User I/O' USERIO_Min,
+                          'Total_waits User I/O' TOTAL_WAIT_USERIO,'Commit' COMMIT_Min,'Total_waits Commit' TOTAL_WAIT_COMMIT))
+                          group by inst_starttime
+                          order by 1
+
+
+=========================================================================================
+----by all DB and by interval of awr
+SELECT inst_starttime, sum(round(DB_TIME,2)) as "DB TIME" , sum(round(DB_CPU,2)) as "DB CPU",sum(EXECUTION) EXECUTION,
+sum(round(CLUSTER_Min,2)) as "Cluster (min)",sum(round(USERIO_Min,2)) as "UserIO (min)",sum(round(COMMIT_Min,2)) as "Commit (min)",
+sum(TOTAL_WAIT_CLUSTER) TOTAL_WAIT_CLUSTER,sum(TOTAL_WAIT_USERIO) TOTAL_WAIT_USERIO,sum(TOTAL_WAIT_COMMIT) TOTAL_WAIT_COMMIT
+  FROM (SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS inst_starttime, ROUND (VALUE, 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time ,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'                       
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits User I/O' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Commit' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time AS begin_interval_time_N,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Cluster' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            )
+         WHERE begin_interval_time_N > sysdate -17
+        -- and to_number(substr(to_char (begin_interval_time_N,'yyyymmddhh24'),9,2)) not between 3 and 20
+       --and to_number(substr(to_char (begin_interval_time_N,'yyyymmddhh24'),9,2)) not  in (12)  
+	       --     and extract(hour from begin_interval_time_N) not between 7 and 22
+         --and to_char( begin_interval_time_N,'d') not in (1,7)
+and to_char(begin_interval_time_N,'d') not in (1,7) 	   
+                   ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU,'execute count' EXECUTION,'Cluster' CLUSTER_Min,'Total_waits Cluster' TOTAL_WAIT_CLUSTER,'User I/O' USERIO_Min,
+                          'Total_waits User I/O' TOTAL_WAIT_USERIO,'Commit' COMMIT_Min,'Total_waits Commit' TOTAL_WAIT_COMMIT))
+                          group by inst_starttime
+                          order by 1
+
+=========================================================================================
+------by instance and interval of awr
+SELECT INSTANCE_NUMBER,inst_starttime, round(DB_TIME,2) , round(DB_CPU,2),EXECUTION,
+round(CLUSTER_Min,2),round(USERIO_Min,2),round(COMMIT_Min,2),TOTAL_WAIT_CLUSTER,TOTAL_WAIT_USERIO,TOTAL_WAIT_COMMIT
+  FROM (SELECT    INSTANCE_NUMBER, TO_CHAR (begin_interval_time_N, 'yyyymmdd hh24mi') AS inst_starttime, ROUND (VALUE, 5) VALUE, STAT_NAME
+          FROM (SELECT A.INSTANCE_NUMBER,
+                       MIN (A.begin_interval_time) OVER (PARTITION BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID) AS begin_interval_time_N,
+                       B.STAT_NAME, (  B.VALUE - LAG (B.VALUE,1,0)OVER (ORDER BY A.INSTANCE_NUMBER, B.STAT_NAME, A.SNAP_ID))/ 60000000 AS VALUE
+                  FROM dba_hist_snapshot A, DBA_HIST_SYS_TIME_MODEL B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =
+                              B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+                       AND B.STAT_NAME IN ('DB time', 'DB CPU')
+            UNION
+                SELECT    C.INSTANCE_NUMBER, begin_interval_time ,C.STAT_NAME,
+                      (  C.VALUE - LAG (C.VALUE, 1, 0) OVER (ORDER BY C.instance_number,C.STAT_NAME,C.SNAP_ID )) AS VALUE
+                 FROM DBA_HIST_SYSSTAT C, dba_hist_snapshot D
+                WHERE     C.snap_id || C.instance_number || C.dbid = D.snap_id || D.instance_number || D.dbid
+                         AND C.stat_name LIKE 'execute count'                       
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits User I/O' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('User I/O' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Commit' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Commit' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time AS begin_interval_time_N,B.wait_class STAT_NAME, 
+                       (  B.time_waited_micro - LAG (B.time_waited_micro,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class)) /60000000 AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(time_waited_micro) time_waited_micro
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster')
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            UNION
+                SELECT A.INSTANCE_NUMBER,A.begin_interval_time ,'Total_waits Cluster' STAT_NAME, 
+                       (  B.total_waits - LAG (B.total_waits,1,0)  OVER (ORDER BY A.INSTANCE_NUMBER, A.SNAP_ID,B.wait_class))  AS VALUE
+                  FROM dba_hist_snapshot A, (select instance_number,DBID,snap_id, wait_class,sum(total_waits) total_waits
+                  FROM  dba_hist_system_event 
+                 WHERE     wait_class in ('Cluster' )
+                 group by instance_number,DBID,snap_id, wait_class) B
+                 WHERE     A.SNAP_ID || A.DBID || A.INSTANCE_NUMBER =B.SNAP_ID || B.DBID || B.INSTANCE_NUMBER
+            )
+         WHERE begin_interval_time_N > sysdate -2
+                    ) PIVOT (MAX (VALUE)
+                          FOR STAT_NAME
+                          IN ('DB time' DB_TIME, 'DB CPU' DB_CPU,'execute count' EXECUTION,'Cluster' CLUSTER_Min,'Total_waits Cluster' TOTAL_WAIT_CLUSTER,'User I/O' USERIO_Min,
+                          'Total_waits User I/O' TOTAL_WAIT_USERIO,'Commit' COMMIT_Min,'Total_waits Commit' TOTAL_WAIT_COMMIT))
+                          order by 1

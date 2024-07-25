@@ -1,0 +1,33 @@
+I. Default method
+--------------------------------------------------------------------------
+select TABLESPACE_NAME, TRUNC(TABLESPACE_SIZE/1024/1024/1024,2) SIZE_GB, 
+TRUNC(ALLOCATED_SPACE/1024/1024/1024,2) ALLOCATED_GB, 
+TRUNC(FREE_SPACE/1024/1024/1024,2) FREE_GB,
+TRUNC(((ALLOCATED_SPACE - FREE_SPACE)/ALLOCATED_SPACE*100),2) "% USED"  
+from dba_temp_free_space;
+
+
+
+II. HWM method
+--------------------------------------------------------------------------
+SELECT trunc(100-100* (SELECT SUM (BYTES_USED) 
+FROM V$TEMP_SPACE_HEADER 
+WHERE tablespace_name IN (SELECT property_value 
+FROM database_properties 
+WHERE property_name ='DEFAULT_TEMP_TABLESPACE'))/ (SELECT SUM (MAXBYTES) 
+FROM DBA_TEMP_FILES WHERE tablespace_name IN 
+(SELECT property_value FROM database_properties 
+WHERE property_name ='DEFAULT_TEMP_TABLESPACE')),2) FREE FROM DUAL;
+
+
+
+III. thuyntm method
+--------------------------------------------------------------------------
+SELECT A.tablespace_name tablespace, trunc(SUM(A.used_blocks * D.block_size*100)/ sum(D.mb_total)) pct_used 
+FROM v$sort_segment A, 
+( SELECT A.tablespace_name,C.block_size, sum( CASE WHEN A.autoextensible = 'YES' THEN A.maxbytes ELSE A.bytes END) AS mb_total 
+FROM dba_temp_files A,v$tempfile C 
+WHERE A.file_id = C.File# group by A.tablespace_name ,C.block_size) D 
+WHERE A.tablespace_name = D.tablespace_name 
+GROUP BY A.tablespace_name, D.mb_total;
+

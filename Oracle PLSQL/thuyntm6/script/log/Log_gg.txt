@@ -1,0 +1,52 @@
+GGSCI (t24db04) 1> send ET24DC, showstran
+
+Sending SHOWSTRAN request to EXTRACT ET24DC ...
+
+ERROR: unknown request.
+
+2017-05-13 00:04:50  WARNING OGG-01742  Command sent to EXTRACT ET24DC returned with an ERROR response.
+
+
+GGSCI (t24db04) 2> info all
+
+Program     Status      Group       Lag at Chkpt  Time Since Chkpt
+
+MANAGER     RUNNING                                           
+JAGENT      STOPPED                                           
+EXTRACT     RUNNING     ET24DC      00:00:02      00:00:04    
+EXTRACT     RUNNING     PDWDC       00:00:00      00:00:02    
+
+
+GGSCI (t24db04) 3> stop ET24DC
+
+Sending STOP request to EXTRACT ET24DC ...
+Request processed.
+
+
+GGSCI (t24db04) 4>    stop PDWDC
+
+Sending STOP request to EXTRACT PDWDC ...
+Request processed.
+
+
+GGSCI (t24db04) 5> stop mgr
+Manager process is required by other GGS processes.
+Are you sure you want to stop it (y/n)?y
+
+Sending STOP request to MANAGER ...
+Request processed.
+Manager stopped.
+
+
+GGSCI (t24db04) 6> info all
+
+Program     Status      Group       Lag at Chkpt  Time Since Chkpt
+
+MANAGER     STOPPED                                           
+JAGENT      STOPPED                                           
+EXTRACT     STOPPED     ET24DC      00:00:10      00:08:29    
+EXTRACT     STOPPED     PDWDC       00:00:00      00:00:14    
+
+
+GGSCI (t24db04) 7> exit
+GGSCI (t24db04) 7> exit

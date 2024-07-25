@@ -1,0 +1,493 @@
+------FRACOBR14_DC
+192.168.11.31 (T24DB01) 
+rhdisk157
+rhdisk158
+rhdisk159
+rhdisk160
+11.40 
+hdisk158
+hdisk159
+hdisk161
+hdisk160
+
+
+alter diskgroup FRACOBR14_DC
+add disk '/dev/rhdisk157','/dev/rhdisk158','/dev/rhdisk159' ,'/dev/rhdisk160'   
+drop disk FRACOBR14_DC_0002,FRACOBR14_DC_0001,FRACOBR14_DC_0004,FRACOBR14_DC_0003,FRACOBR14_DC_0000 REBALANCE power 10;
+
+alter diskgroup COBR14_DC
+add disk '/dev/rhdisk153','/dev/rhdisk154','/dev/rhdisk155' ,'/dev/rhdisk156'   
+drop disk COBR14_DC_0033,COBR14_DC_0034,COBR14_DC_0035,COBR14_DC_0036,COBR14_DC_0037,COBR14_DC_0038,COBR14_DC_0039,COBR14_DC_0040,
+COBR14_DC_0041,COBR14_DC_0042,COBR14_DC_0043,COBR14_DC_0044,COBR14_DC_0000,COBR14_DC_0001,COBR14_DC_0002,COBR14_DC_0003,COBR14_DC_0004,
+COBR14_DC_0005,COBR14_DC_0006,COBR14_DC_0007,COBR14_DC_0008,COBR14_DC_0009,COBR14_DC_0010,COBR14_DC_0011,COBR14_DC_0012,COBR14_DC_0013,
+COBR14_DC_0014,COBR14_DC_0015,COBR14_DC_0016,COBR14_DC_0017,COBR14_DC_0018,COBR14_DC_0019,COBR14_DC_0020,COBR14_DC_0021,COBR14_DC_0022,
+COBR14_DC_0023,COBR14_DC_0024,COBR14_DC_0025,COBR14_DC_0026,COBR14_DC_0027,COBR14_DC_0028,COBR14_DC_0029,COBR14_DC_0030,COBR14_DC_0031,
+COBR14_DC_0032,COBR14_DC_0045,COBR14_DC_0046,COBR14_DC_0047 REBALANCE power 10;
+
+--===========thu hoi
+39
+/dev/rhdisk54
+/dev/rhdisk55
+/dev/rhdisk56
+/dev/rhdisk57
+/dev/rhdisk58
+
+40
+/dev/rhdisk100
+/dev/rhdisk101
+/dev/rhdisk102
+/dev/rhdisk98
+/dev/rhdisk99
+
+
+--------------COBR14_DC
+11.39
+
+rhdisk153
+rhdisk154
+rhdisk155
+rhdisk156
+
+
+192.168.11.32 (T24DB02)
+hdisk154
+hdisk155
+hdisk156
+hdisk157
+
+alter diskgroup COBR14_DC
+add disk '/dev/rhdisk153','/dev/rhdisk154','/dev/rhdisk155' ,'/dev/rhdisk156'   
+drop disk COBR14_DC_0033,COBR14_DC_0034,COBR14_DC_0035,COBR14_DC_0036,COBR14_DC_0037,COBR14_DC_0038,COBR14_DC_0039,COBR14_DC_0040,
+COBR14_DC_0041,COBR14_DC_0042,COBR14_DC_0043,COBR14_DC_0044,COBR14_DC_0000,COBR14_DC_0001,COBR14_DC_0002,COBR14_DC_0003,COBR14_DC_0004,
+COBR14_DC_0005,COBR14_DC_0006,COBR14_DC_0007,COBR14_DC_0008,COBR14_DC_0009,COBR14_DC_0010,COBR14_DC_0011,COBR14_DC_0012,COBR14_DC_0013,
+COBR14_DC_0014,COBR14_DC_0015,COBR14_DC_0016,COBR14_DC_0017,COBR14_DC_0018,COBR14_DC_0019,COBR14_DC_0020,COBR14_DC_0021,COBR14_DC_0022,
+COBR14_DC_0023,COBR14_DC_0024,COBR14_DC_0025,COBR14_DC_0026,COBR14_DC_0027,COBR14_DC_0028,COBR14_DC_0029,COBR14_DC_0030,COBR14_DC_0031,
+COBR14_DC_0032,COBR14_DC_0045,COBR14_DC_0046,COBR14_DC_0047,REBALANCE power 10;
+
+
+---=============thu hoi
+39.
+/dev/rhdisk100
+/dev/rhdisk101
+/dev/rhdisk102
+/dev/rhdisk103
+/dev/rhdisk104
+/dev/rhdisk105
+/dev/rhdisk106
+/dev/rhdisk107
+/dev/rhdisk108
+/dev/rhdisk109
+/dev/rhdisk110
+/dev/rhdisk111
+/dev/rhdisk64
+/dev/rhdisk65
+/dev/rhdisk66
+/dev/rhdisk67
+/dev/rhdisk68
+/dev/rhdisk69
+/dev/rhdisk70
+/dev/rhdisk71
+/dev/rhdisk72
+/dev/rhdisk73
+/dev/rhdisk74
+/dev/rhdisk75
+/dev/rhdisk76
+/dev/rhdisk77
+/dev/rhdisk78
+/dev/rhdisk79
+/dev/rhdisk80
+/dev/rhdisk81
+/dev/rhdisk82
+/dev/rhdisk83
+/dev/rhdisk87
+/dev/rhdisk88
+/dev/rhdisk89
+/dev/rhdisk90
+/dev/rhdisk91
+/dev/rhdisk92
+/dev/rhdisk93
+/dev/rhdisk94
+/dev/rhdisk95
+/dev/rhdisk96
+/dev/rhdisk97
+/dev/rhdisk98
+/dev/rhdisk99
+/dev/rhdisk117
+/dev/rhdisk118
+/dev/rhdisk119
+
+40.
+/dev/rhdisk108
+/dev/rhdisk109
+/dev/rhdisk110
+/dev/rhdisk111
+/dev/rhdisk112
+/dev/rhdisk47
+/dev/rhdisk48
+/dev/rhdisk49
+/dev/rhdisk50
+/dev/rhdisk51
+/dev/rhdisk52
+/dev/rhdisk53
+/dev/rhdisk54
+/dev/rhdisk55
+/dev/rhdisk56
+/dev/rhdisk57
+/dev/rhdisk58
+/dev/rhdisk59
+/dev/rhdisk60
+/dev/rhdisk61
+/dev/rhdisk62
+/dev/rhdisk63
+/dev/rhdisk64
+/dev/rhdisk65
+/dev/rhdisk66
+/dev/rhdisk75
+/dev/rhdisk76
+/dev/rhdisk77
+/dev/rhdisk78
+/dev/rhdisk79
+/dev/rhdisk80
+/dev/rhdisk81
+/dev/rhdisk82
+/dev/rhdisk83
+/dev/rhdisk87
+/dev/rhdisk88
+/dev/rhdisk89
+/dev/rhdisk90
+/dev/rhdisk91
+/dev/rhdisk92
+/dev/rhdisk93
+/dev/rhdisk94
+/dev/rhdisk95
+/dev/rhdisk96
+/dev/rhdisk97
+/dev/rhdisk118
+/dev/rhdisk119
+/dev/rhdisk120
+
+
+---------------------------------
+
+11.39
+/dev/rhdisk341
+/dev/rhdisk342
+
+11.40
+/dev/rhdisk325
+/dev/rhdisk326
+
+
+--thu hoi
+CRS
+11.39
+/dev/rhdisk86
+/dev/rhdisk85
+/dev/rhdisk84
+
+
+11.39
+alter diskgroup CRS
+add disk '/dev/rhdisk124','/dev/rhdisk125','/dev/rhdisk126'    
+drop disk CRS_0000, CRS_0001, CRS_0002 REBALANCE power 10;
+
+--
+'/dev/rhdisk84','/dev/rhdisk85','/dev/rhdisk86'
+--
+
+alter diskgroup FRAT24R14_DC
+add disk '/dev/rhdisk142','/dev/rhdisk143','/dev/rhdisk144','/dev/rhdisk145','/dev/rhdisk146','/dev/rhdisk147','/dev/rhdisk148','/dev/rhdisk149','/dev/rhdisk150','/dev/rhdisk151'     
+drop disk  FRAT24R14_DC_0000, FRAT24R14_DC_0001, FRAT24R14_DC_0002, FRAT24R14_DC_0003, FRAT24R14_DC_0004  REBALANCE power 10;
+--
+/dev/rhdisk4
+/dev/rhdisk5
+/dev/rhdisk6
+/dev/rhdisk7
+/dev/rhdisk8
+--
+
+
+alter system set db_recovery_file_dest='+FRAT24R14_DC' scope=both sid='*';
+
+
+alter diskgroup  T24R14_DC
+add disk  '/dev/rhdisk127','/dev/rhdisk128','/dev/rhdisk129','/dev/rhdisk130','/dev/rhdisk131','/dev/rhdisk132','/dev/rhdisk133','/dev/rhdisk134','/dev/rhdisk135','/dev/rhdisk136','/dev/rhdisk137','/dev/rhdisk138','/dev/rhdisk139','/dev/rhdisk140','/dev/rhdisk141'    
+drop disk T24R14_DC_0000,T24R14_DC_0001,T24R14_DC_0002,T24R14_DC_0003,T24R14_DC_0004,T24R14_DC_0005,T24R14_DC_0006,T24R14_DC_0007,T24R14_DC_0008,T24R14_DC_0009,
+T24R14_DC_0010,T24R14_DC_0011,T24R14_DC_0012,T24R14_DC_0013,
+T24R14_DC_0014,T24R14_DC_0015,T24R14_DC_0016,T24R14_DC_0017,T24R14_DC_0018,T24R14_DC_0019,T24R14_DC_0020,T24R14_DC_0021,T24R14_DC_0022,T24R14_DC_0023,
+T24R14_DC_0024,T24R14_DC_0025,T24R14_DC_0026,T24R14_DC_0027,T24R14_DC_0028,T24R14_DC_0029,T24R14_DC_0030,T24R14_DC_0031,T24R14_DC_0032,T24R14_DC_0033,
+T24R14_DC_0034,T24R14_DC_0035,T24R14_DC_0036,T24R14_DC_0037,T24R14_DC_0038,T24R14_DC_0039,T24R14_DC_0040,T24R14_DC_0041,T24R14_DC_0042,T24R14_DC_0043,
+T24R14_DC_0044,T24R14_DC_0045,T24R14_DC_0046,T24R14_DC_0047
+REBALANCE power 11;
+
+--
+/dev/rhdisk112
+/dev/rhdisk113
+/dev/rhdisk114
+/dev/rhdisk115
+/dev/rhdisk116
+/dev/rhdisk14
+/dev/rhdisk15
+/dev/rhdisk16
+/dev/rhdisk17
+/dev/rhdisk18
+/dev/rhdisk19
+/dev/rhdisk20
+/dev/rhdisk21
+/dev/rhdisk22
+/dev/rhdisk23
+/dev/rhdisk24
+/dev/rhdisk25
+/dev/rhdisk26
+/dev/rhdisk27
+/dev/rhdisk28
+/dev/rhdisk29
+/dev/rhdisk30
+/dev/rhdisk31
+/dev/rhdisk32
+/dev/rhdisk33
+/dev/rhdisk34
+/dev/rhdisk35
+/dev/rhdisk36
+/dev/rhdisk37
+/dev/rhdisk38
+/dev/rhdisk39
+/dev/rhdisk40
+/dev/rhdisk41
+/dev/rhdisk42
+/dev/rhdisk43
+/dev/rhdisk44
+/dev/rhdisk45
+/dev/rhdisk46
+/dev/rhdisk47
+/dev/rhdisk48
+/dev/rhdisk49
+/dev/rhdisk50
+/dev/rhdisk51
+/dev/rhdisk52
+/dev/rhdisk53
+/dev/rhdisk120
+/dev/rhdisk121
+/dev/rhdisk122
+--
+
+------------
+-- on stb
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+
+t24r14dr
+alter system set db_recovery_file_dest='+FRAT24R14_DR' scope=both ;
+alter system set log_file_name_convert='+T24R14_DC/t24r14dc/onlinelog','+RECOT24R14_DR/t24r14dc/onlinelog','+FRAT24R14_DC/t24r14dc/onlinelog','+FRAT24R14_DR/t24r14dc/onlinelog','+REDOLOG01/t24r14dc/onlinelog','+RECOT24R14_DR/t24r14dc/onlinelog','+REDOLOG02/t24r14dc/onlinelog','+FRAT24R14_DR/t24r14dc/onlinelog' scope=spfile;
+
+'+T24R14_DC/t24r14dc/onlinelog','+COBR14_DC/cobr14dc/onlinelog','+FRAT24R14_DC/t24r14dc/onlinelog','+RECOCOBR14_DC/cobr14dc/onlinelog','+REDOLOG01/t24r14dc/onlinelog','+COBR14_DC/t24r14dc/onlinelog','+REDOLOG02/t24r14dc/onlinelog','+RECOCOBR14_DC/cobr14dc/onlinelog'
+
+cobr14dr
+alter system set log_file_name_convert='+T24R14_DC/t24r14dc/onlinelog','+RECOCOBR14_DR/t24r14dc/onlinelog','+FRAT24R14_DC/t24r14dc/onlinelog','+FRACOBR14_DR/t24r14dc/onlinelog','+REDOLOG01/t24r14dc/onlinelog','+RECOCOBR14_DR/t24r14dc/onlinelog','+REDOLOG01/t24r14dc/onlinelog','+FRACOBR14_DR/t24r14dc/onlinelog' scope=spfile;
+
+cobr14dc
+alter system set log_file_name_convert= '+T24R14_DC/t24r14dc/onlinelog','+RECOCOBR14_DC/cobr14dc/onlinelog','+FRAT24R14_DC/t24r14dc/onlinelog','+FRACOBR14_DC/cobr14dc/onlinelog','+REDOLOG01/t24r14dc/onlinelog','+RECOCOBR14_DC/t24r14dc/onlinelog','+REDOLOG02/t24r14dc/onlinelog','+FRACOBR14_DC/cobr14dc/onlinelog' scope=spfile;
+
+--on t24 DC
++T24R14_DC/t24r14dc/onlinelog/group_50.450.949920829
+
+ALTER DATABASE ADD LOGFILE THREAD 1 GROUP 11 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 1 GROUP 12 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 1 GROUP 13 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 1 GROUP 14 ('+REDOLOG01','+REDOLOG02') size 4G;
+
+
+ALTER DATABASE ADD LOGFILE THREAD 2 GROUP 21 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 2 GROUP 22 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 2 GROUP 23 ('+REDOLOG01','+REDOLOG02') size 4G;
+ALTER DATABASE ADD LOGFILE THREAD 2 GROUP 24 ('+REDOLOG01','+REDOLOG02') size 4G;
+
+alter database drop logfile group 1;
+alter database drop logfile group 2;
+alter database drop logfile group 3;
+alter database drop logfile group 4;
+alter database drop logfile group 5;
+alter database drop logfile group 6;
+alter database drop logfile group 7;
+alter database drop logfile group 8;
+
+
+ALTER DATABASE ADD LOGFILE THREAD 1
+GROUP 15 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 16 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 17 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 18 ('+T24R14_DC','+FRAT24R14_DC') size 4G;
+
+ALTER DATABASE ADD LOGFILE THREAD 2
+GROUP 25 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 26 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 27 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 28 ('+T24R14_DC','+FRAT24R14_DC') size 4G;
+
+--on t24 DC
+ALTER SYSTEM SET STANDBY_FILE_MANAGEMENT='MANUAL';
+
+ALTER DATABASE ADD LOGFILE THREAD 1
+GROUP 11 ('+COBR14_DR/cobr14dr/online_old/log111','+RECOCOBR14_DR/cobr14dr/online_old/log112') size 4G,
+GROUP 12 ('+COBR14_DR/cobr14dr/online_old/log121','+RECOCOBR14_DR/cobr14dr/online_old/log122') size 4G,
+GROUP 13 ('+COBR14_DR/cobr14dr/online_old/log131','+RECOCOBR14_DR/cobr14dr/online_old/log132') size 4G,
+GROUP 14 ('+COBR14_DR/cobr14dr/online_old/log141','+RECOCOBR14_DR/cobr14dr/online_old/log142') size 4G;
+
+ALTER DATABASE ADD LOGFILE THREAD 2
+GROUP 21 ('+COBR14_DR/cobr14dr/online_old/log211','+RECOCOBR14_DR/cobr14dr/online_old/log212') size 4G,
+GROUP 22 ('+COBR14_DR/cobr14dr/online_old/log221','+RECOCOBR14_DR/cobr14dr/online_old/log222') size 4G,
+GROUP 23 ('+COBR14_DR/cobr14dr/online_old/log231','+RECOCOBR14_DR/cobr14dr/online_old/log232') size 4G,
+GROUP 24 ('+COBR14_DR/cobr14dr/online_old/log241','+RECOCOBR14_DR/cobr14dr/online_old/log242') size 4G;
+
+alter system archive log current;
+
+alter database drop logfile group 15;
+alter database drop logfile group 16;
+alter database drop logfile group 17;
+alter database drop logfile group 18;
+
+alter database drop logfile group 25;
+alter database drop logfile group 26;
+alter database drop logfile group 27;
+alter database drop logfile group 28;
+
+
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 1
+GROUP 10 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 11 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 12 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 13 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 14 ('+T24R14_DC','+FRAT24R14_DC') size 4G;
+
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 1
+GROUP 31 ('+COBR14_DR/cobr14dr/online_old/log311','+RECOCOBR14_DR/cobr14dr/online_old/log312') size 4G,
+GROUP 32 ('+COBR14_DR/cobr14dr/online_old/log321','+RECOCOBR14_DR/cobr14dr/online_old/log322') size 4G,
+GROUP 33 ('+COBR14_DR/cobr14dr/online_old/log331','+RECOCOBR14_DR/cobr14dr/online_old/log332') size 4G,
+GROUP 34 ('+COBR14_DR/cobr14dr/online_old/log341','+RECOCOBR14_DR/cobr14dr/online_old/log342') size 4G;
+
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 2
+GROUP 15 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 16 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 17 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 18 ('+T24R14_DC','+FRAT24R14_DC') size 4G,
+GROUP 19 ('+T24R14_DC','+FRAT24R14_DC') size 4G;
+
+ALTER DATABASE ADD STANDBY LOGFILE THREAD 2
+GROUP 41 ('+COBR14_DR/cobr14dr/online_old/log411','+RECOCOBR14_DR/cobr14dr/online_old/log412') size 4G,
+GROUP 42 ('+COBR14_DR/cobr14dr/online_old/log421','+RECOCOBR14_DR/cobr14dr/online_old/log422') size 4G,
+GROUP 43 ('+COBR14_DR/cobr14dr/online_old/log431','+RECOCOBR14_DR/cobr14dr/online_old/log432') size 4G,
+GROUP 44 ('+COBR14_DR/cobr14dr/online_old/log441','+RECOCOBR14_DR/cobr14dr/online_old/log442') size 4G;
+
+alter database drop standby logfile group 31;
+alter database drop standby logfile group 32;
+alter database drop standby logfile group 33;
+alter database drop standby logfile group 34;
+alter database drop standby logfile group 35;
+alter database drop standby logfile group 41;
+alter database drop standby logfile group 42;
+alter database drop standby logfile group 43;
+alter database drop standby logfile group 44;
+alter database drop standby logfile group 45;
+
+---
+ALTER SYSTEM SET STANDBY_FILE_MANAGEMENT='AUTO';
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+
+
+/dev/rhdisk4
+/dev/rhdisk5
+/dev/rhdisk6
+/dev/rhdisk7
+/dev/rhdisk8
+create diskgroup AIXLVMFRA external redundancy disk ‘/dev/rasmfralv’
+
+
+----------------
+alter diskgroup YEAR13_DR     add disk '/dev/rhdisk294','/dev/rhdisk295'   
+drop disk YEAR13_DR_0005, YEAR13_DR_0006 REBALANCE power 10;
+
+alter diskgroup YEAR14_DR     add disk '/dev/rhdisk296','/dev/rhdisk297'   
+drop disk YEAR14_DR_0000, YEAR14_DR_0001 REBALANCE power 10 wait;
+--
+alter diskgroup YEAR15_DR     add disk '/dev/rhdisk299','/dev/rhdisk298'   
+drop disk  YEAR15_DR_0000, YEAR15_DR_0001, YEAR15_DR_0002, YEAR15_DR_0003 REBALANCE power 10 wait;
+
+alter diskgroup YEAR16_DR     add disk '/dev/rhdisk300','/dev/rhdisk301','/dev/rhdisk302','/dev/rhdisk303' 
+drop disk YEAR16_DR_0000, YEAR16_DR_0001, YEAR16_DR_0002, YEAR16_DR_0003 REBALANCE power 10 wait;
+
+alter diskgroup MONTHEND_DR     add disk '/dev/rhdisk304','/dev/rhdisk306','/dev/rhdisk305','/dev/rhdisk307' 
+drop disk MONTHEND_DR_0004, MONTHEND_DR_0005, MONTHEND_DR_0006, MONTHEND_DR_0007, MONTHEND_DR_0008, MONTHEND_DR_0009, MONTHEND_DR_0010, MONTHEND_DR_0011, MONTHEND_DR_0012,
+ MONTHEND_DR_0013, MONTHEND_DR_0014, MONTHEND_DR_0015, MONTHEND_DR_0016, MONTHEND_DR_0017, MONTHEND_DR_0018, MONTHEND_DR_0019, MONTHEND_DR_0020, MONTHEND_DR_0021, MONTHEND_DR_0022, 
+ MONTHEND_DR_0023, MONTHEND_DR_0024, MONTHEND_DR_0025, MONTHEND_DR_0026, MONTHEND_DR_0027, MONTHEND_DR_0028, MONTHEND_DR_0029, MONTHEND_DR_0030, MONTHEND_DR_0031, MONTHEND_DR_0032, 
+ MONTHEND_DR_0033, MONTHEND_DR_0034, MONTHEND_DR_0035, MONTHEND_DR_0036, MONTHEND_DR_0037, MONTHEND_DR_0038, MONTHEND_DR_0039, MONTHEND_DR_0040, MONTHEND_DR_0041, MONTHEND_DR_0042,
+ MONTHEND_DR_0043, MONTHEND_DR_0000, MONTHEND_DR_0001, MONTHEND_DR_0002, MONTHEND_DR_0003, MONTHEND_DR_0044, MONTHEND_DR_0046, MONTHEND_DR_0047, MONTHEND_DR_0045 
+ REBALANCE power 10 wait;
+
+ alter diskgroup COBR14_DR     add disk '/dev/rhdisk308','/dev/rhdisk309','/dev/rhdisk310','/dev/rhdisk311' 
+drop disk COBR14_DR_0014, COBR14_DR_0015, COBR14_DR_0016, COBR14_DR_0017, COBR14_DR_0018, COBR14_DR_0019, COBR14_DR_0020, COBR14_DR_0021, COBR14_DR_0022, COBR14_DR_0023, 
+COBR14_DR_0024, COBR14_DR_0025, COBR14_DR_0026, COBR14_DR_0027, COBR14_DR_0028, COBR14_DR_0029, COBR14_DR_0030, COBR14_DR_0031, COBR14_DR_0032, COBR14_DR_0033, COBR14_DR_0034, 
+COBR14_DR_0035, COBR14_DR_0036, COBR14_DR_0037, COBR14_DR_0038, COBR14_DR_0039, COBR14_DR_0040, COBR14_DR_0041, COBR14_DR_0042, COBR14_DR_0043, COBR14_DR_0044, COBR14_DR_0000, 
+COBR14_DR_0001, COBR14_DR_0002, COBR14_DR_0003, COBR14_DR_0004, COBR14_DR_0005, COBR14_DR_0006, COBR14_DR_0007, COBR14_DR_0008, COBR14_DR_0009, COBR14_DR_0010, COBR14_DR_0011, 
+COBR14_DR_0012, COBR14_DR_0013, COBR14_DR_0045, COBR14_DR_0046, COBR14_DR_0047 REBALANCE power 10 wait;
+
+alter diskgroup FRACOBR14_DR     add disk '/dev/rhdisk313','/dev/rhdisk312','/dev/rhdisk314','/dev/rhdisk315'    
+drop disk  FRACOBR14_DR_0003, FRACOBR14_DR_0004, FRACOBR14_DR_0005, FRACOBR14_DR_0001, FRACOBR14_DR_0002 REBALANCE power 10 wait;
+
+
+DROP DISKGROUP RECOCOBR14_DR INCLUDING CONTENTS;
+
+/dev/rhdisk140
+/dev/rhdisk205
+alter diskgroup YEAR12NEW_DR     add disk '/dev/rhdisk3','/dev/rhdisk2'   
+drop disk YEAR12NEW_DR_0000, YEAR12NEW_DR_0001 REBALANCE power 10;
+
+---------------------
+DROP DISKGROUP RECOCOBR14_DC INCLUDING CONTENTS;
+DROP DISKGROUP RECOT24R14_DC INCLUDING CONTENTS;
+--DROP DISKGROUP REDOLOG01 INCLUDING CONTENTS;
+--DROP DISKGROUP REDOLOG02 INCLUDING CONTENTS;
+alter diskgroup RECOCOBR14_DC dismount;
+
+---thu hoi
+192.168.11.39
+RECOCOBR14_DC	
+/dev/rhdisk63
+/dev/rhdisk61
+/dev/rhdisk59
+/dev/rhdisk60
+/dev/rhdisk62
+
+RECOT24R14_DC	
+/dev/rhdisk9
+/dev/rhdisk10
+/dev/rhdisk11
+/dev/rhdisk12
+/dev/rhdisk13
+
+REDOLOG01
+/dev/rhdisk341
+
+REDOLOG02
+/dev/rhdisk342
+
+
+192.168.11.40
+RECOCOBR14_DC
+/dev/rhdisk107
+/dev/rhdisk105
+/dev/rhdisk103
+/dev/rhdisk104
+/dev/rhdisk106
+
+RECOT24R14_DC	
+/dev/rhdisk10
+/dev/rhdisk11
+/dev/rhdisk12
+/dev/rhdisk13
+/dev/rhdisk14
+
+REDOLOG01
+/dev/rhdisk325
+
+REDOLOG02
+/dev/rhdisk326

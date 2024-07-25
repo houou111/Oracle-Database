@@ -1,0 +1,8 @@
+[oracle@techdatabasket admin]$ cat sqlnet.ora
+DISABLE_OOB=ON
+
+
+echo "
+DISABLE_OOB=ON
+
+" >> $ORACLE_HOME/network/admin/sqlnet.ora

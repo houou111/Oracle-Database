@@ -1,0 +1,16 @@
+1. SGA
+---------------------------------------------------------------------
+
+
+
+
+2. PGA
+---------------------------------------------------------------------
+(callheap,kzap audit context CGA list)
+(kxs-heap-w,qesaQBInit:buffer)
+(callheap,kdbmal allocation)
+(kxs-heap-w,qesaQBInit:buffer)
+
+  
+  
+  

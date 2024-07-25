@@ -1,0 +1,139 @@
+
+
+--Check
+SELECT table_name, tablespace_name FROM dba_tables
+WHERE table_name IN ('AUD$', 'FGA_LOG$') ORDER BY table_name ;
+
+--truncate 
+truncate table SYS.AUD$
+
+delete FROM SYS.AUD$ WHERE NTIMESTAMP# < to_date('01-MAY-2020 00:00:00','DD-MON-YYYY HH24:MIS');
+
+
+--Check data audit
+col "Space (M)" for 999,999.99  
+
+SELECT 
+  occupant_name,  
+  round( space_usage_kbytes/1024) "Space (M)",  
+  schema_name, 
+  move_procedure
+FROM 
+  v$sysaux_occupants  
+ORDER BY 
+  1  
+/
+
+
+-- Create job (Doc ID 1362997.1)
+-- Example re-locating AUD$ and setting up a purge job
+
+set serveroutput on
+
+prompt First Step: init cleanup (if not already)
+
+BEGIN
+IF NOT DBMS_AUDIT_MGMT.IS_CLEANUP_INITIALIZED
+(DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD)
+THEN
+dbms_output.put_line('Calling DBMS_AUDIT_MGMT.INIT_CLEANUP');
+DBMS_AUDIT_MGMT.INIT_CLEANUP(
+audit_trail_type => dbms_audit_mgmt.AUDIT_TRAIL_AUD_STD,
+default_cleanup_interval => 24*7);
+else
+dbms_output.put_line('Cleanup for STD was already initialized');
+end if;
+end;
+/
+
+prompt Relocate AUD$ to a dedicated tablespace AUDIT_DATA
+
+begin
+DBMS_AUDIT_MGMT.SET_AUDIT_TRAIL_LOCATION(
+audit_trail_type => dbms_audit_mgmt.AUDIT_TRAIL_AUD_STD,
+audit_trail_location_value => 'AUDIT_DATA') ;
+end;
+/
+
+prompt set last archive timestamp to a week before now
+
+begin
+DBMS_AUDIT_MGMT.SET_LAST_ARCHIVE_TIMESTAMP(
+audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+last_archive_time => sysdate - 7);
+end;
+/
+
+prompt setup a purge job
+
+
+BEGIN
+DBMS_AUDIT_MGMT.DROP_PURGE_JOB
+(AUDIT_TRAIL_PURGE_NAME => 'Standard_Audit_Trail_PJ');
+-- exception
+-- when others then
+-- null;
+end;
+/
+
+BEGIN
+DBMS_AUDIT_MGMT.CREATE_PURGE_JOB (
+AUDIT_TRAIL_TYPE => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+AUDIT_TRAIL_PURGE_INTERVAL => 24,
+AUDIT_TRAIL_PURGE_NAME => 'Standard_Audit_Trail_PJ',
+USE_LAST_ARCH_TIMESTAMP => TRUE );
+END;
+/
+
+prompt Stop here if you use Audit Vault, otherwise press Enter
+pause
+
+prompt call DBMS_AUDIT_MGMT.SET_LAST_ARCHIVE_TIMESTAMP regularly to advance
+prompt the last archive ts, Audit Vault will do this for you automatically
+
+prompt Optionally Schedule automatic advancement of the archive timestamp
+
+create or replace procedure set_archive_retention
+(retention in number default 7) as
+begin
+DBMS_AUDIT_MGMT.SET_LAST_ARCHIVE_TIMESTAMP(
+audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+last_archive_time => sysdate - retention);
+end;
+/
+
+begin
+  DBMS_SCHEDULER.disable('advance_archive_timestamp');
+  DBMS_SCHEDULER.drop_job('advance_archive_timestamp');
+-- exception
+-- when others then
+-- null;
+end;
+/
+
+BEGIN
+   DBMS_SCHEDULER.create_job (
+   job_name => 'advance_archive_timestamp',
+   job_type => 'STORED_PROCEDURE',
+   job_action => 'SET_ARCHIVE_RETENTION',
+   number_of_arguments => 1,
+   start_date => SYSDATE,
+   repeat_interval => 'freq=daily' ,
+   enabled => false,
+   auto_drop => FALSE);
+   dbms_scheduler.set_job_argument_value
+    (job_name =>'advance_archive_timestamp',
+     argument_position =>1,
+     -- one week, you can customize this line:
+     argument_value => 7);
+   DBMS_SCHEDULER.ENABLE('advance_archive_timestamp');
+End;
+/
+
+BEGIN
+    DBMS_SCHEDULER.run_job (job_name => 'advance_archive_timestamp',
+    use_current_session => FALSE);
+END;
+/
+
+-- end example

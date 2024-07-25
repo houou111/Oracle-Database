@@ -1,0 +1,120 @@
+SQL> col hwm_open_cur format 99,999
+SQL> col max_open_cur format 99,999
+SQL> select 
+  2     max(a.value) as hwm_open_cur, 
+  3     p.value      as max_open_cur
+  4  from 
+  5     v$sesstat a, 
+  6     v$statname b, 
+  7     v$parameter p
+  8  where 
+  9     a.statistic# = b.statistic# 
+ 10  and 
+ 11     b.name = 'opened cursors current'
+ 12  and 
+ 13     p.name= 'open_cursors'
+ 14  group by p.value;
+
+HWM_OPEN_CUR
+------------
+MAX_OPEN_CUR
+--------------------------------------------------------------------------------
+         135
+1000
+
+
+
+
+
+
+-- Total cursors open, by session
+
+select a.value, s.username, s.sid, s.serial#
+from   v$sesstat a, v$statname b, v$session s
+where  a.statistic# = b.statistic# and s.sid=a.sid
+and    b.name = 'opened cursors current';
+
+
+If you are running several N-tiered applications with multiple webservers, you may find it useful to monitor open cursors by username and machine:
+
+-- Total cursors open, by username & machine
+
+select sum(a.value) total_cur, avg(a.value) avg_cur, max(a.value) max_cur, s.username, s.machine
+from   v$sesstat a, v$statname b, v$session s 
+where  a.statistic# = b.statistic# and s.sid=a.sid
+and    b.name = 'opened cursors current' 
+group by s.username, s.machine
+order by 1 desc;
+
+
+
+
+After you have increased the value of OPEN_CURSORS, keep an eye on v$sesstat to see if opened cursors current keeps increasing for any of your sessions. If you have an application session whose opened cursors current always increases to catch up with OPEN_CURSORS, then you have likely got a cursor leak in your application code, i.e. your application is opening cursors and not closing them when it is done. The application developers need to go through the code, find the cursors that are being left open, and close them. 
+
+
+MONITORING THE SESSION CURSOR CACHE (SESSION_CACHED_CURSORS)
+
+v$sesstat also provides a statistic to monitor the number of cursors each session has in its session cursor cache.
+
+--session cached cursors, by session
+select a.value, s.username, s.sid, s.serial#
+from v$sesstat a, v$statname b, v$session s
+where a.statistic# = b.statistic# and s.sid=a.sid
+and b.name = 'session cursor cache count' ;
+
+You can also see directly what is in the session cursor cache by querying v$open_cursor. v$open_cursor lists session cached cursors by SID, and includes the first few characters of the statement and the sql_id, so you can actually tell what the cursors are for.
+
+select c.user_name, c.sid, sql.sql_text
+from   v$open_cursor c, v$sql sql
+where  c.sql_id=sql.sql_id       
+and    c.sid=&sid;
+
+
+TUNING THE SESSION CURSOR CACHE (SESSION_CACHED_CURSORS)
+
+You can query V$SYSSTAT to determine whether the session cursor cache is sufficiently large for the database instance.
+
+To tune the session cursor cache: 
+
+If you choose to use SESSION_CACHED_CURSORS to help out an application that is continually closing and reopening cursors, you can monitor its effectiveness via two more statistics in v$sesstat. The statistic "session cursor cache hits" reflects the number of times that a statement the session sent for parsing was found in the session cursor cache, meaning it did not have to be reparsed and your session did not have to search through the library cache for it. You can compare this to the statistic "parse count (total)"; subtract "session cursor cache hits" from "parse count (total)" to see the number of parses that actually occurred.
+
+1. Determine how many cursors are currently cached in a particular session.
+
+For example, enter the following query for session 35:
+
+SQL> SELECT a.value curr_cached, p.value max_cached,
+2 s.username, s.sid, s.serial#
+3 FROM v$sesstat a, v$statname b, v$session s, v$parameter2 p
+4 WHERE a.statistic# = b.statistic# and s.sid=a.sid and a.sid=&sid
+5 AND p.name='session_cached_cursors'
+6 AND b.name = 'session cursor cache count';
+Enter value for sid: 35
+old 4: WHERE a.statistic# = b.statistic# and s.sid=a.sid and a.sid=&sid
+new 4: WHERE a.statistic# = b.statistic# and s.sid=a.sid and a.sid=35
+
+CURR_CACHED MAX_CACHED USERNAME SID SERIAL#
+----------- ---------- -------- --- -------
+         49         50 APP       35     263
+
+
+The preceding result shows that the number of cursors currently cached for session 35 is close to the maximum.
+
+2. Find the percentage of parse calls that found a cursor in the session cursor cache.
+
+For example, enter the following query for session 35:
+
+SQL> SELECT cach.value cache_hits, prs.value all_parses,round((cach.value/prs.value)*100,2) as "% found in cache"
+FROM  v$sesstat cach, v$sesstat prs, v$statname nm1, v$statname nm2
+WHERE cach.statistic# = nm1.statistic#
+AND   nm1.name = 'session cursor cache hits'
+AND   prs.statistic#=nm2.statistic#
+AND   nm2.name= 'parse count (total)'
+AND   cach.sid= &sid and prs.sid= cach.sid;
+
+Enter value for sid: 35
+old 8: AND cach.sid= &sid and prs.sid= cach.sid
+new 8: AND cach.sid= 35 and prs.sid= cach.sid
+
+CACHE_HITS ALL_PARSES % found in cache
+---------- ---------- ----------------
+        34        700             4.57

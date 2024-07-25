@@ -1,0 +1,58 @@
+where CAST(TO_TIMESTAMP(publicdate, 'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE) between TO_DATE('01/12/2021', 'DD/MM/YYYY HH24:MI:SS') and TO_DATE('07/03/2022', 'DD/MM/YYYY HH24:MI:SS')
+
+
+
+
+expdp '"/ as sysdba"' PARFILE=SSI_DATAFEED.par
+
+tables=SSI_DATAFEED.MESSAGEANNOUCEMENT  
+Query=SSI_DATAFEED.MESSAGEANNOUCEMENT:"where CAST(TO_TIMESTAMP(publicdate, 'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE) between TO_DATE('01/12/2021', 'DD/MM/YYYY HH24:MI:SS') and TO_DATE('07/03/2022', 'DD/MM/YYYY HH24:MI:SS')"
+directory=dump 
+PARALLEL=2
+dumpfile=SSI_DATAFEED%U.dmp 
+logfile=SSI_DATAFEED.log 
+FILESIZE=1G 
+cluster=n 
+exclude=statistics
+
+
+
+expdp '"/ as sysdba"' PARFILE=it_dev.par
+
+tables=IT_DEV.TB_STOCKSINFO_LASTEST  
+Query=IT_DEV.TB_STOCKSINFO_LASTEST:"where MARKETCODE in ('HNX','UPCOM')"
+directory=dump 
+PARALLEL=2
+dumpfile=TB_STOCKSINFO_LASTEST%U.dmp 
+logfile=TB_STOCKSINFO_LASTEST.log 
+FILESIZE=1G 
+cluster=n 
+exclude=statistics
+
+
+impdp '"/ as sysdba"' dumpfile=TB_STOCKSINFO_LASTEST%U.dmp  logfile=TB_STOCKSINFO_LASTEST_impdp.log parallel=2 DIRECTORY=dump cluster=n transform=disable_archive_logging:Y	 remap_table=IT_DEV.TB_STOCKSINFO_LASTEST:TB_STOCKSINFO TABLE_EXISTS_ACTION=APPEND
+
+
+
+
+- data của sàn HNX và UPCOM trên bảng tb_stocksinfo bị thiếu các giao dịch khớp lệnh nên sẽ lấy data sàn HNX và UPCOM từ bảng tb_stocksinfo_lastest insert thêm vào (ngày 31/03/2022)
+
+câu lấy data trong bảng tb_stocksinfo_lastest
+
+  select count(1) from IT_DEV.TB_STOCKSINFO_LASTEST where MARKETCODE in ('HNX','UPCOM');
+
+
+- Xóa dữ liệu daily ngày 31/03/2022 trên bảng TB_DAILY_STOCK_INFO
+
+ delete it_dev.tb_daily_index_info where  TRADINGDATE = to_date('31/03/2022', 'DD/MM/YYYY') ;
+ 
+ select count(1) from it_dev.tb_daily_index_info where  TRADINGDATE = to_date('31/03/2022', 'DD/MM/YYYY') ;
+
+- Chạy lại job SOTCK_LAST_DAY để tổng hợp lại data daily
+
+
+
+827193045
+827193030
+
+829049580

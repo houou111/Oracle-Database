@@ -1,0 +1,85 @@
+Database Replay
+
+When there are extensive changes such as OS, or database version, or when overall system
+performance must be tested, Database Replay is the preferred tool. Database Replay
+cap p tures the actual workload over a period of time, along with performance statistics. This
+workload is processed for the target system and then replayed. The replay has options for
+speed of replay, think time, maintaining the transaction order (synchronization), and others.
+After the workload has been replayed, the performance statistics, data divergence, and errors
+can be compared to the original capture or another replay session. AWR and Replay reports
+are available.
+
+
+-> For tuning:
+- To replay real database workload on test system
+- To assess impact of change on workload throughput
+- Replay actual workload
+- When comprehensively testing all subsystems of the database server using real production workload
+
+
+1. START
+-----------------------------------------
+exec DBMS_WORKLOAD_CAPTURE.ADD_FILTER(fname => 'sessfilt',fattribute => USER ,fvalue => 'JFV');
+
+exec DBMS_WORKLOAD_CAPTURE.START_CAPTURE(name => 'june_peak',dir => 'jun07 ); ');
+
+
+2. Execute your workload
+-----------------------------------------
+
+
+3. FINISH your workload
+-----------------------------------------
+exec DBMS_WORKLOAD_CAPTURE.FINISH_CAPTURE();
+
+exec DBMS_WORKLOAD_REPLAY.PROCESS_CAPTURE(capture_dir => 'jun07');
+
+wrc userid=system password=oracle replaydir=/dbreplay
+
+exec DBMS_WORKLOAD_REPLAY.INITIALIZE_REPLAY(replay_name => 'j_r' ,replay_dir => 'jun07');
+
+
+
+
+
+exec DBMS_WORKLOAD_REPLAY.REMAP_CONNECTION(connection_id => 101,replay_connection => 'edlin44:3434/bjava21');
+
+exec DBMS_WORKLOAD_REPLAY.PREPARE_REPLAY(synchronization => TRUE,think_time_scale=> 2);
+
+exec DBMS_WORKLOAD_REPLAY.START_REPLAY ();
+
+DECLARE
+cap_id NUMBER;
+rep_id NUMBER;
+rep_rpt CLOB;
+BEGIN
+cap_id := DBMS_WORKLOAD_REPLAY.GET_REPLAY_INFO(dir => 'jun07');
+/* Get the latest replay for that capture */
+SELECT max(id) INTO rep_id
+FROM dba_workload_replays
+WHERE capture_id = cap_id;
+rep_rpt := DBMS_WORKLOAD_REPLAY.REPORT(replay_id => rep_id,
+format => DBMS_WORKLOAD_REPLAY.TYPE_TEXT);
+END;
+
+
+
+5. Calibrating Replay Clients
+-----------------------------------------
+$ wrc mode=calibrate replaydir=$ORACLE_BASE/replay
+Report for Workload in: .
+----------------------Recommendation:
+Consider using at least 1 clients divided among 1 CPU(s)
+You will need at least 116 MB of memory per client process.
+If your machine(s) cannot match that number, consider using
+more clients.
+Workload Characteristics:
+- max concurrency: 31 sessions
+-total number of sessions: 40
+-Assumptions:
+- 1 client process per 50 concurrent sessions
+- 4 client process per CPU
+- 256 KB of memory cache per concurrent session
+- think time scale = 100
+- connect time scale = 100
+- synchronization = TRUE

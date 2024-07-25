@@ -1,0 +1,5 @@
+1. Monitor from EM13c
+2. Get AWR
+3. Get ASH
+
+Adaptive Log File Sync Optimization (Doc ID 1541136.1)

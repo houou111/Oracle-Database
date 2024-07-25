@@ -1,0 +1,3 @@
+$ORACLE_HOME/oui/bin/runInstaller -silent -ignoreSysPrereqs -attachHome ORACLE_HOME="/u01/app/oracle/product/11.2.0/dbhome_1" ORACLE_HOME_NAME="Ora11g_databasehome1" LOCAL_NODE="t24-db01-test" CLUSTER_NODES="t24-db01-test,t24-db02-test" CRS=true
+
+$ORACLE_HOME/oui/bin/runInstaller -silent -ignoreSysPrereqs -attachHome ORACLE_HOME="/u01/app/11.2.0/grid" ORACLE_HOME_NAME="Ora11g_gridinfrahome1" LOCAL_NODE="t24-db01-test" CLUSTER_NODES="t24-db01-test,t24-db02-test" CRS=true

@@ -1,0 +1,4 @@
+^(system)([\s\S])+({)([\s\S])+(radius-server)([\s\S])+(10.1.1.5)([\s\S])+([\s\S])+(})([\s\S])+([\s\S])+(})
+^(interfaces)([\s\S])+({)([\s\S])+(lo0)([\s\S])+({)([\s\S])+(unit 99)([\s\S])+({)([\s\S])+(family inet)([\s\S])+({)([\s\S])+(address 10.0.0.1/32;)([\s\S])+(})([\s\S])+(})([\s\S])+(})([\s\S])+(})
+^(protocols)([\s\S])+({)([\s\S])+(pim)([\s\S])+({)([\s\S])+(interface lo0.99)([\s\S])+({)([\s\S])+(mode sparse;)([\s\S])+(})([\s\S])+(})([\s\S])+(})
+

@@ -1,0 +1,22 @@
+
+
+
+lftp
+set ftp:ssl-force true;
+set ftp:ssl-protect-data true;
+set ssl:verify-certificate no
+connect 10.97.5.238
+login duongpk
+password: 
+
+
+cd IFO/duongpk
+Command:
+ls -l	
+cd	
+Put	
+Get	
+
+
+
+

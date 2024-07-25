@@ -1,0 +1,12 @@
+Check list cài đặt OS for Oracle
+
+- User: 
+	+ Oracle, grid, gguser,localpwm,localpwm2,oraem
+	+ User id cố định với mỗi server
+- Software:
+	- Oracle Software	: Rac, Goldengate, ODI
+	- OS Software		: VNC, TFA, orachk/exachk, repo local
+	- Security Software	: DBS, arsight, MCoffe
+	- OS job			: house keeping
+	- Setup ssh user (grid, oracle,oraem,gguser)
+	- /home/oracle/bin

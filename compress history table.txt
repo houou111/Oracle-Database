@@ -1,0 +1,121 @@
+IDCYEN_PDBLCI Tablespace [USERS] is [86.15 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBLAN Tablespace [USERS] is [93.78 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBTNH Tablespace [INDX] is [90.64 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBBTE Tablespace [USERS] is [89.26 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBHYN Tablespace [USERS] is [85.7 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBSLA Tablespace [USERS] is [91.66 percent] full Oct 4, 2019 12:54:10 PM ICT
+IDCYEN_PDBBTE Tablespace [INDX] is [86.11 percent] full Oct 4, 2019 12:54:10 PM ICT
+
+
+
+IDCBAC_BACGIANG Tablespace [USERS] is [89.15 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_QUANGBINH Tablespace [USERS] is [87.98 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_QUANGNGAI Tablespace [USERS] is [86.45 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_DACLAC Tablespace [USERS] is [89.43 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_VINHPHUC Tablespace [USERS] is [88.84 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_HAIDUONG Tablespace [USERS] is [85.99 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_QUANGTRI Tablespace [USERS] is [87.62 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_CAOBANG Tablespace [USERS] is [87.88 percent] full Oct 3, 2019 6:24:50 PM ICT
+IDCBAC_DAKNONG Tablespace [USERS] is [85.5 percent] full Oct 3, 2019 6:24:50 PM ICT
+
+
+BEGIN
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a ,dba_users b
+	  WHERE a.owner=b.username 
+	  AND a.owner not in ('GSMADMIN_INTERNAL')
+	  AND (a.TABLE_NAME like '%\_2014%' escape '\'
+	  OR a.TABLE_NAME like '%\_2015%' escape '\'
+	  OR a.TABLE_NAME like '%\_2016%' escape '\'
+	  OR a.TABLE_NAME like '%\_2017%' escape '\'
+	  OR a.TABLE_NAME like '%\_2018%' escape '\')
+		  AND COMPRESSION <> 'ENABLED'
+	  AND a.partitioned = 'NO'
+	  AND TEMPORARY = 'N'
+	  order by 1 asc )
+  LOOP
+  BEGIN
+	EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.table_name|| '" MOVE TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' COMPRESS FOR QUERY QUERY_LOW';
+  EXCEPTION
+     WHEN OTHERS THEN
+        /* Your exception handing here. */
+        NULL;
+     END;
+  END LOOP;
+END;
+/
+
+BEGIN
+  FOR r IN (select OWNER,index_name,DEFAULT_TABLESPACE FROM   dba_indexes a left join dba_users b 
+ON  a.OWNER=b.USERNAME
+WHERE status = 'UNUSABLE'
+order by 1)
+  LOOP
+  BEGIN
+	EXECUTE IMMEDIATE 'alter index "'||r.OWNER||'"."'||r.index_name ||'" rebuild  TABLESPACE '||r.DEFAULT_TABLESPACE||'  PARALLEL 2';
+  EXCEPTION
+     WHEN OTHERS THEN
+        /* Your exception handing here. */
+        NULL;
+     END;
+  END LOOP;
+END;
+/
+
+
+BEGIN
+  FOR r IN (select INDEX_OWNER,index_name,PARTITION_NAME,DEFAULT_TABLESPACE FROM   dba_ind_partitions a left join dba_users b
+ON	a.INDEX_OWNER=b.USERNAME
+WHERE  status = 'UNUSABLE')
+  LOOP
+  BEGIN
+	EXECUTE IMMEDIATE 'alter index "'||r.INDEX_OWNER||'"."'||r.index_name ||'" rebuild  partition '||r.PARTITION_NAME||' TABLESPACE '||r.DEFAULT_TABLESPACE||'  PARALLEL 2';
+  EXCEPTION
+     WHEN OTHERS THEN
+        /* Your exception handing here. */
+        NULL;
+     END;
+  END LOOP;
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+	  
+select 'ALTER TABLE '|| OWNER||'.'|| table_name|| ' MOVE TABLESPACE '|| DEFAULT_TABLESPACE|| ' COMPRESS FOR QUERY HIGH PARALLEL 4;'
+FROM dba_tables a ,dba_users b
+      WHERE a.owner=b.username 
+	  AND a.TABLE_NAME like '%\_2018%' escape '\'
+	  AND COMPRESSION <> 'ENABLED'
+	  AND a.partitioned = 'NO'
+	  AND TEMPORARY = 'N';
+	   
+	
+SELECT 'alter index "'||OWNER||'"."'||index_name ||'" rebuild  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2;'
+FROM   dba_indexes a left join dba_users b 
+ON  a.OWNER=b.USERNAME
+WHERE status = 'UNUSABLE'
+order by 1;
+
+
+SELECT 'alter index "'||INDEX_OWNER||'"."'||index_name ||'" rebuild partition '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 4;' 
+FROM   dba_ind_partitions a left join dba_users b
+ON	a.INDEX_OWNER=b.USERNAME
+WHERE  status = 'UNUSABLE'
+order by 1;
+
+
+select 'ALTER TABLE '|| OWNER||'.'|| table_name|| ' MOVE TABLESPACE '|| DEFAULT_TABLESPACE|| ' COMPRESS FOR QUERY HIGH PARALLEL 4;'
+FROM dba_tables a ,dba_users b
+      WHERE a.owner=b.username 
+	  AND a.TABLE_NAME like '%\_2018%' escape '\'
+	  AND COMPRESSION <> 'ENABLED'
+	  AND a.partitioned = 'NO'
+	  AND TEMPORARY = 'N';

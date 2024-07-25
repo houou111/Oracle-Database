@@ -1,0 +1,109 @@
+select ' alter user  '||USERNAME||' default tablespace USERS ; '
+from dba_users
+WHERE username not like 'DWH%'
+AND username not like '%KRM%'
+AND username not like '%VAS%'
+AND username not like 'EDW%'
+AND username not in ('FLOWS_FILES','MDSYS','ORDDATA','ORDSYS','CTXSYS','ANONYMOUS','EXFSYS','OUTLN','DBSNMP','PA_AWR_USER','WMSYS','SYSMAN','XDB','APPQOSSYS','ORDPLUGINS','APEX_030200','OWBSYS_AUDIT','OWBSYS','MGMT_VIEW','SI_INFORMTN_SCHEMA','OLAPSYS','SYS','SYSTEM');
+
+
+select ' alter user  '||USERNAME||' default tablespace DWH_TBS ; '
+from dba_users
+WHERE username like 'DWH%';
+
+select ' alter user  '||USERNAME||' default tablespace EDW_TBS ; '
+from dba_users
+WHERE username like 'EDW%';
+
+select ' alter user  '||USERNAME||' default tablespace DWH_KRM_TBS ; '
+from dba_users
+WHERE username like '%KRM%' or username like '%VAS%';
+
+
+
+---- move lob -------------------------------
+SELECT 'alter table ' || TABLE_OWNER || '.' || TABLE_NAME || ' move partition ' || partition_name || ' lob (' || COLUMN_NAME || ') store as  (tablespace '||DEFAULT_TABLESPACE||') PARALLEL 4;'
+FROM DBA_LOB_PARTITIONS a,  dba_users b
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by TABLE_OWNER;
+
+
+
+select 'alter table ' || a.owner|| '.' ||a.TABLE_NAME|| ' move lob (' ||a.column_name|| ') store as (tablespace '||DEFAULT_TABLESPACE||' ) PARALLEL 4;' 
+from dba_lobs a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+
+---- move table -------------------------------
+SELECT 'alter table '||OWNER||'.'||table_name ||' move  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2;'
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+---- move partition -------------------------------
+select 'ALTER TABLE ' ||TABLE_OWNER|| '.'||TABLE_NAME||' MOVE PARTITION '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||' PARALLEL 4;'
+from dba_tab_partitions a,  dba_users b
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by TABLE_OWNER;
+
+
+
+
+
+
+
+---- move index -------------------------------
+SELECT 'alter index '||OWNER||'.'||index_name ||' rebuild  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2;' sql_to_rebuild_index
+FROM   dba_indexes a join  dba_users b
+ON  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+SELECT 'alter index '||INDEX_OWNER||'.'||index_name ||' rebuild partition '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 4;' sql_to_rebuild_index
+FROM   dba_ind_partitions a join dba_users b
+ON  a.INDEX_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.INDEX_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by INDEX_OWNER;
+
+
+
+---------------------------modify default attribute---------------------------
+----TABLE----
+SELECT 'alter table ' ||a.owner||'.'||table_name || ' modify default attributes tablespace '||b.DEFAULT_TABLESPACE||' ; '
+FROM dba_part_tables a, dba_users b 
+WHERE  a.OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+----Index----
+select 'alter index ' ||owner||'.'||index_name || ' modify default attributes tablespace '||DEFAULT_TABLESPACE||' ; '
+from dba_part_indexes a, dba_users b 
+WHERE  a.OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+----Lob----
+select 'alter table ' ||table_owner||'.'||table_name || ' modify default attributes lob ('||column_name ||') (tablespace '||DEFAULT_TABLESPACE||') ; '
+from dba_part_lobs a, dba_users b 
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by a.TABLE_OWNER;

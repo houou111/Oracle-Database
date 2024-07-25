@@ -1,0 +1,228 @@
+---------------------------------------------------------lan 1 - restore ve 7/3
+[oracle@dr-tcbs-db-01 ~]$ rman target /
+
+Recovery Manager: Release 11.2.0.4.0 - Production on Wed Mar 22 16:34:08 2017
+
+Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FLEX (not mounted)
+
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+4> restore controlfile from '/ctrl_dFLEX_uurruasv3_s2011_p1_t937784291';
+5> release channel t1;
+6> }
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1426 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+
+Starting restore at 22-MAR-2017 16:35:54
+
+channel t1: restoring control file
+channel t1: restore complete, elapsed time: 00:02:36
+output file name=+FRA/flexres/controlfile/current.640.939314301
+output file name=+FRA/flexres/controlfile/current.379.939314301
+Finished restore at 22-MAR-2017 16:38:30
+
+released channel: t1
+
+RMAN> 
+RMAN> 
+
+
+--start 20170322  16:57 --> 22-MAR-2017 17:08:02
+
+
+---------------------------------------------------------lan 1 - restore ve 12/3
+
+
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+4> restore controlfile from '/ctrl_dFLEX_u1mrutbi4_s2102_p1_t938389060';
+5> release channel t1;
+6> }
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1654 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+
+Starting restore at 23-MAR-2017 08:30:58
+
+channel t1: restoring control file
+channel t1: restore complete, elapsed time: 00:00:45
+output file name=+FRA/flexres/controlfile/current.379.939371473
+output file name=+FRA/flexres/controlfile/current.640.939371473
+Finished restore at 23-MAR-2017 08:31:43
+
+released channel: t1
+
+
+---start Starting restore at 23-MAR-2017 08:34:39
+Finished restore at 23-MAR-2017 08:46:53
+
+SQL> select name, free_mb/1024, total_mb/1024 from v$asm_diskgroup;
+
+NAME                           FREE_MB/1024 TOTAL_MB/1024
+------------------------------ ------------ -------------
+CRS                              4.94238281             5
+DATA                             18.5664063           100
+FRA                              33.3496094           100
+
+
+
+----------------------------------------------lan 3
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+4> restore controlfile from '/ctrl_dFLEX_u23rv2k2g_s2115_p1_t938561616';
+5> release channel t1;
+6> }
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1654 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+
+Starting restore at 23-MAR-2017 08:52:17
+
+channel t1: restoring control file
+channel t1: restore complete, elapsed time: 00:00:45
+output file name=+FRA/flexres/controlfile/current.640.939372757
+output file name=+FRA/flexres/controlfile/current.379.939372757
+Finished restore at 23-MAR-2017 08:53:02
+
+released channel: t1
+
+
+--start 
+Starting restore at 23-MAR-2017 08:57:15
+Finished restore at 23-MAR-2017 09:08:59
+
+
+alter system set  db_recovery_file_dest='+FRA/FLEXRES/ARC'
+
+
+
+
+
+
+
+
+
+Starting recover at 23-MAR-2017 09:22:47
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +FRA/flexres/datafile/sysaux.331.939373049
+destination for restore of datafile 00003: +DATA/flexres/datafile/undotbs1.287.939373049
+channel t1: reading from backup piece bk_dFLEX_u1prv2ejn_s2105_p1_t938556023
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1733.939373051
+channel t2: reading from backup piece bk_dFLEX_u1nrv2ejm_s2103_p1_t938556022
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +DATA/flexres/datafile/users.289.939373095
+destination for restore of datafile 00005: +DATA/flexres/datafile/undotbs2.288.939373055
+channel t3: reading from backup piece bk_dFLEX_u1orv2ejm_s2104_p1_t938556022
+channel t2: piece handle=bk_dFLEX_u1nrv2ejm_s2103_p1_t938556022 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:00:26
+channel t3: piece handle=bk_dFLEX_u1orv2ejm_s2104_p1_t938556022 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:00:45
+channel t1: piece handle=bk_dFLEX_u1prv2ejn_s2105_p1_t938556023 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:00:56
+
+starting media recovery
+media recovery failed
+released channel: t1
+released channel: t2
+released channel: t3
+released channel: t4
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of recover command at 03/23/2017 09:23:49
+ORA-00283: recovery session canceled due to errors
+RMAN-11003: failure during parse/execution of SQL statement: alter database recover if needed
+ standby start until time 'MAR 14 2017 00:00:00'
+ORA-00283: recovery session canceled due to errors
+ORA-38760: This database instance failed to turn on flashback database
+
+
+--------------------------------------------------------------------------------
+---Lan N-----------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+--start
+ select name,free_mb/1024, total_mb/1024 from v$asm_diskgroup;
+
+NAME                           FREE_MB/1024 TOTAL_MB/1024
+------------------------------ ------------ -------------
+CRS                              4.94238281             5
+DATA                             41.3945313           100
+FRA                              65.9101563           100
+
+
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+4> restore controlfile from '/ctrl_dFLEX_u2grv58d7_s2128_p1_t938647975';
+5> release channel t1;
+6> }
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1654 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+
+Starting restore at 23-MAR-2017 10:52:42
+
+channel t1: restoring control file
+channel t1: restore complete, elapsed time: 00:00:45
+output file name=+FRA/flexres/controlfile/current.1733.939379975
+output file name=+FRA/flexres/controlfile/current.331.939379977
+Finished restore at 23-MAR-2017 10:53:27
+
+released channel: t1
+
+RMAN> run{
+2> set until time "to_date('2017-03-14:00:00:00', 'yyyy-mm-dd:hh24:mi:ss')";
+3> allocate channel t1 device type 'sbt_tape' ;
+4> allocate channel t2 device type 'sbt_tape' ;
+5> allocate channel t3 device type 'sbt_tape' ;
+6> allocate channel t4 device type 'sbt_tape' ;
+7> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+8> set newname for datafile 5 to '+DATA';
+9> set newname for datafile 4 to '+DATA';
+10> set newname for datafile 3 to '+DATA';
+11> set newname for datafile 2 to '+FRA';
+12> set newname for datafile 1 to '+FRA';
+13> restore database;
+14> switch datafile all;
+15> release channel t1;
+16> release channel t2;
+17> release channel t3;
+18> release channel t4;
+19> }
+
+Starting restore at 23-MAR-2017 11:00:15
+Finished restore at 23-MAR-2017 11:11:00
+
+
+
+

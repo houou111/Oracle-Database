@@ -1,0 +1,66 @@
+Check Get Pct Miss for SQL Area in the AWR report :
+
+
+If % Pct Miss is greater than 10% in an OLTP system:
+– Improve the sharing of your application code by using bind variables
+– Increase the size of the shared pool
+– Set the CURSOR_SHARING parameter
+
+
+
+
+SQL> select max(value) from v$sesstat
+  2   where STATISTIC# in (select STATISTIC# from v$statname
+  3                        where name='session cursor cache count');
+
+MAX(VALUE)
+----------
+        58
+		
+		
+show parameter cursor
+
+alter system set session_cached_cursors=1000
+
+
+
+
+SQL> col hwm_open_cur format 99,999
+SQL> col max_open_cur format 99,999
+SQL> select 
+  2     max(a.value) as hwm_open_cur, 
+  3     p.value      as max_open_cur
+  4  from 
+  5     v$sesstat a, 
+  6     v$statname b, 
+  7     v$parameter p
+  8  where 
+  9     a.statistic# = b.statistic# 
+ 10  and 
+ 11     b.name = 'opened cursors current'
+ 12  and 
+ 13     p.name= 'open_cursors'
+ 14  group by p.value;
+
+HWM_OPEN_CUR
+------------
+MAX_OPEN_CUR
+--------------------------------------------------------------------------------
+         135
+1000
+
+
+
+
+
+
+-- Total cursors open, by session
+
+select a.value, s.username, s.sid, s.serial#
+from   v$sesstat a, v$statname b, v$session s
+where  a.statistic# = b.statistic# and s.sid=a.sid
+and    b.name = 'opened cursors current';
+
+
+
+select max(value)

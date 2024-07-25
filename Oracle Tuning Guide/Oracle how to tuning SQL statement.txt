@@ -1,0 +1,12 @@
+1. Using SQL Tuning Advisor
+-----------------------------------------
+- New index
+- New plan
+- More parallel
+
+
+
+2. Using SQL Baseline
+-----------------------------------------
+Fix statment to stable plan
+

@@ -1,0 +1,8 @@
+set lines 200 
+set pages 200 
+col name for a20 
+show pdbs; 
+
+select con_id, name, open_mode, total_size/1024/1024/1024 GB from v$pdbs; 
+
+alter session set container=&pdb_name; 

@@ -1,0 +1,62 @@
+-----privilege in role
+select ROLE,OWNER,TABLE_NAME,COLUMN_NAME,PRIVILEGE 
+from role_tab_privs 
+where ROLE in ('TCKH_PTKDNV','TCKH_PTKDKHDN') order by 1
+
+
+-----user be granted
+select * 
+from dba_role_privs 
+where GRANTED_ROLE in ('RESOURCE') 
+and GRANTEE <> 'SYS' order by 2
+
+
+select ' alter user "'||a.GRANTEE||'" QUOTA UNLIMITED ON USERS;'
+from dba_role_privs a, DBA_USERS b
+where GRANTED_ROLE in ('RESOURCE') 
+AND a.GRANTEE=b.USERNAME
+AND b.profile='PROFILE_ENDUSER';
+
+
+select ' revoke resource from "' ||a.GRANTEE|| '" ;'
+from dba_role_privs a, DBA_USERS b
+where GRANTED_ROLE in ('RESOURCE') 
+AND a.GRANTEE=b.USERNAME
+AND b.profile='PROFILE_ENDUSER';
+
+
+revoke resource from ITS07;
+revoke resource from ITS11;
+revoke resource from ITS15;
+
+
+
+select * from ROLE_ROLE_PRIVS where ROLE = 'ROLE_NAME';
+select * from ROLE_TAB_PRIVS  where ROLE = 'ROLE_NAME';
+select * from ROLE_SYS_PRIVS  where ROLE = 'ROLE_NAME';
+
+
+
+
+---Granted Roles:
+SELECT * 
+  FROM DBA_ROLE_PRIVS 
+ WHERE GRANTEE = 'DBSNMP';
+ 
+ 
+---Privileges Granted Directly To User:
+SELECT * 
+  FROM DBA_TAB_PRIVS 
+ WHERE GRANTEE = 'DBSNMP';
+ 
+---Privileges Granted to Role Granted to User:
+SELECT * 
+  FROM DBA_TAB_PRIVS  
+ WHERE GRANTEE IN (SELECT granted_role 
+                     FROM DBA_ROLE_PRIVS 
+                    WHERE GRANTEE = 'DBSNMP');
+					
+---Granted System Privileges:
+SELECT * 
+  FROM DBA_SYS_PRIVS 
+ WHERE GRANTEE = 'DBSNMP';

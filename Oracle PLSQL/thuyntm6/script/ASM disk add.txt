@@ -1,0 +1,75 @@
+Step 1: Identify the disks
+=================================================================
+for x in `multipath -l | grep mpath | awk '{print $1}' | sort`
+do
+  echo "$x .. `multipath -l $x | grep "active undef unknown" | head -1 | awk '{print $3}'` .. `multipath -l $x | grep size | awk '{print $1}'` .. `multipath -l $x | head -1 | awk '{print $2}'`"
+done
+
+
+Step 2: Update permission in the below file
+=================================================================
+vi /etc/udev/rules.d/12-dm-permissions.rules
+
+Exp:
+ENV{DM_NAME}=="mpatha", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="mpathb", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="mpathc", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="mpathd", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+
+
+mpatha ..  .. size=1.0T .. (3600507680c80845b3800000000000663)
+mpathb ..  .. size=1.0T .. (3600507680c80845b3800000000000664)
+mpathc ..  .. size=1.0T .. (3600507680c80845b3800000000000665)
+mpathd ..  .. size=1.0T .. (3600507680c80845b3800000000000666)
+
+'/dev/mapper/mpathcb','/dev/mapper/mpathca','/dev/mapper/mpathbz'
+'/dev/mapper/mpathcf','/dev/mapper/mpathce','/dev/mapper/mpathcg','/dev/mapper/mpathch','/dev/mapper/mpathcd','/dev/mapper/mpathcc'
+'/dev/mapper/mpathci','/dev/mapper/mpathck','/dev/mapper/mpathcj','/dev/mapper/mpathcl','/dev/mapper/mpathcn','/dev/mapper/mpathcm'
+'/dev/mapper/mpathby'
+
+
+
+alter diskgroup COBR14_DC add disk '/dev/mapper/mpathci','/dev/mapper/mpathck','/dev/mapper/mpathcj','/dev/mapper/mpathcl','/dev/mapper/mpathcn','/dev/mapper/mpathcm' REBALANCE power 6;
+
+Step 3: Update changes at OS level:
+=================================================================
+udevadm control --reload-rules
+udevadm trigger
+
+
+'/dev/mapper/mpathfv','/dev/mapper/mpathfw','/dev/mapper/mpathfx'
+'/dev/mapper/mpathgb','/dev/mapper/mpathgc','/dev/mapper/mpathgd','/dev/mapper/mpathfy','/dev/mapper/mpathfz','/dev/mapper/mpathga'
+'/dev/mapper/mpathgh','/dev/mapper/mpathgg','/dev/mapper/mpathge','/dev/mapper/mpathgf','/dev/mapper/mpathgi','/dev/mapper/mpathgj'
+'/dev/mapper/mpathfu'
+
+Step 4: Add disk at asm level using command like below:
+=================================================================
+alter diskgroup FRAT24R14_DC add disk '/dev/mapper/mpathfu';
+create diskgroup T24RPT_DR external redundancy disk  '/dev/mapper/mpathgk';
+
+alter diskgroup FRACOBR14_DR add disk  '/dev/mapper/mpathet','/dev/mapper/mpathes','/dev/mapper/mpathev','/dev/mapper/mpatheu';
+
+alter diskgroup YEAREND_DR add disk  '/dev/mapper/mpathej','/dev/mapper/mpathei','/dev/mapper/mpathem','/dev/mapper/mpathee','/dev/mapper/mpatheh',
+'/dev/mapper/mpathek','/dev/mapper/mpathef','/dev/mapper/mpatheg','/dev/mapper/mpathel','/dev/mapper/mpathen';
+
+
+create diskgroup MONTHEND_DR external redundancy disk  '/dev/mapper/mpather','/dev/mapper/mpathep','/dev/mapper/mpatheq','/dev/mapper/mpatheo';
+
+--------mount on other node when create new diskgroup
+alter diskgroup YEAREND_DR mount;
+
+--node 1
+alter database flashback off;
+alter diskgroup FRAT24R14_DC add disk '/dev/mapper/mpathbx','/dev/mapper/mpathbu','/dev/mapper/mpathbw','/dev/mapper/mpathbv';
+alter database flashback on;
+
+[root@dc-core-db-01 ~]# su - grid
+Last login: Thu Mar 15 16:48:53 +07 2018 on pts/0
+su: failed to execute /bin/bash: Resource temporarily unavailable
+
+
+--node 2
+alter database flashback off;
+alter diskgroup FRAT24R14_DC add disk '/dev/mapper/mpathbi','/dev/mapper/mpathbk','/dev/mapper/mpathbl','/dev/mapper/mpathbj';
+alter database flashback on;
+

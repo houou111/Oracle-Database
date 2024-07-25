@@ -1,0 +1,17 @@
+select s.ECID ,s.inst_id, s.SID,s.SERIAL#,p.spid,s.status,s.machine, s.ACTION, s.MODULE, s.TERMINAL,s.sql_id,s.last_call_et,s.event, s.client_info,s.PLSQL_SUBPROGRAM_ID,s.PROGRAM,s.client_identifier
+, ( SELECT max( substr( sql_text , 1, 40 )) FROM gv$sql sq WHERE sq.sql_id = s.sql_id ) AS sql_text
+, ( SELECT object_name FROM dba_procedures WHERE object_id = plsql_entry_object_id AND subprogram_id = 0) AS plsql_entry_object
+, ( SELECT procedure_name FROM dba_procedures WHERE object_id = plsql_entry_object_id AND subprogram_id = plsql_entry_subprogram_id) AS plsql_entry_subprogram
+, ( SELECT object_name FROM dba_procedures WHERE object_id = plsql_object_id AND subprogram_id = 0) AS plsql_entry_object
+, ( SELECT procedure_name FROM dba_procedures WHERE object_id = plsql_object_id AND subprogram_id = PLSQL_SUBPROGRAM_ID) AS plsql_entry_subprogram
+, 'alter system kill session ' || '''' || s.SID || ',' || s.serial# ||',@'|| s.inst_id||''''|| ' immediate;' kill_session
+from gv$session s ,gv$process p
+where
+--client_identifier like '%HIMANSHU.SINGH%'
+--s.ecid like '%ZnHWOPoUDWbG%'
+-- sid=4361
+--p.spid='1196'
+--s.program like '%ICM%'
+and p.addr=s.paddr
+and p.inst_id = s.inst_id
+;

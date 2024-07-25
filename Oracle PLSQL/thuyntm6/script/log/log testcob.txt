@@ -1,0 +1,507 @@
+WARNING: Heavy swapping observed on system in last 5 mins.
+pct of memory swapped in [0.42%] pct of memory swapped out [2.30%].
+Please make sure there is no memory pressure and the SGA and PGA 
+are configured correctly. Look at DBRM trace file for more details.
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_dbrm_23587.trc  (incident=3434673):
+ORA-00700: soft internal error, arguments: [kskvmstatact: excessive swapping observed], [], [], [], [], [], [], [], [], [], [], []
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3434673/testcob1_dbrm_23587_i3434673.trc
+Sat May 12 09:43:26 2018
+Dumping diagnostic data in directory=[cdmp_20180512094326], requested by (instance=1, osid=23587 (DBRM)), summary=[incident=3434673].
+Sat May 12 09:43:35 2018
+Sweep [inc][3434673]: completed
+Sweep [inc2][3434673]: completed
+Sat May 12 09:48:47 2018
+db_recovery_file_dest_size of 4915200 MB is 15.03% used. This is a
+user-specified limit on the amount of space that will be used by this
+database for recovery-related files, and does not reflect the amount of
+space available in the underlying filesystem or ASM diskgroup.
+Starting ORACLE instance (normal) (OS id: 30869)
+Sat May 12 10:18:41 2018
+CLI notifier numLatches:13 maxDescs:10929
+Sat May 12 10:18:41 2018
+**********************************************************************
+Sat May 12 10:18:41 2018
+Dump of system resources acquired for SHARED GLOBAL AREA (SGA) 
+
+Sat May 12 10:18:41 2018
+ Per process system memlock (soft) limit = UNLIMITED
+Sat May 12 10:18:41 2018
+ Expected per process system memlock (soft) limit to lock
+ SHARED GLOBAL AREA (SGA) into memory: 140G
+Sat May 12 10:18:41 2018
+ Available system pagesizes:
+  4K, 2048K 
+Sat May 12 10:18:41 2018
+ Supported system pagesize(s):
+Sat May 12 10:18:41 2018
+  PAGESIZE  AVAILABLE_PAGES  EXPECTED_PAGES  ALLOCATED_PAGES  ERROR(s)
+Sat May 12 10:18:41 2018
+        4K       Configured               6               6        NONE
+Sat May 12 10:18:41 2018
+     2048K            71687           71681           71681        NONE
+Sat May 12 10:18:41 2018
+**********************************************************************
+
+
+Sat May 12 18:06:14 2018
+Archived Log entry 5195 added for thread 1 sequence 38 ID 0xffffffff87b57736 dest 1:
+Sat May 12 18:16:55 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc  (incident=3593633):
+ORA-00445: background process "J000" did not start after 30 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593633/testcob1_cjq0_28792_i3593633.trc
+Sat May 12 18:17:27 2018
+Dumping diagnostic data in directory=[cdmp_20180512181727], requested by (instance=1, osid=28792 (CJQ0)), summary=[incident=3593633].
+Sat May 12 18:19:21 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 18:19:21 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 18:19:32 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_mmon_20936.trc  (incident=3593385):
+ORA-00445: background process "m000" did not start after 120 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593385/testcob1_mmon_20936_i3593385.trc
+Sat May 12 18:20:56 2018
+Sweep [inc][3593633]: completed
+Sweep [inc][3593385]: completed
+Sweep [inc2][3593633]: completed
+Sweep [inc2][3593385]: completed
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_mmon_20936.trc  (incident=3593386):
+ORA-00445: background process "m001" did not start after 120 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593386/testcob1_mmon_20936_i3593386.trc
+Sat May 12 18:30:05 2018
+Dumping diagnostic data in directory=[cdmp_20180512183005], requested by (instance=1, osid=20936 (MMON)), summary=[incident=3593386].
+Sat May 12 18:34:06 2018
+Process J002 died, see its trace file
+Sat May 12 18:34:06 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 18:34:06 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 18:38:02 2018
+Timed out trying to start process m001.
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_mmon_20936.trc  (incident=3593387):
+ORA-00445: background process "m001" did not start after 120 seconds
+Sat May 12 18:42:48 2018
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 18:42:48
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593387/testcob1_mmon_20936_i3593387.trc
+Sat May 12 18:42:49 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 18:42:49
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 18:42:49 2018
+opiodr aborting process unknown ospid (64569) as a result of ORA-609
+Sat May 12 18:42:49 2018
+opiodr aborting process unknown ospid (64571) as a result of ORA-609
+Sat May 12 18:43:28 2018
+Dumping diagnostic data in directory=[cdmp_20180512184328], requested by (instance=1, osid=20936 (MMON)), summary=[incident=3593387].
+Sat May 12 18:46:16 2018
+Sweep [inc][3593387]: completed
+Sweep [inc][3593386]: completed
+Sweep [inc2][3593387]: completed
+Sweep [inc2][3593386]: completed
+Sat May 12 18:51:40 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 18:51:40
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.11.191)(PORT=23788))
+Sat May 12 18:51:40 2018
+WARNING: inbound connection timed out (ORA-3136)
+Sat May 12 18:51:40 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 18:51:40
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.11.191)(PORT=23790))
+Sat May 12 18:51:40 2018
+WARNING: inbound connection timed out (ORA-3136)
+Sat May 12 18:52:51 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc  (incident=3593634):
+ORA-00445: background process "J000" did not start after 30 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593634/testcob1_cjq0_28792_i3593634.trc
+Sat May 12 18:53:18 2018
+Dumping diagnostic data in directory=[cdmp_20180512185318], requested by (instance=1, osid=28792 (CJQ0)), summary=[incident=3593634].
+Sat May 12 18:53:22 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 18:53:22 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 18:54:29 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+Sat May 12 18:54:29 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 18:54:29
+  Tracing not turned on.
+  Tns error struct:
+  Time: 12-MAY-2018 18:54:29
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    
+    ns main err code: 12535
+    
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: <unknown>
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: <unknown>
+Sat May 12 18:54:30 2018
+opiodr aborting process unknown ospid (15432) as a result of ORA-609
+Sat May 12 18:54:31 2018
+opiodr aborting process unknown ospid (15447) as a result of ORA-609
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc  (incident=3593635):
+ORA-00445: background process "J000" did not start after 30 seconds
+Sat May 12 18:58:32 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 18:58:33 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 18:58:36 2018
+Thread 1 advanced to log sequence 40 (LGWR switch)
+  Current log# 14 seq# 40 mem# 0: +TESTCOB_DR/TESTCOB/ONLINELOG/group_14.427.975490039
+  Current log# 14 seq# 40 mem# 1: +FRATESTCOB_DR/TESTCOB/ONLINELOG/group_14.278.975490043
+Sat May 12 18:59:20 2018
+Archived Log entry 5196 added for thread 1 sequence 39 ID 0xffffffff87b57736 dest 1:
+Process J003 died, see its trace file
+Sat May 12 19:09:06 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 19:09:06 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 19:09:49 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:09:49
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.11.191)(PORT=23942))
+Sat May 12 19:09:49 2018
+WARNING: inbound connection timed out (ORA-3136)
+Sat May 12 19:09:50 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:09:50
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:09:50 2018
+opiodr aborting process unknown ospid (25386) as a result of ORA-609
+Sat May 12 19:10:34 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:10:34
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:10:38 2018
+opiodr aborting process unknown ospid (26603) as a result of ORA-609
+Sat May 12 19:10:40 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:10:40
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:10:40 2018
+opiodr aborting process unknown ospid (26763) as a result of ORA-609
+Sat May 12 19:10:41 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:10:41
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    
+TNS-12535: TNS:operation timed out
+    ns secondary err code: 12606
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+  Client address: (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.11.191)(PORT=23960))
+Sat May 12 19:10:41 2018
+WARNING: inbound connection timed out (ORA-3136)
+Sat May 12 19:16:36 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_mmon_20936.trc  (incident=3593388):
+ORA-00445: background process "m002" did not start after 120 seconds
+Sat May 12 19:22:30 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc  (incident=3593636):
+ORA-00445: background process "J002" did not start after 30 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/testcob/testcob1/incident/incdir_3593636/testcob1_cjq0_28792_i3593636.trc
+Sat May 12 19:22:51 2018
+Sweep [inc][3593636]: completed
+Sweep [inc][3593635]: completed
+Sweep [inc][3593634]: completed
+Sweep [inc][3593388]: completed
+Sweep [inc2][3593634]: completed
+Sat May 12 19:23:06 2018
+Dumping diagnostic data in directory=[cdmp_20180512192306], requested by (instance=1, osid=28792 (CJQ0)), summary=[incident=3593636].
+Sat May 12 19:23:09 2018
+kkjcre1p: unable to spawn jobq slave process 
+Sat May 12 19:23:09 2018
+Errors in file /u01/app/oracle/diag/rdbms/testcob/testcob1/trace/testcob1_cjq0_28792.trc:
+Sat May 12 19:24:13 2018
+Sweep [inc2][3593636]: completed
+Sat May 12 19:34:22 2018
+CKPT (ospid: 20920) has not called a wait for 12 secs.
+Sat May 12 19:34:23 2018
+CKPT (ospid: 20920) is hung in an acceptable location (cfio 0x12.00).
+Sat May 12 19:34:49 2018
+Process m001 died, see its trace file
+Sat May 12 19:36:31 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:36:31
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:36:32 2018
+
+
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:36:32
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:36:32 2018
+***********************************************************************
+
+Fatal NI connect error 12537, connecting to:
+ (LOCAL=NO)
+
+  VERSION INFORMATION:
+        TNS for Linux: Version 12.1.0.2.0 - Production
+        Oracle Bequeath NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+        TCP/IP NT Protocol Adapter for Linux: Version 12.1.0.2.0 - Production
+  Time: 12-MAY-2018 19:36:32
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12537
+    
+TNS-12537: TNS:connection closed
+    ns secondary err code: 12560
+    nt main err code: 0
+    nt secondary err code: 0
+    nt OS err code: 0
+Sat May 12 19:36:32 2018
+opiodr aborting process unknown ospid (56657) as a result of ORA-609
+Sat May 12 19:36:33 2018
+opiodr aborting process unknown ospid (55439) as a result of ORA-609
+Process m001 died, see its trace file
+Sat May 12 19:52:06 2018
+Shutting down instance (abort)
+License high water mark = 220
+Sat May 12 19:52:06 2018
+USER (ospid: 36213): terminating the instance
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (11370) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (10466) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (10062) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (15889) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (9781) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (15294) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (15993) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (15884) as a result of ORA-1092
+Sat May 12 19:52:06 2018
+opiodr aborting process unknown ospid (15877) as a result of ORA-1092
+Sat May 12 19:52:10 2018
+Termination issued to instance processes. Waiting for the processes to exit
+Instance termination failed to kill one or more processes
+Sat May 12 19:52:21 2018
+Termination issued to instance processes. Waiting for the processes to exit
+Instance termination failed to kill one or more processes
+Sat May 12 19:52:27 2018
+Instance terminated by USER, pid = 36213
+Sat May 12 19:52:27 2018
+Instance shutdown complete

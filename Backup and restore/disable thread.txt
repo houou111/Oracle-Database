@@ -1,0 +1,68 @@
+SQL> select GROUP# from v$log;
+
+    GROUP#
+----------
+         1
+         2
+         3
+         4
+         5
+         6
+         7
+         8
+         9
+        10
+
+SQL> alter database drop logfile group 10;
+alter database drop logfile group 10
+*
+ERROR at line 1:
+ORA-01567: dropping log 10 would leave less than 2 log files for instance UNNAMED_INSTANCE_4 (thread 4)
+ORA-00312: online log 10 thread 4: '/u05/flashback/matrix/MATRIX/onlinelog/o1_mf_10_79t3s884_.log'
+
+
+
+SQL> show parameter thread
+
+NAME                                 TYPE                              VALUE
+------------------------------------ --------------------------------- ------------------------------
+parallel_threads_per_cpu             integer                           2
+thread                               integer                           0
+
+
+
+SQL> show parameter cluster
+
+NAME                                 TYPE                              VALUE
+------------------------------------ --------------------------------- ------------------------------
+cluster_database                     boolean                           FALSE
+cluster_database_instances           integer                           1
+
+
+SQL> select thread#,status from v$thread;
+
+   THREAD# STATUS
+---------- ------------------
+         1 OPEN
+         2 CLOSED
+         3 CLOSED
+         4 CLOSED
+		 
+SQL> alter database disable thread 4;
+
+Database altered.
+
+SQL> alter database drop logfile group 10;
+
+Database altered.
+
+SQL>  alter database drop logfile group 9;
+
+Database altered.
+
+
+SQL> select thread#,status from v$thread;
+
+   THREAD# STATUS
+---------- ------------------
+         1 OPEN

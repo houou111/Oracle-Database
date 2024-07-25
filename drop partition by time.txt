@@ -1,0 +1,30 @@
+--create or replace procedure drop_partition as
+declare
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='DWH_BK'
+       AND table_name IN ('FBNK_ACCOUNT','FBNK_EB_C005')
+       AND PARTITION_NAME NOT IN ('P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' drop partition '|| cc.partition_name;
+         DBMS_OUTPUT.put_line (cmd);
+      --execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/

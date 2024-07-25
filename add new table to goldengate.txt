@@ -1,0 +1,125 @@
+Adding New Table To A Existing Extract And Replicat In Goldengate
+
+1. Enable supplemental logging for the tables, that need to be added [ SOURCE]
+----------------------------------------------------------------------
+GGSCI> dblogin
+GGSCI> 
+add trandata T24LIVE.FBNK_PERI009 allcols
+add trandata T24LIVE.FBNK_PERIODIC_INTEREST allcols
+
+
+2. Edit extract param file:[SOURCE]
+----------------------------------------------------------------------
+TABLE T24LIVE.FBNK_PERI009;
+TABLE T24LIVE.FBNK_PERIODIC_INTEREST;
+
+
+3. Edit extract pump file: [SOURCE]
+----------------------------------------------------------------------
+TABLE T24LIVE.FBNK_PERI009;
+TABLE T24LIVE.FBNK_PERIODIC_INTEREST;
+
+
+4. Edit replicat file: [TARGET]
+----------------------------------------------------------------------
+MAP T24LIVE.FBNK_PERI009, TARGET T24REP.FBNK_PERI009_HBK, KEYCOLS(RECID),
+COLMAP (
+RECID = RECID,
+XMLRECORD = XMLRECORD,
+JOURNAL_TIME = @DATE ('YYYY-MM-DD HH:MI:SS.FFFFFF','JTS',@GETENV('JULIANTIMESTAMP')),
+RECORD_TIMESTAMP= @GETENV ('RECORD','TIMESTAMP'),
+FILESEQNO = @GETENV ('RECORD','FILESEQNO'),
+FILERBA = @GETENV ('RECORD','FILERBA'),
+ORA_ROWID = @GETENV ('RECORD','ROWID'),
+LAG_TIME = @GETENV ('LAG','MSEC'),
+WINDOW_ID = @STRCAT(@GETENV('RECORD', 'FILESEQNO'), @STRNUM(@GETENV('RECORD', 'FILERBA'), RIGHTZERO, 10))
+);
+
+MAP T24LIVE.FBNK_PERIODIC_INTEREST, TARGET T24REP.FBNK_PERIODIC_INTEREST_HBK, KEYCOLS(RECID),
+COLMAP (
+RECID = RECID,
+XMLRECORD = XMLRECORD,
+JOURNAL_TIME = @DATE ('YYYY-MM-DD HH:MI:SS.FFFFFF','JTS',@GETENV('JULIANTIMESTAMP')),
+RECORD_TIMESTAMP= @GETENV ('RECORD','TIMESTAMP'),
+FILESEQNO = @GETENV ('RECORD','FILESEQNO'),
+FILERBA = @GETENV ('RECORD','FILERBA'),
+ORA_ROWID = @GETENV ('RECORD','ROWID'),
+LAG_TIME = @GETENV ('LAG','MSEC'),
+WINDOW_ID = @STRCAT(@GETENV('RECORD', 'FILESEQNO'), @STRNUM(@GETENV('RECORD', 'FILERBA'), RIGHTZERO, 10))
+);
+
+5. Now do the initial loading:
+----------------------------------------------------------------------
+expdp
+impdp remap T24REP
+
+CREATE TABLE "T24REP"."FBNK_PERIODIC_INTEREST_HBK" 
+   (	"RECID" VARCHAR2(255 BYTE) NOT NULL ENABLE, 
+	"XMLRECORD" "SYS"."XMLTYPE" , 
+	"JOURNAL_TIME" TIMESTAMP (6), 
+	"RECORD_TIMESTAMP" TIMESTAMP (6), 
+	"FILESEQNO" NUMBER, 
+	"FILERBA" NUMBER, 
+	"ORA_ROWID" VARCHAR2(100 BYTE), 
+	"LAG_TIME" NUMBER, 
+	"WINDOW_ID" NUMBER(20,0), 
+	 CONSTRAINT "PK_FBNK_PERIODIC_INTEREST_HBK" PRIMARY KEY ("RECID")
+   );
+   
+CREATE TABLE "T24REP"."FBNK_PERI009_HBK" 
+   (	"RECID" VARCHAR2(255 BYTE) NOT NULL ENABLE, 
+	"XMLRECORD" "SYS"."XMLTYPE" , 
+	"JOURNAL_TIME" TIMESTAMP (6), 
+	"RECORD_TIMESTAMP" TIMESTAMP (6), 
+	"FILESEQNO" NUMBER, 
+	"FILERBA" NUMBER, 
+	"ORA_ROWID" VARCHAR2(100 BYTE), 
+	"LAG_TIME" NUMBER, 
+	"WINDOW_ID" NUMBER(20,0), 
+	 CONSTRAINT "PK_FBNK_PERI009_HBK" PRIMARY KEY ("RECID")
+   );
+
+Truncate table "T24REP"."FBNK_PERI009_HBK";
+Insert into "T24REP"."FBNK_PERI009_HBK" (RECID, XMLRECORD)
+Select RECID, XMLRECORD
+ From T24REP. FBNK_PERI009;
+Commit;
+Drop table T24REP. FBNK_PERI009;
+
+Truncate table "T24REP"."FBNK_PERIODIC_INTEREST_HBK";
+Insert into "T24REP"."FBNK_PERIODIC_INTEREST_HBK" (RECID, XMLRECORD)
+Select RECID, XMLRECORD
+ From T24REP. FBNK_PERIODIC_INTEREST;
+Commit;
+Drop table T24REP.FBNK_PERIODIC_INTEREST;
+
+
+6.stop extract and pump process [ SOURCE]
+---------------------------------------------------------------------
+
+
+7. STOP replicat:[ TARGET ]
+----------------------------------------------------------------------
+
+
+
+8 .Start the extract: [ SOURCE ]
+----------------------------------------------------------------------
+
+
+
+9. Start the extract pump: [ SOURCE ]
+
+----------------------------------------------------------------------
+
+
+
+10. Start the replicat [ TARGET ]
+----------------------------------------------------------------------
+
+
+
+
+
+
+

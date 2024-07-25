@@ -1,0 +1,17 @@
+echo "
+load data
+infile '/home/oracle/csv_file/v_open_acc_failed_`date '+%Y_%m_%d'`.csv'
+APPEND
+ into table dwh.coredb_open_acc_failed
+ fields terminated by \",\"
+ TRAILING NULLCOLS
+ (STEP,stk, fullname, address, idcode, phone, email, createdate, ngay_T,  Notes,ETL_date sysdate)
+ " > /home/oracle/etl_script/v_open_acc_failed.ctl
+
+
+sqlldr dba01/Abcd#123456 control=/home/oracle/etl_script/v_open_acc_failed.ctl log=/home/oracle/log/v_open_acc_failed_`date '+%Y_%m_%d'`.log
+
+
+
+
+

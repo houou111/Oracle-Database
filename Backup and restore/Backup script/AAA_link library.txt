@@ -1,0 +1,1 @@
+sh /usr/openv/netbackup/bin/oracle_link 

@@ -1,0 +1,148 @@
+Using DBMS_ROLLING
+Steps to be performed
+
+Init_plan
+execute Init_plan procedure on the primary database.
+SQL> exec DBMS_ROLLING.INIT_PLAN(FUTURE_PRIMARY=>'test');
+ 
+PL/SQL procedure successfully completed.
+Check status from dba_rolling_status and do not continue until status is ready
+SQL> SELECT REVISION, STATUS, PHASE FROM DBA_ROLLING_STATUS;
+ 
+  REVISION STATUS   PHASE
+---------- ------------ --------------
+     0 READY    BUILD PENDING
+ Change parameters if required
+In this case, change apply lag to fall between 60 seconds before switching over to the future primary
+SQL> select scope, name, curval from dba_rolling_parameters order by scope, name;
+SQL> exec DBMS_ROLLING.SET_PARAMETER('SWITCH_LGM_LAG_WAIT', '1');
+SQL> exec DBMS_ROLLING.SET_PARAMETER('SWITCH_LGM_LAG_TIME', '60');
+Build Plan:
+Note: the standby database should be mounted and the parameter cluster_database set to false (even if your standby is RAC), otherwise build_plan may raise an error. Follows an example of starting the build_plan phase on a RAC standby DB making those adjustments.
+Build plan process
+On standby:
+  
+SQL> show parameter cluster
+  
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+cluster_database                     boolean     TRUE
+cluster_database_instances           integer     2
+cluster_interconnects                string
+SQL> alter system set cluster_database=false scope=spfile;
+  
+System altered.
+  
+SQL>shutdown immediate;
+SQL> startup mount;
+ORACLE instance started.
+  
+Total System Global Area 1577058304 bytes
+Fixed Size                  2924832 bytes
+Variable Size             553651936 bytes
+Database Buffers         1006632960 bytes
+Redo Buffers               13848576 bytes
+Database mounted.
+SQL> show parameter cluster
+  
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+cluster_database                     boolean     FALSE
+cluster_database_instances           integer     1
+cluster_interconnects                string
+SQL> alter database recover managed standby database disconnect from session;
+ 
+SQL> exec dbms_rolling.build_plan;
+ 
+PL/SQL procedure successfully completed.
+SQL> SELECT INSTID, TARGET, PHASE, DESCRIPTION FROM DBA_ROLLING_PLAN ORDER BY 1;
+INSTID TARGET PHASE DESCRIPTION
+---------- ---------- ---------- -----------------------------------------------------------------
+1 test  START Verify database is a primary
+2 test START Verify MAXIMUM PROTECTION is disabled
+3 test_stby START Verify database is a physical standby
+...
+65 test FINISH Drop guaranteed restore point DBMSRU_INITIAL
+66 test_stby FINISH Drop guaranteed restore point DBMSRU_INITIAL
+66 rows selected.
+SQL> SELECT REVISION, STATUS, PHASE FROM DBA_ROLLING_STATUS;
+REVISION STATUS PHASE
+---------- ------------ ---------------
+1 READY START PENDING
+ 
+
+Convert to TLS (Oracle logical standby transient Database) and upgrade standby
+Execute START_PLAN to convert the physical standby DB to a Logical standby DB
+SQL> exec DBMS_ROLLING.START_PLAN;
+ 
+PL/SQL procedure successfully completed.
+SQL> SELECT REVISION, STATUS, PHASE FROM DBA_ROLLING_STATUS;
+ 
+  REVISION STATUS   PHASE
+---------- ------------ ---------------
+     2 READY    SWITCH PENDING 
+LOGICAL  RUNNING     NOT STARTED
+SQL> SELECT NAME,OPEN_MODE,DATABASE_ROLE FROM V$DATABASE;
+ 
+NAME      OPEN_MODE        DATABASE_ROLE
+--------- -------------------- ----------------
+test_stby    READ WRITE           LOGICAL STANDBY
+ 
+
+Upgrade TLS standby to 19c.
+The suggestion is to use the autoupgrade tool, and once this is completed, we continue with the next step, switchover. The upgrade process will not be covered here as it could have many details. You can see an example in the official docs: https://docs.oracle.com/en/database/oracle/oracle-database/19/upgrd/examples-of-autoupgrade-workflows.html#GUID-1A9651AE-854F-47F4-8BAE-166F0A35FB16
+If things go wrong: up to this point, we only worked on the standby database. If some errors appear that we cannot resolve or our maintenance window is about to end, we can just call destroy_plan, and this will roll back our process. The standby database may need to be rebuilt.
+SQL> Execute DBMS_ROLLING.DESTROY_PLAN;
+Switchover
+Make sure logical standby is in sync with the primary
+SQL> select * from dba_rolling_events;
+SQL> SELECT INSTID, TARGET, PHASE, DESCRIPTION FROM DBA_ROLLING_PLAN ORDER BY 1;
+Make sure logical apply is running
+On the current primary database execute the switchover
+SQL > execute dbms_rolling.switchover;
+PL/SQL procedure successfully completed.
+ 
+SQL > select db_unique_name,database_role,open_mode from v$database;
+DB_UNIQUE_NAME DATABASE_ROLE OPEN_MODE
+------------------------------ ---------------- --------------------
+test_stby PRIMARY READ WRITE
+During this process, you may see it raises errors and switchover is not completed. Try again and use the below views to troubleshoot issues if any
+column event_time format a35
+column message format a65
+set lines 150
+select * from dba_rolling_events;
+set lines 250
+column target format a15
+column phase format a65
+column description format a50
+SELECT INSTID, TARGET, PHASE, DESCRIPTION FROM DBA_ROLLING_PLAN ORDER BY 1;
+Finish_plan
+If everything goes well, we are ready to finish the plan, which means the new logical standby will be converted to physical standby and upgraded to 19c.
+Former primary:
+SQL>  alter system set cluster_database=false scope=spfile;
+  
+System altered.
+  
+SQL> shutdown immediate;
+ 
+$. oraenv <<< test1
+$ echo $ORACLE_HOME #### Make sure this is 19c
+SQL> startup mount;
+###On new Primary upgraded to 19c: 
+SYS >execute dbms_rolling.finish_plan;
+PL/SQL procedure successfully completed.
+ 
+SYS> select db_unique_name,database_role,open_mode from v$database;
+DB_UNIQUE_NAME DATABASE_ROLE OPEN_MODE
+------------------------------ ---------------- --------------------
+test_stby  PRIMARY READ WRITE
+ 
+ 
+SYS> select db_unique_name,database_role,open_mode from v$database;
+DB_UNIQUE_NAME DATABASE_ROLE OPEN_MODE
+------------------------------ ---------------- --------------------
+test  PHYSICAL STANDBY MOUNTED
+### If needed perform a switchover to restore original primary running as status prior upgrade.
+SQL> ALTER DATABASE SWITCHOVER TO test VERIFY;
+SQL> ALTER DATABASE SWITCHOVER TO test;
+SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE DISCONNECT FROM SESSION;

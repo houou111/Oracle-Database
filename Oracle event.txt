@@ -1,0 +1,19 @@
+1. Single block read -> fragment -> check 
+
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)||'mb',
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "reclaimable space % " 
+from dba_tables where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+
+
+2. enq: TM - contention -> missing index
+
+SELECT l.sid, s.blocking_session blocker, s.event, l.type, l.lmode, l.request, o.object_name, o.object_type 
+FROM v$lock l, dba_objects o, v$session s 
+WHERE UPPER(s.username) = UPPER('&User') 
+AND l.id1 = o.object_id (+) 
+AND l.sid = s.sid 
+ORDER BY sid, type;

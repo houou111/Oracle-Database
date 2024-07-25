@@ -1,0 +1,36 @@
+RECOVER TABLE 'TEST'.'T1' OF PLUGGABLE DATABASE pdb1
+  UNTIL TIME "TO_DATE('01-JAN-2013 15:00', 'DD-MON-YYYY HH24:MI')"
+  AUXILIARY DESTINATION '/u01/aux'  
+  REMAP TABLE 'TEST'.'T1':'T1_PREV';
+  
+  
+  
+  
+  
+  RECOVER TABLE TEST.T1 OF PLUGGABLE DATABASE P_CES
+  UNTIL SCN 1853267
+  AUXILIARY DESTINATION '/u01/aux'
+  DATAPUMP DESTINATION '/u01/export'
+  DUMP FILE 'test_t1_prev.dmp'
+  NOTABLEIMPORT;
+  
+  
+  
+  
+run{
+allocate channel c1 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+allocate channel c2 device type 'sbt_tape' parms 'SBT_LIBRARY=/usr/openv/netbackup/bin/libobk.a64(shr.o)';
+send 'NB_ORA_SERV=dc-nbumaster.msb.com.vn, NB_ORA_CLIENT=msb-dbcenter01';
+RECOVER TABLE CES.M_PROFILE OF PLUGGABLE DATABASE P_CES
+UNTIL TIME "TO_DATE('21-FEB-2023 11:00', 'DD-MON-YYYY HH24:MI')"
+AUXILIARY DESTINATION '/backup/dump'
+DATAPUMP DESTINATION '/backup/dump'
+DUMP FILE 'M_PROFILE.dmp'
+NOTABLEIMPORT;
+}
+
+
+
+cd /usr/openv/netbackup/bin
+
+./bplist -S dc-nbumaster.msb.com.vn  -s 02/01/2023   -C msb-dbcenter01 -t 4 -l -R / |grep c-

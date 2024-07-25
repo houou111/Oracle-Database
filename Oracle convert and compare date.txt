@@ -1,0 +1,46 @@
+1.
+---------------------------------------------------------------------------------
+select * 
+from FINANCEBALANCESHEET
+where ORGAN_CODE='ACB'
+and   TO_DATE(Start_date, 'YYYY-MM-DD"T"HH24:MI:SS') >  TO_DATE('2019-12-01T00:00:00', 'YYYY-MM-DD"T"HH24:MI:SS')
+and length_series=3
+order by Start_date
+
+
+
+2004-01-01T00:00:00 -> TO_DATE('2019-12-01T00:00:00', 'YYYY-MM-DD"T"HH24:MI:SS')
+
+
+2011-07-28T23:54:14Z -> TO_DATE('2011-07-28T23:54:14Z',  'YYYY-MM-DD"T"HH24:MI:SS"Z"')
+
+
+TO_DATE(Submit_Time, 'YYYY/MM/DD HH24:MI:SS')
+
+2022/09/19 14:59:00	9
+
+(PARTITION BY trunc(TO_DATE(Submit_Time, 'YYYY/MM/DD HH24:MI:SS'))) AS avg_count
+
+
+
+
+
+
+2. Convert varchar2 to Date ('MM/DD/YYYY') in PL/SQL
+---------------------------------------------------------------------------------
+-> SELECT TO_CHAR(TO_DATE(DOJ,'MM/DD/YYYY'), 'MM/DD/YYYY') FROM EmpTable;
+
+
+
+3. Example
+---------------------------------------------------------------------------------
+CAST(TO_TIMESTAMP(publicdate, 'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE) 
+between 
+TO_DATE('01/12/2021', 'DD/MM/YYYY HH24:MI:SS') 
+and 
+TO_DATE('07/03/2022', 'DD/MM/YYYY HH24:MI:SS')"
+
+
+
+select distinct update_date from ssi_datafeed.financeincomestatement 
+where CAST(TO_TIMESTAMP(update_date, 'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE) >= TO_DATE('01/01/2020', 'DD/MM/YYYY HH24:MI:SS')

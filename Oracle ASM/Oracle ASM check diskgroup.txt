@@ -1,0 +1,4 @@
+SQL> select group_number, name, sector_size, block_size, allocation_unit_size, state
+  2  from v$asm_diskgroup
+  3  order by 1
+  4  /

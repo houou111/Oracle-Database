@@ -1,0 +1,258 @@
+#check if user grid does not exists
+getent passwd grid|wc -l
+CHECK_USER=`getent passwd grid|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_USER" = "0" ]
+then
+GI_HOME=`cat /home/oracle/bin/grid|grep "ORACLE_HOME=" |grep -v "#export"| cut -d"=" -f2- `
+else
+GI_HOME=`cat /home/grid/.bash_profile |grep "ORACLE_HOME=" |grep -v "#export"| cut -d"=" -f2- `
+fi
+
+ORACLE_HOME=`cat /home/oracle/.bash_profile |grep "ORACLE_HOME="|grep -v "#export"| cut -d"=" -f2- `
+#GI_HOME=`cat /etc/oratab |grep "MGMTDB"|grep -v "#"|cut -f2 -d":"` #oracle 12.2 and later
+#GI_HOME=`cat /etc/oratab |grep "+ASM"|cut -f2 -d":"`                #oracle 11 and 12.1
+SCAN_NAME=`$GI_HOME/bin/srvctl config scan |grep "SCAN name"   |awk '{print $3}' |sed 's/.$//'`
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+datetime=`date +%Y%m%d_%H%M%S`
+FOLDER=/tmp
+CHECKLIST_LOG=$FOLDER/checklist_log_${datetime}.log
+DB_LIST=$FOLDER/db_list_${datetime}.log
+
+echo "">> $CHECKLIST_LOG
+chmod 777 $CHECKLIST_LOG
+echo "###############################   ${bold}STATUS OK/NOK${normal}  ###############################">>$CHECKLIST_LOG
+####################################################
+CHECK_LISTENER=`grep ADMIN_RESTRICTIONS $GI_HOME/network/admin/listener.ora |wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_LISTENER" = "0" ]
+then
+echo "${bold}[NOK]${normal} Listener admin restriction" >>$CHECKLIST_LOG
+else
+echo "[OK]  Listener admin restriction" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+Trans_hugepage=`cat /sys/kernel/mm/transparent_hugepage/enabled|grep "always madvise [never]" |wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$Trans_hugepage" = "0" ]
+then
+echo "[OK]  Disable transparent hugepage" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} Disable transparent hugepage" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_Timezone=`timedatectl|grep "Time zone: Asia/Ho_Chi_Minh"| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_Timezone" = "Time zone: Asia/Ho_Chi_Minh (+07, +0700)" ]
+then
+echo "[OK]  $CHECK_Timezone" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} Time zone: $CHECK_Timezone" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_SELINUX=`getenforce`
+if [ "$CHECK_SELINUX" <> "Enforcing" ]
+then
+echo "[OK]  SELINUX=$CHECK_SELINUX" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} SELINUX=$CHECK_SELINUX" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_RNGD=`systemctl status rngd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_RNGD" = 1 ]
+then
+echo "[OK]  rngd serivce status: active(running) " >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} rngd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_IPtables=`systemctl status iptables|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_IPtables" = 1 ]
+then
+echo "[OK]  iptables serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} iptables serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_Multipath=`systemctl status multipathd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_Multipath" = 1 ]
+then
+echo "[OK]  multipathd serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} multipathd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+####################################################
+CHECK_chronyd=`systemctl status chronyd|grep "active (running)"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$CHECK_chronyd" = 1 ]
+then
+echo "[OK]  chronyd serivce status: active(running)" >>$CHECKLIST_LOG
+else
+echo "${bold}[NOK]${normal} chronyd serivce status" >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+
+echo "">> $CHECKLIST_LOG
+echo "################################### ${bold}OS INFO${normal}  ###################################">>$CHECKLIST_LOG
+####################################################
+OSPARAM_MIN_FREE=`cat /etc/sysctl.conf |grep "vm.min_free_kbytes"|grep -v "#"|wc -l| sed -e 's/^[[:space:]]*//'`
+if [ "$OSPARAM_MIN_FREE" -eq "1" ]
+then
+echo "`cat /etc/sysctl.conf |grep "vm.min_free_kbytes"|grep -v "#"`" >>$CHECKLIST_LOG
+else
+echo "Not configures vm.min_free_kbytes yet." >>$CHECKLIST_LOG
+fi
+echo >>$CHECKLIST_LOG
+
+
+####################################################
+#OSPARAM_Hugepage=`cat /etc/sysctl.conf |grep "vm.nr_hugepages"|grep -v "#"`
+OSPARAM_Hugepage=`cat /proc/meminfo |grep HugePages`
+echo "$OSPARAM_Hugepage" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+####################################################
+VAL=1024
+TOTAL_MEM=`cat /proc/meminfo |grep MemTotal|sed 's/[^0-9]*//g'`
+FREE_MEM=`cat /proc/meminfo |grep MemFree|sed 's/[^0-9]*//g'`
+echo "Total memory: $((TOTAL_MEM / VAL / VAL))GB" >>$CHECKLIST_LOG
+echo "Free memory: $((FREE_MEM / VAL / VAL))GB" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+####################################################
+CPU=`lscpu |grep "CPU(s)"`
+echo "$CPU" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+
+
+echo "">> $CHECKLIST_LOG
+echo "################################  ${bold}OPATCH INFO ${normal}  ################################">>$CHECKLIST_LOG
+####################################################
+echo "${bold}GRID HOME${normal}">> $CHECKLIST_LOG
+su - grid  -c "
+#!/bin/bash
+$GI_HOME/OPatch/opatch lspatches >>$CHECKLIST_LOG
+"
+
+echo "">> $CHECKLIST_LOG
+echo "${bold}ORACLE HOME${normal}">> $CHECKLIST_LOG
+su - oracle  -c "
+#!/bin/bash
+$ORACLE_HOME/OPatch/opatch lspatches >>$CHECKLIST_LOG
+"
+
+
+echo "">> $CHECKLIST_LOG
+echo "########################  ${bold}DATABASE'S NOT ONLINE SERVICE${normal}  #######################">>$CHECKLIST_LOG
+####################################################
+
+SERVICE_STAT=`$GI_HOME/bin/crsctl stat res -t -w "((TARGET != ONLINE) or (STATE != ONLINE)"`
+echo "$SERVICE_STAT" >>$CHECKLIST_LOG
+echo >>$CHECKLIST_LOG
+
+
+
+echo "">> $CHECKLIST_LOG
+echo "######### ${bold}DATABASE'S CONNECTION/LAST APPLY - DB configured in srvctl${normal} ###########">>$CHECKLIST_LOG
+####################################################
+DBLIST=`$GI_HOME/bin/crsctl stat res -t -w "((TYPE = ora.database.type) and ((STATE = ONLINE) or (STATE = INTERMEDIATE)))"|grep '\<ora\>'| cut -f2 -d"."`
+echo "${DBLIST}"> $DB_LIST
+CATALOG_INSTANCE="GV\$SESSION"
+
+while read line; do
+SERVICE_NAME=`echo $line| awk '{print $1}' `
+echo "${bold}Database $SERVICE_NAME${normal}" >>$CHECKLIST_LOG
+su - oracle  -c "
+#!/bin/bash
+
+sqlplus -s  dbsnmp/PAssw0rd@$SCAN_NAME:1521/$SERVICE_NAME as sysdba <<EOF
+
+spool  $CHECKLIST_LOG append
+set serveroutput on
+DECLARE
+   last_apply     VARCHAR2 (50);
+   dem1           NUMBER;
+
+   TYPE three_cols_rt IS RECORD
+   (
+      inst_id    GV\\\$SESSION.inst_id%TYPE,
+      username   GV\\\$SESSION.username%TYPE,
+      dem        NUMBER
+   );
+
+
+   CURSOR c_role
+   IS
+      SELECT database_role FROM v\\\$database;
+
+   CURSOR ses_cur
+   IS
+        SELECT inst_id, username, COUNT (*) AS dem
+          FROM GV\\\$SESSION
+         WHERE username NOT IN ('SYS', 'DBSNMP', 'SYSRAC', 'THUYNTM_DBA','DUONGPK_DBA','PUBLIC')
+      GROUP BY inst_id, username
+      ORDER BY 2, 1;
+
+   TYPE l_val IS TABLE OF ses_cur%ROWTYPE;
+
+   sess_list             l_val;
+BEGIN
+   FOR role IN c_role
+   LOOP
+      IF role.database_role = 'PHYSICAL STANDBY'
+      THEN
+         SELECT TO_CHAR (timestamp, 'DD/MM/YYYY HH24:MI:SS')  INTO last_apply
+           FROM gv\\\$recovery_progress
+          WHERE item = 'Last Applied Redo';
+
+         DBMS_OUTPUT.put_line ('Last Applied Redo: ' || last_apply);
+               
+
+
+      ELSE
+         SELECT COUNT (*) INTO dem1
+           FROM GV\\\$SESSION
+          WHERE username NOT IN ('SYS', 'DBSNMP', 'SYSRAC', 'THUYNTM_DBA','DUONGPK_DBA','PUBLIC');
+
+         IF dem1 > 0
+         THEN
+         
+         DBMS_OUTPUT.PUT_LINE ( 'INSTANCE    ' || 'USERNAME                            ' || 'COUNT     ');
+         DBMS_OUTPUT.PUT_LINE ( '_ _ _ _ _ _ ' || '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ' || '_ _ _ _ _ ');
+              SELECT inst_id, username, COUNT (*) AS dem
+                BULK COLLECT INTO sess_list
+                FROM GV\\\$SESSION
+               WHERE username NOT IN ('SYS', 'DBSNMP', 'SYSRAC', 'THUYNTM_DBA','DUONGPK_DBA','PUBLIC')
+            GROUP BY inst_id, username
+            ORDER BY 2, 1;
+
+            FOR i IN sess_list.FIRST .. sess_list.LAST
+            LOOP
+               DBMS_OUTPUT.PUT_LINE ( RPAD (sess_list(i).inst_id, 12) || RPAD (sess_list(i).username, 36  ) || RPAD (sess_list(i).dem, 10));
+            END LOOP;
+         END IF;
+      END IF;
+   END LOOP;
+END;
+/
+spool off
+exit;
+EOF
+"
+done < "$DB_LIST"
+
+####################################################
+rm $DB_LIST

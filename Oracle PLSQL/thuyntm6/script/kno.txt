@@ -1,0 +1,18 @@
+--startup force
+STARTUP FORCE
+If an instance is running, STARTUP FORCE shuts it down with mode ABORT before restarting it. 
+In this case, beginning with 10g Release 2, the alert log shows the message "Shutting down instance (abort)" followed by "Starting ORACLE instance (normal)." (Earlier versions of the database showed only "Starting ORACLE instance (force)" in the alert log.)   
+--restricted / quiesce / suspend 
+1) restricted limits who may log into the running database. You shutdown, startup in restricted mode - log in as a user who can, do something and then un-restrict the database 
+STARTUP RESTRICT
+ALTER SYSTEM DISABLE RESTRICTED SESSION;
+If you open the database in nonrestricted mode and later find that you need to restrict access
+ALTER SYSTEM ENABLE RESTRICTED SESSION;
+
+SQL> conn sys/sys@xe as sysdba
+ORA-12528: TNS listener- all appropriate instances are blocking new connections.
+The (UR=A) in connection string allow privileged or administrative users to connect via listener even when the service handler is blocking new connections.
+2) quiesce causes the database to allow any current transactions to complete, prevents new ones from starting - and when all transactions are complete - returns control to the quiescing session so it can do stuff. You then un-quiesce the database to resume operations 
+3) suspend immediately suspends IO calls - all of them. designed exclusively to work with 3rd party storage solutions like splitting mirrors and the like 
+None of them are for batch update, imp/exp. Suspend *might* be part of a backup if you use BCV's' or the like. 
+restrict and quiesce are there to allow the dba to do something like a DDL change without competing for locks

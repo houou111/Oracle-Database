@@ -1,0 +1,6 @@
+	WAITEVENT: "PX Deq: Join ACK" (Doc ID 250960.1)
+
+There is no general advice to reduce the wait time for this event.
+Possible root causes are:
+Someone killed on the OS level  PQ slave processes or they died. Until PMON has not clean up the internal strutures a new QC assumes they are still alive. When a new QC tries to get slaves he sends message to the slave to join the slave set, but we get no acknowledge message back.Check if someone killed a idle slave or a slave process has died. Compare the entries in V$PX_PROCESS and on OS level the name of the started PQ slaves.
+Another possible root cause is when SGA memory is so depleted that it is possible that the slave may not be able to establish its response channel to the QC to acknowledge the join message, force the slave to die so that the QC can be notified via PMON cleanup etc.

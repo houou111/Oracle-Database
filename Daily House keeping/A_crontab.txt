@@ -1,0 +1,44 @@
+1. Root
+----------------------------------------------------------------------------------------------------------------------
+###Clear cache
+00 05 * * * sync; echo 1 > /proc/sys/vm/drop_caches
+
+
+
+2. Oracle
+----------------------------------------------------------------------------------------------------------------------
+###House keeping Database
+00 02 * * * sh /home/oracle/dbscript/clean_db_logs.sh g2foho2 >> /home/oracle/dbscript/log/clean_db_logs_$ORACLE_SID.out 2>&1
+
+
+###Backup database
+00 22 * * * sh /home/oracle/dbscript/backup_db_lv0.sh g2foho2 >> /home/oracle/dbscript/log/backupdb_lv0_$ORACLE_SID.out 2>&1
+
+
+###Clear crontab log
+00 04 * * * find /home/oracle/dbscript/log/* -mtime +14 -exec rm {} \;
+
+
+
+
+
+
+
+
+HOW TO CLEAN UP TRACE AND AUDIT FILES FOR MULTIPLE HOMES
+
+$ sort -u -t : -k 2,2 /etc/oratab | grep -v "^#" | awk -F ":" '{print $2}'
+/u01/app/19.0.0.0/grid
+/u02/app/oracle/product/12.2.0/dbhome_2
+/u02/app/oracle/product/12.2.0/dbhome_3
+/u02/app/oracle/product/12.2.0/dbhome_4
+/u02/app/oracle/product/12.2.0/dbhome_6
+/u02/app/oracle/product/12.2.0/dbhome_7
+/u02/app/oracle/product/19.0.0.0/dbhome_2
+Here is the cron job to remove trace and audit files from grid and database homes:
+
+49 14 * * * find /u01/app/grid/diag/crs/*/crs/trace -name "*.tr?" -mtime +30 -exec rm -f {} \;
+49 14 * * * find /u02/app/oracle/product/*/*/rdbms/audit -name "*.aud" -mtime +366 -exec rm -f {} \;
+49 14 * * * find /u02/app/oracle/product/*/*/rdbms/log -name "*.tr?" -mtime +200 -exec rm -f {} \;
+49 14 * * * find /u02/app/oracle/product/*/*/rdbms/log -name "cdmp*" -mtime +200 -exec rm -rf {} \;
+49 14 * * * find /u02/app/oracle/diag/rdbms/*/*/cdump -name "core*" -mtime +200 -exec rm -rf {} \;

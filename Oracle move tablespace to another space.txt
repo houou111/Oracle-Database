@@ -1,0 +1,166 @@
+
+
+---- Grant permission -------------------------------
+select 'alter user ' || ob.owner || ' quota unlimited on ' || 'DWH2016_TBS' || ' default tablespace ' || 'DWH2016_TBS' || ' PARALLEL 2;'
+from dba_objects ob
+inner join (
+  select ta.owner, ta.table_name as nom, ta.tablespace_name as tbs, 'TABLE' as tipo from dba_tables ta
+  union
+  select ind.owner, ind.index_name as nom, ind.tablespace_name as tbs, 'INDEX' as tipo from dba_indexes ind
+) tb on tb.owner=ob.owner and tb.nom=ob.object_name and tb.tipo=ob.object_type
+where ob.object_type in ('INDEX', 'TABLE', 'LOB') and (tb.tbs = 'DWH_CURRENT_TBS' and ob.owner='DWH2016')
+group by ob.owner;
+
+
+
+---- move table -------------------------------
+SELECT 'alter table '||OWNER||'.'||table_name ||' move  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2 update indexes;'
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+SELECT 'alter table '||OWNER||'.'||table_name ||' move  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2 ;'
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+BEGIN 
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a ,dba_users b 
+	  WHERE a.owner=b.username  
+		AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+		AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+		) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.table_name|| '" MOVE TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' PARALLEL 2 update indexes'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+---- move partition -------------------------------
+select 'ALTER TABLE ' ||TABLE_OWNER|| '.'||TABLE_NAME||' MOVE PARTITION '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||' PARALLEL 4;'
+from dba_tab_partitions a,  dba_users b
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by TABLE_OWNER;
+
+
+BEGIN 
+  FOR r IN (select TABLE_OWNER,table_name,PARTITION_NAME,DEFAULT_TABLESPACE FROM dba_tab_partitions a ,dba_users b 
+	  WHERE a.TABLE_OWNER=b.username  
+		AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+		AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+		) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.TABLE_OWNER||'"."'|| r.table_name|| '" MOVE PARTITION '||r.PARTITION_NAME||' TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' PARALLEL 2 update indexes'; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+---- move lob -------------------------------
+SELECT 'alter table ' || TABLE_OWNER || '.' || TABLE_NAME || ' move partition ' || partition_name || ' lob (' || COLUMN_NAME || ') store as  (tablespace '||DEFAULT_TABLESPACE||') PARALLEL 4;'
+FROM DBA_LOB_PARTITIONS a,  dba_users b
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by TABLE_OWNER;
+
+
+
+select 'alter table ' || a.owner|| '.' ||a.TABLE_NAME|| ' move lob (' ||a.column_name|| ') store as (tablespace '||DEFAULT_TABLESPACE||' ) PARALLEL 4;' 
+from dba_lobs a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+
+
+
+---- move index -------------------------------
+SELECT 'alter index '||OWNER||'.'||index_name ||' rebuild  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2;' sql_to_rebuild_index
+FROM   dba_indexes a join  dba_users b
+ON  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+SELECT 'alter index '||INDEX_OWNER||'.'||index_name ||' rebuild partition '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 4;' sql_to_rebuild_index
+FROM   dba_ind_partitions a join dba_users b
+ON  a.INDEX_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.INDEX_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by INDEX_OWNER;
+
+
+---------------------------modify default attribute---------------------------
+----TABLE----
+SELECT 'alter table ' ||a.owner||'.'||table_name || ' modify default attributes tablespace '||b.DEFAULT_TABLESPACE||' ; '
+FROM dba_part_tables a, dba_users b 
+WHERE  a.OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+----Index----
+select 'alter index ' ||owner||'.'||index_name || ' modify default attributes tablespace '||DEFAULT_TABLESPACE||' ; '
+from dba_part_indexes a, dba_users b 
+WHERE  a.OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+----Lob----
+select 'alter table ' ||table_owner||'.'||table_name || ' modify default attributes lob ('||column_name ||') (tablespace '||DEFAULT_TABLESPACE||') ; '
+from dba_part_lobs a, dba_users b 
+WHERE  a.TABLE_OWNER=b.USERNAME
+AND a.def_tablespace_name <> b.DEFAULT_TABLESPACE
+AND a.TABLE_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by a.TABLE_OWNER;
+
+
+--ALTER TABLE EDW_ADM.TBL_PMS_DATA_DIMENSION MODIFY DEFAULT ATTRIBUTES tablespace DWH_TBS;
+--alter index EDW_ADM.TBL_PMS_DATA_DIMENSION modify default attributes tablespace DWH_IND_TBS;
+alter table <tab_name> modify default attributes [for partition <name>] tablespace <tbs_name>;
+alter index <ind_name> modify default attributes [for partition <name>] tablespace <tbs_name>; 
+alter table <tab_name> modify default attributes lob (<column_name>) tablespace <tablespace>;
+
+
+
+select 'GRANT EXECUTE ON '||owner||'.'||object_name||' TO user;'
+from all_objects
+where owner = 'xxx'
+and object_type='FUNCTION';
+
+
+-----------------------drop constraint-----------------------
+
+select owner, constraint_name,table_name,index_owner,index_name
+from dba_constraints
+where (index_owner,index_name) in (select owner,index_name from dba_indexes
+where tablespace_name='DWH_CURRENT_TBS');
+
+
+ALTER TABLE <owner>.<table_name> DISABLE CONSTRAINT <constraint_name>;
+
+SELECT INDEX_NAME,TABLE_NAME,TABLESPACE_NAME FROM  DBA_INDEXES WHERE TABLESPACE_NAME= 'DWH_CURRENT_TBS';

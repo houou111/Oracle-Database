@@ -1,0 +1,145 @@
+
+#Xem các Session đang kết nối 
+
+SELECT s.inst_id,
+       s.sid,
+       s.serial#,
+       p.spid,
+       s.username,
+       s.program
+FROM   gv$session s
+       JOIN gv$process p ON p.addr = s.paddr AND p.inst_id = s.inst_id
+WHERE  s.username='STRMADMIN';
+
+
+#Xem top các Session
+
+SET LINESIZE 500
+SET PAGESIZE 1000
+SET VERIFY OFF
+
+COLUMN username FORMAT A15
+COLUMN machine FORMAT A25
+COLUMN logon_time FORMAT A20
+
+SELECT NVL(a.username, '(oracle)') AS username,
+       a.osuser,
+       a.sid,
+       a.serial#,
+       c.value AS &1,
+       a.lockwait,
+       a.status,
+       a.module,
+       a.machine,
+       a.program,
+       TO_CHAR(a.logon_Time,'DD-MON-YYYY HH24:MI:SS') AS logon_time
+FROM   v$session a,
+       v$sesstat c,
+       v$statname d
+WHERE  a.sid        = c.sid
+AND    c.statistic# = d.statistic#
+AND    d.name       = DECODE(UPPER('&1'), 'READS', 'session logical reads',
+                                          'EXECS', 'execute count',
+                                          'CPU',   'CPU used by this session',
+                                                   'CPU used by this session')
+ORDER BY c.value DESC;
+
+SET PAGESIZE 14
+
+
+#Xem danh sách các active session
+
+SET LINESIZE 500
+SET PAGESIZE 1000
+
+COLUMN username FORMAT A15
+COLUMN machine FORMAT A25
+COLUMN logon_time FORMAT A20
+
+SELECT NVL(s.username, '(oracle)') AS username,
+       s.osuser,
+       s.sid,
+       s.serial#,
+       p.spid,
+       s.lockwait,
+       s.status,
+       s.module,
+       s.machine,
+       s.program,
+       TO_CHAR(s.logon_Time,'DD-MON-YYYY HH24:MI:SS') AS logon_time
+FROM   v$session s,
+       v$process p
+WHERE  s.paddr  = p.addr
+AND    s.status = 'ACTIVE'
+ORDER BY s.username, s.osuser;
+
+SET PAGESIZE 14
+
+
+# Check lock session
+set linesize 300
+SELECT INST_ID,DECODE(request,0,'Holder: ','Waiter: ') ||sid sid,
+id1, id2, lmode, request, type
+FROM GV$LOCK WHERE (id1, id2, type) IN (SELECT id1, id2, type FROM
+GV$LOCK WHERE request > 0) ORDER BY id1, request;
+
+
+--7 Xu ly voi truong hop Archive user Babab
+
+select sid || ',' || t.serial# from v$session t where client_info = 'unit #991'
+
+
+select sid || ',' || t.serial# from v$session t where sid=7085;
+
+
+
+---8 kill sesion DB
+ALTER SYSTEM KILL SESSION '1656,16619';   
+
+ALTER system kill SESSION '7085,11' IMMEDIATE;
+
+
+#Kill session
+
+-- Cú pháp: ALTER SYSTEM KILL SESSION 'SID,Serial#'
+
+SELECT p.spid, s.sid, s.serial#, s.username, s.status
+		FROM v$session s, v$process p
+		WHERE s.paddr=p.addr
+			AND s.username IS NOT NULL ;
+
+
+-- ALTER system kill SESSION '7,466' IMMEDIATE
+
+
+#Kill các session đang ở trạng thái INACTIVE
+
+declare
+           sv_ varchar2(10000);     
+begin
+for zz in (
+      SELECT SID, SERIAL#, USERNAME, STATUS
+      FROM V$SESSION
+      WHERE USERNAME IS NOT NULL
+      AND STATUS = 'INACTIVE'
+)
+loop
+    sv_  := 'alter system kill session '''||zz.sid||', '||zz.SERIAL#||'''';
+    --dbms_output.put_line(sv_);
+    execute immediate sv_;
+end loop;
+end;
+/
+
+
+-----Check loop session
+
+select count(*), sql_address,machine,osuser,program from v$session
+group by sql_address,machine,osuser,program
+having count(*)>1
+order by 1 desc;
+
+select sql_text machine,os_user from v$sqltext  
+where address='000000041946B500';
+
+

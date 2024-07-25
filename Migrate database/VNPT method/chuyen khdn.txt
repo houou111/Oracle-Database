@@ -1,0 +1,280 @@
+Các bước thực hiện cơ bản
+
+X7Q node 2 -> dongbac node 2
+
+1. Purge recyclebin + stop tất cả các job/scheduler job
+-------------------------------------------------------------------
+purge dba_recyclebin;
+@?/rdbms/admin/utlrp.sql
+
+
+## exclude table (cololumn space) -> recreate with dblink -> ignore if no error
+col owner for a20
+col TABLE_NAME for a20
+col COLUMN_NAME for a20
+select OWNER,TABLE_NAME,COLUMN_NAME from dba_tab_columns where column_name like '% %';
+
+
+2. Lock user and restart database
+-------------------------------------------------------------------
+alter session set container=PDBDIENBIEN;
+
+alter system set job_queue_processes=0;
+select 'alter user "'|| username ||'" account lock;' from dba_users where account_status='OPEN' and ORACLE_MAINTAINED = 'N' AND username not in  ('DBA01','ERP_SELECT');
+
+
+alter pluggable database PDBDIENBIEN close immediate instances=all;
+alter pluggable database PDBDIENBIEN open;
+
+
+
+
+
+3. Export full database exclude statistic
+-------------------------------------------------------------------
+create or replace directory dump as '/backup/khdn/';
+grant dba to DBA01;
+create user erp_select identified by erp_select;
+grant dba to erp_select;
+
+
+
+expdp DBA01/oracle123456@khdn parfile=/tmp/expdp_KHDN.par
+
+EXCLUDE=PROCEDURE:"IN (select object_name from dba_objects where object_type = 'PROCEDURE' and status='INVALID')", FUNCTION:"IN (select object_name from dba_objects where object_type = 'FUNCTION' and status='INVALID')", PACKAGE:"IN (select object_name from dba_objects where object_type = 'PACKAGE' and status='INVALID')",DB_LINK:"LIKE 'CSS_HPG_GOC'"
+exclude=statistics
+cluster=n
+compression=all
+dumpfile=dienbien_%U.dmp
+parallel=8
+logfile=expdp_KHDN.log
+full=y
+directory=DUMP
+
+
+
+4. Copy to target (+copy tnsname.ora)
+-------------------------------------------------------------------
+cp /backup/khdn/* 10.159.25.195:/backup/khdn/
+
+os#khdn#123456
+
+
+5. Prepare in target 
+-------------------------------------------------------------------
+create user DBA01 identified by oracle123456;
+create user erp_select identified by erp_select;
+
+create or replace directory backup as '/backup/khdn/';
+grant dba to DBA01;
+grant dba to erp_select;
+create user GIAOTIEP_TBI identified by vnpt2018;
+create user DHSX_BI identified by vnpt2018;
+create user TEST identified by vnpt2018;
+
+
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATA' size 10G autoextend on next 1G; 
+
+
+create tablespace INDX datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATA' size 10G autoextend on next 1G;    
+
+alter system set job_queue_processes=0;
+
+
+6. Import data
+-------------------------------------------------------------------
+impdp DBA01/oracle123456@khdn directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN1.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N exclude=JAVA_CLASS,JAVA_RESOURCE,index,procedure,function,package,ref_constraint remap_tablespace=DATA:USERS
+
+impdp DBA01/oracle123456@khdn directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN2.log PARALLEL=1 transform=disable_archive_logging:Y cluster=N include=procedure,function,package,ref_constraint remap_tablespace=DATA:USERS
+
+impdp DBA01/oracle123456@khdn directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN3.log PARALLEL=4 transform=disable_archive_logging:Y cluster=N tables=CRM_VDC_OFFICIAL.USERPROFILE,CRM_VDC_OFFICIAL.TAXONOMY_TERMS,CRM_VDC_OFFICIAL.TAXONOMY_VOCABULARIES remap_tablespace=DATA:USERS table_exists_action=append 
+
+
+7. Import java
+-------------------------------------------------------------------
+impdp DBA01/oracle123456@khdn directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN_java.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N INCLUDE=JAVA_CLASS,JAVA_RESOURCE sqlfile=khdn_java.sql 
+
+@/backup/khdn/khdn_java.sql
+
+
+
+8. Import index (pick 3 biggest schema to import seprate)
+-------------------------------------------------------------------
+SELECT owner,sum(bytes) / 1024 / 1024 / 1024 as "Size in GB"
+  FROM dba_segments
+GROUP BY owner
+order by 2 desc;
+
+impdp DBA01/oracle123456@khdn schemas=BCSS_DBN directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN_index1.log sqlfile=khdn_index1.sql cluster=N include=index PARALLEL=24 remap_tablespace=DATA:USERS
+impdp DBA01/oracle123456@khdn schemas=QLTN_DBN directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN_index2.log sqlfile=khdn_index2.sql cluster=N include=index PARALLEL=24 remap_tablespace=DATA:USERS
+impdp DBA01/oracle123456@khdn schemas=CSS_DBN  directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN_index3.log sqlfile=khdn_index3.sql cluster=N include=index PARALLEL=24 remap_tablespace=DATA:USERS
+impdp DBA01/oracle123456@khdn full=y directory=dump dumpfile=dienbien_%U.dmp logfile=impdp_KHDN_index4.log sqlfile=khdn_index4.sql cluster=N include=index PARALLEL=24 EXCLUDE=SCHEMA:"IN('BCSS_DBN','QLTN_DBN','CSS_DBN')" remap_tablespace=DATA:USERS
+
+
+echo exit >> /backup/khdn/khdn_index1.sql
+echo exit >> /backup/khdn/khdn_index2.sql
+echo exit >> /backup/khdn/khdn_index3.sql
+echo exit >> /backup/khdn/khdn_index4.sql
+
+vi /backup/khdn/khdn_index1.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus DBA01/oracle123456@khdn @/backup/khdn/khdn_index1.sql > /backup/khdn/sqlplus_KHDN_index1.log &
+nohup sqlplus DBA01/oracle123456@khdn @/backup/khdn/khdn_index2.sql > /backup/khdn/sqlplus_KHDN_index2.log &
+nohup sqlplus DBA01/oracle123456@khdn @/backup/khdn/khdn_index3.sql > /backup/khdn/sqlplus_KHDN_index3.log &
+nohup sqlplus DBA01/oracle123456@khdn @/backup/khdn/khdn_index4.sql > /backup/khdn/sqlplus_KHDN_index4.log &
+
+tail -200f /backup/khdn/sqlplus_KHDN_index4.log |grep ORA
+
+
+9. Compare data
+-------------------------------------------------------------------
+@?/rdbms/admin/utlrp.sql
+dung Toad
+
+select OWNER,OBJECT_TYPE, count(1)
+from dba_objects a, dba_users b
+where a.OWNER = b.USERNAME
+AND b.DEFAULT_TABLESPACE='USERS' AND b.COMMON='NO' 
+AND STATUS='VALID'
+GROUP BY OWNER,OBJECT_TYPE
+order by 1,2;
+
+
+
+10. Cho ứng dụng vào test
+-------------------------------------------------------------------
+create user erp_select identified by erp_select container=all;
+grant dba to erp_select;
+
+select 'alter user "'|| username ||'" account unlock;' from dba_users where account_status='LOCKED' and ORACLE_MAINTAINED = 'N' AND username <> 'DBA01';
+
+dienbien =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dhsxkd-dongbac-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = dienbien)
+    )
+  )
+
+10.159.136.201 		dhsxkd-dongbac-db01-vip
+10.159.136.202  	dhsxkd-dongbac-db02-vip
+10.159.136.203   	dhsxkd-dongbac-scan
+
+
+
+11. Bật job
+-------------------------------------------------------------------
+alter system set job_queue_processes=4000;
+revoke dba from erp_select;
+
+
+12. Gather database
+-------------------------------------------------------------------
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 8);
+
+
+
+13. Tạo ACL (acls)
+-------------------------------------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl (
+    acl          => '/sys/acls/utl_http.xml');
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => '/sys/acls/utl_http.xml',
+    description  => '/sys/acls/utl_http.xml',
+    principal    => 'CSS_DBN',
+    is_grant     => true,
+    privilege    => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => '/sys/acls/utl_http.xml',
+    host        => '10.70.122.49',
+    lower_port  => 298,
+    upper_port  => 298);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'CSS_DBN',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => TO_TIMESTAMP_TZ('27-DEC-2019 06:33:40.547355000 +07:00','DD-MON-YYYY HH24:MI:SS.FF TZH:TZM'),
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+-- -------------------------------------------------
+-- NETWORK_ACL_4700D2108291557EE05387E5E50A8899
+-- -------------------------------------------------
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl (
+    acl          => 'NETWORK_ACL_4700D2108291557EE05387E5E50A8899');
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => 'NETWORK_ACL_4700D2108291557EE05387E5E50A8899',
+    description  => 'NETWORK_ACL_4700D2108291557EE05387E5E50A8899',
+    principal    => 'GSMADMIN_INTERNAL',
+    is_grant     => true,
+    privilege    => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => 'NETWORK_ACL_4700D2108291557EE05387E5E50A8899',
+    host        => '*',
+    lower_port  => NULL,
+    upper_port  => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => 'NETWORK_ACL_4700D2108291557EE05387E5E50A8899',
+    principal => 'GGSYS',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+

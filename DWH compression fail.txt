@@ -1,0 +1,6 @@
+ select a.OWNER, a.TABLE_NAME,a.COMPRESSION,a.COMPRESS_FOR,b.DEF_COMPRESSION,b.DEF_COMPRESS_FOR
+   from dba_tables a,dba_part_tables b
+  where  a.OWNER=b.OWNER
+  AND a.TABLE_NAME=b.TABLE_NAME 
+ AND b.DEF_COMPRESSION='ENABLED' 
+ order by 1;

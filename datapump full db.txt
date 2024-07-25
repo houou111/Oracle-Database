@@ -1,0 +1,165 @@
+1. Lock acc
+select 'alter user "'|| username ||'" account lock;' from dba_users where account_status='OPEN' and ORACLE_MAINTAINED = 'N' order by username;
+
+2. export
+expdp ****** parfile=/tmp/binhdinh_11122019.par
+
+EXCLUDE=PROCEDURE:"IN (select object_name from dba_objects where object_type = 'PROCEDURE' and status='INVALID')", FUNCTION:"IN (select object_name from dba_objects where object_type = 'FUNCTION' and status='INVALID')", PACKAGE:"IN (select object_name from dba_objects where object_type = 'PACKAGE' and status='INVALID')"
+exclude=statistics
+cluster=n
+compression=all
+dumpfile=BINHDINH%U.dmp
+parallel=24
+logfile=LOG_DUMP:expdp_BINHDINH_11122019.log
+full=y
+directory=DUMP
+
+
+3. copy file
+cp +RECOC1/DUMP/binhdinh01.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh01.dmp
+cp +RECOC1/DUMP/binhdinh02.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh02.dmp
+cp +RECOC1/DUMP/binhdinh03.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh03.dmp
+cp +RECOC1/DUMP/binhdinh04.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh04.dmp
+cp +RECOC1/DUMP/binhdinh05.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh05.dmp
+cp +RECOC1/DUMP/binhdinh06.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh06.dmp
+cp +RECOC1/DUMP/binhdinh07.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh07.dmp
+cp +RECOC1/DUMP/binhdinh08.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh08.dmp
+cp +RECOC1/DUMP/binhdinh09.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh09.dmp
+cp +RECOC1/DUMP/binhdinh10.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh10.dmp
+cp +RECOC1/DUMP/binhdinh11.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh11.dmp
+cp +RECOC1/DUMP/binhdinh12.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/binhdinh12.dmp
+
+cp +RECOC1/DUMP/bacgiang01.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang01.dmp
+cp +RECOC1/DUMP/bacgiang02.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang02.dmp
+cp +RECOC1/DUMP/bacgiang03.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang03.dmp
+cp +RECOC1/DUMP/bacgiang04.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang04.dmp
+cp +RECOC1/DUMP/bacgiang05.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang05.dmp
+cp +RECOC1/DUMP/bacgiang06.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang06.dmp
+cp +RECOC1/DUMP/bacgiang07.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang07.dmp
+cp +RECOC1/DUMP/bacgiang08.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang08.dmp
+cp +RECOC1/DUMP/bacgiang09.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang09.dmp
+cp +RECOC1/DUMP/bacgiang10.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang10.dmp
+cp +RECOC1/DUMP/bacgiang11.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang11.dmp
+cp +RECOC1/DUMP/bacgiang12.dmp copy_sys/Password123@10.70.52.131.+ASM1:+RECOC1/DUMP/bacgiang12.dmp
+
+
+
+4. import data
+impdp "system@hanoi" directory=DUMP_HNI dumpfile=HANOI_%U.dmp logfile=DATA_PUMP_DIR:HANOI_27112019_0938.log PARALLEL=48 transform=disable_archive_logging:Y cluster=N exclude=index,procedure,function,package,ref_constraint
+
+
+7. Tao index,procedure,function,package,ref_constraint DDL script
+
+impdp "system@hanoi" directory=DUMP_HNI dumpfile=HANOI_%U.dmp logfile=DATA_PUMP_DIR:HANOI_27112019_source.log cluster=N include=procedure,function,package,ref_constraint parallel=1
+
+
+
+impdp "system@hanoi" directory=DUMP_HNI schemas=BCSS_HNI dumpfile=HANOI_%U.dmp PARALLEL=20 logfile=DATA_PUMP_DIR:BCSS_HNI_27112019_index.log sqlfile=DATA_PUMP_DIR:BCSS_HNI_27112019_index.sql cluster=N include=index
+
+impdp "system@hanoi" directory=DUMP_HNI schemas=QLTN_HNI dumpfile=HANOI_%U.dmp PARALLEL=20 logfile=DATA_PUMP_DIR:QLTN_HNI_27112019_index.log sqlfile=DATA_PUMP_DIR:QLTN_HNI_27112019_index.sql cluster=N include=index
+
+impdp "system@hanoi" directory=DUMP_HNI schemas=CSS_HNI dumpfile=HANOI_%U.dmp PARALLEL=20 logfile=DATA_PUMP_DIR:CSS_HNI_27112019_index.log sqlfile=DATA_PUMP_DIR:CSS_HNI_27112019_index.sql cluster=N include=index
+
+
+impdp "system@hanoi" parfile=index_HANOI_27112019.par
+
+directory=DUMP_HNI 
+INCLUDE=INDEX:"IN (select index_name from dba_indexes where owner not in ('BCSS_HNI','QLTN_HNI','CSS_HNI'))"
+logfile=DATA_PUMP_DIR:HANOI_27112019_index.log
+dumpfile=HANOI_%U.dmp
+PARALLEL=20
+sqlfile=DATA_PUMP_DIR:HANOI_27112019_index.sql
+cluster=N
+
+
+:1,$s/PARALLEL 1/PARALLEL 24/g
+
+alter session enable parallel ddl 24;
+set timing on;
+@BCSS_HNI_27112019_index.sql
+
+alter session enable parallel ddl 24;
+set timing on;
+@QLTN_HNI_27112019_index.sql
+
+alter session enable parallel ddl 24;
+set timing on;
+@CSS_HNI_27112019_index.sql
+
+alter session enable parallel ddl 24;
+set timing on;
+@HANOI_27112019_index.sql
+
+9. Tạo ACL
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.drop_acl (
+    acl          => '/sys/acls/utl_http.xml');
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.create_acl (
+    acl          => '/sys/acls/utl_http.xml',
+    description  => '/sys/acls/utl_http.xml',
+    principal    => 'CSS_HNI',
+    is_grant     => true,
+    privilege    => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.assign_acl (
+    acl         => '/sys/acls/utl_http.xml',
+    host        => '*',
+    lower_port  => 1,
+    upper_port  => 9999);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'BCSS_HNI',
+    is_grant  => true,
+    privilege => 'resolve',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'BCSS_HNI',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => NULL,
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+BEGIN
+  DBMS_NETWORK_ACL_ADMIN.add_privilege (
+    acl       => '/sys/acls/utl_http.xml',
+    principal => 'CSS_HNI',
+    is_grant  => true,
+    privilege => 'connect',
+    start_date   => TO_TIMESTAMP_TZ('21-SEP-2018 08:32:28.328796000 +07:00','DD-MON-YYYY HH24:MI:SS.FF TZH:TZM'),
+    end_date     => NULL);
+  COMMIT;
+END;
+/
+
+10. chay lai impdp de grant quyen execute
+impdp **** directory=DUMP_HNI dumpfile=HANOI_%U.dmp logfile=DATA_PUMP_DIR:HANOI_27112019_0938_grant.log PARALLEL=1 transform=disable_archive_logging:Y cluster=N exclude=table,index,ref_constraint,procedure,function,package
+
+
+11. Open acc
+select 'alter user "'|| username ||'" account unlock;' from dba_users where account_status='LOCKED' and ORACLE_MAINTAINED = 'N' order by username;

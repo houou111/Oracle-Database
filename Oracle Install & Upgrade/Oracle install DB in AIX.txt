@@ -1,0 +1,180 @@
+﻿1. IP: /etc/hosts
+------------------------------------------------------------------------
+
+
+	
+	
+2. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# lslpp -l bos.adt.base bos.adt.lib bos.adt.libm bos.perf.perfstat bos.perf.libperfstat bos.perf.proctools xlC.rte*
+
+
+
+3. Config ntp server - dns server 
+---------------------------------------------------------------------------
+Thực hiện lệnh sau với user root trên từng node để cấu hình ntp cho server:
+#touch /etc/ntp.drift /etc/ntp.trace
+#vi /etc/ntp.conf
+	broadcastclient
+	server 10.101.254.101  (thông tin ntp server )
+	driftfile /etc/ntp.drift
+	tracefile /etc/ntp.trace
+	
+# vi /etc/rc.tcpip
+- Tìm đến dòng #start /usr/sbin/xntpd "$src_running"
+Bỏ dấu # đầu dòng và thêm -a "-x"  như sau:
+start /usr/sbin/xntpd "$src_running" -a "-x" 
+
+- Thực hiện stop và start lại service xntpd:
+/usr/bin/stopsrc -s xntpd
+/usr/bin/startsrc -s xntpd -a "-x"
+
+
+
+### DNS server 
+file /etc/resolv.conf
+#vi /etc/resolv.conf
+nameserver 10.101.254.101
+nameserver 10.101.254.102
+domain vetc-dc.local
+
+
+
+4. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+Thực hiện các lệnh thiết lập các tham số trên bằng user root:
+
+# chdev -l sys0 -a ncargs=256
+# chdev -l sys0 -a maxuproc=16384
+# chdev –l sys0 –a ‘minpout=4096 maxpout=8193’ 
+# vmo -p -o maxperm%=90
+# vmo -p -o minperm%=3
+# vmo -p -o maxclient%=90
+# vmo -p -o strict_maxperm=0
+# vmo -p -o strict_maxclient=1
+# vmo -r -o page_steal_method=1
+# no -r -o ipqmaxlen=512
+# no -o rfc1323=1 
+# no -o sb_max=4194304
+# no -o tcp_sendspace=65536 
+# no -o tcp_recvspace=65536 
+# no -o udp_sendspace=65536 
+# no -o udp_recvspace=655360
+# no -p -o tcp_ephemeral_low=9000
+# no -p -o tcp_ephemeral_high=65500
+# no -p -o udp_ephemeral_low=9000
+# no -p -o udp_ephemeral_high=65500
+# lslpp -l bos.adt.base bos.adt.lib bos.adt.libm bos.perf.perfstat bos.perf.libperfstat bos.perf.proctools xlC.rte*
+
+Check: 
+getconf -a
+
+
+
+
+7. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkgroup -'A' id='501' dba
+# mkgroup -'A' id='502' oinstall
+# mkgroup -'A' id='503' oper
+# mkgroup -'A' id='504' asmdba
+# mkgroup -'A' id='505' asmoper
+# mkgroup -'A' id='506' asmadmin
+
+
+-----Oracle and grid-----
+# mkuser id='401' pgrp='oinstall' groups='dba,asmdba,oper' admgroups='system' home='/home/oracle' oracle
+# mkuser id='402' pgrp='oinstall' groups='asmadmin,asmdba,dba,asmoper,oper' admgroups='system' home='/home/grid' grid
+# chuser capabilities=CAP_NUMA_ATTACH,CAP_BYPASS_RAC_VMM,CAP_PROPAGATE oracle
+# chuser capabilities=CAP_NUMA_ATTACH,CAP_BYPASS_RAC_VMM,CAP_PROPAGATE grid
+# chuser nproc='-1' fsize_hard='-1' data_hard='-1' stack_hard='-1' rss_hard='-1' nofiles_hard='-1' threads_hard='-1' nproc_hard='-1' oracle
+# chuser nproc='-1' fsize_hard='-1' data_hard='-1' stack_hard='-1' rss_hard='-1' nofiles_hard='-1' threads_hard='-1' nproc_hard='-1' grid
+
+
+
+-----Oraem-----
+groupadd -g 3001 oraem
+useradd -m -u 3000 -g oraem -d /home/oraem -s /bin/bash oraem
+chage -m 0 -M 99999 -I -1 -E -1 oraem
+usermod -e '' oraem
+chage -l oraem
+
+
+
+-----Only Oracle-----
+groupadd -g 2001 oinstall
+useradd -m -u 2000 -g oinstall -d /home/oracle -s /bin/bash oracle
+chage -m 0 -M 99999 -I -1 -E -1 oracle
+usermod -e '' oracle
+chage -l oracle
+
+
+
+
+
+8. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+-	Thư mục cài đặt Oracle Grid
+mkdir –p /u01/app
+mkdir –p /u01/app/grid
+mkdir –p /u01/app/19c/grid
+mkdir –p /u01/app/oraInventory
+chown –R grid.oinstall /u01/app/grid
+chown –R grid.oinstall /u01/app/19c/grid
+chmod -R 775 /u01/app/grid
+chmod -R 775 /u01/app/19c/grid
+chmod –R 775 /u01/app/oraInventory
+
+-	Thư mục cài đặt Oracle Database
+mkdir –p /u01/app/oracle
+mkdir –p /u01/app/oracle/product/19c/db_1
+chown –R oracle.oinstall /u01/app/oracle
+chown –R oracle.oinstall /u01/app/oracle/product/19c/db_1
+chmod -R 775 /u01/app/oracle
+chmod -R 775 /u01/app/oracle/product/19c/db_1
+
+
+
+
+9. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
+
+
+
+10. Chuẩn bị vùng đĩa cho Oracle RAC và Database
+---------------------------------------------------------------------------
+Login bằng user root thực hiện các lệnh sau để change owner của đĩa sử dụng cho Oracle RAC
+#chdev –l hdiski –a reserve_policy=no_reserve
+#chown grid.asmadmin /dev/rhdiski   
+#chmod 660 /dev/rhdiski
+(i là số thứ tự của đĩa sử dụng cho Oracle RAC)
+
+
+11. INSTALLATION
+---------------------------------------------------------------------------
+
+
+12. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+
+patch to lastest patch
+
+
+
+13. Setup housekeeping - Backup
+---------------------------------------------------------------------------
+
+
+
+14. setup sqlnet.ora
+---------------------------------------------------------------------------
+SQLNET.ALLOWED_LOGON_VERSION_SERVER = 10
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT = 10
+SQLNET.EXPIRE_TIME = 10
+SQLNET.INBOUND_CONNECT_TIMEOUT=600
+
+

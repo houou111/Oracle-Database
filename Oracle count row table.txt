@@ -1,0 +1,26 @@
+I. Table
+-------------------------------------------------------------------------------
+SELECT table_name,
+TO_NUMBER(extractvalue(xmltype(dbms_xmlgen.getxml('select count(*) cnt from '||owner||'.'||table_name)),'/ROWSET/ROW/CNT')) as count
+FROM dba_tables
+WHERE owner = 'G3SB'
+AND table_name in ('MCCLIENT','MCACCOUNT');
+
+
+
+SELECT table_name, 
+       num_rows counter 
+FROM dba_tables 
+WHERE upper(owner) = 'BAOBAB'
+ORDER BY table_name;
+
+
+
+II. Partition table
+-------------------------------------------------------------------------------
+SELECT table_name,
+TO_NUMBER(extractvalue(xmltype(dbms_xmlgen.getxml('select count(1) from '||table_owner||'.'||table_name|| ' partition ('|| partition_name|| ')')),'/ROWSET/ROW/CNT')) as count_rownum
+FROM dba_tab_partitions
+WHERE table_owner = 'MSB'
+AND partition_name in ('SYS_P62766','')
+AND table_name in ('PROCESS_MESS');

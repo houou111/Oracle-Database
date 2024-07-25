@@ -1,0 +1,13 @@
+Errors in file
+/u01/app/oracle/diag/rdbms/orcl/ORCL1/trace/ORCL1_j000_73185.trc:
+ORA-12012: error on auto execute of job "SYS"."ORA$AT_OS_OPT_SY_936"
+ORA-20001: Statistics Advisor: Invalid task name for the current user
+ORA-06512: at "SYS.DBMS_STATS", line 47207
+ORA-06512: at "SYS.DBMS_STATS_ADVISOR", line 882
+ORA-06512: at "SYS.DBMS_STATS_INTERNAL", line 20059
+ORA-06512: at "SYS.DBMS_STATS_INTERNAL", line 22201
+ORA-06512: at "SYS.DBMS_STATS", line 47197
+2017-03-13T00:47:21.394481+00:00
+
+
+EXEC dbms_stats.init_package();

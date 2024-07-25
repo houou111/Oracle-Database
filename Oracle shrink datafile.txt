@@ -1,0 +1,170 @@
+1. Down the HWM
+------------------------------------------------------------
+Reset
+rebuilt,
+truncated, (TRUNCATE will reset the HWM of a table back to 'zero')
+or shrunk (shrinking of a segment is a new Oracle 10g feature that is supported only if the segment is in an ASSM tablespace).
+
+SQL> alter table KRM_RPT.KRM_SUM_NIRESTXN enable row movement;
+SQL> alter table KRM_RPT.KRM_SUM_NIRESTXN shrink space compact;
+SQL> alter table KRM_RPT.KRM_SUM_NIRESTXN shrink space;
+SQL> alter table KRM_RPT.KRM_SUM_NIRESTXN shrink space cascade;
+ 
+select 'alter table ' ||owner|| '.' ||segment_name|| ' enable row movement;' 
+from dba_segments 
+where segment_type = 'TABLE'
+and TABLESPACE_NAME='USERS'
+order by bytes/1024/1024 desc ;
+
+BEGIN 
+  FOR r IN (select OWNER,segment_name FROM dba_segments
+	  WHERE segment_type='TABLE' 
+	  AND TABLESPACE_NAME='SYSAUX') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.segment_name|| '" enable row movement'; 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.segment_name|| '" shrink space COMPACT'; 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.segment_name|| '" shrink space'; 
+  EXECUTE IMMEDIATE 'ALTER TABLE "'|| r.OWNER||'"."'|| r.segment_name|| '" shrink space cascade'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+
+2. Shrink datafile
+--------------------------------------------------------------------
+set linesize 1000 pagesize 0 trimspool on
+with
+ hwm as (
+  -- get highest block id from each datafiles ( from x$ktfbue as we don't need all joins from dba_extents )
+  select /*+ materialize */ ktfbuesegtsn ts#,ktfbuefno relative_fno,max(ktfbuebno+ktfbueblks-1) hwm_blocks
+  from sys.x$ktfbue group by ktfbuefno,ktfbuesegtsn
+ ),
+ hwmts as (
+  -- join ts# with tablespace_name
+  select name tablespace_name,relative_fno,hwm_blocks
+  from hwm join v$tablespace using(ts#)
+ ),
+ hwmdf as (
+  -- join with datafiles, put 5M minimum for datafiles with no extents
+  select file_name,nvl(hwm_blocks*(bytes/blocks),5*1024*1024) hwm_bytes,bytes,autoextensible,maxbytes
+  from hwmts right join dba_data_files using(tablespace_name,relative_fno)
+ )
+select
+ case when autoextensible='YES' and maxbytes>=bytes
+ then -- we generate resize statements only if autoextensible can grow back to current size
+  '/* reclaim '||to_char(ceil((bytes-hwm_bytes)/1024/1024),999999)
+   ||'M from '||to_char(ceil(bytes/1024/1024),999999)||'M */ '
+   ||'alter database datafile '''||file_name||''' resize '||ceil(hwm_bytes/1024/1024)||'M;'
+ else -- generate only a comment when autoextensible is off
+  '/* reclaim '||to_char(ceil((bytes-hwm_bytes)/1024/1024),999999)
+   ||'M from '||to_char(ceil(bytes/1024/1024),999999)
+   ||'M after setting autoextensible maxsize higher than current size for file '
+   || file_name||' */'
+ end SQL
+from hwmdf
+where
+ bytes-hwm_bytes>1024*1024 -- resize only if at least 1MB can be reclaimed
+order by 1 desc
+/
+
+
+
+3. Another way
+--------------------------------------------------------------------
+--Get informantion block
+
+select 'alter database '||a.name||' datafile '''||b.file_name||'''' ||
+' resize '||greatest(trunc(bytes_full/.7)
+,(bytes_total-bytes_free))||chr(10)|| ' ;'
+from v$database a
+,dba_data_files b
+,(Select tablespace_name,sum(bytes) bytes_full
+From dba_extents
+Group by tablespace_name) c
+,(Select tablespace_name,sum(bytes) bytes_total
+From dba_data_files
+Group by tablespace_name) d
+,(Select a.tablespace_name,a.file_id,b.bytes bytes_free
+From (select tablespace_name,file_id
+,max(block_id) max_data_block_id 
+from dba_extents
+group by tablespace_name,file_id) a
+,dba_free_space b
+where a.tablespace_name = b.tablespace_name
+and a.file_id = b.file_id
+and b.block_id > a.max_data_block_id) e
+Where b.tablespace_name = c.tablespace_name
+And b.tablespace_name = d.tablespace_name
+And bytes_full/bytes_total < .7
+And b.tablespace_name = e.tablespace_name
+And b.file_id = e.file_id
+;
+
+--Get information datafile
+set verify off 
+column file_name format a50 word_wrapped 
+column smallest format 999,990 heading "Smallest|Size|Poss." 
+column currsize format 999,990 heading "Current|Size" 
+column savings format 999,990 heading "Poss.|Savings" 
+break on report 
+compute sum of savings on report 
+
+column value new_val blksize 
+select value from v$parameter where name = 'db_block_size' 
+/
+select file_name, 
+ceil( (nvl(hwm,1)*&&blksize)/1024/1024 ) smallest, 
+ceil( blocks*&&blksize/1024/1024) currsize, 
+ceil( blocks*&&blksize/1024/1024) - 
+ceil( (nvl(hwm,1)*&&blksize)/1024/1024 ) savings 
+from dba_data_files a, 
+( select file_id, max(block_id+blocks-1) hwm 
+from dba_extents 
+group by file_id ) b 
+where a.file_id = b.file_id(+) 
+/ 
+
+
+--Get command to shrink datafile --
+column cmd format a75 word_wrapped 
+select 'alter database datafile '''||file_name||''' resize ' || 
+ceil( (nvl(hwm,1)*&&blksize)/1024/1024 ) || 'm;' cmd 
+from dba_data_files a, 
+( select file_id, max(block_id+blocks-1) hwm 
+from dba_extents 
+group by file_id ) b 
+where a.file_id = b.file_id(+) 
+and ceil( blocks*&&blksize/1024/1024) - 
+ceil( (nvl(hwm,1)*&&blksize)/1024/1024 ) > 0 
+/ 
+
+
+
+
+Examples
+Shrink a table and all of its dependent segments (including BASICFILE LOB segments):
+ALTER TABLE employees SHRINK SPACE CASCADE;
+Shrink a BASICFILE LOB segment only:
+ALTER TABLE employees MODIFY LOB (perf_review) (SHRINK SPACE);
+Shrink a single partition of a partitioned table:
+ALTER TABLE customers MODIFY PARTITION cust_P1 SHRINK SPACE;
+Shrink an IOT index segment and the overflow segment:
+ALTER TABLE cities SHRINK SPACE CASCADE;
+Shrink an IOT overflow segment only:
+ALTER TABLE cities OVERFLOW SHRINK SPACE;
+
+
+
+
+Resize the datafile
+
+ALTER DATABASE DATAFILE '/u02/oracle/rbdb1/stuff01.dbf'
+RESIZE 100M;

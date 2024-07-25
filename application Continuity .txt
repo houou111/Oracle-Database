@@ -1,0 +1,3 @@
+Application Continuity attempts to mask recoverable database
+outages from applications and users by restoring database
+sessions and replaying database calls.

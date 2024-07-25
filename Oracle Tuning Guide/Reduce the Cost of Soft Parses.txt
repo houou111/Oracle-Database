@@ -1,0 +1,4 @@
+Reducing soft parses reduces library cache latch contention.
+Keep cost of parsing to a minimum by setting:
+– SESSION CACHED CURSORS _CACHED_CURSORS
+– HOLD_CURSOR in the application precompiler

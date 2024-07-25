@@ -1,0 +1,184 @@
+﻿Last unsuccessful login: Thu Mar 16 16:22:18 ICT 2017 on ssh from 10.98.4.166
+Last login: Sat Apr  1 08:27:08 ICT 2017 on ssh from 10.98.4.166
+This is asset of Techcombank, only permit authorized person. If you are accessing illegally, you will commit a criminal offence.
+[YOU HAVE NEW MAIL]
+[oracle@dr-esb-db01(/home/oracle)]$ps -ef|grep pmon
+  oracle  5046510        1   0   Jan 09      - 18:26 ora_pmon_esbinf11
+    grid  6488114        1   0   Nov 11      - 24:58 asm_pmon_+ASM1
+  oracle 15204540 17694760   0 08:32:47 pts/78  0:00 grep pmon
+  oracle 19857502        1   0   Nov 13      - 31:14 ora_pmon_esbinf21
+  oracle 52232424        1   0   Mar 28      -  0:59 ora_pmon_esbdata21
+[oracle@dr-esb-db01(/home/oracle)]$ls
+DBscript             crontab.job.txt      esbdata2.sh_old      esblog21.pfile       pfile.esbinf1.ora    rman_esbres.rcv
+LMS                  dbscript             esbinf.ora           esbtest.sh           pfile.esblog.ora     rman_esbres.sh
+OracleLMS_Aug        esb_restore.ora      esbinf1.sh           fresh_truss.ok       pfile.esblog1.ora    rman_esbres_1.log
+bin                  esbdata2.ora         esbinf1.sh_old       nohup.out            pfile.esblog11.ora   rman_esbres_1.rcv
+clean_all_logs.sh    esbdata2.sh          esbinf2.sh           oradiag_oracle       pfile.esbpoc.ora     rman_esbres_1.sh
+clean_audit_file.sh  esbdata2.sh                    esbinf21.ora         orapwesbdata22       rman_esbres.log      time.log
+[oracle@dr-esb-db01(/home/oracle)]$more esbdata2.sh_old 
+#!/bin/sh
+# -----------------------------------------------------------------
+# Backup script generated on 03/07/13 16:30:58
+# Shell Script name: /home/oracle/bk_db_dwtest1.sh
+# BK Log file name: /oracle/nbu/logs/bk_db_dwtest1_<date>.log
+# Veritas NetBackup for oracle on UNIX
+# $VRTScprght: Copyright 1993 - 2012 Symantec Corporation, All Rights Reserved $
+# -----------------------------------------------------------------
+# dw0201-vip
+# dw0202-vip
+# DWTEST1-VIP
+# DWTEST2-VIP
+# dwtest11
+# dwtest12
+
+#
+#
+#
+RMAN_LOG_FILE=/tmp/rman_esbdata2.log
+BK_LOG="/tmp/bk_db_esbdata2_full_$(date '+%Y%M%d_%H%M').log"
+# exit if clien name = dw0202-vip
+if [ "$NB_ORA_CLIENT" = "dr-esb-db02-pub" ]
+then
+        exit 0
+fi
+# -----------------------------------------------------------------
+# Initialize the log file.
+# -----------------------------------------------------------------
+
+> $RMAN_LOG_FILE
+chmod 666 $RMAN_LOG_FILE
+
+# -----------------------------------------------------------------
+# Log the start of this script.
+# -----------------------------------------------------------------
+
+echo Script $0 >> $RMAN_LOG_FILE
+echo ==== started on `date` ==== >> $RMAN_LOG_FILE
+echo >> $RMAN_LOG_FILE
+
+ORACLE_HOME=/u01/app/oracle/db11
+ORACLE_SID=esbdata21
+TARGET_CONNECT_STR=/
+RUN_AS_USER=oracle
+RMAN=$ORACLE_HOME/bin/rman
+CUSER=`id | cut -d"(" -f2 | cut -d ")" -f1`
+
+# -----------------------------------------------------------------
+# The NetBackup script generator determined that a NetBackup Policy
+# configured for the standard Oracle backup would have been used
+# when this script was generated.
+
+# This script was generated for use with a Policy with the standard
+# Oracle backup method (i.e. non-proxy).
+# -----------------------------------------------------------------
+
+# -----------------------------------------------------------------
+# For NetBackup scheduled, or server initiated backups, NetBackup
+# sets an NB_ORA environment variable based on the schedule type.
+# The NB_ORA variable is then used to dynamically set BACKUP_TYPE.
+# For example, when:
+#     schedule type is                BACKUP_TYPE is
+#     ----------------                --------------
+# Automatic Full                     INCREMENTAL LEVEL=0
+# Automatic Differential Incremental INCREMENTAL LEVEL=1
+# Automatic Cumulative Incremental   INCREMENTAL LEVEL=1 CUMULATIVE
+
+# For user initiated backups BACKUP_TYPE defaults to incremental
+# level 0 (full). To change this default to incremental or
+# incremental cumulative, replace INCREMENTAL LEVEL=0 with
+# INCREMENTAL LEVEL=1 or INCREMENTAL LEVEL=1 CUMULATIVE in
+# the line below that contains, "@if NOT DEFINED BACKUP_TYPE".
+
+# Note that we use incremental level 0 to specify full backups.
+# That is because, although they are identical in content, only
+# the incremental level 0 backup can have incremental backups
+# of level > 0 applied to it.
+# -----------------------------------------------------------------
+
+if [ "$NB_ORA_FULL" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=0"
+    SCHED_NAME="Full-Application-Backup"
+elif [ "$NB_ORA_INCR" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=1"
+    SCHED_NAME="Different-Application-Backup"
+elif [ "$NB_ORA_CINC" = "1" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=1 CUMULATIVE"
+elif [ "$BACKUP_TYPE" = "" ]
+then
+    BACKUP_TYPE="INCREMENTAL LEVEL=0"
+fi
+
+# -----------------------------------------------------------------
+# rman commands for database pub.
+# -----------------------------------------------------------------
+
+CMD="
+ORACLE_HOME=/u01/app/oracle/db11
+export ORACLE_HOME
+ORACLE_SID=esbdata21
+export ORACLE_SID
+$RMAN target $TARGET_CONNECT_STR nocatalog msglog $RMAN_LOG_FILE append <<EOF
+
+# -----------------------------------------------------------------
+# RMAN command section
+# -----------------------------------------------------------------
+
+RUN {
+ALLOCATE CHANNEL ch00   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch01   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch02   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch03   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch04   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch05   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch06   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch07   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+
+ALLOCATE CHANNEL ch08   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch09   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch10   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch11   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch12   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch13   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+ALLOCATE CHANNEL ch14   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db01-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata21';
+ALLOCATE CHANNEL ch15   TYPE 'SBT_TAPE' PARMS='ENV=(NB_ORA_CLIENT=dr-esb-db02-pub)' CONNECT='srv_db_backup/Window#123#Tech@esbdata22';
+SEND 'NB_ORA_SCHED=$SCHED_NAME,NB_ORA_POLICY=Backup-Esbdata2,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+[oracle@dr-esb-db01(/home/oracle)]$!
+ksh: 0403-057 Syntax error: `newline or ;' is not expected.
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$mor  
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$ ORACLE_SID=esbinf11
+[oracle@dr-esb-db01(/home/oracle)]$
+[oracle@dr-esb-db01(/home/oracle)]$export ORACLE_SID=esbinf11
+[oracle@dr-esb-db01(/home/oracle)]$sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.3.0 Production on Sat Apr 1 08:45:41 2017
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SQL> exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+[oracle@dr-esb-db01(/home/oracle)]$ls
+DBscript             crontab.job.txt      esbdata2.sh_old      esblog21.pfile       pfile.esbinf1.ora    rman_esbres.rcv
+LMS                  dbscript             esbinf.ora           esbtest.sh           pfile.esblog.ora     rman_esbres.sh
+OracleLMS_Aug        esb_restore.ora      esbinf1.sh           fresh_truss.ok       pfile.esblog1.ora    rman_esbres_1.log
+bin                  esbdata2.ora         esbinf1.sh_old       nohup.out            pfile.esblog11.ora   rman_esbres_1.rcv
+clean_all_logs.sh    esbdata2.sh          esbinf2.sh           oradiag_oracle       pfile.esbpoc.ora     rman_esbres_1.sh
+clean_audit_file.sh  esbdata2.sh                    esbinf21.ora         orapwesbdata22       rman_esbres.log      time.log
+[oracle@dr-esb-db01(/home/oracle)]$more 11
+Shell will time out in 60 seconds.
+1ksh: Timed out waiting for input.

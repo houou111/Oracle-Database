@@ -1,0 +1,84 @@
+
+
+# dd if=/dev/zero of=/mnt/vdisk1 bs=1024 count=1024000
+# dd if=/dev/zero of=/mnt/vdisk2 bs=1024 count=1024000
+# chown oracle:oinstall /mnt/vdisk1 /mnt/vdisk2
+So, let's assume I had real flash disks, or partitions on real flash disks. In this case my fake disks are named "/mnt/vdisk1" and "/mnt/vdisk1".
+
+Metadata about the contents of the Smart Flash Cache is maintained in the buffer cache, so if you don't take this into account, your actual buffer cache size is effectively reduced by using the Smart Flash Cache. To counter this, increase the buffer cache by approximately 100 bytes multiplied by the number of blocks you expect to cache in the Smart Flash Cache. In RAC installations you also need to consider the size of the shared pool. Approximately 208 bytes should be allocated for each GCS resource.
+
+Enable Smart Flash Cache
+The DB_FLASH_CACHE_FILE parameter is used to identify the flash disks to be used by the Smart Flash Cache.
+
+DB_FLASH_CACHE_FILE = /mnt/vdisk1, /mnt/vdisk2
+The size of the individual disks is specified by the DB_FLASH_CACHE_SIZE parameter.
+
+DB_FLASH_CACHE_SIZE = 1G, 1G
+The documentation suggests these parameters can be set using the ALTER SYSTEM command, but although the ALTER SYSTEM command itself works, I could never get an acceptable value into the SPFILE. Each startup resulted in the following message.
+
+SQL> startup
+ORA-12427: invalid input value for db_flash_cache_file parameter
+SQL>
+Instead, edited the SPFILE manually as follows.
+
+Create a PFILE from the SPFILE.
+
+SQL> CREATE PFILE='/tmp/pfile.txt' FROM SPFILE;
+Edit the "/tmp/pfile.txt" file manually, adding the following entries.
+
+*.db_flash_cache_file=/mnt/vdisk1, /mnt/vdisk2
+*.db_flash_cache_size=1073741824,1073741824
+Recreate the SPFILE from the PFILE.
+
+SQL> CREATE SPFILE FROM PFILE='/tmp/pfile.txt';
+Restart the database.
+
+SHUTDOWN IMMEDIATE;
+STARTUP;
+Once started, you can see the parameters are set correctly.
+
+SQL> SHOW PARAMETER db_flash_cache
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_flash_cache_file                  string      /mnt/vdisk1, /mnt/vdisk2
+db_flash_cache_size                  big integer 1G, 1G
+SQL>
+Information about Smart Flash Cache usage is displayed using the V$FLASHFILESTAT view.
+
+SET LINESIZE 100
+COLUMN name FORMAT A20
+
+SELECT * FROM v$flashfilestat;
+
+FLASHFILE# NAME                      BYTES    ENABLED SINGLEBLKRDS SINGLEBLKRDTIM_MICRO     CON_ID
+---------- -------------------- ---------- ---------- ------------ -------------------- ----------
+         1 /mnt/vdisk1          1073741824          1            0                    0          0
+         2 /mnt/vdisk2          1073741824          1            0                    0          0
+
+SQL>
+Disable Smart Flash Cache
+Resetting the initialization parameters disables the Smart Flash Cache.
+
+ALTER SYSTEM RESET DB_FLASH_CACHE_FILE SCOPE=SPFILE;
+ALTER SYSTEM RESET DB_FLASH_CACHE_SIZE SCOPE=SPFILE;
+SHUTDOWN IMMEDIATE;
+STARTUP;
+
+SELECT * FROM v$flashfilestat;
+
+no rows selected
+
+SQL>
+Modifying Table Usage
+The default action is for blocks to be aged out of the buffer cache and into the Smart Flash Cache. The FLASH_CACHE clause of the ALTER TABLE command allows additional control.
+
+-- Prevent EMP from using the Smart Flash Cache.
+ALTER TABLE scott.emp STORAGE (FLASH_CACHE NONE);
+
+-- Force EMP to remain in the Smart Flash Cache, space provided.
+ALTER TABLE scott.emp STORAGE (FLASH_CACHE KEEP);
+
+-- Reset EMP to default use of Smart Flash Cache.
+ALTER TABLE scott.emp STORAGE (FLASH_CACHE);
+ALTER TABLE scott.emp STORAGE (FLASH_CACHE DEFAULT);

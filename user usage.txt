@@ -1,0 +1,7 @@
+SELECT se.username, sum(value) "CPU Usage"
+FROM gv$session se, gv$sesstat ss, gv$statname st
+WHERE ss.statistic# = st.statistic#
+   AND name LIKE  '%CPU used by this session%'
+   AND se.sid = ss.SID 
+   AND se.username IS NOT NULL
+ group by (se.username) order by 2 desc ;

@@ -1,0 +1,10 @@
+sqlplus / as sysdba
+alter system set cluster_database=false;
+srvctl stop instance -d r14test -i r14test2
+shutdown immediate
+startup mount restrict;
+
+rman target /
+drop database including backups noprompt;
+
+srvctl remove database –d r14test

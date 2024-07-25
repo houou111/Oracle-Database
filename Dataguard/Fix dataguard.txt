@@ -1,0 +1,583 @@
+
+-------------Monitor Sync---------------
+set lines 200
+set pages 200
+col value for a50
+select name, value from v$dataguard_stats;
+
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD# from v$managed_standby;
+
+
+-------------Fix DG---------------
+select min(to_char(checkpoint_change#)) from v$datafile_header;
+select min(to_char(current_scn)) from v$database;
+170119592
+170119591
+
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+allocate channel r5 device type disk;
+allocate channel r6 device type disk;
+allocate channel r7 device type disk;
+allocate channel r8 device type disk;
+backup as compressed backupset incremental from scn 170119591 format '/Backup/g2fo/%d_%U' database filesperset 10; 
+}
+alter database create standby controlfile as '/Backup/g2fo/g2fo.ctl';
+
+alter database create standby controlfile as '/tmp/g2fo.ctl';
+scp * dw02db01:/backup_pca/SOFTWARE/
+
+restore standby controlfile from '/u01/backup/g2fo.ctl';
+alter database mount;
+catalog start with '+DATA19C/';
+catalog start with '+RECOC1/minhdb/';
+catalog start with '+RECOC1/dump/';
+switch database to copy;
+recover database;
+
+
+alter database recover managed standby database cancel;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD# from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+run
+{
+set newname for datafile  9   to "+DATAC1";
+set newname for datafile 10   to "+DATAC1";
+set newname for datafile 11   to "+DATAC1";
+set newname for datafile 12   to "+DATAC1";
+set newname for datafile 13   to "+DATAC1";
+set newname for datafile 14   to "+DATAC1";
+set newname for datafile 15   to "+DATAC1";
+set newname for datafile 16   to "+DATAC1";
+set newname for datafile 17   to "+DATAC1";
+set newname for datafile 18   to "+DATAC1";
+set newname for datafile 19   to "+DATAC1";
+set newname for datafile 20   to "+DATAC1";
+set newname for datafile 21   to "+DATAC1";
+set newname for datafile 22   to "+DATAC1";
+restore datafile  9,10,11,12,13,14,15,16,17,18,19,20,21,22;
+}
+
+
+set newname for datafile 1 to "+DATA2" ;
+set newname for datafile 2 to "+DATA2" ;
+set newname for datafile 3 to "+DATA2" ;
+set newname for datafile 4 to "+DATA2" ;
+set newname for datafile 5 to "+DATA2" ;
+set newname for datafile 6 to "+DATA2" ;
+set newname for datafile 7 to "+DATA2" ;
+set newname for datafile 8 to "+DATA2" ;
+set newname for datafile 9 to "+DATA2" ;
+set newname for datafile 10 to "+DATA2" ;
+
+
+
+
+
+-------------Fix standby_file_management= MANUAL---------------
+SQL> alter database create datafile '/u01/app/oracle/product/10.2.0/db_1/dbs/UNNAMED00135' as '/oradata2/prod/APP_INDEX_SPACE2-02.dbf';
+Database altered.
+
+SQL> alter system set standby_file_management='AUTO' scope=both sid='*';
+System altered.
+
+alter system set standby_file_management=AUTO scope=both sid='*';
+
+alter system set standby_file_management=MANUAL scope=both sid='*';
+
+
+-------------New DG---------------
+1. dbca for DR
+2. change password to dbsnmp/DBA02
+3. copy password file
+4. config static listener
+5. config tnsname ( UR=A )
+6. duplicate
+7. config parameter dg, fal, name_convert, file managment
+8. add standby redo log
+8. config broker
+
+
+
+rman target dbsnmp/PAssw0rd@hbkdb auxiliary dbsnmp/PAssw0rd@hbkdr
+duplicate target database for standby from active database nofilenamecheck dorecover;
+
+
+
+nohup rman target / @backup_pe.rman &
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+backup as compressed backupset incremental lv 0 format '/backup_dwh/dump/%d_%U' database filesperset 10; 
+backup current controlfile format '/backup_dwh/dump/ctl_%d_%U';
+}
+
+
+alter database create standby controlfile as '/oracle_backup/oracle/ECM/ctl_bpfdb';
+
+create pfile='/oracle_backup/oracle/ECM/initbpfdb.ora' from spfile;
+
+alter user sys identified by Chivas#123;
+scp /u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb1 dc-ora-db02:$ORACLE_HOME/dbs/orapwbpfdb2
+scp /u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdbdr1
+---------------------------------------------------------------------------------------------------------------------------------
+
+-----duplicate
+orapwd file=$ORACLE_HOME/dbs/orapw$ORACLE_SID password=sys  entries=10 force=y/n ignorecase=y
+sec_case_sensitive_logon=false
+
+
+mkdir -p /u01/app/oracle/admin/bpfdr/adump
+
+*.archive_lag_target=0
+*.audit_file_dest='/u01/app/oracle/admin/bpfdbdr/adump'
+*.audit_trail='db'
+*.cluster_database=true
+*.compatible='11.1.0.0.0'
+*.control_files='+DATA03/bpfdr/controlfile/control01.ctl','+FRA/bpfdr/controlfile/control02.ctl'
+*.db_block_size=8192
+*.db_create_file_dest='+DATA03'
+*.db_domain=''
+instance_number=1
+*.db_file_name_convert='+DATA03/mbbdb/','+DATA02/mbbdr/'
+*.db_name='bpfdbprd'
+*.db_recovery_file_dest='+FRA'
+*.db_recovery_file_dest_size=85899345920
+*.db_unique_name='bpfdr'
+*.dg_broker_start=TRUE
+*.diagnostic_dest='/u01/app/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=bpfdbXDB)'
+*.log_archive_dest_1='location=USE_DB_RECOVERY_FILE_DEST','valid_for=(ALL_LOGFILES, ALL_ROLES)'
+*.log_archive_dest_state_1='ENABLE'
+*.log_archive_format='ARC%S_%R.%T'
+*.log_archive_max_processes=4
+*.log_archive_min_succeed_dest=1
+*.log_file_name_convert='+DATA04/bpfdb/','+DATA03/bpfdr/'
+*.open_cursors=300
+*.pga_aggregate_target=500M
+*.standby_file_management='AUTO'
+*.undo_tablespace='UNDOTBS1'
+*.pga_aggregate_target=500M
+*.processes=1000
+*.remote_login_passwordfile='EXCLUSIVE'
+*.sessions=1105
+*.sga_target=1G
+
+
+startup nomount pfile='/u01/app/oracle/product/11.1.0/db_1/dbs/initbpfdr1.ora';
+restore standby controlfile from '/u01/backup/ctl_bpfdb';
+
+alter database mount;
+catalog start with '/u01/backup/';
+
+
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+set newname for datafile 1 to "+DATA2" ;
+set newname for datafile 2 to "+DATA2" ;
+set newname for datafile 3 to "+DATA2" ;
+set newname for datafile 4 to "+DATA2" ;
+set newname for datafile 5 to "+DATA2" ;
+set newname for datafile 6 to "+DATA2" ;
+set newname for datafile 7 to "+DATA2" ;
+set newname for datafile 8 to "+DATA2" ;
+set newname for datafile 9 to "+DATA2" ;
+set newname for datafile 10 to "+DATA2" ;
+restore database;
+recover database;
+}
+
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+allocate channel r5 device type disk;
+allocate channel r6 device type disk;
+allocate channel r7 device type disk;
+allocate channel r8 device type disk;
+recover database until cancel;
+}
+
+# create spfile
+create SPFILE='+DATA02/ceprdstd/spfileceprdstd.ora' from pfile;
+#Sua lai pfile:
+SPFILE='+DATA/goldstb/spfile.ora'
+#Kiem tra lai:
+shutdown immediate;
+startup mount
+show parameter spfile
+
+
+set lines 200
+set pages 200
+col member for a50
+select * from v$logfile;
+select * from v$log;
+
+#standby:
+alter database add logfile thread 1 group 11 '+RECOC1' size 4G;
+alter database add logfile thread 1 group 12 '+RECOC1' size 4G;
+alter database add logfile thread 1 group 13 '+RECOC1' size 4G;
+alter database add logfile thread 1 group 14 '+RECOC1' size 4G;
+alter database add logfile thread 2 group 21 '+RECOC1' size 4G;
+alter database add logfile thread 2 group 22 '+RECOC1' size 4G;
+alter database add logfile thread 2 group 23 '+RECOC1' size 4G;
+alter database add logfile thread 2 group 24 '+RECOC1' size 4G;
+
+alter database add standby logfile thread 1 group 31 '+RECOC1' size 4G;
+alter database add standby logfile thread 1 group 32 '+RECOC1' size 4G;
+alter database add standby logfile thread 1 group 33 '+RECOC1' size 4G;
+alter database add standby logfile thread 1 group 34 '+RECOC1' size 4G;
+alter database add standby logfile thread 1 group 35 '+RECOC1' size 4G;
+alter database add standby logfile thread 2 group 41 '+RECOC1' size 4G;
+alter database add standby logfile thread 2 group 42 '+RECOC1' size 4G;
+alter database add standby logfile thread 2 group 43 '+RECOC1' size 4G;
+alter database add standby logfile thread 2 group 44 '+RECOC1' size 4G;
+alter database add standby logfile thread 2 group 45 '+RECOC1' size 4G;
+
+alter database add logfile thread 1 group 11 '+HST_DG' size 4G;
+alter database add logfile thread 1 group 12 '+HST_DG' size 4G;
+alter database add logfile thread 1 group 13 '+HST_DG' size 4G;
+alter database add logfile thread 1 group 14 '+HST_DG' size 4G;
+alter database add logfile thread 2 group 21 '+HST_DG' size 4G;
+alter database add logfile thread 2 group 22 '+HST_DG' size 4G;
+alter database add logfile thread 2 group 23 '+HST_DG' size 4G;
+alter database add logfile thread 2 group 24 '+HST_DG' size 4G;
+
+alter database add standby logfile thread 1 group 31 '+HST_DG' size 4G;
+alter database add standby logfile thread 1 group 32 '+HST_DG' size 4G;
+alter database add standby logfile thread 1 group 33 '+HST_DG' size 4G;
+alter database add standby logfile thread 1 group 34 '+HST_DG' size 4G;
+alter database add standby logfile thread 1 group 35 '+HST_DG' size 4G;
+alter database add standby logfile thread 2 group 41 '+HST_DG' size 4G;
+alter database add standby logfile thread 2 group 42 '+HST_DG' size 4G;
+alter database add standby logfile thread 2 group 43 '+HST_DG' size 4G;
+alter database add standby logfile thread 2 group 44 '+HST_DG' size 4G;
+alter database add standby logfile thread 2 group 45 '+HST_DG' size 4G;
+
+
+alter database add logfile thread 1 group 51 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 1 group 52 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 1 group 53 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 1 group 54 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 1 group 55 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 2 group 61 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 2 group 62 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 2 group 63 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 2 group 64 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+alter database add logfile thread 2 group 65 ('+T24R14_DR','+FRAT24R14_DR') size 4G;
+
+alter database add logfile thread 1 group 11 ('+DATA_DG') size 2G;
+alter database add logfile thread 1 group 12 ('+DATA_DG') size 2G;
+alter database add logfile thread 1 group 13 ('+DATA_DG') size 2G;
+
+alter database add logfile thread 2 group 21 ('+DATA_DG') size 2G;
+alter database add logfile thread 2 group 22 ('+DATA_DG') size 2G;
+alter database add logfile thread 2 group 23 ('+DATA_DG') size 2G;
+
+alter database add logfile thread 2 group 15 ('+DATA_DG','+HST_DG') size 1G;
+alter database add logfile thread 2 group 25 ('+DATA_DG','+HST_DG') size 8G;
+
+
+alter database add standby logfile thread 3 group 36 ('+HST_DG') size 8G;
+alter database add standby logfile thread 4 group 46 ('+HST_DG') size 8G;
+
+
+
+alter database add standby logfile thread 1 group 31 '+DATA1' size 1G;
+alter database add standby logfile thread 1 group 32 '+DATA1' size 1G;
+alter database add standby logfile thread 1 group 33 '+DATA1' size 1G;
+alter database add standby logfile thread 1 group 34 '+DATA1' size 1G;
+alter database add standby logfile thread 1 group 35 '+DATA1' size 1G;
+alter database add standby logfile thread 2 group 41 '+DATA1' size 1G;
+alter database add standby logfile thread 2 group 42 '+DATA1' size 1G;
+alter database add standby logfile thread 2 group 43 '+DATA1' size 1G;
+alter database add standby logfile thread 2 group 44 '+DATA1' size 1G;
+alter database add standby logfile thread 2 group 45 '+DATA1' size 1G;
+
+
+alter database add standby logfile thread 1 group 31 '+DATA1' size 500M;
+alter database add standby logfile thread 1 group 32 '+DATA1' size 500M;
+alter database add standby logfile thread 1 group 33 '+DATA1' size 500M;
+alter database add standby logfile thread 1 group 34 '+DATA1' size 500M;
+alter database add standby logfile thread 1 group 35 '+DATA1' size 500M;
+alter database add standby logfile thread 2 group 41 '+DATA1' size 500M;
+alter database add standby logfile thread 2 group 42 '+DATA1' size 500M;
+alter database add standby logfile thread 2 group 43 '+DATA1' size 500M;
+alter database add standby logfile thread 2 group 44 '+DATA1' size 500M;
+alter database add standby logfile thread 2 group 45 '+DATA1' size 500M;
+
+
+alter database drop logfile group 33;
+alter database drop logfile group 34;
+alter database drop logfile group 35;
+alter database drop logfile group 36;
+alter database drop logfile group 41;
+alter database drop logfile group 42;
+alter database drop logfile group 43;
+alter database drop logfile group 44;
+alter database drop logfile group 45;
+alter database drop logfile group 46;
+                                  
+alter database drop logfile group 32;
+alter database drop logfile group 42;
+
+
+#kiem tra lai:
+select THREAD#, GROUP#, bytes/1024/1024 from v$standby_log;
+
+alter database drop standby logfile group 5;
+
+alter system set remote_listener ='dr-ora-scan:1521';
+--
+	
+
+
+DC
+---------------------------------------------------------------------------------------
+alter system set dg_broker_start=true sid='*' ;
+
+alter system set dg_broker_config_file1='+T24R14_DR/T24R14DR/brokercfg1.dat' sid='*';
+alter system set dg_broker_config_file2='+T24R14_DR/T24R14DR/brokercfg2.dat' sid='*';
+alter system set dg_broker_start=true sid='*';
+
+Configure Broker
+dgmgrl /
+show configuration;
+create configuration hbk_broker as primary database is hbkdb connect identifier is hbkdb;
+add database hbkdr as connect identifier is hbkdr maintained as physical; 
+ENABLE CONFIGURATION;
+show configuration
+
+
+alter system set standby_file_management=auto;
+alter database recover managed standby database cancel;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD# from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+
+mkdir -p /u01/app/oracle/admin/pedr/adump
+alter system set cluster_database_instances=2 scope=spfile;
+alter system set thread=1 sid='pedr1' scope=spfile;
+alter system set thread=2 sid='pedr2' scope=spfile;
+alter system set instance_number=1 sid='pedr1' scope=spfile;
+alter system set instance_number=2 sid='pedr2' scope=spfile;
+alter system set undo_tablespace='UNDOTBS1' sid='pedr1' scope=spfile;
+alter system set undo_tablespace='UNDOTBS2' sid='pedr2' scope=spfile;
+alter system set db_file_name_convert='+DATA02/hrmdb/','+DATA02/hrmdr/' scope=spfile sid='*';
+alter system set log_file_name_convert='+DATA02/hrmdb/','+DATA02/hrmdr/' scope=spfile sid='*';
+
+select member, THREAD#, GROUP#, bytes/1024/1024 from v$standby_log;
+select member from v$logfile;
+
+
+alter system set sga_max_size = 6G scope=spfile;
+alter system set sga_target = 6G scope=spfile;
+alter system set pga_aggregate_target = 500M sid='*';
+alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=dr-ora-db02-vip)(PORT=1521))';
+
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD#   from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+
+
+
+#kiem tra lai:
+select THREAD#, GROUP#, bytes/1024/1024 from v$standby_log;
+
+alter database drop standby logfile group 5;
+
+
+10177717622152
+10177718049293
+10177715921800
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+backup as compressed backupset format '/u01/backup/%d_%U' database filesperset 4; 
+}
+
+
+nohup rman target / @backup_pe.rman &
+run{
+allocate channel r1 device type disk;
+allocate channel r2 device type disk;
+allocate channel r3 device type disk;
+allocate channel r4 device type disk;
+backup as compressed backupset incremental from scn 456132556 format '/restore_temp/restore/%d_%U' database filesperset 4; 
+}
+alter database create standby controlfile as '/u01/backup/ctl_dexxis';
+
+select min(to_char(checkpoint_change#)) from v$datafile_header;
+456132556
+
+restore standby controlfile from '/u01/bk_controlfile/ctl_esbf';
+ 
+
+alter user dbsnmp identified by PAssw0rd;
+grant sysdba to dbsnmp;
+grant resource, connect to dbsnmp;
+
+scp orapwmbbdb2 dc-ora-db02:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/orapwmbbdb1
+scp orapwmbbdb2 dr-ora-db01:/u01/app/oracle/product/11.2.0.4/dbhome_1/dbs/orapwmbbdr1
+scp orapwmbbdb2 dr-ora-db02:/u01/app/oracle/product/11.2.0.4/dbhome_1/dbs/orapwmbbdr2
+
+scp orapwhrmdb2 dr-ora-db02:/u01/app/oracle/product/11.2.0.4/dbhome_1/dbs/orapwhrmdr2
+scp orapwhrmdb2 dr-ora-db01:/u01/app/oracle/product/11.2.0.4/dbhome_1/dbs/orapwhrmdr1
+scp orapwhrmdb2 dc-ora-db02:/u01/app/oracle/product/11.2.0/dbhome_1/dbs/orapwhrmdb1
+
+scp orapwbpfdb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb2
+scp orapwbpfdb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr2
+scp orapwbpfdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr1
+
+scp orapwbpfrcdb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfrcdb2
+scp orapwbpfrcdb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfrcdr2
+scp orapwbpfrcdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfrcdr1
+
+scp orapwbpfdb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb2
+scp orapwbpfdb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr2
+scp orapwbpfdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr1
+
+scp orapwbpfdb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb2
+scp orapwbpfdb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr2
+scp orapwbpfdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr1
+
+scp orapwbpfdb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwbpfdb2
+scp orapwbpfdb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr2
+scp orapwbpfdb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwbpfdr1
+
+scp orapwpedb1 dc-ora-db02:/u01/app/oracle111/product/11.1.0/db_4/dbs/orapwpedb2
+scp orapwpedb1 dr-ora-db02:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwpedr2
+scp orapwpedb1 dr-ora-db01:/u01/app/oracle/product/11.1.0/db_1/dbs/orapwpedr1
+
+10496665211376
+10497456129696
+10497455591565
+
+
+
+
+dbhcm
+ORAVNSTD
+
+(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)
+(HOST = test-ora-scan.techcombank.com.vn)(PORT = 1521)) 
+(CONNECT_DATA = (SERVER = DEDICATED) 
+(SERVICE_NAME = citaddev)))
+
+
+alter database drop logfile group 21;
+alter database drop logfile group 22;
+alter database drop logfile group 23;
+alter database drop logfile group 24;
+alter database drop logfile group 25;
+alter database drop logfile group 26;
+alter database drop logfile group 27;
+alter database drop logfile group 28;
+alter database drop logfile group 29;
+alter database drop logfile group 30;
+alter database drop logfile group 31;
+alter database drop logfile group 32;
+alter database drop logfile group 33;
+alter database drop logfile group 34;
+alter database drop logfile group 35;
+alter database drop logfile group 36;
+alter database drop logfile group 37;
+alter database drop logfile group 38;
+alter database drop logfile group 39;
+
+alter database recover managed standby database cancel;
+alter database recover managed standby database using current logfile disconnect;
+
+
+config dataguard cacade (both standby1 and standby2):
+- config log_archive_config=dg_config=(twol,TWODC,TWOLDR,two,twodr)
+- config fal_server=twol
+- config log_archive_dest_2=service=twodr valid_for=(standby_logfiles,standby_role) db_unique_name=twodr
+
+# check ( in standby1)
+select dest_id, dest_name, status, binding, error from v$archive_dest where status<>'INACTIVE';
+
+alter system set log_file_name_convert='+FRA02/twa','+FRA/twfa','+DATA02/twfa','+DATA2/twfa' scope =spfile sid='*';
+alter system set audit_file_dest='/u01/app/oracle/admin/twfa/adump' scope=spfile sid='*';
+
+alter system set LOG_ARCHIVE_DEST_3='SERVICE=twadc VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=twadc';
+alter system set LOG_ARCHIVE_DEST_3='SERVICE=twodc VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=two';
+alter system set LOG_ARCHIVE_DEST_3='SERVICE=twrdc VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=twrdc';
+
+alter system set LOG_ARCHIVE_DEST_2='SERVICE=twadr VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=twadr';
+alter system set LOG_ARCHIVE_DEST_2='SERVICE=twodr VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=twodr';
+alter system set LOG_ARCHIVE_DEST_2='SERVICE=twrdr VALID_FOR=(ALL_LOGFILES,ALL_ROLES) DB_UNIQUE_NAME=twrdr';
+
+alter system set db_file_name_convert='+DATA02/twa/','+DATA2/twa/' scope=spfile sid='*';
+alter system set db_file_name_convert='+DATA01/two/','+DATA1/two/' scope=spfile sid='*';
+alter system set db_file_name_convert='+DATA02/twrdc/','+DATA2/twr/' scope=spfile sid='*';
+
+alter system set log_archive_config='dg_config=(twfa,twadr,twadc,twa)';
+
+###primary
+SELECT SWITCHOVER_STATUS FROM V$DATABASE;
+ALTER DATABASE COMMIT TO SWITCHOVER TO PHYSICAL STANDBY WITH SESSION SHUTDOWN;
+SHUTDOWN abort;
+STARTUP MOUNT;
+
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+alter system set log_archive_dest_state_11=defer sid='*';
+alter system set log_archive_dest_2='service="dwprdx32"','LGWR ASYNC NOAFFIRM delay=0 optional compression=disable max_failure=0 max_connections=1 reopen=300 db_unique_name="dwprddr" net_timeout=30','valid_for=(all_logfiles,primary_role)'
+alter system set log_archive_dest_2='service="dbfsx32"','LGWR ASYNC NOAFFIRM delay=0 optional compression=disable max_failure=0 max_connections=1 reopen=300 db_unique_name="dbfsdr" net_timeout=30','valid_for=(all_logfiles,primary_role)' scope=spfile;
+alter system set log_archive_dest_2='service="pcadbx32"','LGWR ASYNC NOAFFIRM delay=0 optional compression=disable max_failure=0 max_connections=1 reopen=300 db_unique_name="pcadbdr" net_timeout=30','valid_for=(all_logfiles,primary_role)'
+
+
+
+###standby
+SELECT SWITCHOVER_STATUS FROM V$DATABASE;
+ALTER DATABASE COMMIT TO SWITCHOVER TO PRIMARY WITH SESSION SHUTDOWN;
+ALTER DATABASE OPEN read write;
+
+
+alter database drop logfile group 11;
+alter database drop logfile group 12;
+alter database drop logfile group 13;
+alter database drop logfile group 14;
+
+alter database add standby logfile thread 1 group 11 '+DATA' size 50M;
+alter database add standby logfile thread 1 group 12 '+DATA' size 50M;
+alter database add standby logfile thread 1 group 13 '+DATA' size 50M;
+alter database add standby logfile thread 1 group 14 '+DATA' size 50M;
+
+
+create configuration dexxis as primary database is dexxis connect identifier is dexxis;
+add database dexxisdr as connect identifier is dexxisdr maintained as physical; 
+ENABLE CONFIGURATION;
+show configuration
+
+create configuration dexxisua as primary database is dexxisua connect identifier is dexxisua;
+
+add database dwprddb as connect identifier is dwprdx62 maintained as physical; 
+
+ENABLE CONFIGURATION;
+show configuration
+
+
+add database pcadbdr as connect identifier is pcadr maintained as physical; 

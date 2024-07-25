@@ -1,0 +1,50 @@
+CREATE TABLE supplier
+(
+  supplier_id numeric(10) not null,
+  supplier_name varchar2(50) not null,
+  contact_name varchar2(50),
+  CONSTRAINT supplier_pk PRIMARY KEY (supplier_id)
+);
+
+
+
+ALTER TABLE supplier
+ADD CONSTRAINT supplier_pk PRIMARY KEY (supplier_id);
+
+
+ALTER TABLE table_name
+DROP CONSTRAINT constraint_name;
+
+
+
+ALTER TABLE supplier
+DISABLE CONSTRAINT supplier_pk;
+
+
+create table SAAS.test2 (id number, name varchar2(20));
+ALTER TABLE SAAS.test2
+ADD CONSTRAINT test2_pk PRIMARY KEY (id);
+
+insert into SAAS.test2 values (11,  '1');
+insert into SAAS.test2 values (12,  '2');
+insert into SAAS.test2 values (13,  '3');
+insert into SAAS.test2 values (14,  '4');
+insert into SAAS.test2 values (15,  '5');
+insert into SAAS.test2 values (16,  '6');
+insert into SAAS.test2 values (17,  '7');
+insert into SAAS.test2 values (18,  '8');
+insert into SAAS.test2 values (19,  '9');
+insert into SAAS.test2 values (20, '10');
+commit;
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10

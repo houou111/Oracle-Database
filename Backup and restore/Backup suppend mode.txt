@@ -1,0 +1,29 @@
+﻿#Thực hiện : backup DB suspended mode
+
+#Đưa Object cần backup sang trạng thái backup:
+SQL> ALTER TABLESPACE users BEGIN BACKUP;
+
+#Nếu muốn backup cả database:
+SQL> ALTER DATABASE BEGIN BACKUP;
+
+#Đưa database về trạng thái suspend:
+SQL> ALTER SYSTEM SUSPEND;
+
+
+#Kiểm tra  trạng thái của DB ở V$INSTANCE view:
+SQL> SELECT DATABASE_STATUS FROM V$INSTANCE;
+
+
+#Tiến hành backup database : ví dụ bằng câu lệnh copy của OS
+
+#Dua database sang trang thái resume
+SQL> ALTER SYSTEM RESUME;
+
+#Kiểm tra  trạng thái của DB ở V$INSTANCE view:
+SQL> SELECT DATABASE_STATUS FROM V$INSTANCE;
+
+#Đưa object về trạng thái bình thường
+SQL> ALTER TABLESPACE users END BACKUP;
+
+#Copy the control file and archive the online redo logs as usual for a backup:
+RMAN> BACKUP DATAFILECOPY '/dk2/oradata/trgt/users01.dbf';

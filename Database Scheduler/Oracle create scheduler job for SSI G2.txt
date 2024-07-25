@@ -1,0 +1,58 @@
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'G2FO.AUTO_GATHER_TOP_TABLE'
+      ,start_date      => TO_TIMESTAMP_TZ('2021/12/08 12:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzh:tzm')
+      ,repeat_interval => 'freq=hourly; byminute=0'
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'PLSQL_BLOCK'
+      ,job_action      => 'DECLARE     
+cmd    VARCHAR2 (4000);
+ CURSOR broken_jobs_cur     
+ IS     
+select owner,table_name from dba_tables where table_name in (''AUDIT_ORDER_HDR'',''AUDIT_ORDER_QTY_DTL'',''AUDIT_ORDER_TRADED_DTL'',''CLIENT_CASH_BAL'',''CLIENT_CASH_SUM'',''CLIENT_INFO'',''CLIENT_STOCK_BAL'',''CLIENT_STOCK_SUM'',''CLIENT_TRADE_ACCT'',''CLIENTHOTLIST'',''CUSTOMER_INFO'',''DMA_ADVERTISEMENT'',''DMA_HOSE_INMSG'',''DMA_HOSE_MKT_SESSION'',''DMA_HOSE_PROCESSED_INMSG'',''DMA_MSG_GA'',''DMA_MSG_HISTORY'',''DMA_ORDER_OSN_MAP'',''DX_MASTER'',''DX_MSG_HIST'',''EXCHANGE'',''FIXIN_MESSAGES'',''FIXIN_REPLY_MSG'',''FIXIN_SESSIONS'',''HNX_DCTERM_ORDER'',''HNX_DCTERM_TRADE'',''HNX_DMA_ADVERTISEMENT'',''HNX_DMA_CHANNEL_SORTING'',''HNX_FIRM_INFO'',''HNX_IN_MESSAGES'',''HNX_MESSAGES'',''HNX_NEWS'',''HNX_PREOUT_MESSAGES'',''HNX_RSA'',''HNX_SESSIONS'',''MARKET'',''MKT_INSTRUMENT'',''NEW_SSI_SALES_NODE_PATH_DEF'',''ORDER_EXCHG_REPLY'',''ORDER_HDR'',''ORDER_HDR_HIST'',''ORDER_HOLD_CASH'',''ORDER_INSTRUCTION'',''ORDER_NOTES'',''ORDER_QTY_DTL'',''ORDER_QTY_DTL_HIST'',''ORDER_TRADED_DTL'',''RISK_GRP_STOCK_MARGIN'',''SUSPECT_SAME_ORDER_LIST'',''SYS_EXCHG_TIME_GAP'',''SYS_PARA'',''UPCOM_DMA_ADVERTISEMENT'',''UPCOM_IN_MESSAGES'',''UPCOM_MESSAGES'',''UPCOM_PREOUT_MESSAGES'',''UPCOM_RSA'',''UPCOM_SESSIONS'',''USER_APPROV_ORDER_RECORD'',''USER_CLIENT_GRP_DEF'',''USER_LOGIN_SESSION'') and owner=''G2FO'';        
+BEGIN       
+ FOR job_rec IN broken_jobs_cur     
+ LOOP       
+  cmd :=''BEGIN DBMS_STATS.gather_table_stats(OwnName =>''''''||job_rec.OWNER||'''''',TabName =>''''''||job_rec.table_name||'''''',GRANULARITY => ''''AUTO'''',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>16,CASCADE => TRUE,force=>true); END;'';
+execute immediate cmd;
+  END LOOP; 
+END; 
+'
+      ,comments        => 'auto gather top table statistic'
+    );
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'RESTARTABLE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'LOGGING_LEVEL'
+     ,value     => SYS.DBMS_SCHEDULER.LOGGING_OFF);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'MAX_FAILURES');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'MAX_RUNS');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'STOP_ON_WINDOW_CLOSE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'JOB_PRIORITY'
+     ,value     => 3);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'SCHEDULE_LIMIT');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'G2FO.AUTO_GATHER_TOP_TABLE'
+     ,attribute => 'AUTO_DROP'
+     ,value     => TRUE);
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'G2FO.AUTO_GATHER_TOP_TABLE');
+END;
+/

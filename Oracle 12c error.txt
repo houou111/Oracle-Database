@@ -1,0 +1,94 @@
+1. Errors in file /u01/app/oracle/diag/rdbms/orcl/ORCL1/trace/ORCL1_j000_73185.trc:
+--------------------------------------------------------------------------------------
+ORA-12012: error on auto execute of job "SYS"."ORA$AT_OS_OPT_SY_936"
+ORA-20001: Statistics Advisor: Invalid task name for the current user
+ORA-06512: at "SYS.DBMS_STATS", line 47207
+ORA-06512: at "SYS.DBMS_STATS_ADVISOR", line 882
+ORA-06512: at "SYS.DBMS_STATS_INTERNAL", line 20059
+ORA-06512: at "SYS.DBMS_STATS_INTERNAL", line 22201
+ORA-06512: at "SYS.DBMS_STATS", line 47197
+2017-03-13T00:47:21.394481+00:00
+
+Solution:
+EXEC dbms_stats.init_package();
+
+
+
+2. DBCA 12.1.0.2 fail in grid 12.2.0.1
+--------------------------------------------------------------------------------------
+apply patch 21626377
+
+
+
+3. rng-tools cannot start
+--------------------------------------------------------------------------------------
+# rpm -qa rng-tools
+rng-tools-5-2.el6_7.x86_64
+# service rngd start
+--- If this does not start rngd, try /dev/urandom as entropy source for temporary solution
+# rngd -r /dev/urandom
+
+
+
+4. Agent Em13c take high CPU
+--------------------------------------------------------------------------------------
+Go to the AGENT HOME of server -> Monitoring -> -Metric and collection Settings
+Click on Other Collected Items
+Click on the 'Every 24 Hours' link under Collection Schedule
+Click on Disable button
+Save the changes
+
+Disable 
+High Availability Disk Backup
+High Availability Media Backup
+
+
+
+
+
+5. Bug 28199085  ORA-600 [Cursor not typechecked] Occurs In ADG Standby Sites
+--------------------------------------------------------------------------------------
+Patch 12.2.0.1.190416 (Apr 2019) Database Release Update (DBRU)
+
+
+
+6. scm0 process consuming high cpu in a standby environment.
+--------------------------------------------------------------------------------------
+Below example of 'top' command:
+PID USER PR NI VIRT RES SHR S %CPU %MEM TIME+ COMMAND
+13722 oracle 20 0 5818744 33852 27820 R 100.0 0.0 21415:52 ora_scm0_test
+42375 oracle 20 0 5818704 32396 26388 R 100.0 0.0 94536:13 ora_scm0_orcl
+
+
+Bug 25348567 fixed in 18.1. Apply interim patch 25348567
+
+
+
+7. High CPU
+--------------------------------------------------------------------------------------
+SMC0 process (DOC ID 2501411.1)
+Perl and java process -EM13C (SR 3-19769838561)
+MMON (DOC ID 2398125.1)
+
+
+
+8. Bug 25877693  ORA 600 [IPC_RECREATE_QUE_2]
+--------------------------------------------------------------------------------------
+The fix for 25877693 is first included in 18.1.0
+
+
+9. protocol error -> edit sqlnet.ora
+--------------------------------------------------------------------------------------
+. grid
+cd $ORACLE_HOME/network/admin/
+vi sqlnet.ora
+SQLNET.ALLOWED_LOGON_VERSION_SERVER=11
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT=11
+
+
+. oracle
+cd $ORACLE_HOME/network/admin/
+vi sqlnet.ora
+SQLNET.ALLOWED_LOGON_VERSION_SERVER=11
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT=11
+

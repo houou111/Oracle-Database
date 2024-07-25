@@ -1,0 +1,8 @@
+ORA-02304 Invalid Object Identifier Literal While Import With CREATE TYPE OID
+
+
+SOLUTION:
+So the solution to avoid this type of error is to use TRANSFORM=oid:n parameter with impdp.
+
+
+impdp dumpfile=TEST_%U.dmp logfile=TEST_imp.log directory=T remap_schema=TEST:TEST10 parallel=4 TRANSFORM=oid:n

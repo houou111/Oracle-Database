@@ -1,0 +1,2 @@
+Latch: shared pool 
+indicates that there were a large number of memory allocations that required holding the shared pool latch.

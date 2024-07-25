@@ -1,0 +1,10 @@
+select distinct 'ALTER TABLE '||OWNER||'.'||table_name||' disable constraint '||constraint_name||' cascade;' from dba_constraints 
+where constraint_type  in ('U', 'P') 
+and owner in ('BP8','BPF_AMP_USER','BPF_ATM_USER','BPF_CM_USER','BPF_EXPORTLC_USER','BPF_LCFN_USER','BPF_LCPM_USER','BPF_LC_USER','BPF_NTANH','BPF_REMITTANCE_USER','BPF_SMEBPM_USER','BPF_SMEFN_USER','BPF_SMELAP_USER','BPF_SME_T24_USER','BPF_SME_USER','BPF_SOFT_APP_USER','BPF_TCB_USER')
+and status='ENABLED';
+
+
+select distinct 'ALTER TABLE '||OWNER||'.'||table_name||' MODIFY CONSTRAINTS '||constraint_name||' ENABLE NOVALIDATE;' from dba_constraints 
+where constraint_type  in ('U', 'P') 
+and owner in ('BP8','BPF_AMP_USER','BPF_ATM_USER','BPF_CM_USER','BPF_EXPORTLC_USER','BPF_LCFN_USER','BPF_LCPM_USER','BPF_LC_USER','BPF_NTANH','BPF_REMITTANCE_USER','BPF_SMEBPM_USER','BPF_SMEFN_USER','BPF_SMELAP_USER','BPF_SME_T24_USER','BPF_SME_USER','BPF_SOFT_APP_USER','BPF_TCB_USER')
+and status='ENABLED';

@@ -1,0 +1,101 @@
+# Check archivelog mode
+sqlplus / as sysdba
+archive log list;
+Note: Neu Database log mode la no archivelog mode thi phai enable archivelog mode len.
+
+# Check DB Size:
+select sum(bytes/1024/1024/1024) from dba_data_files;
+Note: Dung luong phan vung chua backup phai > 2 * ban backup full cua database. Size ban backup full = 20->70% size cua DB.
+
+# Tao script backup
+mkdir /orabackup/scripts/
+cd /orabackup/scripts/
+vi backup_level0.rman
+
+---Noi dung backup_level0.rman
+Note: Sua lai cac duong dan cho phu hop
+
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO  '/u02/backup/autobackup_control_file%F';
+CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 7 DAYS;
+run {
+ALLOCATE CHANNEL RMAN_DISK01 TYPE DISK;
+ALLOCATE CHANNEL RMAN_DISK02 TYPE DISK;
+ALLOCATE CHANNEL RMAN_DISK03 TYPE DISK;
+CROSSCHECK BACKUP;
+CROSSCHECK ARCHIVELOG ALL;
+SET BACKUP COPIES = 2;
+BACKUP BLOCKS ALL AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 0 DATABASE FORMAT '/orabackup/hyper_backup/db_%T_%d_%u_%s','/u02/backup/db_%T_%d_%u_%s' FILESPERSET 10 TAG FULLBKP;
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE FORMAT  '/orabackup/hyper_backup/bkcontrolfile_%T_%d_%u_%s','/u02/backup/bkcontrolfile_%T_%d_%u_%s' TAG CTLFILE;
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL FORMAT '/orabackup/hyper_backup/arc_%T_%d_%u_%s_%U','/u02/backup/arc_%T_%d_%u_%s_%U' FILESPERSET 10 DELETE INPUT TAG ARCH;
+CROSSCHECK BACKUP;
+DELETE NOPROMPT OBSOLETE;
+DELETE NOPROMPT EXPIRED BACKUP;
+RELEASE CHANNEL RMAN_DISK01;
+RELEASE CHANNEL RMAN_DISK02;
+RELEASE CHANNEL RMAN_DISK03;
+}
+EXIT;
+-----------------------------
+vi backup_level1.rman
+
+---Noi dung backup_level1.rman
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO  '/orabackup/hyper_backup/autobackup_control_file%F';
+CONFIGURE RETENTION POLICY TO RECOVERY WINDOW OF 7 DAYS;
+run {
+ALLOCATE CHANNEL RMAN_DISK01 TYPE DISK;
+ALLOCATE CHANNEL RMAN_DISK02 TYPE DISK;
+ALLOCATE CHANNEL RMAN_DISK03 TYPE DISK;
+CROSSCHECK BACKUP;
+CROSSCHECK ARCHIVELOG ALL;
+SET BACKUP COPIES = 2;
+BACKUP BLOCKS ALL AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 1 DATABASE FORMAT  '/orabackup/hyper_backup/db_%T_%d_%u_%s','/u02/backup/db_%T_%d_%u_%s' FILESPERSET 10 TAG LEVEL1;
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE FORMAT  '/orabackup/hyper_backup/bkcontrolfile_%T_%d_%u_%s','/u02/backup/bkcontrolfile_%T_%d_%u_%s' TAG CTLFILE;
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL FORMAT  '/orabackup/hyper_backup/arc_%T_%d_%u_%s_%U','/u02/backup/arc_%T_%d_%u_%s_%U' FILESPERSET 10 DELETE INPUT TAG  ARCH;
+CROSSCHECK BACKUP;
+DELETE NOPROMPT OBSOLETE;
+DELETE NOPROMPT EXPIRED BACKUP;
+RELEASE CHANNEL RMAN_DISK01;
+RELEASE CHANNEL RMAN_DISK02;
+RELEASE CHANNEL RMAN_DISK03;
+}
+EXIT;
+-----------------------
+
+vi backup_level0.sh
+
+---Noi dung backup_level0.sh
+Note: Sua lai cac tham so ORACLE_SID, ORACLE_SID, ORACLE_HOME
+
+#!/bin/bash
+#su - oracle
+logfile=`date +%Y%m%d`_level0.log 
+export ORACLE_SID=pakhdb1
+export NLS_DATE_FORMAT="yyyy-mm-dd hh24:mi:ss"
+export ORACLE_BASE=/oracle/base
+export ORACLE_HOME=/oracle/db
+export PATH=$PATH:$ORACLE_HOME/bin
+rman target / nocatalog cmdfile /orabackup/scripts/backup_level0.rman  log /orabackup/log_backup/$logfile
+exit
+-----------------------
+
+vi backup_level1.sh
+
+---Noi dung backup_level1.sh
+#!/bin/bash
+#su - oracle
+logfile=`date +%Y%m%d`_level1.log 
+export ORACLE_SID=pakhdb1
+export NLS_DATE_FORMAT="yyyy-mm-dd hh24:mi:ss"
+export ORACLE_BASE=/oracle/base
+export ORACLE_HOME=/oracle/db
+export PATH=$PATH:$ORACLE_HOME/bin
+rman target / nocatalog cmdfile /orabackup/scripts/backup_level1.rman  log /orabackup/log_backup/$logfile
+exit
+
+# Dat vao crontab
+10 1 * * 0 /orabackup/scripts/backup_level0.sh
+10 1 * * 1,2,3,4,5,6 /orabackup/scripts/backup_level1.sh
+Note: Backup level0 vao luc 1h 10phut ngay chu nhat
+      Backup level1 vao luc 1h 10phut cac ngay con lai

@@ -1,0 +1,27 @@
+25586399     25586399
+26609817     26609817
+26609966     26609966
+26839277     26839277
+27144050     27144050
+27463879     27463879
+27464465     27464465
+27674384     27674384
+28163133
+
+
+
+1.  Run the following command as the root user to complete the patching set up behind the scenes:
+
+$ORACLE_HOME/bin/clscfg -localpatch
+
+2.  Run the following command as the root user to lock the GI home:
+
+$ORACLE_HOME/crs/install/rootcrs.sh -lock
+
+
+3.  Run the following command as the root user to start the GI:
+
+$ORACLE_HOME/bin/crsctl start crs
+
+
+(ADDRESS=(PROTOCOL=TCP)(HOST=10.101.5.143)(PORT=1521))

@@ -1,0 +1,1 @@
+set serverout on size 1000000 format wrapped

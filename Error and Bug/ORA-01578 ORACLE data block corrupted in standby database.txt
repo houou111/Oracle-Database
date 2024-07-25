@@ -1,0 +1,76 @@
+How to Resolve ORA-1578 /ORA-26040 Nologging operation in 12.2 on Standby database (Doc ID 2378500.1)
+
+
+Step 1 :- Identify the blocks affected.
+
+On Standby run
+  
+
+
+SQL>SELECT * FROM V$NONLOGGED_BLOCK ;
+  
+
+ 
+
+Step 2 :-Stop the Managed Recovery on standby.
+  
+
+
+ SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+  
+
+Step 3 :-Recover the nologged blocks by connecting to Rman on Standby
+
+ 
+
+Pleaste note in the output it will list out all datafiles when running the recovery command ,However it will recover only the datafile blocks which are affected by No logging operation and whose entries are populated in V$NONLOGGED_BLOCK
+
+  
+
+RMAN>RECOVER DATABASE NONLOGGED BLOCK;   
+
+Starting recover at 23-MAR-18
+using target databsae control file instead of recovery catalog
+allocate channel: ORA_DISK_1
+channel ORA_DISK_1: SID=247 device type=DISK
+
+starting recovery of nonlogged blocks
+List of Datafiles
+===================
+
+File Status Nonlogged Blocks Blocks Examined Blocks Skipped
+----- ------ --------- ------ ------ -------- ------ -------
+1       OK   0                          0 103679
+3       OK   0                          0 71679
+4       OK   0                          0 59519
+5       OK   0                          0 31999
+6       OK   0                          0 40959
+7       OK   0                          0 108799
+8       OK   0                          0 12799
+9       OK   0                          0 34559
+10     OK   0                          0 46079
+11     OK   0                          0 12799
+12     OK   10                        10 2229             =======================> 10 blocks affected by No logging
+
+Details of Nonlogged blocks can be queried from v$nonlogged_block view
+
+recovery of nonlogged blocks complete, elapsed time : 00:01:01
+
+Finished recover at 23-MAR-18
+
+  
+
+Please note :- When this command is run Alert log of Standby database will also print information about blocks getting recovered
+
+
+This command fetches the required blocks from Primary.
+
+
+
+
+
+Step 4 :- Re-run the query from No logging view to confirm blocks have been recovered.
+
+ 
+
+Select * V$NONLOGGED_BLOCK ;

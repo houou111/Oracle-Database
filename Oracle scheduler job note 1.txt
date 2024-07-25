@@ -1,0 +1,101 @@
+1. To check the job status:
+------------------------------------------------------------------------------------------
+select job_name, owner, enabled from dba_scheduler_jobs;
+
+select * from dba_scheduler_running_jobs;
+
+select * from dba_scheduler_jobs;
+
+select job_name, enabled from DBA_SCHEDULER_JOBS WHERE job_name = 'SCHEMA_MNTC_JOB';
+
+
+SET PAGESIZE 299
+SET LINES 299
+COL JOB_NAME FOR a24 
+COL actual_start_date FOR a56 
+COL RUN_DURATION FOR a34 
+  SELECT job_name,
+         status,
+         actual_start_date,
+         run_duration
+    FROM DBA_SCHEDULER_JOB_RUN_DETAILS
+ORDER BY ACTUAL_START_DATE DESC;
+
+
+
+2. Enable/Disable a job:
+------------------------------------------------------------------------------------------
+exec dbms_scheduler.enable('SCHEMA_MNTC_JOB');
+
+SQL> execute dbms_scheduler.disable('owner.job');
+SQL> exec dbms_scheduler.disable('SCHEMA_MNTC_JOB');
+
+
+
+4. Purge log
+----------------------------
+BEGIN
+  DBMS_SCHEDULER.purge_log (
+    log_history => 500,
+    which_log   => 'JOB_AND_WINDOW_LOG',
+    job_name    => 'PRC_PROCESS_HA_SCHEDULER');
+
+  DBMS_SCHEDULER.purge_log (
+    log_history => 500,
+    which_log   => 'JOB_LOG',
+    job_name    => 'PRC_PROCESS_HA_SCHEDULER');
+
+  DBMS_SCHEDULER.purge_log (
+    log_history => 500,
+    which_log   => 'WINDOW_LOG',
+    job_name    => 'PRC_PROCESS_HA_SCHEDULER');
+END;
+/
+
+
+
+
+
+To disable a job that has been scheduled with dbms_scheduler, first you need to identify the job_name, job status and other related information.
+To check the job status:
+
+SQL> select job_name, owner, enabled from dba_scheduler_jobs;
+
+SQL> select job_name, enabled from DBA_SCHEDULER_JOBS WHERE job_name = 'SCHEMA_MNTC_JOB';
+
+To Disable a job:
+
+SQL> execute dbms_scheduler.disable('owner.job');
+
+SQL> exec dbms_scheduler.disable('SCHEMA_MNTC_JOB');
+
+PL/SQL procedure successfully completed.
+
+
+
+BEGIN
+
+  DBMS_SCHEDULER.DISABLE('SCHEMA_MNTC_JOB');
+
+END;
+
+/
+To enable job:
+
+SQL> exec dbms_scheduler.enable('SCHEMA_MNTC_JOB');
+
+PL/SQL procedure successfully completed.
+
+
+
+
+BEGIN
+
+  DBMS_SCHEDULER.ENABLE('SCHEMA_MNTC_JOB');
+
+END;
+
+/
+Again you can check the job status using below query:
+
+SQL> select job_name, enabled from DBA_SCHEDULER_JOBS WHERE job_name = ‘GATHER_STATS_JOB’;

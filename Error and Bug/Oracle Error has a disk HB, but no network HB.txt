@@ -1,0 +1,4 @@
+[root@<node1> <node1>]# ifdown eth1
+[root@<node1> <node1>]# ifup eth1
+And check that eth1 is looking ok:
+[root@<node1> <node1>]# ifconfig

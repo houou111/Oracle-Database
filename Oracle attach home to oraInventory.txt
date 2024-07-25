@@ -1,0 +1,22 @@
+1. Backup oraInvenroty
+-------------------------------
+mv oraInventory oraInventory.OLD
+
+
+
+2. Create new oraInvenroty
+--------------------------------
+su - grid
+mkdir oraInventory
+
+locate attachHome.sh
+
+su - grid
+./attachHome.sh
+
+su - oracle
+./attachHome.sh
+
+3. Change quyen
+--------------------------------------
+Chmod 777 -R /u01/app/oraInvenroty

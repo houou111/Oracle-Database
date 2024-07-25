@@ -1,0 +1,3 @@
+alter system set cpu_count = xxxx;
+alter system set resource_manager_plan = 'default_plan';
+

@@ -1,0 +1,23 @@
+1. Drop/create dblink in another schema
+--------------------------------------------------
+create or replace procedure VINA_IR_OWNER."procedure_test_dblink"
+is
+begin
+  execute immediate '
+    drop database link DB_CCBS' ;
+end;
+/
+
+begin
+  VINA_IR_OWNER."procedure_test_dblink";
+end;
+/
+
+drop procedure VINA_IR_OWNER."procedure_test_dblink"
+/
+
+
+
+CCBS_SMS
+DBL_CCBS
+DB_CCBS

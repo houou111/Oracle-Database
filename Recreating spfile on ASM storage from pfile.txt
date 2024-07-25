@@ -1,0 +1,39 @@
+
+1. In my case the spfile sits on ASM
+----------------------------------------------------------------------------------
+ASMCMD> ls -l spfile*
+Type Redund Striped Time Sys Name
+N spfileorcl.ora => +DATA/ORCL/PARAMETERFILE/spfile.267.744731331
+
+
+2.what we need to do is creating a pfile from spfile then modify parameter back to valid value, then start db from pfile
+-------------------------------------------------------------------------------------------------------------------------
+
+SQL> create pfile from spfile=’+DATA/orcl/spfileorcl.ora’;
+
+$ vi initorcl.ora
+*.memory_max_target=1583349760
+
+SQL>startup mount –now it will use the pfile
+
+SQL> create spfile=’+DATA/ORCL/spfileorcl.ora’ from pfile;
+File created.
+
+
+3. watch the file name in ASM storage has been changed, which means we just had a new spfile:
+---------------------------------------------------------------------------------------------
+ASMCMD> ls -l spfile*
+Type Redund Striped Time Sys Name
+N spfileorcl.ora => +DATA/ORCL/PARAMETERFILE/spfile.267.744733351
+
+
+4. now change the pfile back to be the “bootstrap” of correct spfile
+--------------------------------------------------------------------
+$ cat initorcl.ora
+spfile=’+DATA/ORCL/spfileorcl.ora’
+
+
+5. restart the database, it will pickup the correct spfile again
+----------------------------------------------------------------
+$ sqlplus / as sysdba
+SQL> startup

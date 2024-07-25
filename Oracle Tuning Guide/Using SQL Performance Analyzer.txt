@@ -1,0 +1,81 @@
+SPA is the tool of choice when you are trying to identify SQL statements that will perform differently when a change is made at the database or OS level. SQL Performance Analyzer
+captures SQL statements into a SQL tuning set (STS) from various sources, including the
+cursor cache, Automatic Workload Repository (AWR), and existing SQL tuning sets. The STS
+is analyzed by executing each SQL statement in isolation. The order of execution depends on the order of the statement in the tuning set. The STS includes bind variable, execution plan,
+and ti t t i f ti With SQL P f A l execution context information. 
+With SQL Performance Analyzer, you will t th STS execute the STS
+and capture performance statistics, make the change to the system and execute the STS
+again, and then compare. SQL Performance Analyzer does not consider the impact that SQL
+statements can have on each other
+
+-> For tuning SQL statement
+- To predict SQL performance deviations
+- To assess impact of change on SQL response time
+- Single, isolated execution of SQL
+- When testing application SQL to identify the set of SQL statements with changed performance
+
+
+
+Step:
+1. Capture SQL workload on production.
+---------------------------------------------------
+exec :tname:= dbms_sqlpa.create_analysis_task( sqlset_name => 'MYSTS', task_name => 'MYSPA');
+
+
+2. Transport the SQL workload to a test system.
+---------------------------------------------------
+exec dbms_sqlpa.execute_analysis_task(task_name => :tname, execution_type => 'TEST EXECUTE', execution_name => 'before');
+
+
+3. Build “before-change” performance data.
+---------------------------------------------------
+set long 100000
+set longchunksize 100000
+set linesize 90
+select dbms_sqlpa.report_analysis_task(task_name => :tname,type=>'text',section=>'summary') FROM dual;
+
+
+4. Make changes.
+---------------------------------------------------
+exec dbms_sqlpa.execute_analysis_task(task_name => :tname, execution_type => 'TEST EXECUTE', execution_name => 'after');
+
+
+5. Build “after-change” performance data.
+---------------------------------------------------
+select dbms_sqlpa.report_analysis_task(task_name => :tname,type=>'text', section=>'summary') FROM dual;
+
+
+
+6. Compare results from steps 3 and 5.
+---------------------------------------------------
+exec dbms sqlpa.execute analysis task(task name => :tname,execution_type => 'COMPARE PERFORMANCE');
+
+BEGIN
+DBMS_SQLPA.EXECUTE_ANALYSIS_TASK(
+task_name => :tname,
+execution_type => 'compare performance',
+execution params _params => dbms advisor arglist _advisor.arglist(
+'execution_name1', 'before',
+'execution_name2', 'after',
+'comparison_metric', 'buffer_gets'));
+END;
+
+
+7. Tune regressed SQL.
+---------------------------------------------------
+select dbms_sqlpa.report_analysis_task(task_name => :tname,type=>'text', section=>'summary') FROM dual;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

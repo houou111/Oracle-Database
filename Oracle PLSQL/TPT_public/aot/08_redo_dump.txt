@@ -1,0 +1,11 @@
+ALTER SYSTEM DUMP LOGFILE '/u01/oradata/LIN11G1/redo01.rdo';
+
+cat LIN11G1_ora_23333.trc | 
+    grep -A 1 " OP:"  | 
+    sed 's/^.*OP://;/^$/d;s/--/%/g' | 
+    tr '\n' ' ' | 
+    tr '%' '\n' | 
+    cut -d: -f1,2 | 
+    sed 's/0x.*$//;s/= .*$//' | 
+    sort | uniq | sort -n
+

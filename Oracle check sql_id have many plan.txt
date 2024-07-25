@@ -1,0 +1,83 @@
+select a.sql_id,number_plan,c.EXECUTIONS,sql_text
+from
+(select sql_id, count(plan_hash_value) number_plan
+from 
+(select distinct sql_id,plan_hash_value
+from dba_hist_sqlstat
+where  executions_delta>0 
+and snap_id > ( select max(snap_id)-40 from dba_hist_sqlstat)
+and PARSING_SCHEMA_NAME='G2FO'
+order by 1
+)
+group by sql_id
+)a, dba_hist_sqltext b,(select sql_id, sum(EXECUTIONS_DELTA) EXECUTIONS
+from dba_hist_sqlstat
+where  executions_delta>0 
+and snap_id > ( select max(snap_id)-40 from dba_hist_sqlstat)
+group by sql_id) c
+where a.sql_id=b.sql_id
+and a.sql_id=c.sql_id
+and number_plan >1
+order by 2 desc;
+
+
+select a.sql_id,number_plan,c.EXECUTIONS,sql_text
+from
+(select sql_id, count(plan_hash_value) number_plan
+from 
+(select distinct sql_id,plan_hash_value
+from dba_hist_sqlstat
+where  executions_delta>0 
+and snap_id > ( select max(snap_id)-20 from dba_hist_sqlstat)
+order by 1
+)
+group by sql_id
+)a, dba_hist_sqltext b,(select sql_id, sum(EXECUTIONS_DELTA) EXECUTIONS
+from dba_hist_sqlstat
+where  executions_delta>0 
+and snap_id > ( select max(snap_id)-20 from dba_hist_sqlstat)
+group by sql_id) c
+where a.sql_id=b.sql_id
+and a.sql_id=c.sql_id
+and number_plan >1
+order by 2 desc;
+
+
+
+
+
+
+select a.sql_id,number_plan,sql_text
+from
+(select sql_id, count(plan_hash_value) number_plan
+from 
+(select distinct sql_id,plan_hash_value
+from dba_hist_sqlstat
+where  executions_delta>0 
+and snap_id > ( select max(snap_id)-20 from dba_hist_sqlstat)
+order by 1
+)
+group by sql_id
+)a, dba_hist_sqltext b
+where a.sql_id=b.sql_id
+order by number_plan desc;
+
+
+
+WITH /* SQL with plan > 1; SQL execution count not correct if instance restarted within interval */ 
+params as (select 1 past_day from dual),
+    date_series as (SELECT rownum+trunc(sysdate)-past_day AS dayid FROM dual, params CONNECT BY level <= past_day),
+    snap_info as (select dayid, min(snap_id)-1 start_of_day_snap_id,  max(snap_id) -1 end_of_day_snap_id from dba_hist_snapshot s inner join date_series d on (trunc(BEGIN_INTERVAL_TIME) = d.dayid) where BEGIN_INTERVAL_TIME >= trunc(sysdate)-(select past_day from params) group by d.dayid),
+    sql_plan_hash as (Select sql_id, plan_hash_value, count(*) From DBA_HIST_SQLSTAT t where PLAN_HASH_VALUE <> 0 and snap_id >= (select min(snap_id) from dba_hist_snapshot where BEGIN_INTERVAL_TIME >= trunc(sysdate)-(select past_day from params)+1) and t.parsing_schema_name not in ('SYS','DBSNMP','MONITOR','ORACLE_OCM','ORDSYS','MDSYS','SYSMAN','SYSTEM') group by sql_id, plan_hash_value having count(*) > 1),
+    sql_plan_hash_by_day as (select dayid, sql_id, plan_hash_value, count(*) From DBA_HIST_SQLSTAT t inner join snap_info sn on (t.snap_id between sn.start_of_day_snap_id and end_of_day_snap_id) where t.PLAN_HASH_VALUE <> 0 and t.parsing_schema_name not in ('SYS','DBSNMP','MONITOR','ORACLE_OCM','ORDSYS','MDSYS','SYSMAN','SYSTEM') group by dayid, sql_id, plan_hash_value),
+    sql_multi_plan as (select sql_id, count(*) plan_cnt from sql_plan_hash group by sql_id having count(*) >1),
+    sqlstat as (SELECT sql.snap_id, sn.BEGIN_INTERVAL_TIME, sn.END_INTERVAL_TIME, sql.dbid, sql.instance_number, sql_id, plan_hash_value, optimizer_cost, optimizer_mode, optimizer_env_hash_value, sharable_mem, loaded_versions, version_count, sql_profile, force_matching_signature, parsing_schema_id, parsing_schema_name, parsing_user_id, fetches_total, fetches_delta, end_of_fetch_count_total, end_of_fetch_count_delta, sorts_total, sorts_delta, executions_total, executions_delta, px_servers_execs_total, px_servers_execs_delta, loads_total, loads_delta, invalidations_total, invalidations_delta, parse_calls_total, parse_calls_delta, disk_reads_total, disk_reads_delta, buffer_gets_total, buffer_gets_delta, rows_processed_total, rows_processed_delta, cpu_time_total, cpu_time_delta, elapsed_time_total, elapsed_time_delta, iowait_total, iowait_delta, clwait_total, clwait_delta, apwait_total, apwait_delta, ccwait_total, ccwait_delta, direct_writes_total, direct_writes_delta, plsexec_time_total, plsexec_time_delta, javexec_time_total, javexec_time_delta, io_offload_elig_bytes_total, io_offload_elig_bytes_delta, io_interconnect_bytes_total, io_interconnect_bytes_delta, physical_read_requests_total, physical_read_requests_delta, physical_read_bytes_total, physical_read_bytes_delta, physical_write_requests_total, physical_write_requests_delta, physical_write_bytes_total, physical_write_bytes_delta, optimized_physical_reads_total, optimized_physical_reads_delta, cell_uncompressed_bytes_total, cell_uncompressed_bytes_delta, io_offload_return_bytes_total, io_offload_return_bytes_delta, bind_data, sql.flag, obsolete_count, DECODE (sql.con_dbid, 0, sql.dbid, sql.con_dbid), DECODE (sql.per_pdb, 0, 0, con_dbid_to_id (DECODE (sql.con_dbid, 0, sql.dbid, sql.con_dbid))) con_id FROM (select * from sys.WRM$_SNAPSHOT where status = 0) sn, sys.WRH$_SQLSTAT sql WHERE sn.snap_id = sql.snap_id AND sn.dbid = sql.dbid AND sn.instance_number = sql.instance_number ),
+    sqt as (select sn.dayid, st.sql_id, plan_hash_value, sum(elapsed_time_delta) elap, sum(cpu_time_delta) cpu, sum(executions_delta) exec_cnt, sum(buffer_gets_delta) bget, sum(disk_reads_delta) dskr, sum(parse_calls_delta) prsc, sum(rows_processed_delta) rw, sum(iowait_delta) iowait, sum(clwait_delta) clwait, sum(apwait_delta) apwait, sum(ccwait_delta) ccwait, sum(invalidations_delta) inval, sum(version_count) vercnt, sum(sharable_mem) shmem, sum(io_offload_elig_bytes_delta) ofby, sum(io_interconnect_bytes_delta) icby, sum(physical_read_bytes_delta + physical_write_bytes_delta) ioby, sum(cell_uncompressed_bytes_delta) unc, sum(io_offload_return_bytes_delta) ofret
+    from sql_multi_plan sp left join sqlstat st on (st.sql_id=sp.sql_id) join snap_info sn on (st.snap_id > sn.start_of_day_snap_id and st.snap_id <= end_of_day_snap_id) 
+       where dbid = (select dbid from v$database)
+                   -- and sql_id          = '8pgxnct4s0szc'
+        group by dayid, st.sql_id, plan_hash_value),
+    exec_by_day as (select dayid, sql_id, plan_hash_value, sum(exec_cnt) exec_cnt, sum(elap) elap_total from sqt group by dayid, sql_id ,plan_hash_value)   
+    select dayid, i.sql_id, sp.plan_cnt, plan_hash_value, i.exec_cnt, case when exec_cnt >0 then round(elap_total/exec_cnt/1000,2) else null end elap_per_exec_ms, st.sql_text from exec_by_day i full outer join sql_multi_plan sp on (i.sql_id=sp.sql_id)
+    left join dba_hist_sqltext st on sp.sql_id=st.sql_id
+    order by sql_id, dayid;

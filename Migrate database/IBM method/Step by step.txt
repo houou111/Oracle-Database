@@ -1,0 +1,12 @@
+Các bước thực hiện cơ bản
+
+1. Purge recyclebin + stop tất cả các job/scheduler job
+
+
+
+
+2. Read only tablespace
+3. Export data, statistic (mig_pre_stats.sh), data consistancy  , table row count (obj_row_count_main.sql)script
+4. Transfer file
+5. Import data,statistic, object status, table row count  script
+6. Compile and check different

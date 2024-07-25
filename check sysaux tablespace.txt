@@ -1,0 +1,17 @@
+
+ALTER SYSTEM SET OPTIMIZER_CAPTURE_SQL_PLAN_BASELINES=true;
+ALTER SYSTEM SET OPTIMIZER_CAPTURE_SQL_PLAN_BASELINES=false;
+
+
+col "Space (M)" for 999,999.99  
+
+SELECT 
+  occupant_name,  
+  round( space_usage_kbytes/1024) "Space (M)",  
+  schema_name, 
+  move_procedure
+FROM 
+  v$sysaux_occupants  
+ORDER BY 
+  1  
+/

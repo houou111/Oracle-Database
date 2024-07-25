@@ -1,0 +1,52 @@
+There are three main causes to sessions waiting on this event.
+
+High hard parses
+A high number of versions of the SQL statement
+Bugs
+
+
+
+Top 10 Foreground Events by Total Wait Time
+
+Event             Waits       Total Wait Time (sec)   Avg Wait   % DB time   Wait Class
+cursor: mutex X   5,698,887   512.1K                  89.86ms    79.6        Concurrency 
+DB CPU                         22.1K                              3.4   
+cursor: mutex S   1,616,430    10.7K                   6.62ms     1.7        Concurrency
+log file sync     546,786     2030.3                   3.71ms      .3        Commit 
+
+
+
+
+
+SQL ordered by Version Count
+
+Version Count  Executions  SQL Id         SQL Module     SQL Text
+4,096                      crxk85q87pug9                 SELECT COUNT(:"SYS_B_0") FROM ... 
+1,426                      9gm72hfpbn449                 SELECT entity_no, date_capture... 
+1,086                      6rkf3uzawjtwk      
+659            118         79msc2b6tcv7a  StmtCOM64.exe  SELECT status, page_count, phy... 
+608                        9ktt2cdn2cndn                 SELECT COUNT(:"SYS_B_0") FROM ... 
+261                        1y4f4wtu63797                 WITH MONITOR_DATA AS (SELECT I... 
+161            33          c7v3v03hs7528  w3wp.exe       SELECT IC.Tran.*, rowidtochar(... 
+
+
+
+
+
+1. Set the following paremeter may fixed the issue:
+
+alter system set "_cursor_obsolete_threshold"=1024
+
+Temporary solution
+Scheduled a job in dbms_scheduler, running every 1 minute, executing dbms_shared_pool.purge for flushing the sql id cursors:
+
+DECLARE
+SQ_ADD VARCHAR2(100) := '';
+BEGIN
+execute immediate 'select address from v$sqlarea where sql_id = ''someSQLIDfoo''' into SQ_ADD;
+dbms_shared_pool.purge (SQ_ADD||',123454321','C');
+END;
+
+3. Flush the shared pool if you are having large no of sql having multiple version count.
+
+alter system flush shared_pool;

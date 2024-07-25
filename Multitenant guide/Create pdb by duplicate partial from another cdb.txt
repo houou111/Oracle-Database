@@ -1,0 +1,79 @@
+1. Check Cdb Database
+----------------------------------------------------------------------
+
+SQL> show pdbs
+ 
+    CON_ID CON_NAME			  OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+	 2 PDB$SEED			  READ ONLY  NO
+	 3 PDB				  READ WRITE NO
+	 4 PDB2 			  READ WRITE NO
+	 5 PDB1 			  READ WRITE NO
+SQL> show con_name
+ 
+CON_NAME
+------------------------------
+CDB$ROOT
+SQL> select name,open_mode from v$database;
+ 
+NAME	  OPEN_MODE
+--------- --------------------
+CDB12	  READ WRITE
+ 
+
+
+2. Create new DB in target server and startup nomount mode
+----------------------------------------------------------------------
+vi initdupcdb.ora 
+
+db_name=dupcdb
+enable_pluggable_database=true
+use_large_pages=only
+sga_target=20G
+
+startup nomount
+
+or dbca
+
+
+
+3.Config tnsname.ora
+----------------------------------------------------------------------
+DUPCDB =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.70.52.135)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = dupcdb)
+		(UR=A)
+    )
+)
+
+
+
+
+
+
+4.Duplicate
+----------------------------------------------------------------------
+alter system archivelog current;
+alter system checkpoint global;
+
+rman target sys/db#dhsxkd#123@idcminh auxiliary sys/db#dhsxkd#123@dupcdb
+
+rman target sys/db#dhsxkd#123@idcminh auxiliary sys/db#dhsxkd#123@dupcdb
+
+
+DUPLICATE TARGET DATABASE to dupcdb pluggable database PDBLDG FROM ACTIVE DATABASE nofilenamecheck;
+
+DUPLICATE DATABASE TO dupcdb SKIP PLUGGABLE DATABASE pdb1, pdb2 FROM ACTIVE DATABASE
+
+DUPLICATE DATABASE TO dupcdb PLUGGABLE DATABASE PDBLDG TABLESPACE pdb1:test_ts FROM ACTIVE DATABASE
+
+DUPLICATE DATABASE TO dupcdb SKIP TABLESPACE PDBLDG:test_ts FROM ACTIVE DATABASE
+
+
+
+
+5. Check
+----------------------------------------------------------------------

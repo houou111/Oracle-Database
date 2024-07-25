@@ -1,0 +1,2103 @@
+Thu Jan  3 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 3 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Thu Jan  3 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 3 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Thu Jan  3 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 3 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Thu Jan  3 17:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 3 17:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan  4 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 4 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan  4 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 4 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan  4 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 4 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan  4 17:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 4 17:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan  5 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 5 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan  5 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 5 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan  5 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 5 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan  5 17:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 5 17:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan  6 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 6 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan  6 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 6 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan  6 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 6 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan  6 17:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 6 17:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan  7 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 7 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan  7 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 7 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan  7 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 7 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan  7 17:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 7 17:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 14:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 15:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SP2-0310: unable to open file "/home/oracle/dbscript/auto_compress_table_part_dwprd.sql"
+SQL> Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 15:52:49 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 15:52:49 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+Enter value for 1: 
+SP2-0546: User requested Interrupt or EOF detected.
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 16:00:01 +07 2019
+/home/oracle/dbscript/auto_compress_part_dwprd.sh: line 6: 1: command not found
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+Enter value for 1: 
+SP2-0546: User requested Interrupt or EOF detected.
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 17:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 17:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708198 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708198',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708538 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708538',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708658 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708658',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P709096 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P709096',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P710218 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P710218',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P710898 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P710898',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711161 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711161',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711498 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711498',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:02:53.99
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan  8 18:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 8 18:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('TCB_DWH_VAS') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE TCB_DWH_VAS.C_TBL_DEBTMNG_THAUCHI MOVE PARTITION SYS_P710728 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_DEBTMNG_THAUCHI',PartName =>'SYS_P710728',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index TCB_DWH_VAS.IDX_DEBT_THAUCHI_RDT rebuild partition SYS_P710728 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.C_TBL_DEBTMNG_THETD MOVE PARTITION SYS_P710730 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_DEBTMNG_THETD',PartName =>'SYS_P710730',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.C_TBL_DEBTMNG_TSDB MOVE PARTITION SYS_P710729 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_DEBTMNG_TSDB',PartName =>'SYS_P710729',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index TCB_DWH_VAS.IDX_DEBTMNG_TSDB rebuild partition SYS_P710729 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.C_TBL_DEBTMNG_TTKH MOVE PARTITION SYS_P710779 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_DEBTMNG_TTKH',PartName =>'SYS_P710779',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index TCB_DWH_VAS.IDX_DEBTMNG_TTKH rebuild partition SYS_P710779 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.C_TBL_DEBTMNG_VAYMON MOVE PARTITION SYS_P710651 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_DEBTMNG_VAYMON',PartName =>'SYS_P710651',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index TCB_DWH_VAS.IDX_DEBTMNG_VAYMON rebuild partition SYS_P710651 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.C_TBL_FT_0006_DATA MOVE PARTITION SYS_P710782 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'C_TBL_FT_0006_DATA',PartName =>'SYS_P710782',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.LOS_CUST_CREDIT_INFO_DAILY MOVE PARTITION SYS_P710811 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'LOS_CUST_CREDIT_INFO_DAILY',PartName =>'SYS_P710811',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.LOS_TBL_CREDITCARD MOVE PARTITION SYS_P710808 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'LOS_TBL_CREDITCARD',PartName =>'SYS_P710808',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.MCO_TCB_NEW MOVE PARTITION SYS_P709025 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'MCO_TCB_NEW',PartName =>'SYS_P709025',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index TCB_DWH_VAS.IDX_MCO_NEW_TK rebuild partition SYS_P709025 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.IDX_MCO_NEW_YM rebuild partition SYS_P709025 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.IDX_MCO_YMONTH_YNGAYBC rebuild partition SYS_P709025 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P708180 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P708180',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P708502 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P708502',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P709038 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P709038',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P710810 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P710810',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P711069 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P711069',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P711428 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P711428',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P711699 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P711699',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_DS_0003 MOVE PARTITION SYS_P716417 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_DS_0003',PartName =>'SYS_P716417',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P708180 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P708502 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P709038 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P710810 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P711069 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P711428 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P711699 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.R_TBL_DS_0003_CON_ID_IND rebuild partition SYS_P716417 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.R_TBL_FI_0003_DATA MOVE PARTITION SYS_P710775 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_FI_0003_DATA',PartName =>'SYS_P710775',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_FT_0019 MOVE PARTITION SYS_P708955 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_FT_0019',PartName =>'SYS_P708955',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_FT_0019 MOVE PARTITION SYS_P716409 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_FT_0019',PartName =>'SYS_P716409',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P708179 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P708179',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P708491 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P708491',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P709032 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P709032',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P710799 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P710799',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P711061 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P711061',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P711426 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P711426',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0002_04 MOVE PARTITION SYS_P711698 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0002_04',PartName =>'SYS_P711698',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_LN_0008 MOVE PARTITION SYS_P710766 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_LN_0008',PartName =>'SYS_P710766',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index TCB_DWH_VAS.IDX_LN0008_RP rebuild partition SYS_P710766 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.R_TBL_OT_0001_DATA MOVE PARTITION SYS_P710827 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_OT_0001_DATA',PartName =>'SYS_P710827',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index TCB_DWH_VAS.IDX_R_TBL_OT_0001_1 rebuild partition SYS_P710827 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.IDX_R_TBL_OT_0001_2 rebuild partition SYS_P710827 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+alter index TCB_DWH_VAS.IDX_R_TBL_OT_0001_3 rebuild partition SYS_P710827 TABLESPACE DWH_VAS_TBS online PARALLEL 4
+ALTER TABLE TCB_DWH_VAS.R_TBL_OT_0022_FN MOVE PARTITION SYS_P710797 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_OT_0022_FN',PartName =>'SYS_P710797',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE TCB_DWH_VAS.R_TBL_OT_0022_QT MOVE PARTITION SYS_P710818 TABLESPACE DWH_VAS_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'TCB_DWH_VAS',TabName =>'R_TBL_OT_0022_QT',PartName =>'SYS_P710818',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 03:43:48.54
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Wed Jan  9 14:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Jan 9 14:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_SOR') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:18.58
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Wed Jan  9 15:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Jan 9 15:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_DMT') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_DMT.FTP_ANL_FCT MOVE PARTITION SYS_P717205 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'FTP_ANL_FCT',PartName =>'SYS_P717205',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE EDW_DMT.RPT_SOPHU_KTTH MOVE PARTITION SYS_P711154 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'RPT_SOPHU_KTTH',PartName =>'SYS_P711154',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_DMT.R_TBL_CU_0011_EBANK MOVE PARTITION SYS_P717378 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'R_TBL_CU_0011_EBANK',PartName =>'SYS_P717378',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_DMT.R_TBL_CU_0013_BCTC_TOTAL MOVE PARTITION SYS_P717423 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'R_TBL_CU_0013_BCTC_TOTAL',PartName =>'SYS_P717423',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_DMT.R_TBL_CU_0013_DV_HBK MOVE PARTITION SYS_P717424 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'R_TBL_CU_0013_DV_HBK',PartName =>'SYS_P717424',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_DMT.R_TBL_DW_CA_0004_PH_THE MOVE PARTITION SYS_P717372 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'R_TBL_DW_CA_0004_PH_THE',PartName =>'SYS_P717372',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_DMT.TBL_BC_DETAIL_ANL_FCT MOVE PARTITION SYS_P700057 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'TBL_BC_DETAIL_ANL_FCT',PartName =>'SYS_P700057',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I02 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I09 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I01 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I03 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I04 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I05 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I06 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I07 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I08 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I11 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I12 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I13 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+-------------------------------------------------------------------
+alter index EDW_DMT.TBL_BC_DETAIL_ANL_FCT_I14 rebuild TABLESPACE EDW_DMT_TBS online PARALLEL 4
+ALTER TABLE EDW_DMT.TBL_BC_POLICY_DIM MOVE PARTITION SYS_P700359 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'TBL_BC_POLICY_DIM',PartName =>'SYS_P700359',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_DMT.TBL_BC_POLICY_DIM_I05 rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+alter index EDW_DMT.TBL_BC_POLICY_DIM_I06 rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+alter index EDW_DMT.TBL_BC_POLICY_DIM_PK rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+alter index EDW_DMT.TBL_BC_POLICY_DIM_I01 rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+alter index EDW_DMT.TBL_BC_POLICY_DIM_I03 rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+alter index EDW_DMT.TBL_BC_POLICY_DIM_I04 rebuild partition SYS_P700359 TABLESPACE EDW_DMT_TBS online PARALLEL 4
+ALTER TABLE EDW_DMT.TBL_PIPE_DPS_MATURITY_BAL MOVE PARTITION SYS_P717415 TABLESPACE EDW_DMT_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_DMT',TabName =>'TBL_PIPE_DPS_MATURITY_BAL',PartName =>'SYS_P717415',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:12:56.30
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Wed Jan  9 16:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Jan 9 16:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('EDW_STG') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642625 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642625',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642595 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642595',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642591 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642591',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642585 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642585',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642588 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642588',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642623 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642623',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642592 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642592',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642589 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642589',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642590 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642590',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642629 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642629',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642619 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642619',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642618 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642618',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642584 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642584',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642626 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642626',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642594 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642594',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642620 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642620',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642621 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642621',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642596 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642596',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642628 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642628',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642586 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642586',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642587 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642587',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642597 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642597',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642622 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642622',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642593 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642593',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642624 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642624',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642627 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642627',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642642 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642642',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642638 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642638',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642640 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642640',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642639 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642639',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642641 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642641',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642633 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642633',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642634 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642634',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642630 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642630',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642631 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642631',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642632 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642632',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642635 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642635',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P642636 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P642636',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652485 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652485',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652486 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652486',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652488 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652488',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652487 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652487',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652483 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652483',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P652484 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P652484',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P660480 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P660480',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P671199 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P671199',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_CCY_PAR MOVE PARTITION SYS_P678519 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_CCY_PAR',PartName =>'SYS_P678519',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627212 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627212',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627213 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627213',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627214 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627214',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627215 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627215',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627216 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627216',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627217 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627217',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627258 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627258',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627259 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627259',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627260 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627260',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627261 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627261',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627262 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627262',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627263 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627263',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627264 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627264',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627265 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627265',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627266 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627266',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627267 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627267',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627268 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627268',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627269 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627269',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627270 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627270',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627271 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627271',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627272 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627272',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627273 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627273',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627274 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627274',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627275 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627275',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627276 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627276',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627277 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627277',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627278 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627278',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627279 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627279',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627280 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627280',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627281 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627281',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627282 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627282',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627283 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627283',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627284 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627284',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627285 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627285',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627286 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627286',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627287 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627287',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627288 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627288',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627289 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627289',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627290 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627290',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627291 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627291',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P627292 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P627292',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P652453 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P652453',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P660481 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P660481',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P671190 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P671190',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN MOVE PARTITION SYS_P678520 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN',PartName =>'SYS_P678520',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627334 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627334',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627370 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627370',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627371 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627371',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627372 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627372',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627373 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627373',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627374 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627374',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627375 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627375',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627376 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627376',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627377 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627377',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627378 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627378',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627379 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627379',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627446 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627446',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627450 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627450',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627457 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627457',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627458 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627458',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627459 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627459',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627461 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627461',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627462 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627462',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627463 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627463',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627464 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627464',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627465 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627465',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627466 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627466',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627434 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627434',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_ALL MOVE PARTITION SYS_P627435 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_ALL',PartName =>'SYS_P627435',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627293 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627293',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627294 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627294',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627295 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627295',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627296 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627296',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627297 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627297',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627298 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627298',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627299 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627299',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627300 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627300',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627301 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627301',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627302 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627302',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627303 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627303',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627304 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627304',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627305 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627305',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627306 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627306',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627307 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627307',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627308 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627308',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627309 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627309',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627310 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627310',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627311 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627311',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627312 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627312',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627313 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627313',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627314 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627314',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627315 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627315',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627316 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627316',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627317 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627317',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627318 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627318',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627319 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627319',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627320 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627320',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627321 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627321',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627322 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627322',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627323 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627323',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627324 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627324',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627325 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627325',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627326 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627326',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627327 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627327',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627328 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627328',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627329 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627329',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627330 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627330',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627331 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627331',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627332 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627332',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P627333 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P627333',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P652490 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P652490',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P660434 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P660434',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P671191 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P671191',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_DAGA_CMS_TXN_MO MOVE PARTITION SYS_P678541 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_DAGA_CMS_TXN_MO',PartName =>'SYS_P678541',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_PCA_FTP_FCT MOVE PARTITION SYS_P717447 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_PCA_FTP_FCT',PartName =>'SYS_P717447',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_PCA_FTP_FCT MOVE PARTITION SYS_P717448 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_PCA_FTP_FCT',PartName =>'SYS_P717448',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P516039 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P516039',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P543679 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P543679',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P545519 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P545519',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P580199 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P580199',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P631159 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P631159',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P631164 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P631164',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P631154 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P631154',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P631179 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P631179',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P662566 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P662566',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P670499 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P670499',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P666498 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P666498',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P671798 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P671798',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P679542 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P679542',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P691111 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P691111',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ACTIVECUST MOVE PARTITION SYS_P703738 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ACTIVECUST',PartName =>'SYS_P703738',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_ACTIVECUST_03 rebuild TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717534 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717534',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717539 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717539',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717538 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717538',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717540 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717540',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717535 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717535',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717537 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717537',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717536 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717536',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717541 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717541',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717542 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717542',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717543 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717543',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ASSET_YYYYMMDD MOVE PARTITION SYS_P717544 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ASSET_YYYYMMDD',PartName =>'SYS_P717544',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717638 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717639 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717640 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717641 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717642 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717643 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717644 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717645 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717646 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717647 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ASSET_03 rebuild partition SYS_P717648 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P516040 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P516040',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P543700 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P543700',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P545520 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P545520',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P580200 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P580200',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P631160 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P631160',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P631165 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P631165',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P631168 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P631168',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P631171 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P631171',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P662618 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P662618',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P670224 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P670224',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P666518 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P666518',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P671763 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P671763',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P679543 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P679543',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P691112 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P691112',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CD_TNX MOVE PARTITION SYS_P703758 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CD_TNX',PartName =>'SYS_P703758',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717129 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717130 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717131 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717132 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717133 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717134 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717135 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717136 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717137 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717138 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CD_TNX_03 rebuild partition SYS_P717139 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P516059 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P516059',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P543699 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P543699',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P545539 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P545539',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P580201 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P580201',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P631161 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P631161',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P631166 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P631166',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P631169 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P631169',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P631172 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P631172',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P662619 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P662619',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P670498 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P670498',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P666519 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P666519',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P671799 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P671799',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P679559 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P679559',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P691113 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P691113',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CURRACCOUNT MOVE PARTITION SYS_P703739 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CURRACCOUNT',PartName =>'SYS_P703739',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717145 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717146 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717147 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717148 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717149 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717150 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717151 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717152 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717153 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717154 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CURRACCOUNT_03 rebuild partition SYS_P717155 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P516041 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P516041',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P543680 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P543680',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P553739 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P553739',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P580659 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P580659',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P631149 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P631149',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P631167 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P631167',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P631156 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P631156',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P631180 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P631180',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P662567 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P662567',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P670484 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P670484',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P666500 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P666500',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P671800 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P671800',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P679545 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P679545',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P691224 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P691224',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_CUS_TOI MOVE PARTITION SYS_P703740 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_CUS_TOI',PartName =>'SYS_P703740',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717179 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717180 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717181 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717182 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717183 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717184 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717185 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717186 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717187 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717188 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_CUS_TOI_03 rebuild partition SYS_P717189 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P516061 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P516061',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P543701 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P543701',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P545540 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P545540',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P580642 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P580642',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P631163 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P631163',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P631152 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P631152',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P631178 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P631178',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P631175 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P631175',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P662570 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P662570',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P670485 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P670485',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P666524 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P666524',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P671765 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P671765',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P679560 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P679560',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P691115 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P691115',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_EBANKING_TNX MOVE PARTITION SYS_P703761 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_EBANKING_TNX',PartName =>'SYS_P703761',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+-------------------------------------------------------------------
+alter index EDW_STG.IND_TMP_SSP_EBANKING_TNX_04 rebuild TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P516062 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P516062',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P543702 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P543702',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P545521 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P545521',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P580204 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P580204',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P631150 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P631150',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P631153 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P631153',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P631170 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P631170',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P631181 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P631181',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P662569 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P662569',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P670500 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P670500',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P666501 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P666501',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P671802 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P671802',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P679561 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P679561',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P691226 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P691226',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_ISSUING MOVE PARTITION SYS_P703760 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_ISSUING',PartName =>'SYS_P703760',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717114 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717115 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717116 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717117 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717118 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717119 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717120 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717121 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717122 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717123 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_04 rebuild partition SYS_P717124 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717098 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717099 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717100 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717101 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717102 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717103 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717104 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717105 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717106 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717107 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_ISSUING_03 rebuild partition SYS_P717108 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717441 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717441',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717443 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717443',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717445 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717445',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717440 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717440',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717442 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717442',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717444 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717444',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717439 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717439',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717446 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717446',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717449 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717449',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717450 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717450',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_LIABILITY_YYYYMMDD MOVE PARTITION SYS_P717451 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_LIABILITY_YYYYMMDD',PartName =>'SYS_P717451',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717627 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717628 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717629 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717630 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717631 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717632 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717633 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717634 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717635 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717636 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_LIABILITY_03 rebuild partition SYS_P717637 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P516060 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P516060',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P543682 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P543682',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P553740 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P553740',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P580203 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P580203',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P631162 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P631162',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P631151 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P631151',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P631157 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P631157',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P631174 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P631174',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P662620 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P662620',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P670483 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P670483',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P666523 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P666523',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P671764 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P671764',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P679546 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P679546',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P691225 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P691225',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_PAYROLL_CURR_COM MOVE PARTITION SYS_P703759 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_PAYROLL_CURR_COM',PartName =>'SYS_P703759',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P666523 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P670483 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P671764 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P679546 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P691225 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_01 rebuild partition SYS_P703759 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P666523 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P670483 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P671764 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P679546 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P691225 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_PAYROLL_CURR_03 rebuild partition SYS_P703759 TABLESPACE EDW_STG_TBS online PARALLEL 4
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P516042 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P516042',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P544479 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P544479',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P543681 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P543681',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P553706 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P553706',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P580202 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P580202',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P631155 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P631155',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P631173 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P631173',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P662568 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P662568',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P670482 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P670482',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P666499 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P666499',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P671801 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P671801',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P679544 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P679544',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P691114 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P691114',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+ALTER TABLE EDW_STG.TMP_SSP_SEGMENT_BUDGET MOVE PARTITION SYS_P703741 TABLESPACE EDW_STG_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'EDW_STG',TabName =>'TMP_SSP_SEGMENT_BUDGET',PartName =>'SYS_P703741',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree
+=>4,CASCADE => TRUE ); END;
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P631155 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P631173 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P662568 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P666499 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P670482 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P671801 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P679544 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P691114 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_01 rebuild partition SYS_P703741 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P631155 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P631173 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P662568 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P666499 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P670482 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P671801 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P679544 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P691114 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_02 rebuild partition SYS_P703741 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P631155 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P631173 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P662568 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P666499 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P670482 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P671801 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P679544 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P691114 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_03 rebuild partition SYS_P703741 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P631155 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P631173 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P662568 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P666499 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P670482 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P671801 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P679544 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P691114 TABLESPACE EDW_STG_TBS online PARALLEL 4
+alter index EDW_STG.IND_TMP_SSP_SEGMENT_BUDGET_04 rebuild partition SYS_P703741 TABLESPACE EDW_STG_TBS online PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 02:00:36.03
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options

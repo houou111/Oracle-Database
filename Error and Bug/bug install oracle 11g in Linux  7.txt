@@ -1,0 +1,48 @@
+1. Bug install grid software: cannot start crs
+---------------------------------------------------------------
+- As ROOT user
+
+vi /etc/systemd/system/ohasd.service
+
+n.b. this should create a file called ohasd.service
+
+- Edit the file ohasd.service and add the following text
+
+[Unit]
+Description=Oracle High Availability Services
+After=syslog.target
+
+[Service]
+ExecStart=/etc/init.d/init.ohasd run >/dev/null 2>&1 Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+- Run the following commands (as root):
+
+systemctl daemon-reload
+systemctl enable oracleasm_scan.service
+systemctl start oracleasm_scan.service
+
+- Now run root.sh from the Grid $OH and it should succeed 
+-----------------------------------------------------------------
+********** Sometime 
+
+
+
+2. Note config asm: disk matches no disk
+----------------------------------------------------------
+- verify disk
+- edit $GRID_HOME/crs/install/crsconfig_params
+asm diskcover string=...
+
+
+
+
+3. bug on install oracle ( 70% link binary)
+
+vi $ORACLE_HOME/sysman/lib/ins_emagent.mk
+
+search for the line $(MK_EMAGENT_NMECTL)
+Change it to $(MK_EMAGENT_NMECTL) -lnnz11

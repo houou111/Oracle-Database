@@ -1,0 +1,8 @@
+export ORACLE_SID=$1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/db
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+
+find /mnt/Backup_57A1/ptslkd/metadata/* -mtime +30 -exec rm -f {} \;
+
+expdp '"/ as sysdba"' full=y content=METADATA_ONLY dumpfile=${ORACLE_SID}_`date "+%Y%m%d"`.dmp directory=bk_metadata logfile=expdp_${ORACLE_SID}_`date "+%Y%m%d"`.log cluster=n exclude=statistics compression=all

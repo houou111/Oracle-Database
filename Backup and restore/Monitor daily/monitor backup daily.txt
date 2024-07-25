@@ -1,0 +1,106 @@
+1. Create directory
+----------------------------------
+mkdir /monitor/
+chown -R oracle:oinstall /monitor
+
+
+2. Create crontab
+----------------------------------
+###Monitor backup
+15 09 * * * /monitor/backupinfo.sh
+20 09 * * * /monitor/monitor.sh
+
+
+
+3. /monitor/backupinfo.sh
+----------------------------------
+#!/bin/bash
+# Oracle Database 12c
+# Start this script as OS user: oracle
+#   This script made by ThanhBD
+ORACLE_SID=$(ps -ef | grep ora_smon_ | grep -v grep |awk -F' ' '{print $8}' |awk -F'_' '{print $3}')
+for i in $ORACLE_SID; do
+ORACLE_SID=$i; export $ORACLE_SID
+export ORACLE_HOME=`/usr/sbin/lsof | grep $ORACLE_SID | grep /u01/app/oracle/product |head -1 | awk -F' ' '{print $9}' | awk -F'/dbs' '{print $1}'`
+export PATH=$ORACLE_HOME/bin:$PATH
+sqlplus / as sysdba  << END
+@/monitor/backupinfo.sql
+END
+done
+
+
+4. /monitor/backupinfo.sql
+----------------------------------
+set headsep off
+set pagesize 0
+set trimspool on
+set linesize 400
+set numwidth 5
+set heading off
+set head off
+set feedback off
+set term off
+set feed off
+col start_time for a20
+col end_time for a20
+col STATUS for a30
+col INPUT_TYPE for a10
+col DOW for a10
+spool /monitor/backup_info.txt append;
+select a. session_recid, a.start_time, a.end_time, a.status, a.input_type, a.dow, a.cf, a.df, a.I0, a.I1, a.L, b.name from (
+select 
+  j.session_recid, to_char(j.start_time, 'yyyy-mm-dd hh24:mi:ss') start_time,
+  to_char(j.end_time, 'yyyy-mm-dd hh24:mi:ss') end_time, j.status, j.input_type,
+  decode(to_char(j.start_time, 'd'), 1, 'Sunday', 2, 'Monday',
+                                     3, 'Tuesday', 4, 'Wednesday',
+                                     5, 'Thursday', 6, 'Friday',
+                                     7, 'Saturday') dow,
+  x.cf, x.df, x.i0, x.i1, x.l,
+  ro.inst_id output_instance
+from V$RMAN_BACKUP_JOB_DETAILS j
+  left outer join (select
+                     d.session_recid, d.session_stamp,
+                     sum(case when d.controlfile_included = 'YES' then d.pieces else 0 end) CF,
+                     sum(case when d.controlfile_included = 'NO'
+                               and d.backup_type||d.incremental_level = 'D' then d.pieces else 0 end) DF,
+                     sum(case when d.backup_type||d.incremental_level in ('I0','D0') then d.pieces else 0 end) I0,
+                     sum(case when d.backup_type||d.incremental_level = 'I1' then d.pieces else 0 end) I1,
+                     sum(case when d.backup_type = 'L' then d.pieces else 0 end) L
+                   from
+                     V$BACKUP_SET_DETAILS d
+                     join V$BACKUP_SET s on s.set_stamp = d.set_stamp and s.set_count = d.set_count
+                   where s.input_file_scan_only = 'NO'
+                   group by d.session_recid, d.session_stamp) x
+    on x.session_recid = j.session_recid and x.session_stamp = j.session_stamp
+  left outer join (select o.session_recid, o.session_stamp, min(inst_id) inst_id
+                   from GV$RMAN_OUTPUT o
+                   group by o.session_recid, o.session_stamp)
+    ro on ro.session_recid = j.session_recid and ro.session_stamp = j.session_stamp
+where j.session_recid = ( select max (j.session_recid) from V$RMAN_BACKUP_JOB_DETAILS j where input_type='DB INCR')
+) a, v$database b;
+spool off
+exit;
+
+
+
+5. /monitor/backupinfo.sql (optional)
+----------------------------------
+#!/bin/bash
+ip=10.70.53.130
+cd /monitor/
+# Thu muc backup level 0; 
+i0_path='/backup/'            
+# Thu muc backup level 1
+i1_path='/backup/'         
+while IFS=' ' read -r SES_RECID ST_TIME STIME_MN END_TIME ETIME_MN STATUS DB INPUT_TYPE DOW CTRL_FILE BK_FULL LEVEL0 LEVEL1 BK_LOG INST_NAME; do
+# check incremental level 0 backup
+if [ $(($LEVEL0)) -gt 0 ];
+then echo "DB_${INST_NAME}_$ip Full_Backup_$DOW, status=$STATUS, start_time=$ST_TIME $STIME_MN, end_time=$END_TIME $ETIME_MN, BackupFull_Dir=$i0_path" >> /monitor/backup.log
+fi
+# check incremental level 1 backup
+if [ $(($LEVEL1)) -gt 0 ];
+then echo "DB_${INST_NAME}_$ip Incremental_Backup_$DOW, status=$STATUS, start_time=$ST_TIME $STIME_MN, end_time=$END_TIME $ETIME_MN, BackupIncre_Dir=$i1_path" >> /monitor/backup.log
+fi
+done < backup_info.txt
+# Clear file backupinfo
+echo > /monitor/backup_info.txt

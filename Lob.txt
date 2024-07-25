@@ -1,0 +1,42 @@
+
+--------Concept----------
+ALWAYS - All LOBs in ASSM tablespaces are created as SecureFile LOBs. LOBs in non-ASSM tablespaces are created as BasicFile LOBs unless explicitly specified as SecureFiles. BasicFile storage options are ignored, and SecureFile default storage options are used for any unspecified options.
+FORCE - All LOBs are created as SecureFile LOBs. If the LOB is being created in a non-ASSM tablespace, an error is thrown. BasicFile storage options are ignored, and SecureFile default storage options are used for any unspecified options.
+PERMITTED - The default setting, which allows SecureFile LOB storage when the SECUREFILE keyword is used. The default storage method is BASICFILE.
+NEVER - Creation of SecureFile LOBs is not permitted.
+IGNORE - Prevent creation of SecureFile LOBs, and ignore any errors associated with SecureFile storage options.
+The parameter is dynamic, so it can be set using the ALTER SYSTEM command.
+
+SQL> ALTER SYSTEM SET db_securefile = 'FORCE';
+SQL> ALTER SYSTEM SET db_securefile = 'IGNORE';
+
+
+
+--------Check basic
+select distinct a.OWNER, a.TABLE_NAME, a.PARTITIONED, a.tablespace_name
+from dba_lobs a
+where SECUREFILE='NO'
+and (a.OWNER not like '%SYS%' AND a.OWNER not like '%XDB%')
+order by 4;
+
+
+select a.OWNER, a.TABLE_NAME, sum(bytes/1024/1024/1024)
+from dba_lobs a,dba_segments b
+where a.OWNER=b.OWNER
+and a.TABLE_NAME=b.SEGMENT_NAME
+and SECUREFILE='NO'
+and a.OWNER not like '%SYS%' and a.OWNER not like '%XDB%' and a.OWNER not in ('OUTLN','PA_AWR_USER')      
+group by a.OWNER,a.TABLE_NAME
+order by 1,2
+
+select a.OWNER, a.TABLE_NAME, sum(bytes/1024/1024/1024)
+from dba_lobs a,dba_segments b
+where a.OWNER=b.OWNER
+and a.TABLE_NAME=b.SEGMENT_NAME
+and SECUREFILE='NO'
+and a.owner='DWH2013'
+group by a.OWNER,a.TABLE_NAME
+order by 3
+
+
+

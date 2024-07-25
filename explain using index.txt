@@ -1,0 +1,38 @@
+set lines 200
+set pages 200
+set long 999999
+select sql_id,sql_fulltext,parsing_schema_name,elapsed_time,MODULE,FIRST_LOAD_TIME
+from v$sql
+where upper(sql_fulltext) like '%CMS_TRANSACTION%'
+order by first_load_time desc;
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where upper(sql_text) like '%CMS_TRANSACTION%'
+
+
+dba_hist_sqltext
+
+
+
+select * from dba_hist_sql_plan where sql_id=''
+
+
+
+select * from dba_hist_sql_plan where sql_id=''
+
+select to_char(begin_interval_time,'yyyymmdd hh24'), sum( executions_delta) executions from DBA_HIST_SQLSTAT a, dba_hist_snapshot b
+where sql_id='7uas45vamu5bv' --and a.snap_id=78712
+and a.snap_id||a.dbid||a.instance_number=b.snap_id||b.dbid||b.instance_number
+group by to_char(begin_interval_time,'yyyymmdd hh24')
+order by 1 desc
+
+select to_char(begin_interval_time,'yyyymmdd hh24'), sum(elapsed_time_delta) total_elapsed_time  from DBA_HIST_SQLSTAT a, dba_hist_snapshot b
+where sql_id='1q58jzc9ych5g' --and a.snap_id=78712
+and a.snap_id||a.dbid||a.instance_number=b.snap_id||b.dbid||b.instance_number
+group by to_char(begin_interval_time,'yyyymmdd hh24')
+order by 1 desc

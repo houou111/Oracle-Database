@@ -1,0 +1,24 @@
+ps -ef | grep ora_smon_ | grep -v grep | cut -b58-70
+
+
+for INST_NAME1 in $(ps -ef | grep ora_smon_ | grep -v grep | cut -b58-70); do 
+    full_resource=$(crsctl status resource -w "((NAME = $resource) AND (LAST_SERVER = $(hostname -s)))" -f)
+    INST_NAME=$(echo "$full_resource" | grep ^USR_ORA_INST_NAME | awk -F= '{ print $2 }')
+    ORA_HOME=$(echo "$full_resource" | grep ^ORACLE_HOME= | awk -F= '{ print $2 }')
+    printf "%s:%s:N\n" $INST_NAME $ORA_HOME 
+done
+
+
+for resource in $(crsctl status resource -w "((TYPE = ora.database.type) AND (LAST_SERVER = $(hostname -s)))" | grep ^NAME | sed 's/.*=//'); do 
+    full_resource=$(crsctl status resource -w "((NAME = $resource) AND (LAST_SERVER = $(hostname -s)))" -f)
+    inst_name=$(echo "$full_resource" | grep ^USR_ORA_INST_NAME | awk -F= '{ print $2 }')
+    ORA_HOME=$(echo "$full_resource" | grep ^ORACLE_HOME= | awk -F= '{ print $2 }')
+    printf "%s:%s:N\n" $INST_NAME $ORA_HOME 
+done
+
+
+ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1
+
+dsggdb:/u01/app/oracle/product/12.1.0/dbhome_1:N
+hbktest:/u01/app/oracle/product/11.2.0/dbhome_1:N
+stgdb:/u01/app/oracle/product/12.2.0/dbhome_1:N

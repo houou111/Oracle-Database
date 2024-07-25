@@ -1,0 +1,934 @@
+[oracle@dw02db01 bin]$ asmcmd lsdg
+State    Type    Rebal  Sector  Block       AU   Total_MB   Free_MB  Req_mir_free_MB  Usable_file_MB  Offline_disks  Voting_files  Name
+MOUNTED  NORMAL  N         512   4096  4194304  176160768  84793000          2097152        41347924              0             N  DATA_DG/
+MOUNTED  NORMAL  N         512   4096  4194304    2422560   2420960            34608         1193176              0             Y  DBFS_DG/
+MOUNTED  NORMAL  N         512   4096  4194304   61252800  29510836           729200        14390818              0             N  HST_DG/
+
+------------
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_STMT_ACCT_CR','SYS_LOB0000097766C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0000097766C00003$$                                                                                                                       .006958008
+FBNK_STMT_ACCT_CR                                                                                                                               98.2178345
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments  where segment_name in ('F_RECORD_LOCK','SYS_LOB0091491649C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0091491649C00003$$                                                                                                                       .000061035
+F_RECORD_LOCK                                                                                                                                   45.9140625
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments  where segment_name in ('FBNK_ACCT_ENT_TODAY','SYS_LOB0057075596C00002$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0057075596C00002$$                                                                                                                       17.0722656
+FBNK_ACCT_ENT_TODAY                                                                                                                             .693359375
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0057075596C00002$$                                                                                                                         .1484375
+FBNK_ACCT_ENT_TODAY                                                                                                                              .19519043
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments  where segment_name in ('FBNK_AI_CORP_TXN_LOG','SYS_LOB0074880407C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_AI_CORP_TXN_LOG                                                                                                                            19.0351563
+SYS_LOB0074880407C00003$$                                                                                                                        .00012207
+error
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments  where segment_name in ('F_JOB_TIMES','SYS_LOB0058131958C00002$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0058131958C00002$$                                                                                                                       16.6203003
+F_JOB_TIMES                                                                                                                                       .0078125
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments  where segment_name in ('FBNK_PD_BALANCES','SYS_LOB0000128082C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0000128082C00003$$                                                                                                                       25.1825562
+FBNK_PD_BALANCES                                                                                                                                         1
+
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0000128082C00003$$                                                                                                                       7.85644531
+FBNK_PD_BALANCES                                                                                                                                         1
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('F_ATM_REVERSAL','SYS_LOB0000098809C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+F_ATM_REVERSAL                                                                                                                                  58.7695313
+SYS_LOB0000098809C00003$$                                                                                                                        .00012207
+###error
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_RE_CONSOL_PROFIT','SYS_LOB0057506304C00002$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_RE_CONSOL_PROFIT                                                                                                                           88.1633301
+SYS_LOB0057506304C00002$$                                                                                                                        .00012207
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_RE_CONSOL_PROFIT                                                                                                                           14.0098267
+SYS_LOB0057506304C00002$$                                                                                                                        .00012207
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_TIETKIEMGIAODUC','SYS_LOB0000125361C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_TIETKIEMGIAODUC                                                                                                                                     1
+SYS_LOB0000125361C00003$$                                                                                                                       24.9794922
+
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_TIETKIEMGIAODUC                                                                                                                            1.05194092
+SYS_LOB0000125361C00003$$                                                                                                                       1.13085938
+
+
+
+SYS@cobr14dr1 > select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_TIETKIEMGIAODUC','SYS_LOB0000125361C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_TIETKIEMGIAODUC                                                                                                                                     1
+SYS_LOB0000125361C00003$$                                                                                                                       24.9912109
+
+
+09:55:55 SYS@cobr14dr1 > @move1.sql
+09:57:52 SYS@cobr14dr1 > 
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('F_DE_O_HANDOFF','SYS_LOB0057507931C00002$$') group by segment_name;
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+F_DE_O_HANDOFF																																46.2783203125
+SYS_LOB0057507931C00002$$																													2.8427734375
+
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+F_DE_O_HANDOFF                                                                                                                                   19.852417
+SYS_LOB0057507931C00002$$                                                                                                                       1.12109375
+
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_AI_USER_LOG','SYS_LOB0074878577C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_AI_USER_LOG                                                                                                                                97.0302734
+SYS_LOB0074878577C00003$$                                                                                                                       2.98339844
+
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_AI_USER_LOG                                                                                                                                38.6877441
+SYS_LOB0074878577C00003$$                                                                                                                       1.16308594
+
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_EB_C005','SYS_LOB0000087876C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0000087876C00003$$                                                                                                                       55.0722656
+FBNK_EB_C005                                                                                                                                     42.263916
+
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0000087876C00003$$                                                                                                                       1.05566406
+FBNK_EB_C005                                                                                                                                    54.2333374
+
+
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_DEPO_WITHDRA','SYS_LOB0058131618C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_DEPO_WITHDRA                                                                                                                               69.1914063
+SYS_LOB0058131618C00003$$                                                                                                                       21.8974609
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_DEPO_WITHDRA                                                                                                                               31.4824219
+SYS_LOB0058131618C00003$$                                                                                                                       10.2890625
+
+========================================
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_ACCT_ACTIVITY','SYS_LOB0000091150C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_ACCT_ACTIVITY                                                                                                                              80.9072266
+SYS_LOB0000091150C00003$$                                                                                                                       6.03613281
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_ACCT_ACTIVITY                                                                                                                              98.6499634
+SYS_LOB0000091150C00003$$                                                                                                                       1.12011719
+
+========================================
+========================================
+========================================
+
+alter table T24LIVE.FBNK_MM_M000 move tablespace DATAT24LIVE parallel 4;
+alter table T24LIVE.FBNK_MM_M000 move LOB (XMLRECORD) STORE AS (TABLESPACE DATAT24LIVE) parallel 4; 
+
+
+
+select 'alter table T24LIVE.FBNK_RE_C018 move partition '||partition_name||' TABLESPACE DATAT24LIVE parallel 4;' 
+from dba_tab_partitions where table_name='FBNK_RE_C018'
+
+select 'alter table T24LIVE.FBNK_RE_C018 move partition '||partition_name||' LOB (XMLRECORD) STORE AS (TABLESPACE DATAT24LIVE) parallel 4 ;' 
+from dba_tab_partitions where table_name='FBNK_RE_C018'
+
+select * from dba_lobs where table_name='FBNK_PM_TRAN_ACTIVITY';
+
+
+ select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_PM_TRAN_ACTIVITY','SYS_LOB0000097773C00003$$')
+ group by segment_name
+ 
+ 
+
+ select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_MM_M000','SYS_LOB0000097248C00003$$')
+ group by segment_name
+
+ select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_STMT_PRINTED','SYS_LOB0101988492C00002$$')
+ group by segment_name;
+ 
+ 
+  select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_TXN_LOG_TCB','SYS_LOB0058131689C00003$$')
+ group by segment_name;
+ 
+ 
+   select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_RE_C018','SYS_LOB0060110883C00002$$')
+ group by segment_name;
+ 
+ 
+ SYS@testcob2 >  select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_STMT_PRINTED_INI','SYS_LOB0101988492C00002$$')
+  2   group by segment_name;
+  
+  
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)||'mb',
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "reclaimable space % " 
+from dba_tables where round((blocks*8/1024),2)>0
+--and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>30
+--and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and table_name='FBNK_RE_C018'
+  
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0101988492C00002$$                                                                                                                       8.49609375
+FBNK_STMT_PRINTED_INI                                                                                                                           24.8173828
+
+SYS@testcob2 >  select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_STMT_PRINTED','SYS_LOB0101988492C00002$$')
+   group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_STMT_PRINTED                                                                                                                               24.9326172
+SYS_LOB0101988492C00002$$                                                                                                                       8.49609375
+
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_PM_TRAN_ACTIVITY','SYS_LOB0000097773C00003$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_PM_TRAN_ACTIVITY                                                                                                                           115.275085
+SYS_LOB0000097773C00003$$                                                                                                                       5.88671875
+
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_MM_M000','SYS_LOB0000097248C00003$$')
+   group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_MM_M000                                                                                                                                    136.637695
+SYS_LOB0000097248C00003$$                                                                                                                       1.10351563
+
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_TXN_LOG_TCB','SYS_LOB0058131689C00003$$')
+group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0058131689C00003$$                                                                                                                       .407226563
+FBNK_TXN_LOG_TCB                                                                                                                                .523071289
+
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_RE_C018','SYS_LOB0060110883C00002$$')
+group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_RE_C018                                                                                                                                    101.712891
+SYS_LOB0060110883C00002$$                                                                                                                       1.03417969
+
+SYS@testcob2 > 
+ 
+ ==========================================
+
+
+ select segment_name,sum(bytes/1024/1024/1024) from dba_segments where segment_name in ('FBNK_STMT_PRINTED','SYS_LOB0057074694C00002$$')
+ group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_STMT_PRINTED                                                                                                                               24.8144531
+SYS_LOB0057074694C00002$$                                                                                                                       386.799805
+
+
+SYS@testcob1 >   /
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+FBNK_STMT_PRINTED                                                                                                                               24.5408936
+SYS_LOB0057074694C00002$$                                                                                                                          8.84375
+
+
+===FBNK_STMT_PRINTED_INI===========================================
+CREATE TABLE T24LIVE.FBNK_STMT_PRINTED_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    HIGH
+  CACHE
+  NOLOGGING)
+NOCOMPRESS 
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARTITION BY HASH (RECID)
+  PARTITIONS 128
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.PK_FBNK_STMT_PRINTED_INI ON T24LIVE.FBNK_STMT_PRINTED_INI
+(RECID)
+  TABLESPACE INDEXT24LIVE
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL 
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_STMT_PRINTED_INI ADD (
+  CONSTRAINT PK_FBNK_STMT_PRINTED_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX LOCAL
+  ENABLE VALIDATE);
+
+
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_STMT_PRINTED',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+Elapsed: 02:05:30.37
+--cobr14dr Elapsed: 00:03:13.51
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, FALSE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+
+
+
+===================================
+CREATE TABLE T24LIVE.FBNK_RE_C019_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    HIGH
+  CACHE
+  LOGGING
+      STORAGE    (
+                  INITIAL          104K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  MAXEXTENTS       UNLIMITED
+                  PCTINCREASE      0
+                  BUFFER_POOL      DEFAULT
+                  FLASH_CACHE      DEFAULT
+                  CELL_FLASH_CACHE DEFAULT
+                 ))
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.PK_FBNK_RE_C019_INI ON T24LIVE.FBNK_RE_C019_INI
+(RECID)
+LOGGING
+TABLESPACE INDEXT24LIVE
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_RE_C019_INI ADD (
+  CONSTRAINT PK_FBNK_RE_C019_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX T24LIVE.PK_FBNK_RE_C019_INI
+  ENABLE VALIDATE);
+
+  
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_RE_C019',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_TXN_LOG_TCB',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'FBNK_RE_C019','FBNK_RE_C019_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+8h39
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, FALSE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+
+
+=======================================
+CREATE TABLE T24LIVE.FBNK_ACCT_ENT_TODAY_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    MEDIUM
+  CACHE
+  NOLOGGING)
+NOCOMPRESS 
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    40
+INITRANS   100
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARTITION BY HASH (RECID)
+  PARTITIONS 16
+CACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.FBNK_ACCT_ENT_TODAY_P1_PK_INI ON T24LIVE.FBNK_ACCT_ENT_TODAY_INI
+(RECID)
+  TABLESPACE INDEXT24LIVE
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL 
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_ACCT_ENT_TODAY_INI ADD (
+  CONSTRAINT FBNK_ACCT_ENT_TODAY_P1_PK_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX LOCAL
+  ENABLE VALIDATE);
+  
+  
+
+  
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_ACCT_ENT_TODAY',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'FBNK_ACCT_ENT_TODAY','FBNK_ACCT_ENT_TODAY_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+8h39
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'FBNK_ACCT_ENT_TODAY','FBNK_ACCT_ENT_TODAY_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, TRUE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'FBNK_ACCT_ENT_TODAY','FBNK_ACCT_ENT_TODAY_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'FBNK_ACCT_ENT_TODAY','FBNK_ACCT_ENT_TODAY_INI');
+END;
+/  
+
+
+==========================================================
+CREATE TABLE T24LIVE.FBNK_RE_CONSOL_PROFIT_INI
+(
+  RECID      VARCHAR2(255 BYTE)                 NOT NULL,
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    MEDIUM
+  CACHE
+  LOGGING
+      STORAGE    (
+                  INITIAL          104K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  PCTINCREASE      0
+                 ))
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    40
+INITRANS   100
+MAXTRANS   255
+LOGGING 
+NOCOMPRESS 
+CACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.PK2_FBNK_RE_CONSOL_PROFIT_INI ON T24LIVE.FBNK_RE_CONSOL_PROFIT_INI
+(RECID)
+LOGGING
+TABLESPACE INDEXT24LIVE
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_RE_CONSOL_PROFIT_INI ADD (
+  CONSTRAINT PK2_FBNK_RE_CONSOL_PROFIT_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX T24LIVE.PK2_FBNK_RE_CONSOL_PROFIT_INI
+  ENABLE VALIDATE);
+
+  
+  
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_RE_CONSOL_PROFIT',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'FBNK_RE_CONSOL_PROFIT','FBNK_RE_CONSOL_PROFIT_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+
+Elapsed: 00:24:17.32
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'FBNK_RE_CONSOL_PROFIT','FBNK_RE_CONSOL_PROFIT_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, TRUE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'FBNK_RE_CONSOL_PROFIT','FBNK_RE_CONSOL_PROFIT_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'FBNK_RE_CONSOL_PROFIT','FBNK_RE_CONSOL_PROFIT_INI');
+END;
+/ 
+
+
+================================================
+CREATE TABLE T24LIVE.FBNK_IC_C010_INI
+(
+  RECID      VARCHAR2(255 BYTE)                 NOT NULL,
+  XMLRECORD  SYS.XMLTYPE
+)
+XMLTYPE XMLRECORD STORE AS CLOB (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  RETENTION
+  CACHE
+  LOGGING
+  INDEX       LOBI_FBNK_IC_C010_INI
+      STORAGE    (
+                  INITIAL          64K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  MAXEXTENTS       UNLIMITED
+                  PCTINCREASE      0
+                  BUFFER_POOL      DEFAULT
+                  FLASH_CACHE      DEFAULT
+                  CELL_FLASH_CACHE DEFAULT
+                 ))
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.PK_FBNK_IC_C010_INI ON T24LIVE.FBNK_IC_C010_INI
+(RECID)
+LOGGING
+TABLESPACE INDEXT24LIVE
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+           )
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_IC_C010_INI ADD (
+  CONSTRAINT PK_FBNK_IC_C010_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX T24LIVE.PK_FBNK_IC_C010_INI
+  ENABLE VALIDATE);
+
+  
+
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_IC_C010',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'FBNK_IC_C010','FBNK_IC_C010_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+8h39
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'FBNK_IC_C010','FBNK_IC_C010_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, TRUE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'FBNK_IC_C010','FBNK_IC_C010_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'FBNK_IC_C010','FBNK_IC_C010_INI');
+END;
+/ 
+
+
+===================================
+CREATE TABLE T24LIVE.F_LCR_AUTO_WRK_TCB_INI
+(
+  RECID      VARCHAR2(255 BYTE)                 NOT NULL,
+  XMLRECORD  SYS.XMLTYPE
+)
+XMLTYPE XMLRECORD STORE AS CLOB (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  NOCACHE
+  LOGGING
+      STORAGE    (
+                  INITIAL          104K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  MAXEXTENTS       UNLIMITED
+                  PCTINCREASE      0
+                 ))
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.PK_F_LCR_AUTO_WRK_TCB_INI ON T24LIVE.F_LCR_AUTO_WRK_TCB_INI
+(RECID)
+LOGGING
+TABLESPACE INDEXT24LIVE
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+           )
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.F_LCR_AUTO_WRK_TCB_INI ADD (
+  CONSTRAINT PK_F_LCR_AUTO_WRK_TCB_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX T24LIVE.PK_F_LCR_AUTO_WRK_TCB_INI
+  ENABLE VALIDATE);  
+  
+  
+  
+
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','F_LCR_AUTO_WRK_TCB',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE', 'F_LCR_AUTO_WRK_TCB','F_LCR_AUTO_WRK_TCB_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/
+8h39
+
+--4. Copy dependent objects. (Automatically create any triggers, indexes, materialized view logs, grants, and constraints
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS(
+   'T24LIVE', 'F_LCR_AUTO_WRK_TCB','F_LCR_AUTO_WRK_TCB_INI',DBMS_REDEFINITION.cons_use_pk,
+    TRUE, TRUE, TRUE, TRUE, num_errors, FALSE);
+END;
+/
+
+--5. Query the DBA_REDEFINITION_ERRORS view to check for errors.
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+--6. Synchronize the interim table 
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE', 'F_LCR_AUTO_WRK_TCB','F_LCR_AUTO_WRK_TCB_INI');
+END;
+/
+
+--7. Complete the redefinition
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE', 'F_LCR_AUTO_WRK_TCB','F_LCR_AUTO_WRK_TCB_INI');
+END;
+/   

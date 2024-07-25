@@ -1,0 +1,82 @@
+
+12c
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+BEGIN 
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a, dba_users b 
+		WHERE  a.OWNER=b.USERNAME
+		AND b.ORACLE_MAINTAINED='N') 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER table "'|| r.OWNER||'"."'|| r.table_name|| '" move TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' PARALLEL 2'; 
+
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+
+11g
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+BEGIN 
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a, dba_users b 
+		WHERE  a.OWNER=b.USERNAME
+		AND a.OWNER not in ('SYS','SYSTEM','WMSYS','MDSYS','OLAPSYS','ORDDATA','XDB','DBSNMP','SYSMAN','SOE','AUTOX')) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER table "'|| r.OWNER||'"."'|| r.table_name|| '" move TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' PARALLEL 2'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+BEGIN 
+  FOR r IN (select OWNER,table_name,DEFAULT_TABLESPACE FROM dba_tables a, dba_users b 
+		WHERE  a.OWNER=b.USERNAME
+		AND a.OWNER in ('SOE','AUTOX'))
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'ALTER table "'|| r.OWNER||'"."'|| r.table_name|| '" move TABLESPACE '|| r.DEFAULT_TABLESPACE|| ' PARALLEL 2'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+SOE                            202.037537
+AUTOX                          191.784729
+
+
+
+
+SELECT 'alter table '||OWNER||'.'||table_name ||' move  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2 ;'
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB')
+order by OWNER;
+
+
+
+
+SELECT 'alter table '||OWNER||'.'||table_name ||' move  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2 ;'
+FROM   dba_tables a,  dba_users b
+WHERE  a.OWNER=b.USERNAME
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB','SOE','AUTOX')
+order by OWNER;
+
+
+
+

@@ -1,0 +1,25 @@
+select s.sowner MV_OWNER, s.tname MV_NAME, p.name TABLESPACE 
+from sys.obj$ o, sys.tab$ t, sys.user$ u, sys.snap$ s , sys.ts$ p 
+where t.ts#=p.ts# and p.name='GOFLX' 
+and t.obj#=o.obj# and o.owner#=u.user# and u.name=s.sowner and o.name=s.tname 
+order by 1,2; 
+
+select o.owner, o.object_name index_name, o.object_type, sq.mv_owner,sq.mv_name,sq.tablespace 
+from dba_objects o, 
+(select i.obj#,s.sowner MV_OWNER, s.tname MV_NAME, p.name TABLESPACE 
+from sys.obj$ o, sys.tab$ t, sys.ind$ i, sys.user$ u, sys.snap$ s,sys.ts$ p where i.ts#=p.ts# and p.name='GOFLX' 
+and i.bo#=t.obj# and t.obj#=o.obj# and o.owner#=u.user# and u.name=s.sowner and o.name=s.tname ) sq 
+where sq.obj#=o.object_id 
+order by 1,2,3; 
+
+
+drop materialized view DWH2014.CMS_ATH_PREFIX;
+drop materialized view DWH2014.CMS_ATH_RETAILER;
+drop materialized view DWH2014.CMS_CRD_PERSON;
+drop materialized view DWH2014.CMS_LOG_BUFFER_VIEW;
+drop materialized view DWH2014.CMS_TER_COMMON;
+drop materialized view DWH2014.CMS_TLG_ATMHOPPER;
+
+
+drop tablespace including contents and datafiles;
+

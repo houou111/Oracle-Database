@@ -1,0 +1,7 @@
+select distinct SBDATE 
+from BOJBSV.SBCLDR
+where 1=1
+and SBDATE between add_months(trunc(sysdate,'mm'),-1) and last_day(add_months(trunc(sysdate,'mm'),-1))
+and holiday='N'
+order by SBDATE desc
+FETCH FIRST 3 ROWS ONLY;

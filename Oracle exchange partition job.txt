@@ -1,0 +1,20 @@
+LOG_MASTER -> LOG_MASTER_EXCHANGE -> LOG_MASTER_HISTORY
+
+TABLE LOG_MASTER.ACCOUNT_TEST
+
+CREATE TABLE DWH2017.ACCOUNT_TEST (get DDL)
+
+grant select, alter on DWH.ACCOUNT_TEST to DWH2017 ;
+
+CREATE TABLE DWH2017.temp_table as select * from DWH.ACCOUNT_TEST
+
+alter table DWH.ACCOUNT_TEST exchange partition SYS_P49388 with table DWH2017.temp_table INCLUDING INDEXES WITHOUT VALIDATION ;
+
+alter table DWH2017.ACCOUNT_TEST exchange partition SYS_P51179 with table DWH2017.temp_table INCLUDING INDEXES WITHOUT VALIDATION ;
+
+
+if select count(*) from DWH2017.temp_table ==0
+drop DWH2017.temp_table
+
+
+

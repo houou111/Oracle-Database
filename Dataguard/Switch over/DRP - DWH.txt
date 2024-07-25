@@ -1,0 +1,214 @@
+Note: 
+1: kiem tra id cua user dung trong dbfs
+2: DRP tranh' cob cua T24
+3: copy file tnsname tu DC sang DR
+4: check patch version : opatch lsinventory
+5: Check file in sshd
+
+
+###MANUAL SWITCHOVER DC ->DR
+1.Stop APP + GG
+-----------------------------------------------------------------
+- Stop GG trên T24 (stop pump)
+- Stop GG trên DWH (stop replicate, mgr)
+
+
+2.Stop DBFS moupoint
+-----------------------------------------------------------------
+. grid
+crsctl stop res dbfs11g -f
+crsctl stop res dbfs_gg -f
+
+
+3.DRP DWH vs DBFS (PCADR)
+-----------------------------------------------------------------
+a.Make sure all connection is stop
+
+b.Check status
+---primary
+SELECT SWITCHOVER_STATUS FROM V$DATABASE;
+
+---standby
+SELECT SWITCHOVER_STATUS FROM V$DATABASE;
+
+
+c.Switchover
+---primary
+select open_mode, database_role from v$database;
+ALTER DATABASE COMMIT TO SWITCHOVER TO PHYSICAL STANDBY WITH SESSION SHUTDOWN;
+
+
+---standby
+ALTER DATABASE COMMIT TO SWITCHOVER TO PRIMARY WITH SESSION SHUTDOWN;
+ALTER DATABASE OPEN read write;
+shutdown immediate;
+startup
+select open_mode, database_role from v$database;
+
+
+d.Verify status DG
+---primary
+SHUTDOWN abort;
+STARTUP MOUNT;
+select open_mode, database_role from v$database;
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD# from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+---standby
+alter system archive log current;
+
+---primary
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD#   from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+
+4.Start DBFS in cluster
+-----------------------------------------------------------------
+. grid
+crsctl start res dbfs2017
+
+
+5.modifry tnsname.ora
+-----------------------------------------------------------------
+- DWPRD
+- ACI
+change dw01-scan to dw02-scan
+change dwprd to dwprddr
+
+
+6.Start GG
+-----------------------------------------------------------------
+a. Start GG trên T24 
+	Modify pump parameter to new ip (10.99.1.131 for DC, 10.99.1.161 for DR)
+	start mgr, start extract, start pump
+b. Start GG trên DWH 
+	Modify replicate parameter to new ip tnsname (dwprd for DC, dwprddr for DR)
+	start mgr, start replicate
+	
+	
+
+7.grant permission to file in dbfs
+-----------------------------------------------------------------
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/Split_MV_To_SV.java
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/CollectionCentralBank.txt
+chmod 777 /dbfs_direct/CSV_FILES/CollectionCentralBank.txt
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/banca/mnl_tcb/mvl_master_filelist.txt
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/banca/mnl_tcb/mnl_tcb_bk/load-out.txt
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/banca/mnl_tcb/mnl_tcb_bk/load-err.txt
+chmod 777 -R /dbfs_direct/CSV_FILES/banca/
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/new3.sql
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/vna
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/ETL_DIR
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/EXPDIR
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/PRD_FILES
+chown -R oracle:oinstall /dbfs_direct/CSV_FILES/Z_RPT_FILES
+
+
+
+
+8. Add static route (DR site)
+-----------------------------------------------------------------
+route add -net 192.168.11.32 netmask 255.255.255.255 gw 10.99.1.1
+route add -net 192.168.11.31 netmask 255.255.255.255 gw 10.99.1.1
+route add -net 192.168.11.154 netmask 255.255.255.255 gw 10.99.1.1
+
+
+9. Copy file ssh
+-----------------------------------------------------------------
+[oracle@dw01db01 ~]$ scp /home/oracle/.ssh/sftp_techcom dw02db01:/home/oracle/.ssh/
+[oracle@dw01db01 ~]$ scp /home/oracle/.ssh/sftp_techcom dw02db02:/home/oracle/.ssh/
+
+
+
+
+10.Optional
+-----------------------------------------------------------------
+Create TEMPORARY tablespace Temp01_tbs tempfile '+RECOC1' size 1G autoextend on next 1G TABLESPACE GROUP TEMPGROUP_SRV;
+Create TEMPORARY tablespace Temp02_tbs tempfile '+RECOC1' size 1G autoextend on next 1G TABLESPACE GROUP TEMPGROUP_SRV;
+Create TEMPORARY tablespace Temp03_tbs tempfile '+RECOC1' size 1G autoextend on next 1G TABLESPACE GROUP TEMPGROUP_SRV;
+Create TEMPORARY tablespace Temp04_tbs tempfile '+RECOC1' size 1G autoextend on next 1G TABLESPACE GROUP TEMPGROUP_SRV;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp01_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp02_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp03_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;  
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G;
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+Alter tablespace Temp04_tbs add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+
+alter user GG12C                          temporary tablespace TEMPGROUP_SRV;
+alter user T24REP                         temporary tablespace TEMPGROUP_SRV;
+alter user TCB_DWH_HOMEBANKING_OPERATOR   temporary tablespace TEMPGROUP_SRV;

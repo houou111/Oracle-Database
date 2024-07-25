@@ -1,0 +1,27 @@
+  CREATE OR REPLACE TRIGGER "SYS"."LOGON_TRIG"
+ AFTER
+ LOGON
+ ON DATABASE
+DECLARE
+    v_ip   VARCHAR2 (1000);
+BEGIN
+    SELECT   ip_address
+      INTO   v_ip
+      FROM   sys.table_ip
+     WHERE   username = SYS_CONTEXT ('USERENV', 'SESSION_USER');
+
+    IF pck_admin.checkip (SYS_CONTEXT ('USERENV', 'IP_ADDRESS'),
+                                    v_ip) or SYS_CONTEXT ('USERENV', 'HOST') in
+('billing1','billing2','billing3','billing4')
+    THEN
+        NULL;
+    ELSE
+        raise_application_error (
+            -20001,
+            'You are not allowed to connect to the database!');
+    END IF;
+EXCEPTION
+    -- Nhung account ko duoc khai bao trong bang table_ip
+    WHEN NO_DATA_FOUND THEN null;
+END;
+ALTER TRIGGER "SYS"."LOGON_TRIG" ENABLE

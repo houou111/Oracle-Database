@@ -1,0 +1,95 @@
+Create a file called "/etc/init.d/dbora" as the root user, containing the following.
+
+#!/bin/sh
+# chkconfig: 345 99 10
+# description: Oracle auto start-stop script.
+#
+# Set ORA_OWNER to the user id of the owner of the 
+# Oracle database software.
+
+ORA_OWNER=oracle
+
+case "$1" in
+    'start')
+        # Start the Oracle databases:
+        # The following command assumes that the oracle login 
+        # will not prompt the user for any values
+        # Remove "&" if you don't want startup as a background process.
+        su $ORA_OWNER -c "/home/oracle/scripts/startup.sh >> /home/oracle/scripts/startup_shutdown.log 2>&1" &
+
+        touch /var/lock/subsys/dbora
+        ;;
+    'stop')
+        # Stop the Oracle databases:
+        # The following command assumes that the oracle login 
+        # will not prompt the user for any values
+        su $ORA_OWNER -c "/home/oracle/scripts/shutdown.sh >> /home/oracle/scripts/startup_shutdown.log 2>&1"
+        rm -f /var/lock/subsys/dbora
+        ;;
+esac
+Use the chmod command to set the privileges to 750.
+
+chmod 750 /etc/init.d/dbora
+Associate the dbora service with the appropriate run levels and set it to auto-start using the following command.
+
+chkconfig --add dbora
+Next, we must create the "startup.sh" and "shutdown.sh" scripts in the "/home/oracle/scripts". First create the directory.
+
+# mkdir -p /home/oracle/scripts
+# chown oracle.oinstall /home/oracle/scripts
+The "/home/oracle/scripts/startup.sh" script should contain the following commands.
+
+#!/bin/bash
+
+export TMP=/tmp
+export TMPDIR=$TMP
+export PATH=/usr/sbin:/usr/local/bin:$PATH
+export ORACLE_HOSTNAME=ol6-121.localdomain
+export ORACLE_UNQNAME=db12c
+
+export ORACLE_SID=db12c
+ORAENV_ASK=NO
+. oraenv
+ORAENV_ASK=YES
+
+# Start Listener
+lsnrctl start
+
+# Start Database
+sqlplus / as sysdba << EOF
+STARTUP;
+EXIT;
+EOF
+The "/home/oracle/scripts/shutdown.sh" script is similar.
+
+#!/bin/bash
+
+export TMP=/tmp
+export TMPDIR=$TMP
+export PATH=/usr/sbin:/usr/local/bin:$PATH
+export ORACLE_HOSTNAME=ol6-121.localdomain
+export ORACLE_UNQNAME=db12c
+
+export ORACLE_SID=db12c 
+ORAENV_ASK=NO
+. oraenv
+ORAENV_ASK=YES
+
+# Stop Database
+sqlplus / as sysdba << EOF
+SHUTDOWN IMMEDIATE;
+EXIT;
+EOF
+
+# Stop Listener
+lsnrctl stop
+Note. You could move the environment settings into the "dbora" file or into a separate file that is sourced in the startup and shutdown script. I kept it local to the script so you could see the type of things that need to be set in case you have to write a script to deal with multiple installations, instances and listeners.
+
+Make sure the permissions and ownership of the files is correct.
+
+# chmod u+x /home/oracle/scripts/startup.sh /home/oracle/scripts/shutdown.sh
+# chown oracle.oinstall /home/oracle/scripts/startup.sh /home/oracle/scripts/shutdown.sh
+The listener and database will now start and stop automatically with the machine. You can test them using the following command as the "root" user.
+
+# service dbora start
+# service dbora stop

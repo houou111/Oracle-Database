@@ -1,0 +1,13 @@
+SQL> alter session set "_ORACLE_SCRIPT"=true;
+
+Session altered.
+
+SQL> drop user mysecond;
+
+User dropped.
+
+SQL> alter session set "_ORACLE_SCRIPT"=false;
+
+Session altered.
+
+SQL>

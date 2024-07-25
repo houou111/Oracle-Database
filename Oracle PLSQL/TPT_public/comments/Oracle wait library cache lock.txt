@@ -1,0 +1,10 @@
+1) V$SESSION_WAIT.PARAMETER1 is the lib cache object handle we are trying to lock (@sw.sql)
+
+  -> V$EVENT_NAME PARAMETER1 shows that ( @sed "library cache lock" )
+
+2) Query X$KGLLK by matching X$KGLLK.KGLHDADR to V$SESSION_WAIT.PARAMETER1
+
+  -> find the "holder" sid
+
+3) Use sw, snapper on the SID holding the lock to see what its doing
+

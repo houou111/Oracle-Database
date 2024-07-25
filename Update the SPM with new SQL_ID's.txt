@@ -1,0 +1,139 @@
+https://jira.qpass.com/internal/browse/SSEDBA-13688
+
+
+=================
+
+
+
+SQL> select name,open_mode,host_name from v$database,v$instance;
+
+NAME      OPEN_MODE            HOST_NAME
+--------- -------------------- ----------------------------------------------------------------
+CINPRD1   READ WRITE           att-pet-oracle-3a.sea1.qpass.net
+
+SQL>
+
+
+Create the tunning set 
+=============================
+
+SQL> BEGIN
+DBMS_SQLTUNE.create_sqlset (
+sqlset_name  => 'SQLTUNINGSET_FEB2016',
+description  => 'SQLTUNINGSET_FEB2016');
+END;
+/
+
+
+
+
+SELECT NAME,OWNER,CREATED,STATEMENT_COUNT FROM DBA_SQLSET  where  NAME='SQLTUNINGSET_JAN2016';
+
+
+
+Load the sql_id's and plan hash value into tunning set
+=============================================================
+
+PRIMARY att-pet-oracle-3a.sea1.qpass.net@ $$ $$cat load_sql2stats.sh
+conn_string="/ as sysdba"
+tuning_set=SQLTUNINGSET_FEB2016
+begin_snap_id=194180
+end_snap_id=199959
+
+cat sql_for_spm.txt | awk '{print $1 " " $2 }' | while read sqlid phv
+do
+  echo "Loading sql id " $sqlid  " ===> " $phv "into Tuning Set"
+
+echo "
+declare
+baseline_ref_cur DBMS_SQLTUNE.SQLSET_CURSOR;
+begin
+open baseline_ref_cur for
+select VALUE(p) from table(
+DBMS_SQLTUNE.SELECT_WORKLOAD_REPOSITORY($begin_snap_id, $end_snap_id,'sql_id='||CHR(39)||'${sqlid}'||CHR(39)||' and plan_hash_value=${phv}',NULL,NULL,NULL,NULL,NULL,NULL,'ALL')) p;
+DBMS_SQLTUNE.LOAD_SQLSET('${tuning_set}', baseline_ref_cur);
+end;
+/
+" | sqlplus ${conn_string}
+
+done
+
+
+
+
+
+Create Stagging table 
+==========================
+
+
+BEGIN
+DBMS_SQLTUNE.create_stgtab_sqlset
+(table_name => 'PERF_TEST_SPM2',
+schema_name => 'QPADMIN'
+);
+END;
+/
+
+
+ BEGIN
+DBMS_SQLTUNE.pack_stgtab_sqlset (sqlset_name => 'SQLTUNINGSET_JAN2016',
+sqlset_owner => 'SYS',
+staging_table_name => 'PERF_TEST_SPM2',
+staging_schema_owner => 'QPADMIN'
+);
+END;
+/
+
+
+
+
+Take the export of stagging table 
+===================================================
+
+
+PRIMARY att-pet-oracle-3a.sea1.qpass.net@ $$expdp dumpfile=SPM_TABLE_new.dmp logfile=SPM_TABLE.log tables=QPADMIN.PERF_TEST_SPM2
+
+
+============================================================================================================================================================================================
+
+Import stagging table into PROD database
+============================================
+
+att-prod-oracle-3c.slc2.qpass.net@oracle[cinprd1] $ $$impdp dumpfile=SPM_TABLE_new.dmp logfile=IMP_SPM_TABLE_new.log
+
+
+Unpack the tunning set
+===================================
+
+
+SQL>
+SQL> BEGIN
+DBMS_SQLTUNE.unpack_stgtab_sqlset (sqlset_name => 'SQLTUNINGSET_FEB2016',
+sqlset_owner => 'SYS',
+replace => TRUE,
+staging_table_name => 'PERF_TEST_SPM2',
+staging_schema_owner => 'QPADMIN'
+);
+END;
+/ 
+
+
+
+Upload SQL_ID and plan into SPM
+==================================================
+
+SQL> set serveroutput on
+declare
+my_int pls_integer;
+begin
+  my_int := dbms_spm.load_plans_from_sqlset (
+  sqlset_name => 'SQLTUNINGSET_FEB2016',
+  sqlset_owner => 'SYS',
+  fixed => 'YES',
+  enabled => 'YES');
+  DBMS_OUTPUT.PUT_line(my_int);
+end;
+/
+
+
+SQL> select count(*) from dba_sql_Plan_baselines;

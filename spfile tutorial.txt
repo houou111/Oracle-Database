@@ -1,0 +1,16 @@
+
+I. Change parameter settings using the ALTER SYSTEM SET command from any instance:
+-----------------------------------------------------------------------------------
+ALTER SYSTEM SET <dpname> SCOPE=BOTH sid='<sid|*>';
+
+ALTER SYSTEM SET <dpname> SCOPE=SPILE sid='<sid|*>';
+
+
+II. Use current or future *.<dpname> settings for <sid>:
+-----------------------------------------------------------------------------------
+ALTER SYSTEM RESET <dpname> SCOPE=MEMORY sid='<sid>';
+
+
+III. Remove an entry from your SPFILE:
+-----------------------------------------------------------------------------------
+ALTER SYSTEM RESET <dpname> SCOPE=SPFILE sid='<sid|*>';

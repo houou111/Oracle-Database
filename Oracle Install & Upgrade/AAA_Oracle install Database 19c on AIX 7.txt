@@ -1,0 +1,434 @@
+﻿1. IP: 
+hostnamectl set-hostname dc-ids-db-02
+------------------------------------------------------------------------
+echo "
+#PUBLIC
+10.236.212.50   ho-2f-g2db-01
+10.236.212.51   ho-2f-g2db-02
+
+#PRIVATE
+10.236.191.33   ho-2f-g2db-01-priv
+10.236.191.34   ho-2f-g2db-02-priv
+
+
+10.236.212.52   ho-2f-g2db-01-vip
+10.236.212.53   ho-2f-g2db-02-vip
+10.236.212.54   ho-2f-g2db-scan
+#10.236.212.55   ho-2f-g2db-scan
+#10.236.212.56   ho-2f-g2db-scan
+" >> /etc/hosts 
+
+
+echo "
+#PUBLIC
+10.236.212.50   ha-2f-g2db-01
+10.236.212.51   ha-2f-g2db-02
+
+#PRIVATE
+10.236.191.33   ha-2f-g2db-01-priv
+10.236.191.34   ha-2f-g2db-02-priv
+
+
+10.236.212.52   ha-2f-g2db-01-vip
+10.236.212.53   ha-2f-g2db-02-vip
+10.236.212.54   ha-2f-g2db-scan
+#10.236.212.55   ha-2f-g2db-scan
+#10.236.212.56   ha-2f-g2db-scan
+
+###OEM 13c
+10.253.130.31 ha-oem-db-v
+
+" >> /etc/hosts 
+	
+	
+2. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+bos.adt.base
+bos.adt.lib
+bos.adt.libm
+bos.perf.libperfstat
+bos.perf.perfstat
+bos.perf.proctools
+xlC.aix61.rte.13.1.2.0 or later
+xlC.rte.13.1.2.0 or later
+xlfrte
+
+
+3. Config ntp server - dns server 
+---------------------------------------------------------------------------
+
+
+
+
+
+4. +CONFIG KERNEL PARAMETERS:  DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+echo "
+if [ -f /usr/sbin/no ] ; then
+/usr/sbin/no -o udp_sendspace=65536
+/usr/sbin/no -o udp_recvspace=655360
+/usr/sbin/no -o tcp_sendspace=65536
+/usr/sbin/no -o tcp_recvspace=65536
+/usr/sbin/no -o rfc1323=1
+/usr/sbin/no -o sb_max=4194304
+/usr/sbin/no -o ipqmaxlen=512
+fi
+" >> /etc/rc.net
+
+
+
+# vmo -p -o minperm%=3 
+# vmo -p -o maxperm%=90 
+# vmo -p -o maxclient%=90 
+# vmo -p -o strict_maxclient=1 
+# vmo -p -o strict_maxperm=0
+# ioo -o aio_maxreqs=65536
+# /usr/sbin/chdev -l sys0 -a maxuproc=16384
+
+
+
+vi /etc/security/limits
+
+oracle:
+	fsize = -1
+	core = -1
+	cpu = -1
+	data = -1
+	rss = -1
+	stack = -1
+	nofiles = -1
+
+
+
+vi /etc/ssh/sshd_config
+
+LoginGraceTime 0
+X11Forwarding yes
+
+
+
+
+--- Check
+schedo -L | egrep "NAME|vpm_xvcpus"
+
+lsattr -E -l sys0 | egrep "ncargs|maxuproc|minpout|maxpout"
+
+for i in {minperm%,maxperm%,maxclient%,strict_maxclient,strict_maxperm,page_steal_method,vmm_klock_mode}; do vmo -L $i; done
+
+no -a | egrep "ipqmaxlen|rfc1323|sb_max|tcp_sendspace|tcp_recvspace|udp_sendspace|udp_recvspace|tcp_ephemeral_low|tcp_ephemeral_high|udp_ephemeral_low|udp_ephemeral_high"
+
+
+
+
+
+5. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+mkgroup -'A' id='1000' adms='root' oinstall
+mkgroup -'A' id='1100' adms='root' asmadmin
+mkgroup -'A' id='1200' adms='root' dba
+mkgroup -'A' id='1300' adms='root' asmdba
+
+mkuser id='1101' pgrp='oinstall' groups='dba,asmdba,asmadmin' home='/home/oracle' oracle
+
+chuser capabilities=CAP_NUMA_ATTACH,CAP_BYPASS_RAC_VMM,CAP_PROPAGATE oracle
+
+mkuser id='1102' pgrp='oinstall' groups='dba,asmdba,asmadmin' home='/home/grid' grid
+
+
+
+6. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# Rename the original scp.
+mv /usr/bin/scp /usr/bin/scp.orig
+
+vi /usr/bin/scp
+
+/usr/bin/scp.orig -T $*
+
+chmod 555 /usr/bin/scp
+
+After installation:
+
+ mv /usr/bin/scp.orig /usr/bin/scp
+
+
+
+
+9. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+mkdir -p /u01/app/19c/grid
+mkdir -p /u01/app/oracle
+mkdir -p /u01/app/grid
+mkdir -p /u01/setup
+mkdir -p /home/oracle/bin
+mkdir -p /home/oracle/dbscript/log
+mkdir -p /u01/app/oracle/product/19c/dbhome_1
+chmod -R 775 /u01
+chown -R oracle:oinstall /u01
+chown -R oracle:oinstall /home/oracle/bin
+chown -R oracle:oinstall /home/oracle/dbscript
+
+
+
+10. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
+echo " 
+export TZ=Asia/Ho_Chi_Minh
+export ORACLE_UNQNAME=g2foho
+export ORACLE_SID=g2foho1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=\$ORACLE_BASE/diag/rdbms/\$ORACLE_UNQNAME/\$ORACLE_SID/trace
+alias alert=\"tail -300f \$DUMP/alert_\$ORACLE_SID.log\"
+alias s=\"sqlplus / as sysdba\"
+env | grep ORACLE
+umask 022
+
+export SHLIB_PATH=\$ORACLE_HOME/lib32:\$ORACLE_HOME/rdbms/lib32
+export CLASSPATH=\$ORACLE_HOME/JRE:\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib/:\$ORACLE_HOME/network/jlib
+export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
+
+export PS1='<oracle@'`hostname`:'$PWD>$ '
+" >> /home/oracle/.profile
+
+
+echo "
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/19c/grid
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP_ASM=\$ORACLE_BASE/diag/asm/+asm/\$ORACLE_SID/trace
+export DUMP_CRS=\$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log
+alias s=\"sqlplus / as sysdba\"
+alias alert_asm=\"tail -300f \$DUMP_ASM/alert_\$ORACLE_SID.log\"
+alias alert_crs=\"tail -300f \$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log\"
+env | grep ORACLE
+export PS1='<root@'`hostname`:'$PWD>$ '
+" >> /.profile
+
+
+echo "
+export ORACLE_SID=+ASM1
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/19c/grid
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP_ASM=\$ORACLE_BASE/diag/asm/+asm/\$ORACLE_SID/trace
+export DUMP_CRS=\$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log
+alias s=\"sqlplus / as sysdba\"
+alias alert_asm=\"tail -300f \$DUMP_ASM/alert_\$ORACLE_SID.log\"
+alias alert_crs=\"tail -300f \$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log\"
+env | grep ORACLE
+" >> /home/oracle/bin/grid
+
+
+echo "
+export ORACLE_UNQNAME=g2foho
+export ORACLE_SID=g2foho1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=\$ORACLE_BASE/diag/rdbms/\$ORACLE_UNQNAME/\$ORACLE_SID/trace
+alias alert=\"tail -300f \$DUMP/alert_\$ORACLE_SID.log\"
+alias s=\"sqlplus / as sysdba\"
+env | grep ORACLE
+" >> /home/oracle/bin/g2fo
+
+
+echo "
+export ORACLE_HOME=/u01/app/agent13c/agent_13.4.0.0.0
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=/u01/app/agent13c/agent_inst/sysman/log
+" >> /home/oracle/bin/em13c
+
+
+chown -R oracle:oinstall /u01
+chown -R oracle:oinstall /home/oracle
+
+
+11. CONFIG Disk DONE ON NODE1 AND NODE2 WITH ROOT:
+---------------------------------------------------------------------------
+cfgmgr
+lspv -u
+
+hdisk2          none                                None                                3321360050768108004FEE80000000000000004214503IBMfcp                  d8ddd2d8-549c-d8f3-4c8f-15d2a63e53c4
+hdisk3          none                                None                                3321360050768108004FEE80000000000000104214503IBMfcp                  d8a2336f-2ba9-e88a-5bec-c336095a98fc
+hdisk4          none                                None                                3321360050768108004FEE80000000000000204214503IBMfcp                  a3768a65-898a-42c1-5af0-f0aa7243d92b
+hdisk5          none                                None                                3321360050768108004FEE80000000000000304214503IBMfcp                  eef77550-61fc-f6a6-96f0-b7c4e6d78386
+
+hdisk2          none                                None                                3321360050768108004FEE80000000000000004214503IBMfcp                  d8ddd2d8-549c-d8f3-4c8f-15d2a63e53c4
+hdisk3          none                                None                                3321360050768108004FEE80000000000000104214503IBMfcp                  d8a2336f-2ba9-e88a-5bec-c336095a98fc
+hdisk4          none                                None                                3321360050768108004FEE80000000000000204214503IBMfcp                  a3768a65-898a-42c1-5af0-f0aa7243d92b
+hdisk5          none                                None                                3321360050768108004FEE80000000000000304214503IBMfcp                  eef77550-61fc-f6a6-96f0-b7c4e6d78386
+
+
+getconf DISK_SIZE /dev/hdisk2
+getconf DISK_SIZE /dev/hdisk3
+getconf DISK_SIZE /dev/hdisk4
+getconf DISK_SIZE /dev/hdisk5
+
+
+rendev -l hdisk2 -n asmcrs01
+rendev -l hdisk3 -n asmdata01
+rendev -l hdisk4 -n asmdata02
+rendev -l hdisk5 -n asmfra01
+
+
+lsattr -E -l asmcrs01 | grep reserve
+lsattr -E -l asmdata01 | grep reserve
+lsattr -E -l asmdata02 | grep reserve
+lsattr -E -l asmfra01 | grep reserve
+
+
+chdev -l asmcrs01  -a reserve_policy=no_reserve
+chdev -l asmdata01 -a reserve_policy=no_reserve
+chdev -l asmdata02 -a reserve_policy=no_reserve
+chdev -l asmfra01  -a reserve_policy=no_reserve
+
+
+/usr/sbin/chdev -l asmcrs01  -a pv=clear
+/usr/sbin/chdev -l asmdata01 -a pv=clear
+/usr/sbin/chdev -l asmdata02 -a pv=clear
+/usr/sbin/chdev -l asmfra01  -a pv=clear
+
+
+chown oracle:asmadmin /dev/rasmcrs01 
+chown oracle:asmadmin /dev/rasmdata01
+chown oracle:asmadmin /dev/rasmdata02
+chown oracle:asmadmin /dev/rasmfra01 
+
+
+chmod 660 /dev/rasmcrs01 
+chmod 660 /dev/rasmdata01
+chmod 660 /dev/rasmdata02
+chmod 660 /dev/rasmfra01 
+
+
+cd /dev
+ls -ltr |grep  rasm
+
+
+
+12. INSTALLATION
+---------------------------------------------------------------------------
+
+# Rename the original scp.
+mv /usr/bin/scp /usr/bin/scp.orig
+
+# Create a new file </usr/bin/scp>.
+vi /usr/bin/scp
+
+# Add the below line to the new created file </usr/bin/scp>.
+/usr/bin/scp.orig -T $*
+
+# Change the file permission.
+chmod 555 /usr/bin/scp
+After installation:
+
+mv /usr/bin/scp.orig /usr/bin/scp
+
+
+
+
+
+. grid
+cd /u01/setup
+unzip V982588-01.zip -d $ORACLE_HOME/
+unzip p6880880_122010_AIX64-5L.zip -d $ORACLE_HOME/
+
+
+
+*** Open GUI
+---------------------------------------------------------------------------
+xauth list
+ho-2f-g2db-01/unix:10  MIT-MAGIC-COOKIE-1  4a5ff219a00cc0a490294f762d0205fe
+
+
+#echo $DISPLAY
+localhost:10.0
+
+su  - oracle
+
+export DISPLAY=localhost:10
+xauth add ha-2f-g2db-01/unix:10  MIT-MAGIC-COOKIE-1  bae613a71e970aa7a3a5ec9129c4b5ab
+
+
+
+
+
+-----------------------------
+Enable X11 Forwarding:
+# vi /etc/ssh/sshd_config
+X11Forwarding yes
+LoginGraceTime 0
+X11DisplayOffset 10
+X11UseLocalhost yes
+XauthLocation /usr/bin/X11/xauth
+
+Restart sshd:
+# stopsrc -s sshd;startsrc -s sshd
+
+
+# su - <user>
+$ xauth add ha-ids-krx-db-u01/unix:11  MIT-MAGIC-COOKIE-1  43bd0749b765c8857f99411b914f2e80
+$ export DISPLAY=localhost:10.0
+
+
+Please wait ...Error in CreateOUIProcess(): 13
+
+
+export TMP=/u01/setup
+export TMPDIR=$TMP
+
+.grid
+cd $ORACLE_HOME
+unzip V982068-01.zip
+rm -rf OPatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+
+chmod +x gridSetup.sh
+./gridSetup.sh
+
+
+$ ./gridSetup.sh -applyRU /u01/setup/34130714
+
+$ ./runInstaller -applyRU /u01/setup/34130714
+
+
+13. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+
+patch to lastest patch
+
+
+
+14. Setup housekeeping - Backup
+---------------------------------------------------------------------------
+root
+crontab -e
+05 05 * * * sync; echo 1 > /proc/sys/vm/drop_caches
+
+
+crontab -e
+
+###House keeping Database
+00 04 * * * sh /home/oracle/dbscript/clean_db_logs.sh >> /home/oracle/dbscript/log/clean_db_logs.out 2>&1
+
+###Backup database
+00 23 * * 1,5 sh /home/oracle/dbscript/backup_db12c_lv0.sh dbsh1
+00 23 * * 0,2,3,4,6 sh /home/oracle/dbscript/backup_db12c_lv1.sh dbsh1
+
+
+
+15. setup sqlnet.ora
+---------------------------------------------------------------------------
+SQLNET.ALLOWED_LOGON_VERSION_SERVER = 10
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT = 10
+SQLNET.EXPIRE_TIME = 10
+SQLNET.INBOUND_CONNECT_TIMEOUT=600
+
+

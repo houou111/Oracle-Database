@@ -1,0 +1,20 @@
+1. Total waits for an event
+V$ACTIVE_SESSION_HISTORY
+
+2. Waits for a wait event class by a session
+V$SESSION_WAIT_CLASS
+
+3. Waits for an event by a session
+V$SESSION_EVENT
+
+4. Activity of recent active sessions
+Activity of recent active sessions
+
+5. Last 10 wait events for each active session
+V$SESSION_WAIT_HISTORY
+
+6. Events for which active sessions are waiting
+V$SESSION_WAIT
+
+7. Identify SQL statements impacted by interconnect latencies
+V$SQLSTATS

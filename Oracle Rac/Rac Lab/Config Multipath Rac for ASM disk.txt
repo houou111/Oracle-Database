@@ -1,0 +1,140 @@
+
+13. CONFIG MULTIPATH: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++ START SERVICE
+# service multipathd start
+# chkconfig multipathd on
+
++ CHECK STATUS
+# /sbin/mpathconf
+multipath is enabled
+find_multipaths is disabled
+user_friendly_names is enabled
+dm_multipath module is not loaded
+multipathd is chkconfiged on
+
++ DERTERMINE UUID OF DEVICE
+# scsi_id --whitelisted /dev/sdb
+36f01faf000dcece1000006515313efb1
+# scsi_id --whitelisted /dev/sdc
+36f01faf000dcec820000083d5313ec47
+# scsi_id --whitelisted /dev/sdd
+36f01faf000dcece1000006535313efe5
+# scsi_id --whitelisted /dev/sde
+36f01faf000dcec820000083f5313ec8b
+
++ CONFIG /etc/multipath.conf
+# vi /etc/multipath.conf
+blacklist  {
+        devnode "^(ram|raw|loop|fd|md|dm-|sr|scd|st)[0-9]*"
+        devnode "^hd[a-z]"
+}
+multipaths {
+        multipath {
+                wwid                    36f01faf000dcece1000006515313efb1
+                alias                   crs1
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcec820000083d5313ec47
+                alias                   crs2
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcece1000006535313efe5
+                alias                   crs3
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+        multipath {
+                wwid                    36f01faf000dcec820000083f5313ec8b
+                alias                   data
+                path_grouping_policy    multibus
+                path_selector           "round-robin 0"
+                failback                immediate
+                rr_weight               priorities
+                no_path_retry           5
+        }
+}
+
++ RESTART MULTIPATHD SERVICE:
+# service multipathd restart
+Stopping multipathd daemon: [  OK  ]
+Starting multipathd daemon: [  OK  ]
+
++ CHECK MULTIPATH SETUP
+# multipath -ll
+crs3 (36f01faf000dcece1000006535313efe5) dm-9 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:2:0 sdd 8:48 active ready running
+crs2 (36f01faf000dcec820000083d5313ec47) dm-8 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:1:0 sdc 8:32 active ready running
+crs1 (36f01faf000dcece1000006515313efb1) dm-7 DELL,MD36xxf
+size=1.0G features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:0:0 sdb 8:16 active ready running
+data (36f01faf000dcec820000083f5313ec8b) dm-10 DELL,MD36xxf
+size=1.5T features='1 queue_if_no_path' hwhandler='0' wp=rw
+`-+- policy='round-robin 0' prio=1 status=active
+  `- 3:0:3:0 sde 8:64 active ready running
+
++ DETERMINE PARTITIONED ALIAS
+#  dmsetup ls
+crs3    (253:9)
+crs2    (253:8)
+crs1    (253:7)
+data    (253:10)
+vg_meddb01-lv_setup     (253:3)
+vg_meddb01-lv_home      (253:4)
+vg_meddb01-lv_tmp       (253:5)
+vg_meddb01-lv_u01       (253:6)
+vg_meddb01-lv_swap      (253:1)
+vg_meddb01-lv_root      (253:0)
+vg_meddb01-lv_var       (253:2)
+
++ EDIT /etc/udev/rules.d/12-dm-permissions.rules FILE
+# vi /etc/udev/rules.d/12-dm-permissions.rules
+ENV{DM_NAME}=="crs1", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="crs2", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="crs3", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="data", SYMLINK+="iscsi/oraasm-$env{DM_NAME}", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+
++ RESTART MULTIPATH SERVICE
+# service multipathd restart
+ok
+Stopping multipathd daemon: [  OK  ]
+Starting multipathd daemon: [  OK  ]
+
++ CHECK PERMISSION
+# ls -l /dev/dm*
+brw-rw---- 1 root disk     253,  0 Mar  4 17:29 /dev/dm-0
+brw-rw---- 1 root disk     253,  1 Mar  4 17:29 /dev/dm-1
+brw-rw---- 1 grid asmadmin 253, 10 Mar  5 08:57 /dev/dm-10
+brw-rw---- 1 root disk     253,  2 Mar  4 17:29 /dev/dm-2
+brw-rw---- 1 root disk     253,  3 Mar  4 17:29 /dev/dm-3
+brw-rw---- 1 root disk     253,  4 Mar  4 17:29 /dev/dm-4
+brw-rw---- 1 root disk     253,  5 Mar  4 17:29 /dev/dm-5
+brw-rw---- 1 root disk     253,  6 Mar  4 17:29 /dev/dm-6
+brw-rw---- 1 grid asmadmin 253,  7 Mar  5 08:57 /dev/dm-7
+brw-rw---- 1 grid asmadmin 253,  8 Mar  5 08:57 /dev/dm-8
+brw-rw---- 1 grid asmadmin 253,  9 Mar  5 08:57 /dev/dm-9
+
+# ls -l /dev/iscsi/*
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs1 -> ../dm-7
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs2 -> ../dm-8
+lrwxrwxrwx 1 root root 7 Mar  5 08:57 /dev/iscsi/oraasm-crs3 -> ../dm-9
+lrwxrwxrwx 1 root root 8 Mar  5 08:57 /dev/iscsi/oraasm-data -> ../dm-10

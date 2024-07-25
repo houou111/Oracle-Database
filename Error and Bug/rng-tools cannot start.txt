@@ -1,0 +1,7 @@
+3. rng-tools cannot start
+--------------------------------------------------------------------------------------
+# rpm -qa rng-tools
+rng-tools-5-2.el6_7.x86_64
+# service rngd start
+--- If this does not start rngd, try /dev/urandom as entropy source for temporary solution
+# rngd -r /dev/urandom

@@ -1,0 +1,1 @@
+dba_hist_active_sess_history

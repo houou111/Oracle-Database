@@ -1,0 +1,211 @@
+﻿I. Gather in normal case
+----------------------------------------------------------------------------------
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 8);
+
+EXEC DBMS_STATS.gather_schema_stats('LIVETRADEHNX',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE, force=>true, degree => 8);
+EXEC DBMS_STATS.gather_schema_stats('LIVETRADEHSX',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE, force=>true, degree => 8);
+
+EXEC DBMS_STATS.gather_table_stats('ODS', 'TXTB_TRANSACTION',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,force=>true,degree => 8);
+
+BEGIN
+   DBMS_STATS.GATHER_DICTIONARY_STATS (
+     estimate_percent  => DBMS_STATS.AUTO_SAMPLE_SIZE
+     ,method_opt        => 'FOR ALL COLUMNS SIZE AUTO'
+     ,degree            => NULL
+     ,cascade           => DBMS_STATS.AUTO_CASCADE
+     ,granularity       => 'AUTO'
+     ,no_Invalidate     => DBMS_STATS.AUTO_INVALIDATE);
+END;
+/
+
+BEGIN
+   DBMS_STATS.GATHER_FIXED_OBJECTS_STATS;
+END;
+/
+
+
+
+II. Gather in Bad case
+----------------------------------------------------------------------------------
+EXEC dbms_stats.gather_table_stats('ODS', 'TXTB_TRANSACTION', estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE, method_opt => 'FOR ALL COLUMNS SIZE skewonly', degree=>16, GRANULARITY => 'AUTO',cascade=>true,no_invalidate => false,force=>true);
+
+
+
+III. Note in gather
+----------------------------------------------------------------------------------
+1. OLTP
+no_invalidate -> AUTO_INVALIDATE
+
+
+2. OLAP
+no_invalidate -> FALSE
+
+
+
+
+----Check job auto gather
+SELECT CLIENT_NAME,STATUS FROM DBA_AUTOTASK_CLIENT;
+SELECT CLIENT_NAME,STATUS FROM DBA_AUTOTASK_TASK;
+SELECT * FROM dba_autotask_client_history
+select * from DBA_SCHEDULER_WINDOWS;
+select * from DBA_AUTOTASK_JOB_HISTORY
+
+
+--- Check gather status
+select
+   trunc(last_analyzed),
+   count(*)
+from
+   dba_tables
+group by
+   trunc(last_analyzed)
+order by
+   trunc(last_analyzed);
+   
+   
+
+
+
+
+----Gather example
+
+EXEC dbms_stats.gather_schema_stats('SYS',cascade=>TRUE);
+EXEC DBMS_STATS.GATHER_DICTIONARY_STATS;
+EXEC DBMS_STATS.GATHER_FIXED_OBJECTS_STATS;
+
+
+select count(*) from sys.dba_tab_statistics
+where owner='SYS' and table_name like 'X$%' and  last_analyzed is not null;
+
+
+----Gather Database
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 8);
+EXEC DBMS_STATS.gather_schema_stats('G2FO',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 12,force=>true);
+EXEC DBMS_STATS.gather_table_stats('SAAS_LOG','LOG_MASTER',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 6,force=>true);
+
+EXEC DBMS_STATS.gather_schema_stats('SSO',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 2,force=>true);
+EXEC DBMS_STATS.gather_schema_stats('REPORT',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 2,force=>true);
+
+
+
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>100 ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 4);
+
+
+EXEC DBMS_STATS.gather_database_stats;
+EXEC DBMS_STATS.gather_database_stats(estimate_percent => 15);
+EXEC DBMS_STATS.gather_database_stats(estimate_percent => 15, cascade => TRUE);
+
+EXEC DBMS_STATS.gather_schema_stats('DWH');
+EXEC DBMS_STATS.gather_schema_stats('T24EP',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE,degree => 16);
+EXEC DBMS_STATS.gather_schema_stats('SCOTT', estimate_percent => 15, cascade => TRUE);
+
+EXEC DBMS_STATS.gather_schema_stats('BOSC',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 2,force=>true);
+
+
+EXEC DBMS_STATS.gather_table_stats('DWH','TTT_PD_BALANCES',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 12,force=>true);
+
+EXEC DBMS_STATS.gather_table_stats('SCOTT', 'EMPLOYEES', estimate_percent => 15);
+EXEC DBMS_STATS.gather_table_stats('SCOTT', 'EMPLOYEES', estimate_percent => 15, cascade => TRUE);
+
+EXEC DBMS_STATS.gather_dictionary_stats;
+
+
+-----Gather Schema
+select 'EXECUTE DBMS_STATS.GATHER_SCHEMA_STATS(ownname => '''||USERNAME||''' ,degree =>2, GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );' 
+from dba_users;
+
+select 'exec dbms_stats.SET_SCHEMA_PREFS('''||USERNAME||''' ,''INCREMENTAL'',''TRUE'');' 
+from dba_users
+Where USERNAME in ('DWH','T24REP','EDW_DMT','EDW_SOR','TCB_DWH_VAS','KRM_APP','KRM_RPT')
+order by USERNAME;
+
+select 'EXECUTE DBMS_STATS.GATHER_SCHEMA_STATS(ownname => '''||USERNAME||''' ,degree =>2, GRANULARITY => ''AUTO '',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );' 
+from dba_users
+Where USERNAME in ('DWH','T24REP','EDW_DMT','EDW_SOR','TCB_DWH_VAS','KRM_APP','KRM_RPT')
+order by USERNAME;
+
+
+
+
+-----Gather table
+
+select owner,table_name
+from dba_tab_statistics
+where (stale_stats = 'YES')
+and owner not like '%SYS%'
+and stattype_locked is NULL;
+
+select 'EXECUTE DBMS_STATS.gather_table_stats(OwnName =>'''||owner||''',TabName =>'''||table_name||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE,force=>true );'
+from dba_tab_statistics
+where (stale_stats is NULL)
+and owner not like '%SYS%'
+and stattype_locked is NULL;
+
+select 'EXECUTE DBMS_STATS.gather_table_stats(OwnName =>'''||owner||''',TabName =>'''||table_name||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );'
+from dba_tab_statistics
+where (stale_stats ='YES')
+and owner not like '%SYS%'
+and stattype_locked is NULL
+order by owner,table_name;
+
+select 'EXECUTE DBMS_STATS.gather_table_stats(OwnName =>'''||owner||''',TabName =>'''||table_name||''',GRANULARITY => ''AUTO'',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );'
+from 
+    dba_tab_statistics
+where 
+	(stale_stats='YES' 
+	or stale_stats is NULL);
+
+
+----find lock stat
+ select OWNER,TABLE_NAME,stattype_locked 
+ from dba_tab_statistics 
+ where stattype_locked='AUTO' and OWNER not like '%SYS%';
+ 
+ 
+----gather partition
+EXEC DBMS_STATS.SET_TABLE_PREFS('SH','SALES','INCREMENTAL','TRUE');
+EXEC DBMS_STATS.GATHER_TABLE_STATS ('SH', 'SALES', 'SALES_11FEB2009', GRANULARITY => 'APPROX_GLOBAL AND PARTITION');
+
+SELECT partition_name,
+       to_char( last_analyzed, 'DD-MON-YYYY, HH24:MI:SS' ) last_analyze,
+       num_rows
+FROM   DBA_TAB_PARTITIONS
+WHERE  table_name = 'ORDERS_DEMO'
+ORDER  BY partition_position;
+
+exec dbms_stats.gather_table_stats('TINHCUOC_CMU','TB_UUDAI',partname=>'KYHD20190901');
+
+
+
+---Check stale object
+
+
+SET SERVEROUTPUT ON
+  DECLARE
+ObjList dbms_stats.ObjectTab;
+BEGIN
+dbms_stats.gather_database_stats(objlist=>ObjList, options=>'LIST STALE');
+FOR i in ObjList.FIRST..ObjList.LAST
+LOOP
+dbms_output.put_line(ObjList(i).ownname || '.' || ObjList(i).ObjName || ' ' || ObjList(i).ObjType || ' ' || ObjList(i).partname);
+END LOOP;
+END;
+/
+
+
+
+col TABLE_NAME for a30
+col PARTITION_NAME for a20
+col SUBPARTITION_NAME for a20
+select OWNER,TABLE_NAME,PARTITION_NAME,SUBPARTITION_NAME,NUM_ROWS,LAST_ANALYZED 
+from dba_TAB_STATISTICS 
+where STALE_STATS='YES';
+
+
+
+
+select 'exec dbms_stats.unlock_table_stats('''||OWNER||''','''||TABLE_NAME||''');'
+from DBA_TAB_STATISTICS
+where OWNER <> '%SYS%'
+AND STATTYPE_LOCKED = 'ALL'
+AND STALE_STATS='YES'

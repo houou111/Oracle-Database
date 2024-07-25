@@ -1,0 +1,40 @@
+1. Find the p1raw value of the 'library cache pin', e.g.
+----------------------------------------------------------------------------------
+select sid, event, p1raw from v$session_wait where event = 'library cache pin';
+SID EVENT             P1RAW
+--- ----------------- --------
+150 library cache pin 288822D4
+select * from dba_kgllock where kgllkreq > 0;
+KGLLKUSE KGLLKHDL KGLLKMOD KGLLKREQ KGLL
+-------- -------- -------- -------- ----
+2CB1F978 288822D4        0        3 Pin
+ 
+
+
+2. Find the locked object via x$kglob, e.g.
+----------------------------------------------------------------------------------
+select kglnaown, kglnaobj from x$kglob where kglhdadr = '288822D4';
+KGLNAOWN KGLNAOBJ
+-------- --------
+SYS      DUMMY
+
+
+3. find the kglhdadr in the other instances, e.g.
+----------------------------------------------------------------------------------
+select kglhdadr, kglnaown, kglnaobj from x$kglob where kglnaobj = 'DUMMY';
+KGLHDADR KGLNAOWN KGLNAOBJ
+-------- -------- --------
+28577AD8 SYS      DUMMY
+
+
+
+4. find the blocking session on the remote instance, e.g.
+----------------------------------------------------------------------------------
+
+select sid, serial#, sql_text from dba_kgllock w, v$session s, v$sqlarea a
+where w.kgllkuse = s.saddr and w.kgllkhdl='28577AD8'
+and s.sql_address = a.address
+and s.sql_hash_value = a.hash_value;
+SID SERIAL# SQL_TEXT
+--- ------- ---------------------------------------
+155    939  begin dummy; dbms_lock.sleep(1000); end;

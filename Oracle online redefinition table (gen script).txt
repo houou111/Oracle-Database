@@ -1,0 +1,68 @@
+set serveroutput on
+set lines 200
+set pages 200
+DECLARE
+   v_ddl    VARCHAR2 (4000);
+   cmd      VARCHAR2 (4000);
+
+   CURSOR c_index
+   IS
+      select owner,table_name 
+	  from dba_tables 
+	  where owner in ('SSI_DATAFEED')
+	  and table_name in ('TB_FACTSET_ETF','TB_FACTSET_INTERNATIONAL','TB_FACTSET_RATE');
+	  BEGIN
+
+   FOR cc IN c_index
+   LOOP
+	  DBMS_OUTPUT.put_line ('--'||cc.owner||'.'||cc.table_name);
+   
+   	  DBMS_OUTPUT.put_line ('alter session force parallel dml parallel 4;'); 
+      DBMS_OUTPUT.put_line ('alter session force parallel query parallel 4;');
+	  
+
+      DBMS_OUTPUT.put_line ('BEGIN');
+	  DBMS_OUTPUT.put_line ('DBMS_REDEFINITION.CAN_REDEF_TABLE ('''||cc.owner||''','''||cc.table_name||''',DBMS_REDEFINITION.CONS_USE_ROWID);');
+	  DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));
+      
+      DBMS_OUTPUT.put_line ('BEGIN');
+      DBMS_OUTPUT.put_line ('DBMS_REDEFINITION.START_REDEF_TABLE ('''||cc.owner||''','''||cc.table_name||''',''TTT_'||cc.table_name||''',NULL,DBMS_REDEFINITION.CONS_USE_ROWID);');
+      DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));      
+      
+      DBMS_OUTPUT.put_line ('DECLARE');
+	  DBMS_OUTPUT.put_line ('num_errors PLS_INTEGER;');
+      DBMS_OUTPUT.put_line ('BEGIN');
+      DBMS_OUTPUT.put_line ('DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS ('''||cc.owner||''','''||cc.table_name||''',''TTT_'||cc.table_name||''',DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);');
+      DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));
+      
+      DBMS_OUTPUT.put_line ('BEGIN');
+      DBMS_OUTPUT.put_line ('DBMS_REDEFINITION.SYNC_INTERIM_TABLE ('''||cc.owner||''','''||cc.table_name||''',''TTT_'||cc.table_name||''');');
+      DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));  
+
+	       
+      DBMS_OUTPUT.put_line ('BEGIN');
+      DBMS_OUTPUT.put_line ('DBMS_REDEFINITION.FINISH_REDEF_TABLE ('''||cc.owner||''','''||cc.table_name||''',''TTT_'||cc.table_name||''');');
+      DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));
+      
+      DBMS_OUTPUT.put_line ('EXEC DBMS_STATS.gather_table_stats('''||cc.owner||''','''||cc.table_name||''',estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => ''AUTO'',CASCADE => TRUE,degree => 12,force=>true);');
+      DBMS_OUTPUT.put_line (chr(10));
+      
+	  DBMS_OUTPUT.put_line ('alter table '||cc.owner||'.'||cc.table_name||' enable row movement;');
+      DBMS_OUTPUT.put_line (chr(10));
+	  
+      DBMS_OUTPUT.put_line ('drop table '||cc.owner||'.TTT_'||cc.table_name||' cascade constraints purge;');
+      DBMS_OUTPUT.put_line (chr(10));
+      
+   END LOOP;
+END;
+/

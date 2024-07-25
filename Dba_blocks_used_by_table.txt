@@ -1,0 +1,9 @@
+
+********HOW MANY BLOCKS CONTAIN DATA (are not empty)
+
+SELECT COUNT ( DISTINCT 
+         DBMS_ROWID.ROWID_BLOCK_NUMBER(rowid)
+         ||
+         DBMS_ROWID.ROWID_RELATIVE_FNO(rowid)
+       ) "Used"
+FROM &table_name;

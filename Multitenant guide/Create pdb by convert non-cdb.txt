@@ -1,0 +1,65 @@
+1. Perform a clean shutdown
+----------------------------------------
+sqlplus / as sysdba
+shutdown immediate
+
+
+2. Open the database as read-only
+----------------------------------------
+startup mount exclusive
+alter database open read only;
+
+
+3. Generate a PDB manifest file
+----------------------------------------
+exec dbms_pdb.describe (pdb_descr_file=>'/tmp/noncdb12c_manifest_file.xml');
+
+exec dbms_pdb.describe (pdb_descr_file=>'/tmp/ncvtest.xml');
+
+
+4. Shutdown the non-CDB
+----------------------------------------
+shutdown immediate
+
+
+5.  Start the CDB and check error
+----------------------------------------
+startup
+SET SERVEROUTPUT ON;
+ DECLARE
+ Compatible CONSTANT VARCHAR2(3) :=CASE  DBMS_PDB.CHECK_PLUG_COMPATIBILITY
+ (pdb_descr_file => '/tmp/noncdb12c_manifest_file.xml')
+ WHEN TRUE THEN 'YES'
+ ELSE 'NO'
+ END;
+ BEGIN
+    DBMS_OUTPUT.PUT_LINE(compatible);
+ END;
+ /
+ 
+startup
+SELECT name, cause, type, message, status FROM PDB_PLUG_IN_VIOLATIONS
+WHERE name='NONCDB12C';
+
+
+6. Connect to the CDB and plug into the PDB
+----------------------------------------
+CREATE PLUGGABLE DATABASE ncvtest USING '/tmp/ncvtest.xml' COPY
+ FILE_NAME_CONVERT = ('<Datafile_Location_for_noncdb>', 'Datafile_Location_for_pdb');
+
+
+COPY: The datafiles of the noncdb remain intact, and the noncdb is copied to create a PDB at the new location and keep the original datafiles intact at the original location. This means that a noncdb database is still operational after the creation of the PDB.
+MOVE: The datafiles of the noncdb are moved to a new location to create a PDB. In this case, the noncdb database is not available after the PDB is created.
+NOCOPY: The datafiles of the noncdb are used to create a PDB2, and it uses the same location as the noncdb. In this case, the noncdb database is not available after the PDB is created.
+
+
+7. Run the conversion script
+----------------------------------------
+alter session set container=pdb12c
+@$ORACLE_HOME/rdbms/admin/noncdb_to_pdb.sql
+
+
+8. Start the PDB and verify the mode
+----------------------------------------
+Alter pluggable database XXXX open
+show pdbs

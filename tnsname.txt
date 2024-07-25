@@ -1,0 +1,73 @@
+MINHDB =
+  (DESCRIPTION =
+    (LOAD_BALANCE = on)
+    (FAILOVER = on)
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.70.53.37)(PORT = 1521))
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.70.53.39)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = MINHDB)
+    )
+  )
+
+DEXXIS =
+(DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 10.99.2.14)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = DEXXIS)
+    )
+  )
+
+TWCMS =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dc-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twcms)
+    )
+  )
+
+TWRDR =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twrdr)
+    )
+  )
+  
+TWOL =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dc-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twol)
+    )
+  )
+
+TWODR =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twodr)
+    )
+  )
+  
+TWFA =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dc-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twfc)
+    )
+  )
+TWADR =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dr-cardlinux-scan)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = twadr)
+    )
+  )

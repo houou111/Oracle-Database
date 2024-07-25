@@ -1,0 +1,32 @@
+﻿# Liệt kê các datafile cần chuyển
+col file_name for a60
+col status for a20
+set lines 200
+select FILE_ID, FILE_NAME, STATUS, TABLESPACE_NAME from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Backup as copy
+set pages 0
+set lines 200
+select 'BACKUP AS COPY DATAFILE ' || FILE_ID || ' FORMAT '''|| FILE_NAME || ''';' from dba_data_files where TABLESPACE_NAME ='USERS';
+
+#đổi sang địa chỉ mới,thực hiện chạy
+
+# Offline tablespace
+set pages 0
+set lines 200
+select 'SQL ''ALTER TABLESPACE ' || tablespace_name || ' OFFLINE'';' from dba_tablespaces where TABLESPACE_NAME ='USERS';
+
+# Switch datafile to copy ( chuyen datafile sang địa chỉ mới)
+select 'SWITCH DATAFILE ' || FILE_ID || ' TO COPY;' from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Recover datafile
+select 'RECOVER DATAFILE ' || FILE_ID || ';' from dba_data_files where TABLESPACE_NAME ='USERS';
+
+# Online tablespace
+select 'SQL ''ALTER TABLESPACE ' || tablespace_name || ' ONLINE'';' from dba_tablespaces where TABLESPACE_NAME ='USERS';
+
+# Kiểm tra lại
+select FILE_ID, FILE_NAME, STATUS, TABLESPACE_NAME from dba_data_files where TABLESPACE_NAME ='USERS';
+
+#delete datafile cũ
+select 'delete noprompt copy of datafile ' || file_id || ';' from dba_data_files where tablespace_name='USERS';

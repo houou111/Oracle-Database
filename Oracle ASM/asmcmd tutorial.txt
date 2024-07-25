@@ -1,0 +1,20 @@
+1.Login
+------------------------------
+. grid
+asmcmd -p
+
+
+
+2. Check diskgroup
+------------------------------
+lsdg
+
+
+
+3. Create alias ( soft link)
+------------------------------
+mkalias SYSAUX.257.555341961 sysaux.f
+
+
+
+

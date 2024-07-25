@@ -1,0 +1,380 @@
+--====================Optimize enq: HW - contention wait event  --> restart DB
+ALTER SYSTEM SET EVENT = '44951 TRACE NAME CONTEXT FOREVER, LEVEL 1024' SCOPE=SPFILE sid='*';
+
+---LOG 
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+t24r14dc1
+
+SQL> sho parameter event
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+event                                string
+xml_db_events                        string      enable
+
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+t24r14dc2
+
+SQL> sho parameter event
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+event                                string
+xml_db_events                        string      enable
+
+================================================================================
+--split partition max
+SQL> select count(*) from T24LIVE.FBNK_STMT_ENTRY where  recid like 'F%' ;
+
+  COUNT(*)
+----------
+    902641
+	
+	
+	========================================DC 39
+	SQL>  SELECT SWITCHOVER_STATUS FROM V$DATABASE; 
+
+SWITCHOVER_STATUS
+--------------------
+FAILED DESTINATION
+
+SQL>       sho parameter name
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+cell_offloadgroup_name               string
+db_file_name_convert                 string      +POSTCOB/t24cob/datafile, +T24
+                                                 R14_DC/t24r14dc/datafile, +T24
+                                                 LIVE/t24live/datafile, +T24R14
+                                                 _DC/t24r14dc/datafile
+db_name                              string      T24LIVE
+db_unique_name                       string      t24r14dc
+global_names                         boolean     FALSE
+instance_name                        string      t24r14dc1
+lock_name_space                      string
+log_file_name_convert                string      +POSTCOB/t24cob/onlinelog, +T2
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+                                                 4R14_DC/t24r14dc/onlinelog, +F
+                                                 RACOB/t24cob/onlinelog, +RECOT
+                                                 24R14_DC/t24r14dc/onlinelog, +
+                                                 REDOLOG01, +T24R14_DC, +REDOLO
+                                                 G02, +T24R14_DC, +T24LIVE, +T2
+                                                 4R14_DC, +RECO01, +RECOT24R14_
+                                                 DC
+processor_group_name                 string
+service_names                        string      SYS$GG12.OGG$Q_XINT1.T24LIVE,
+                                                 t24r14dc, SYS$GG12.OGG$Q_ET24D
+                                                 C.T24LIVE
+SQL> select username,count(*) from gv$session group by username;
+
+USERNAME                         COUNT(*)
+------------------------------ ----------
+                                      177
+SYS                                     8
+THUYNTM_DBA                             4
+T24LIVE                                30
+T24_LIVE_DWH                            6
+DBSNMP                                 21
+
+6 rows selected.
+
+SQL> sel
+
+SQL> select username,count(*) from gv$session where status='ACTIVE';
+select username,count(*) from gv$session where status='ACTIVE'
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select username,count(*) from gv$session where status='ACTIVE  group by username;
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> select username,count(*) from gv$session where status='ACTIVE' group by username;
+
+USERNAME                         COUNT(*)
+------------------------------ ----------
+                                      174
+SYS                                     3
+T24LIVE                                 1
+
+SQL> select username,count(*) from gv$session where status='INACTIVE' group by username;
+
+USERNAME                         COUNT(*)
+------------------------------ ----------
+SYS                                     5
+THUYNTM_DBA                             4
+T24_LIVE_DWH                            6
+DBSNMP                                 21
+
+SQL>   select username,count(*) from gv$session where status='ACTIVE' group by username;
+
+USERNAME                         COUNT(*)
+------------------------------ ----------
+                                      177
+SYS                                     3
+T24LIVE                                 1
+
+SQL> set time on
+00:25:29 SQL> SELECT SWITCHOVER_STATUS FROM V$DATABASE; 
+
+SWITCHOVER_STATUS
+--------------------
+FAILED DESTINATION
+
+00:25:32 SQL> alter system switch log current;
+alter system switch log current
+                    *
+ERROR at line 1:
+ORA-01900: LOGFILE keyword expected
+
+
+00:27:14 SQL> alter system archive log current;
+
+System altered.
+
+00:27:27 SQL> alter system archive log current;
+
+System altered.
+
+00:27:29 SQL> alter system archive log current;
+
+System altered.
+
+00:27:32 SQL> alter system archive log current;
+
+System altered.
+
+00:27:35 SQL> alter system archive log current;
+
+System altered.
+
+00:27:38 SQL> ALTER DATABASE COMMIT TO SWITCHOVER TO PHYSICAL STANDBY WITH SESSION SHUTDOWN;
+
+Database altered.
+
+00:29:49 SQL> SHUTDOWN abort;
+ORACLE instance shut down.
+00:30:04 SQL> STARTUP MOUNT;
+ORACLE instance started.
+
+Total System Global Area 8.5516E+10 bytes
+Fixed Size                  2255784 bytes
+Variable Size            1.5569E+10 bytes
+Database Buffers         6.9793E+10 bytes
+Redo Buffers              151126016 bytes
+Database mounted.
+00:30:44 SQL>  alter database open 
+
+00:33:47 SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+Database altered.
+
+00:34:01 SQL> exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+You have mail in /usr/spool/mail/oracle
+[t24db01@oracle /home/oracle/bin>]$sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 6 00:36:47 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SQL> sho parameter even
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+event                                string      44951 TRACE NAME CONTEXT FOREV
+                                                 ER, LEVEL 1024
+xml_db_events                        string      enable
+SQL>  exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+[t24db01@oracle /home/oracle/bin>]$sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 6 00:39:41 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+SQL> select open_mode, database_role from v$database;
+
+OPEN_MODE            DATABASE_ROLE
+-------------------- ----------------
+MOUNTED              PHYSICAL STANDBY
+
+SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE cancel;
+
+Database altered.
+
+SQL> alter database open read only;
+
+Database altered.
+
+SQL> ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+Database altered.
+
+SQL> select open_mode, database_role from v$database;
+
+OPEN_MODE            DATABASE_ROLE
+-------------------- ----------------
+READ ONLY WITH APPLY PHYSICAL STANDBY
+
+
+========================================================================================
+SQL> select count(*) from T24LIVE.FBNK_STMT_ENTRY where  recid like 'F%' ;
+
+  COUNT(*)
+----------
+    902641
+	
+	
+SQL> create table T24LIVE.FBNK_STMT_ENTRY_MAX 
+  2  as 
+  3  select /*+ parallel(t,24)*/ * from T24LIVE.FBNK_STMT_ENTRY where  recid like 'F%' ;
+                      
+Table created.
+
+Elapsed: 00:56:09.71
+SQL> alter session force parallel dml parallel 24;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> alter session force parallel query parallel 24;
+
+Session altered.
+
+Elapsed: 00:00:00.00
+SQL> delete T24LIVE.FBNK_STMT_ENTRY t where recid like 'DUMMY.%';
+
+2 rows deleted.
+
+Elapsed: 00:00:00.01
+SQL> delete T24LIVE.FBNK_STMT_ENTRY t where recid ='?' ;
+commit;
+1 row deleted.
+
+Elapsed: 00:00:00.02
+SQL> 
+
+Commit complete.
+
+Elapsed: 00:00:00.02
+SQL> delete T24LIVE.FBNK_STMT_ENTRY t where recid like 'F%'; 
+commit;
+ 
+902641 rows deleted.
+
+Elapsed: 00:04:42.60
+SQL> 
+Commit complete.
+
+Elapsed: 00:00:01.46
+SQL> ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18050') INTO (PARTITION STMT_ENTRY_P1705,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Table altered.
+
+Elapsed: 00:45:29.82
+SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> SQL> 
+SQL> 
+SQL> 
+SQL> ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18080') INTO (PARTITION STMT_ENTRY_P1706,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18111') INTO (PARTITION STMT_ENTRY_P1707,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+
+Table altered.
+
+Elapsed: 00:00:00.69
+SQL> 
+Table altered.
+
+Elapsed: 00:00:00.36
+SQL> 
+SQL> 
+SQL> 
+SQL> ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18172') INTO (PARTITION STMT_ENTRY_P1709,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18203') INTO (PARTITION STMT_ENTRY_P1710,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18233') INTO (PARTITION STMT_ENTRY_P1711,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+ALTER TABLE T24LIVE.FBNK_STMT_ENTRY SPLIT PARTITION STMT_ENTRY_PMAX_TMP1 AT ('18264') INTO (PARTITION STMT_ENTRY_P1712,PARTITION STMT_ENTRY_PMAX_TMP1) UPDATE INDEXES;
+Table altered.
+
+Elapsed: 00:00:00.45
+SQL> 
+
+Table altered.
+
+Elapsed: 00:00:00.43
+SQL> 
+Table altered.
+
+Elapsed: 00:00:00.37
+SQL> 
+Table altered.
+
+Elapsed: 00:00:00.43
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> insert /*+ parallel(t,24)*/ into T24LIVE.FBNK_STMT_ENTRY t
+  2   select * from  T24LIVE.FBNK_STMT_ENTRY_MAX ;
+commit;
+
+
+  
+
+
+  
+902641 rows created.
+
+Elapsed: 00:12:52.78
+SQL> 
+Commit complete.
+
+Elapsed: 00:00:00.49
+SQL> SQL> SQL> SQL> SQL> SQL> 	

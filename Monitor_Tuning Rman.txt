@@ -1,0 +1,20 @@
+﻿SQL> COLUMN CLIENT_INFO FORMAT a30
+SQL> COLUMN SID FORMAT 999
+SQL> COLUMN SPID FORMAT 9999
+
+# Xem các tiến trình RMAN
+SQL> SELECT s.sid, p.spid, s.client_info
+   	FROM v$process p, v$session s
+    	WHERE p.addr = s.paddr 
+    	AND CLIENT_INFO LIKE 'rman%';
+
+# Xem tỉ lệ % công việc thực hiện tren RMAN
+SQL> SELECT OPNAME, CONTEXT, SOFAR, TOTALWORK,
+   	ROUND(SOFAR/TOTALWORK*100,2) "%_COMPLETE"
+    	FROM V$SESSION_LONGOPS
+    	WHERE OPNAME LIKE 'RMAN%'
+    	AND OPNAME NOT LIKE '%aggregate%'
+    	AND TOTALWORK != 0
+    	AND SOFAR <> TOTALWORK;
+
+		

@@ -1,0 +1,95 @@
+
+
+###Step 1: Verify that the table is a candidate for online redefinition
+-------------------------------------------------------------------------------------------------------------------
+BEGIN
+  DBMS_REDEFINITION.CAN_REDEF_TABLE ('TCB_DWH_VAS', 'R310_TAB_2',DBMS_REDEFINITION.CONS_USE_ROWID);
+END;
+/
+
+BEGIN
+  DBMS_REDEFINITION.CAN_REDEF_TABLE ('TCB_DWH_VAS', 'R310_TAB_2',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+
+###Step 2: Create an interim table
+-------------------------------------------------------------------------------------------------------------------
+
+
+###Step 3: Enable parallel DML operations
+-------------------------------------------------------------------------------------------------------------------
+alter session force parallel dml parallel 8;
+alter session force parallel query parallel 8;
+
+
+###Step 4: Start the redefinition process
+-------------------------------------------------------------------------------------------------------------------
+BEGIN
+  DBMS_REDEFINITION.START_REDEF_TABLE('TCB_DWH_VAS','R310_TAB_2','R310_TAB_2_temp');
+END;
+/
+
+BEGIN
+  DBMS_REDEFINITION.START_REDEF_TABLE('TCB_DWH_VAS','R310_TAB_2','R310_TAB_2_temp',NULL,DBMS_REDEFINITION.CONS_USE_ROWID);
+END;
+/
+
+
+###Step 5: Copy dependent objects
+-------------------------------------------------------------------------------------------------------------------
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS('TCB_DWH_VAS', 'R310_TAB_2','R310_TAB_2_temp',
+   DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);
+END;
+/
+
+
+###Step 6: Check for any errors
+-------------------------------------------------------------------------------------------------------------------
+select object_name, base_table_name, ddl_txt 
+from DBA_REDEFINITION_ERRORS;
+
+
+###Step 7: Synchronize the interim table (optional)
+-------------------------------------------------------------------------------------------------------------------
+BEGIN
+  DBMS_REDEFINITION.SYNC_INTERIM_TABLE ('TCB_DWH_VAS', 'R310_TAB_2', 'R310_TAB_2_temp');
+END;
+/
+
+
+###Step 8: Complete the redefinition
+-------------------------------------------------------------------------------------------------------------------
+BEGIN
+  DBMS_REDEFINITION.FINISH_REDEF_TABLE ('TCB_DWH_VAS', 'R310_TAB_2', 'R310_TAB_2_temp');
+END;
+/
+
+###Step 9: Gather new   table
+-------------------------------------------------------------------------------------------------------------------
+EXEC DBMS_STATS.gather_table_stats('TCB_DWH_VAS', 'R310_TAB_2');
+
+
+###Step 10: Drop the interim table
+-------------------------------------------------------------------------------------------------------------------
+drop table TCB_DWH_VAS.R310_TAB_2_temp cascade constraints purge;
+
+
+###Step 10: Check the status of the schema objects to ensure that all of them are still valid
+-------------------------------------------------------------------------------------------------------------------
+COLUMN object_name FORMAT A40
+SELECT object_name, object_type, status 
+FROM dba_objects 
+where owner='TCB_DWH_VAS'
+AND status='INVALID';
+
+
+COLUMN object_name FORMAT A40
+SELECT object_name, object_type, status 
+FROM dba_objects 
+where status='INVALID';
+
+

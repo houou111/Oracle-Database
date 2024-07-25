@@ -1,0 +1,55 @@
+﻿1. Xem các tiến trình RMAN
+---------------------------------------------
+set lines 200
+set pages 200
+COLUMN CLIENT_INFO FORMAT a30
+COLUMN SID FORMAT 999
+COLUMN SPID FORMAT 9999
+
+# Xem các tiến trình RMAN
+SQL> SELECT s.sid, p.spid, s.client_info
+   	FROM v$process p, v$session s
+    	WHERE p.addr = s.paddr 
+    	AND CLIENT_INFO LIKE 'rman%';
+
+		
+2. Xem tỉ lệ % công việc thực hiện tren RMAN (1)
+---------------------------------------------
+SELECT OPNAME, CONTEXT, SOFAR, TOTALWORK,
+   	ROUND(SOFAR/TOTALWORK*100,2) "%_COMPLETE"
+    	FROM V$SESSION_LONGOPS
+    	WHERE OPNAME LIKE 'RMAN%'
+    	AND OPNAME NOT LIKE '%aggregate%'
+    	AND TOTALWORK != 0
+    	AND SOFAR <> TOTALWORK;
+	
+	
+3. Xem tỉ lệ % công việc thực hiện tren RMAN (2)
+---------------------------------------------
+set line 999
+col TARGET_DESC for a10;
+col MESSAGE for a80;
+col REMAINING for a20;
+col UNITS for a10;
+col REMAINING for a10;
+select target_Desc, sofar, round(sofar/decode(totalwork,0,null,totalwork)*100,2) "%",round(time_remaining/60) ||'m' remaining, units, message from GV$SESSION_LONGOPS where last_update_time>sysdate -1/24/30order by last_update_time;
+
+
+4. Check speed
+---------------------------------------------
+SELECT 'Throughput: '|| 
+       ROUND(SUM(v.value/1024/1024),1) || ' Meg so far @ ' ||  
+       ROUND(SUM(v.value     /1024/1024)/NVL((SELECT MIN(elapsed_seconds)  
+            FROM v$session_longops  
+            WHERE opname          LIKE 'RMAN: aggregate input'  
+              AND sofar           != TOTALWORK  
+              AND elapsed_seconds IS NOT NULL  
+       ),SUM(v.value     /1024/1024)),2) || ' Meg/sec'  
+ FROM gv$sesstat v, v$statname n, gv$session s  
+WHERE v.statistic# = n.statistic#  
+  AND n.name       = 'physical write total bytes'  
+  AND v.sid        = s.sid  
+  AND v.inst_id    = s.inst_id  
+  AND s.program LIKE 'rman@%'  
+GROUP BY n.name ; 
+

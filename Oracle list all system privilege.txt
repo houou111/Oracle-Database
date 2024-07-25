@@ -1,0 +1,264 @@
+SQL> select * from system_privilege_map;
+
+ PRIVILEGE NAME                                       PROPERTY
+---------- ---------------------------------------- ----------
+        -3 ALTER SYSTEM                                      0
+        -4 AUDIT SYSTEM                                      0
+        -5 CREATE SESSION                                    0
+        -6 ALTER SESSION                                     0
+        -7 RESTRICTED SESSION                                0
+       -10 CREATE TABLESPACE                                 0
+       -11 ALTER TABLESPACE                                  0
+       -12 MANAGE TABLESPACE                                 0
+       -13 DROP TABLESPACE                                   0
+       -15 UNLIMITED TABLESPACE                              0
+       -20 CREATE USER                                       0
+       -21 BECOME USER                                       0
+       -22 ALTER USER                                        0
+       -23 DROP USER                                         0
+       -30 CREATE ROLLBACK SEGMENT                           0
+       -31 ALTER ROLLBACK SEGMENT                            0
+       -32 DROP ROLLBACK SEGMENT                             0
+       -40 CREATE TABLE                                      0
+       -41 CREATE ANY TABLE                                  0
+       -42 ALTER ANY TABLE                                   0
+       -43 BACKUP ANY TABLE                                  0
+       -44 DROP ANY TABLE                                    0
+       -45 LOCK ANY TABLE                                    0
+       -46 COMMENT ANY TABLE                                 0
+       -47 SELECT ANY TABLE                                  0
+       -48 INSERT ANY TABLE                                  0
+       -49 UPDATE ANY TABLE                                  0
+       -50 DELETE ANY TABLE                                  0
+       -56 REDEFINE ANY TABLE                                0
+       -60 CREATE CLUSTER                                    0
+       -61 CREATE ANY CLUSTER                                0
+       -62 ALTER ANY CLUSTER                                 0
+       -63 DROP ANY CLUSTER                                  0
+       -71 CREATE ANY INDEX                                  0
+       -72 ALTER ANY INDEX                                   0
+       -73 DROP ANY INDEX                                    0
+       -80 CREATE SYNONYM                                    0
+       -81 CREATE ANY SYNONYM                                0
+       -82 DROP ANY SYNONYM                                  0
+       -83 SYSDBA                                            0
+       -84 SYSOPER                                           0
+       -85 CREATE PUBLIC SYNONYM                             0
+       -86 DROP PUBLIC SYNONYM                               0
+       -90 CREATE VIEW                                       0
+       -91 CREATE ANY VIEW                                   0
+       -92 DROP ANY VIEW                                     0
+      -105 CREATE SEQUENCE                                   0
+      -106 CREATE ANY SEQUENCE                               0
+      -107 ALTER ANY SEQUENCE                                0
+      -108 DROP ANY SEQUENCE                                 0
+      -109 SELECT ANY SEQUENCE                               0
+      -115 CREATE DATABASE LINK                              0
+      -120 CREATE PUBLIC DATABASE LINK                       0
+      -121 DROP PUBLIC DATABASE LINK                         0
+      -125 CREATE ROLE                                       0
+      -126 DROP ANY ROLE                                     0
+      -127 GRANT ANY ROLE                                    0
+      -128 ALTER ANY ROLE                                    0
+      -130 AUDIT ANY                                         0
+      -135 ALTER DATABASE                                    0
+      -138 FORCE TRANSACTION                                 0
+      -139 FORCE ANY TRANSACTION                             0
+      -140 CREATE PROCEDURE                                  0
+      -141 CREATE ANY PROCEDURE                              0
+      -142 ALTER ANY PROCEDURE                               0
+      -143 DROP ANY PROCEDURE                                0
+      -144 EXECUTE ANY PROCEDURE                             0
+      -151 CREATE TRIGGER                                    0
+      -152 CREATE ANY TRIGGER                                0
+      -153 ALTER ANY TRIGGER                                 0
+      -154 DROP ANY TRIGGER                                  0
+      -160 CREATE PROFILE                                    0
+      -161 ALTER PROFILE                                     0
+      -162 DROP PROFILE                                      0
+      -163 ALTER RESOURCE COST                               0
+      -165 ANALYZE ANY                                       0
+      -167 GRANT ANY PRIVILEGE                               0
+      -172 CREATE MATERIALIZED VIEW                          0
+      -173 CREATE ANY MATERIALIZED VIEW                      0
+      -174 ALTER ANY MATERIALIZED VIEW                       0
+      -175 DROP ANY MATERIALIZED VIEW                        0
+      -177 CREATE ANY DIRECTORY                              0
+      -178 DROP ANY DIRECTORY                                0
+      -180 CREATE TYPE                                       0
+      -181 CREATE ANY TYPE                                   0
+      -182 ALTER ANY TYPE                                    0
+      -183 DROP ANY TYPE                                     0
+      -184 EXECUTE ANY TYPE                                  0
+      -186 UNDER ANY TYPE                                    0
+      -188 CREATE LIBRARY                                    0
+      -189 CREATE ANY LIBRARY                                0
+      -190 ALTER ANY LIBRARY                                 0
+      -191 DROP ANY LIBRARY                                  0
+      -192 EXECUTE ANY LIBRARY                               0
+      -200 CREATE OPERATOR                                   0
+      -201 CREATE ANY OPERATOR                               0
+      -202 ALTER ANY OPERATOR                                0
+      -203 DROP ANY OPERATOR                                 0
+      -204 EXECUTE ANY OPERATOR                              0
+      -205 CREATE INDEXTYPE                                  0
+      -206 CREATE ANY INDEXTYPE                              0
+      -207 ALTER ANY INDEXTYPE                               0
+      -208 DROP ANY INDEXTYPE                                0
+      -209 UNDER ANY VIEW                                    0
+      -210 QUERY REWRITE                                     0
+      -211 GLOBAL QUERY REWRITE                              0
+      -212 EXECUTE ANY INDEXTYPE                             0
+      -213 UNDER ANY TABLE                                   0
+      -214 CREATE DIMENSION                                  0
+      -215 CREATE ANY DIMENSION                              0
+      -216 ALTER ANY DIMENSION                               0
+      -217 DROP ANY DIMENSION                                0
+      -218 MANAGE ANY QUEUE                                  1
+      -219 ENQUEUE ANY QUEUE                                 1
+      -220 DEQUEUE ANY QUEUE                                 1
+      -222 CREATE ANY CONTEXT                                0
+      -223 DROP ANY CONTEXT                                  0
+      -224 CREATE ANY OUTLINE                                0
+      -225 ALTER ANY OUTLINE                                 0
+      -226 DROP ANY OUTLINE                                  0
+      -227 ADMINISTER RESOURCE MANAGER                       1
+      -228 ADMINISTER DATABASE TRIGGER                       0
+      -233 MERGE ANY VIEW                                    0
+      -234 ON COMMIT REFRESH                                 0
+      -235 EXEMPT ACCESS POLICY                              0
+      -236 RESUMABLE                                         0
+      -237 SELECT ANY DICTIONARY                             0
+      -238 DEBUG CONNECT SESSION                             0
+      -240 DEBUG CONNECT ANY                                 0
+      -241 DEBUG ANY PROCEDURE                               0
+      -243 FLASHBACK ANY TABLE                               0
+      -244 GRANT ANY OBJECT PRIVILEGE                        0
+      -245 CREATE EVALUATION CONTEXT                         1
+      -246 CREATE ANY EVALUATION CONTEXT                     1
+      -247 ALTER ANY EVALUATION CONTEXT                      1
+      -248 DROP ANY EVALUATION CONTEXT                       1
+      -249 EXECUTE ANY EVALUATION CONTEXT                    1
+      -250 CREATE RULE SET                                   1
+      -251 CREATE ANY RULE SET                               1
+      -252 ALTER ANY RULE SET                                1
+      -253 DROP ANY RULE SET                                 1
+      -254 EXECUTE ANY RULE SET                              1
+      -255 EXPORT FULL DATABASE                              0
+      -256 IMPORT FULL DATABASE                              0
+      -257 CREATE RULE                                       1
+      -258 CREATE ANY RULE                                   1
+      -259 ALTER ANY RULE                                    1
+      -260 DROP ANY RULE                                     1
+      -261 EXECUTE ANY RULE                                  1
+      -262 ANALYZE ANY DICTIONARY                            0
+      -263 ADVISOR                                           0
+      -264 CREATE JOB                                        0
+      -265 CREATE ANY JOB                                    0
+      -266 EXECUTE ANY PROGRAM                               0
+      -267 EXECUTE ANY CLASS                                 0
+      -268 MANAGE SCHEDULER                                  0
+      -269 SELECT ANY TRANSACTION                            0
+      -270 DROP ANY SQL PROFILE                              0
+      -271 ALTER ANY SQL PROFILE                             0
+      -272 ADMINISTER SQL TUNING SET                         0
+      -273 ADMINISTER ANY SQL TUNING SET                     0
+      -274 CREATE ANY SQL PROFILE                            0
+      -275 EXEMPT IDENTITY POLICY                            0
+      -276 MANAGE FILE GROUP                                 1
+      -277 MANAGE ANY FILE GROUP                             1
+      -278 READ ANY FILE GROUP                               1
+      -279 CHANGE NOTIFICATION                               0
+      -280 CREATE EXTERNAL JOB                               0
+      -281 CREATE ANY EDITION                                0
+      -282 DROP ANY EDITION                                  0
+      -283 ALTER ANY EDITION                                 0
+      -284 CREATE ASSEMBLY                                   0
+      -285 CREATE ANY ASSEMBLY                               0
+      -286 ALTER ANY ASSEMBLY                                0
+      -287 DROP ANY ASSEMBLY                                 0
+      -288 EXECUTE ANY ASSEMBLY                              0
+      -289 EXECUTE ASSEMBLY                                  0
+      -290 CREATE MINING MODEL                               0
+      -291 CREATE ANY MINING MODEL                           0
+      -292 DROP ANY MINING MODEL                             0
+      -293 SELECT ANY MINING MODEL                           0
+      -294 ALTER ANY MINING MODEL                            0
+      -295 COMMENT ANY MINING MODEL                          0
+      -301 CREATE CUBE DIMENSION                             0
+      -302 ALTER ANY CUBE DIMENSION                          0
+      -303 CREATE ANY CUBE DIMENSION                         0
+      -304 DELETE ANY CUBE DIMENSION                         0
+      -305 DROP ANY CUBE DIMENSION                           0
+      -306 INSERT ANY CUBE DIMENSION                         0
+      -307 SELECT ANY CUBE DIMENSION                         0
+      -308 CREATE CUBE                                       0
+      -309 ALTER ANY CUBE                                    0
+      -310 CREATE ANY CUBE                                   0
+      -311 DROP ANY CUBE                                     0
+      -312 SELECT ANY CUBE                                   0
+      -313 UPDATE ANY CUBE                                   0
+      -314 CREATE MEASURE FOLDER                             0
+
+ PRIVILEGE NAME                                       PROPERTY
+---------- ---------------------------------------- ----------
+      -315 CREATE ANY MEASURE FOLDER                         0
+      -316 DELETE ANY MEASURE FOLDER                         0
+      -317 DROP ANY MEASURE FOLDER                           0
+      -318 INSERT ANY MEASURE FOLDER                         0
+      -319 CREATE CUBE BUILD PROCESS                         0
+      -320 CREATE ANY CUBE BUILD PROCESS                     0
+      -321 DROP ANY CUBE BUILD PROCESS                       0
+      -322 UPDATE ANY CUBE BUILD PROCESS                     0
+      -326 UPDATE ANY CUBE DIMENSION                         0
+      -327 ADMINISTER SQL MANAGEMENT OBJECT                  0
+      -328 ALTER PUBLIC DATABASE LINK                        0
+      -329 ALTER DATABASE LINK                               0
+      -334 CREATE SQL TRANSLATION PROFILE                    0
+      -335 CREATE ANY SQL TRANSLATION PROFILE                0
+      -336 ALTER ANY SQL TRANSLATION PROFILE                 0
+      -337 USE ANY SQL TRANSLATION PROFILE                   0
+      -338 DROP ANY SQL TRANSLATION PROFILE                  0
+      -340 SYSBACKUP                                         0
+      -341 SYSDG                                             0
+      -342 SYSKM                                             0
+      -343 ADMINISTER KEY MANAGEMENT                         0
+      -344 KEEP DATE TIME                                    0
+      -345 KEEP SYSGUID                                      0
+      -346 EM EXPRESS CONNECT                                0
+      -347 PURGE DBA_RECYCLEBIN                              0
+      -350 FLASHBACK ARCHIVE ADMINISTER                      0
+      -351 EXEMPT REDACTION POLICY                           0
+      -352 INHERIT ANY PRIVILEGES                            0
+      -355 TRANSLATE ANY SQL                                 0
+      -365 INHERIT ANY REMOTE PRIVILEGES                     0
+      -375 CREATE PLUGGABLE DATABASE                         0
+      -377 SET CONTAINER                                     0
+      -378 CREATE LOCKDOWN PROFILE                           0
+      -379 DROP LOCKDOWN PROFILE                             0
+      -380 ALTER LOCKDOWN PROFILE                            0
+      -387 CREATE CREDENTIAL                                 0
+      -388 CREATE ANY CREDENTIAL                             0
+      -389 LOGMINING                                         0
+      -390 USE ANY JOB RESOURCE                              0
+      -393 SELECT ANY MEASURE FOLDER                         0
+      -394 ALTER ANY MEASURE FOLDER                          0
+      -395 SELECT ANY CUBE BUILD PROCESS                     0
+      -396 ALTER ANY CUBE BUILD PROCESS                      0
+      -397 READ ANY TABLE                                    0
+      -398 SYSRAC                                            0
+      -399 CREATE ATTRIBUTE DIMENSION                        0
+      -400 CREATE ANY ATTRIBUTE DIMENSION                    0
+      -401 ALTER ANY ATTRIBUTE DIMENSION                     0
+      -402 DROP ANY ATTRIBUTE DIMENSION                      0
+      -403 CREATE HIERARCHY                                  0
+      -404 CREATE ANY HIERARCHY                              0
+      -405 ALTER ANY HIERARCHY                               0
+      -406 DROP ANY HIERARCHY                                0
+      -407 CREATE ANALYTIC VIEW                              0
+      -408 CREATE ANY ANALYTIC VIEW                          0
+      -409 ALTER ANY ANALYTIC VIEW                           0
+      -410 DROP ANY ANALYTIC VIEW                            0
+      -411 READ ANY ANALYTIC VIEW CACHE                      0
+      -412 WRITE ANY ANALYTIC VIEW CACHE                     0
+      -414 TEXT DATASTORE ACCESS                             0

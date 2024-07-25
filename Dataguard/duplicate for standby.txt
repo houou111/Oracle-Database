@@ -1,0 +1,24 @@
+nohup rman target=sys/db#dhsxkd#123@idcyen auxiliary=sys/db#dhsxkd#123@yendr cmdfile=/home/oracle/dbscript/yendr.rman log=/home/oracle/dbscript/yendr.log &
+
+nohup rman target=sys/db#dhsxkd#123@idcminh auxiliary=sys/db#dhsxkd#123@minhdr cmdfile=/home/oracle/dbscript/minhdr.rman log=/home/oracle/dbscript/minhdr.log &
+
+duplicate target database
+for standby
+from active database
+dorecover
+spfile
+set cluster_database='false'
+SET db_unique_name='yendr'
+SET db_create_file_dest='+DATAC1'
+SET db_create_online_log_dest_1='+DATAC1'
+SET db_create_online_log_dest_2='+RECOC1'
+SET remote_listener='exax5-scan:1521'
+set diagnostic_dest='/u01/app/oracle/'
+set audit_file_dest='/u01/app/oracle/admin/yendr/adump'
+reset log_archive_dest_2
+reset listener_networks
+reset remote_listener
+Set STANDBY_FILE_MANAGEMENT='AUTO'
+SET CONTROL_FILES='+DATAC1','+RECOC1'
+NOFILENAMECHECK
+;

@@ -1,0 +1,1 @@
+where rownum <= &1;

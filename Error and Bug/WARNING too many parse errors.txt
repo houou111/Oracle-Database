@@ -1,0 +1,1 @@
+ALTER SYSTEM SET "_kks_parse_error_warning"=0 SCOPE=BOTH;

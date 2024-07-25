@@ -1,0 +1,25 @@
+#!/bin/sh
+ORACLE_SID=+ASM2; export ORACLE_SID
+ORACLE_BASE=/u01/app/grid; export ORACLE_BASE
+ORACLE_HOME=/u01/app/11.2.0/grid; export ORACLE_HOME
+ORACLE_PATH=/u01/app/oracle/common/oracle/sql; export ORACLE_PATH
+EMAIL=/home/grid/script/email.ora
+THRESOLD=93
+cat /dev/null > $EMAIL
+asmcmd lsdg | grep -v '^State'| awk '{ print $7 " " $8 " "$13 }' | while read dg;
+do
+        dg_used=$(echo $dg | awk '{ print (($1-$2)/$1)*100 }')
+        dg_name=$(echo $dg | awk '{ print $3 }')
+        d=$(echo "$dg_used > $THRESOLD"|bc)
+        echo $d
+        if [ $d -ne 0 ]; then
+                echo "Diskgroup " $dg_name "was used " $dg_used"%" > $EMAIL
+        fi
+done
+
+if [ -s $EMAIL ]
+then
+        /home/grid/script/send_mail.pl
+else
+        echo "File $EMAIL is empty"
+fi

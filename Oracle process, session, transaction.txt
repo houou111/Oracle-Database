@@ -1,0 +1,37 @@
+1. Concept
+-----------------------------------------------------------------------------
+A session is created when a user connects to the database and is terminated when the user disconnects. 
+Each session is assigned a unique identifier called a session ID (SID), which is used to identify the session in various system views and tables. 
+A session can execute one or more SQL statements, and it can have access to different resources and privileges based on the user's permissions.
+
+
+A process is a task that runs in the background and performs various activities to manage the database instance. 
+Each process has a specific role, and it performs a particular function, such as managing the shared pool, writing data to disk, or handling network connections.
+Processes are created by the Oracle instance to manage various tasks, and they can be viewed using operating system utilities such as Task Manager or ps command. 
+Some of the important processes in Oracle include:
+- Oracle background processes (e.g., DBWn, LGWR, PMON, etc.)
+- User processes (i.e., sessions)
+- Operating system processes (e.g., Oracle Agent, Listener, etc.)
+
+
+2. Recipe
+-----------------------------------------------------------------------------
+processes=x
+
+session=(1.5 * PROCESSES) + 22
+
+transactions=sessions*1.1 
+
+
+3. Check
+-----------------------------------------------------------------------------
+select name, value
+from v$spparameter
+where name in ('sessions','processes','transactions');
+
+
+
+select name, value
+from v$parameter
+where name in ('sessions','processes','transactions');
+ 

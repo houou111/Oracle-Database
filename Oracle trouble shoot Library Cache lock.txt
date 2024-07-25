@@ -1,0 +1,12 @@
+ wait: library cache lock
+Cause Identified: Unshared SQL Due to Literals
+SQL statements are using literal values where a bind value could have been used. The literal values cause the statement to be unshared and will force a hard parse.
+Hiện tại như team DBA kiểm tra DB thì 2 parameter về cursor đang set như sau:
+-	open_cursors: 1000
+-	session_cached_cursors: 200
+Team DBA có đề xuất tăng session_cached_cursors lên bằng giá trị vs open_cursors để giải quyết vấn đề này
+Anh kiểm tra lại vs hãng Way4 xem có vấn đề gì không nhé.
+
+Link tham khảo:
+'library cache lock' Waits: Causes and Solutions (Doc ID 1952395.1)
+https://www.dba-oracle.com/t_session_cached_cursors_optimal_size.htm

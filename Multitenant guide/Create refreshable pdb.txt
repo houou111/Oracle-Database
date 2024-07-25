@@ -1,0 +1,38 @@
+1. Create refreshable database
+-----------------------------------------------------------
+
+-- Manual refresh mode.
+CREATE PLUGGABLE DATABASE pdb5_ro FROM pdb5@clone_link
+  REFRESH MODE MANUAL;
+
+-- Automatically refresh ever 60 minutes.
+CREATE PLUGGABLE DATABASE pdb5_ro FROM pdb5@clone_link
+  REFRESH MODE EVERY 60 MINUTES;
+
+-- Non-refreshable PDB.
+-- These two are functionally equivalent.
+CREATE PLUGGABLE DATABASE pdb5_ro FROM pdb5@clone_link
+  REFRESH MODE NONE;
+
+CREATE PLUGGABLE DATABASE pdb5_ro FROM pdb5@clone_link;
+
+
+2. Check 
+-----------------------------------------------------------
+
+SELECT pdb_id, pdb_name, refresh_mode, refresh_interval
+FROM   dba_pdbs
+ORDER BY 1;
+
+SELECT last_refresh_scn
+FROM   dba_pdbs
+WHERE  pdb_name = 'PDB5_RO';
+
+
+
+
+3. Refresh database
+-----------------------------------------------------------
+ALTER PLUGGABLE DATABASE pdb5_ro CLOSE IMMEDIATE;
+ALTER PLUGGABLE DATABASE pdb5_ro REFRESH;
+ALTER PLUGGABLE DATABASE pdb5_ro OPEN READ ONLY;

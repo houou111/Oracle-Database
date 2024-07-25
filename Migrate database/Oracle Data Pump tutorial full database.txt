@@ -1,0 +1,253 @@
+Các bước thực hiện cơ bản
+
+1. Purge recyclebin + stop tất cả các job/scheduler job
+-------------------------------------------------------------------
+purge dba_recyclebin;
+@?/rdbms/admin/utlrp.sql
+
+
+## exclude table (cololumn space) -> recreate with dblink -> ignore if no error
+col owner for a20
+col TABLE_NAME for a20
+col COLUMN_NAME for a20
+select OWNER,TABLE_NAME,COLUMN_NAME from dba_tab_columns where column_name like '% %';
+
+
+2. Lock user and restart database
+-------------------------------------------------------------------
+select 'alter user "'|| username ||'" account lock;' from dba_users where account_status='OPEN' and ORACLE_MAINTAINED = 'N' AND username <> 'C##DBA01';
+
+alter pluggable database report close immediate instances=all;
+alter pluggable database report open;
+
+alter session set container=report
+alter system set job_queue_processes=0;
+
+
+3. Export full database exclude statistic
+-------------------------------------------------------------------
+create or replace directory log_dump as '/u01/dump/';
+create or replace directory dump as '/Backup/dump/';
+grant dba to C##DBA01;
+create user C##erp_select identified by erp_select container=all;
+grant dba to C##erp_select;
+
+
+
+expdp C##DBA01/oracle123456@report parfile=/tmp/expdp_report.par
+
+EXCLUDE=PROCEDURE:"IN (select object_name from dba_objects where object_type = 'PROCEDURE' and status='INVALID')", FUNCTION:"IN (select object_name from dba_objects where object_type = 'FUNCTION' and status='INVALID')", PACKAGE:"IN (select object_name from dba_objects where object_type = 'PACKAGE' and status='INVALID')",DB_LINK:"LIKE 'CSS_HPG_GOC'"
+exclude=statistics
+cluster=n
+compression=all
+dumpfile=report_%U.dmp
+parallel=24
+logfile=LOG_DUMP:expdp_report.log
+full=y
+directory=DUMP
+
+
+
+4. Copy to target (+copy tnsname.ora)
+-------------------------------------------------------------------
+cp +RECOC1/DUMP/report_01.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_01.dmp
+cp +RECOC1/DUMP/report_02.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_02.dmp
+cp +RECOC1/DUMP/report_03.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_03.dmp
+cp +RECOC1/DUMP/report_04.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_04.dmp
+cp +RECOC1/DUMP/report_05.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_05.dmp
+cp +RECOC1/DUMP/report_06.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_06.dmp
+cp +RECOC1/DUMP/report_07.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_07.dmp
+cp +RECOC1/DUMP/report_08.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_08.dmp
+cp +RECOC1/DUMP/report_09.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_09.dmp
+cp +RECOC1/DUMP/report_10.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_10.dmp
+cp +RECOC1/DUMP/report_11.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_11.dmp
+cp +RECOC1/DUMP/report_12.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_12.dmp
+cp +RECOC1/DUMP/report_13.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_13.dmp
+cp +RECOC1/DUMP/report_14.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_14.dmp
+cp +RECOC1/DUMP/report_15.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_15.dmp
+cp +RECOC1/DUMP/report_16.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_16.dmp
+cp +RECOC1/DUMP/report_17.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_17.dmp
+cp +RECOC1/DUMP/report_18.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_18.dmp
+cp +RECOC1/DUMP/report_19.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_19.dmp
+cp +RECOC1/DUMP/report_20.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_20.dmp
+cp +RECOC1/DUMP/report_21.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_21.dmp
+cp +RECOC1/DUMP/report_22.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_22.dmp
+cp +RECOC1/DUMP/report_23.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_23.dmp
+cp +RECOC1/DUMP/report_24.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_24.dmp
+cp +RECOC1/DUMP/report_25.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_25.dmp
+cp +RECOC1/DUMP/report_26.dmp copy_sys/Password123@10.70.53.131.+ASM1:+RECOC1/DUMP/report_26.dmp
+
+5. Prepare in target 
+-------------------------------------------------------------------
+dbca -silent -createPluggableDatabase -sourceDB CDBNAM2 -pdbName PDBREPORT_TEST -createPDBFrom default -pdbAdminUserName pdbadmin -pdbAdminPassword Password123 -createUserTableSpace true
+
+create user C##DBA01 identified by oracle123456;
+
+create or replace directory log_dump as '/u01/dump/';
+create or replace directory dump as '+RECOC1/DUMP/';
+grant dba to C##DBA01;
+create user MDSYS     identified by oracle123456;
+create user LBACSYS   identified by oracle123456;
+grant dba to MDSYS,LBACSYS
+
+
+create temporary tablespace TEMP_TBS tempfile '+RECOC1' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+alter tablespace TEMP_TBS add tempfile '+RECOC1' size 1G autoextend on next 1G; 
+
+create tablespace USERS datafile '+DATAC1' size 1G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace USERS add datafile '+DATAC1' size 10G autoextend on next 1G; 
+
+
+create tablespace INDX datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATAC1' size 10G autoextend on next 1G; 
+alter tablespace INDX add datafile '+DATAC1' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATAC1' size 10G autoextend on next 1G;
+alter tablespace INDX add datafile '+DATAC1' size 10G autoextend on next 1G;    
+
+
+CREATE RESTORE POINT before_import GUARANTEE FLASHBACK DATABASE;
+
+alter system set job_queue_processes=0;
+
+
+6. Import data
+-------------------------------------------------------------------
+impdp "sys/********@report AS SYSDBA" directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report1.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N table_exists_action=append 
+
+
+
+impdp C##DBA01/oracle123456@report directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report1.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N data_options=SKIP_CONSTRAINT_ERRORS exclude=JAVA_CLASS,JAVA_RESOURCE,index,procedure,function,package,ref_constraint
+
+impdp C##DBA01/oracle123456@report directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report2.log PARALLEL=1 transform=disable_archive_logging:Y cluster=N include=procedure,function,package,ref_constraint
+
+
+impdp C##DBA01/oracle123456@report directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report1.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N exclude=JAVA_CLASS,JAVA_RESOURCE
+
+
+7. Import java
+-------------------------------------------------------------------
+impdp C##DBA01/oracle123456@report directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report_java.log PARALLEL=24 transform=disable_archive_logging:Y cluster=N INCLUDE=JAVA_CLASS,JAVA_RESOURCE sqlfile=log_dump:report_java.sql
+
+@/u01/dump/report_java.sql
+
+
+
+8. Import index (pick 3 biggest schema to import seprate)
+-------------------------------------------------------------------
+SELECT owner,sum(bytes) / 1024 / 1024 / 1024 as "Size in GB"
+  FROM dba_segments
+GROUP BY owner
+order by 2 desc;
+
+impdp C##DBA01/oracle123456@report schemas=BCSS_BKN directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report_index1.log sqlfile=log_dump:report_index1.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@report schemas=QLTN_BKN directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report_index2.log sqlfile=log_dump:report_index2.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@report schemas=CSS_BKN  directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report_index3.log sqlfile=log_dump:report_index3.sql cluster=N include=index PARALLEL=24
+impdp C##DBA01/oracle123456@report full=y directory=dump dumpfile=report_%U.dmp logfile=log_dump:impdp_report_index4.log sqlfile=log_dump:report_index4.sql cluster=N include=index PARALLEL=24
+
+
+echo exit >> /u01/dump/report_index1.sql
+echo exit >> /u01/dump/report_index2.sql
+echo exit >> /u01/dump/report_index3.sql
+echo exit >> /u01/dump/report_index4.sql
+
+vi /u01/dump/report_index1.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus C##DBA01/oracle123456@report @/u01/dump/report_index1.sql > /u01/dump/sqlplus_report_index1.log &
+tail -200f /u01/dump/sqlplus_report_index1.log |grep ORA
+
+
+vi /u01/dump/report_index2.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus C##DBA01/oracle123456@report @/u01/dump/report_index2.sql > /u01/dump/sqlplus_report_index2.log &
+tail -200f /u01/dump/sqlplus_report_index2.log |grep ORA
+
+vi /u01/dump/report_index3.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus C##DBA01/oracle123456@report @/u01/dump/report_index3.sql > /u01/dump/sqlplus_report_index3.log &
+tail -200f /u01/dump/sqlplus_report_index3.log |grep ORA
+
+vi /u01/dump/report_index4.sql
+:1,$s/PARALLEL 1/PARALLEL 12/g
+
+nohup sqlplus C##DBA01/oracle123456@report @/u01/dump/report_index4.sql > /u01/dump/sqlplus_report_index4.log &
+tail -200f /u01/dump/sqlplus_report_index4.log |grep ORA
+
+
+9. Compare data
+-------------------------------------------------------------------
+@?/rdbms/admin/utlrp.sql
+dung Toad
+
+select OWNER,OBJECT_TYPE, count(1)
+from dba_objects a, dba_users b
+where a.OWNER = b.USERNAME
+AND b.DEFAULT_TABLESPACE='USERS' AND b.COMMON='NO' 
+AND STATUS='VALID'
+GROUP BY OWNER,OBJECT_TYPE
+order by 1,2;
+
+
+
+10. Cho ứng dụng vào test
+-------------------------------------------------------------------
+create user C##erp_select identified by erp_select container=all;
+grant dba to C##erp_select;
+
+select 'alter user "'|| username ||'" account unlock;' from dba_users where account_status='LOCKED' and ORACLE_MAINTAINED = 'N' AND username <> 'C##DBA01';
+
+report =
+  (DESCRIPTION =
+    (LOAD_BALANCE = on)
+    (FAILOVER = on)
+    (ADDRESS = (PROTOCOL = TCP)(HOST = exax7-01-vip)(PORT = 1521))
+    (ADDRESS = (PROTOCOL = TCP)(HOST = exax7-02-vip)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = report)
+    )
+  )
+
+#10.70.53.131         exax7-01-vip
+#10.70.53.133         exax7-02-vip
+
+
+11. Bật job
+-------------------------------------------------------------------
+alter system set job_queue_processes=4000;
+revoke dba from C##erp_select;
+
+
+12. Gather database
+-------------------------------------------------------------------
+EXEC DBMS_STATS.gather_database_stats(estimate_percent=>DBMS_STATS.AUTO_SAMPLE_SIZE ,GRANULARITY => 'AUTO',CASCADE => TRUE,degree => 8);
+
+
+
+13. Tạo ACL (acls) - Optional
+-------------------------------------------------------------------
+
+

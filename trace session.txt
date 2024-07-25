@@ -1,0 +1,19 @@
+select * from gv$session
+
+EXECUTE DBMS_MONITOR.SESSION_TRACE_ENABLE(session_id => 517,serial_num => 6851,waits => TRUE, binds => FALSE);
+
+EXECUTE DBMS_MONITOR.SESSION_TRACE_DISABLE(session_id => 551,serial_num => 3041);
+
+SELECT s.sid,p.tracefile
+FROM   gv$session s
+       JOIN gv$process p ON s.paddr = p.addr and s.inst_id=p.inst_id
+WHERE  s.sid in (517);
+
+tkprof /u01/app/oracle/diag/rdbms/twodev/twodev/trace/twodev_ora_52234.trc session_trace_517.txt explain=DBA02/Abcd#1234 sys=no waits=yes
+
+
+
+
+
+
+  SELECT l1.sid || ' is blocking ' || l2.sid blocking_sessions FROM gv$lock l1, gv$lock l2 WHERE l1.block = 1 AND l2.request > 0 AND l1.id1 = l2.id1 AND l1.id2 = l2.id2   and l1.inst_id=l2.inst_id; 

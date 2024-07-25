@@ -1,0 +1,175 @@
+quy trinh sửa lỗi T24 test
+
+1.Patch 
+----------------------------------------------------------------------------------------------------------
+Patch 21307096: USE THE HIGHEST CHECKPOINT_CHANGE# WHEN _ALLOW_RESETLOGS_CORRUPTION=TRUE
+Config cluster =no
+Config undo_management=MANUAL
+Bỏ undo tablespace trong init
+
+
+2.Copy tablespace System ra OS và Check các segment bị lỗi
+----------------------------------------------------------------------------------------------------------
+asmcmd> cp SYSTEM.357.904579331 /u01/app/backup/SYSTEM.357.904579331
+
+[oracle@t24-db01-test testr142]$ ls -ltr
+total 2972512
+-rw-r----- 1 grid oinstall 3040878592 Oct 12 14:17 SYSTEM.357.904579331
+
+[oracle@t24-db01-test testr142]$ 
+
+strings TWO_SYSTEM | grep _SYSSMU | cut -d $ -f 1 | sort -u
+ <9    ' and substr(drs.segment_name,1,7) != ''_SYSSMU''');
+ and substr(drs.segment_name,1,7) != '_SYSSMU'
+ and substr(drs.segment_name,1,7) != '_SYSSMU' 
+ c;    ' and substr(drs.segment_name,1,7) != ''_SYSSMU'' ' ||
+		
+ORA-01555: snapshot too old: rollback segment number 5 with name "_SYSSMU5_1738828719
+
+_SYSSMU100_3514823131
+_SYSSMU10_1197734989
+_SYSSMU101_2260291618
+
+-> _CORRUPTED_ROLLBACK_SEGMENTS
+
+
+3. Start db - file event
+----------------------------------------------------------------------------------------------------------
+scn_causing_errors -> scn làm lỗi db
+
+SQL> startup mount
+SQL> undefine scn_causing_errors
+select decode(ceil((&&scn_causing_errors - min(CHECKPOINT_CHANGE#))/1000000),0,'Event 21307096 is not needed'
+, 'event="21307096 trace name context forever, level '
+||ceil((&&scn_causing_errors - min(CHECKPOINT_CHANGE#))/1000000)
+||'"') "EVENT TO SET in init.ora:"
+from v$datafile_header
+where status != 'OFFLINE';
+
+
+4. find all active rollback segment in the undo tablespace to be dropped.
+-------------------------------------------------------------------------
+SQL> 
+select segment_name, tablespace_name, status 
+from dba_rollback_segs 
+where status = 'NEEDS RECOVERY';
+
+-> _offline_rollback_segments
+
+
+
+5. Modify init file
+----------------------------------------------------------------------------------------------------------
+[oracle@t24-db01-test tmp]$ more r14.ora
+*.audit_file_dest='/u01/app/oracle/admin/testr142/adump'
+*.audit_trail='db'
+*.cluster_database=false
+job_queue_processes=0
+*.compatible='11.2.0.4.0'
+*.control_files='+T24CLIMS/testr142/controlfile/current.444.904579461'
+*.cursor_sharing='EXACT'
+*.db_block_checksum='FULL'
+*.db_block_size=8192
+*.db_create_file_dest='+T24CLIMS'
+*.db_domain=''
+*.db_flashback_retention_target=2880
+*.db_keep_cache_size=2147483648
+*.db_lost_write_protect='NONE'
+*.db_name='testr142'
+*.diagnostic_dest='/u01/app/oracle'
+*.dispatchers='(PROTOCOL=TCP) (SERVICE=testr142XDB)'
+*.fast_start_mttr_target=1800
+*.filesystemio_options='SETALL'
+testr1422.instance_number=2
+testr1421.instance_number=1
+*.open_cursors=5000
+*.open_links=10
+*.optimizer_index_caching=50
+*.optimizer_index_cost_adj=1
+*.pga_aggregate_target=1073741824
+*.processes=500
+*.query_rewrite_integrity='TRUSTED'
+*.recyclebin='OFF'
+*.remote_listener='t24-test-scan:1521'
+*.remote_login_passwordfile='exclusive'
+*.session_cached_cursors=1000
+*.session_max_open_files=500
+*.sga_max_size=4294967296
+*.sga_target=4294967296
+*.standby_file_management='AUTO'
+testr1422.thread=2
+testr1421.thread=1
+event="21307096 trace name context forever, level 1"
+*._allow_resetlogs_corruption=TRUE
+*.undo_management='MANUAL'
+_CORRUPTED_ROLLBACK_SEGMENTS =(_SYSSMU10_3905543278$,_SYSSMU10_670866059$,_SYSSMU11_1303708421$,_SYSSMU11_3881023187$,_SYSSMU12_294553649$,_SYSSMU12_36075964$,_SYSSMU1_3129823639$,_SYSSMU13_2857279402$,_SYSSMU13_3419122572$,_SYSSMU14_2158188599$,_SYSSMU1_42385196$,_SYSSMU14_520036530$,_SYSSMU15_3348323285$,_SYSSMU15_4094433626$,_SYSSMU16_1296624550$,_SYSSMU16_433811310$,_SYSSMU17_1481505190$,_SYSSMU17_638465401$,_SYSSMU18_388875893$,_SYSSMU18_74413819$,_SYSSMU19_1319844361$,_SYSSMU19_457493001$,_SYSSMU20_1362817826$,_SYSSMU20_3107871929$,_SYSSMU21_2173588487$,_SYSSMU2_1399434656$,_SYSSMU2_1530072391$,_SYSSMU22_2320582652$,_SYSSMU23_2426784393$,_SYSSMU24_1504830018$,_SYSSMU25_1781320238$,_SYSSMU26_251012235$,_SYSSMU27_3075052952$,_SYSSMU28_801712150$,_SYSSMU29_1323252264$,_SYSSMU30_3607897647$,_SYSSMU31_1113086693$,_SYSSMU3_1902573166$,_SYSSMU32_1054731870$,_SYSSMU3_2448396340$,_SYSSMU33_1929319388$,_SYSSMU34_2914571606$,_SYSSMU35_3528100404$,_SYSSMU36_27964530$,_SYSSMU37_2095457494$,_SYSSMU38_241047223$,_SYSSMU39_3693609271$,_SYSSMU40_3531092592$,_SYSSMU41_1779522522$,_SYSSMU4_224124803$,_SYSSMU42_924666036$,_SYSSMU43_3134372923$,_SYSSMU4_4259202332$,_SYSSMU44_9703551$,_SYSSMU45_2071694704$,_SYSSMU46_2783554804$,_SYSSMU47_949966819$,_SYSSMU48_1928155569$,_SYSSMU49_2613912117$,_SYSSMU50_1730589771$,_SYSSMU51_2785525270$,_SYSSMU52_935250249$,_SYSSMU53_1071257480$,_SYSSMU5_3833294529$,_SYSSMU54_3808974165$,_SYSSMU55_1573988098$,_SYSSMU56_1777647373$,_SYSSMU5_994598649$,_SYSSMU6_2178705127$,_SYSSMU6_4258054588$,_SYSSMU7_2045423248$,_SYSSMU7_785106531$,_SYSSMU8_4073472757$,_SYSSMU8_730298546$,_SYSSMU9_1752201611$,_SYSSMU9_4026497808$)
+_offline_rollback_segments=(_SYSSMU36_27964530$,_SYSSMU37_2095457494$,_SYSSMU38_241047223$,_SYSSMU39_3693609271$,_SYSSMU40_3531092592$,_SYSSMU41_1779522522$,_SYSSMU42_924666036$,_SYSSMU43_3134372923$,_SYSSMU44_9703551$,_SYSSMU45_2071694704$)
+
+
+
+6. Startup
+--------------------------------------------------
+alter system set fal_server='';
+ALTER DATABASE ACTIVATE PHYSICAL STANDBY DATABASE;
+alter database open;
+
+
+
+  
+7. drop all rollback segment need to be recovery
+-------------------------------------------------------------------------
+Select 'drop rollback segment "'||segment_name||'";' 
+from dba_rollback_segs 
+where (tablespace_name='UNDOTBS1' OR tablespace_name='UNDOTBS2')
+AND status = 'NEEDS RECOVERY';
+
+
+
+DROP TABLESPACE UNDOTBS1 INCLUDING CONTENTS AND DATAFILES;
+DROP TABLESPACE UNDOTBS2 INCLUDING CONTENTS AND DATAFILES;
+CREATE UNDO TABLESPACE UNDOTBS01_NEW DATAFILE '+DATA' SIZE 1G REUSE AUTOEXTEND ON NEXT 1G;
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+DATA' size 1G autoextend on next 1G;  
+ALTER DATABASE DEFAULT TEMPORARY TABLESPACE temp_tbs;
+
+
+8. Restart database
+---------------------------------------------------------------------------
+SQL> alter database open;
+
+ 
+9. Export database and impdp to another database
+---------------------------------------------------------------------------
+expdp
+impdp
+
+
+
+
+
+FEB
+10
+Step By Step To Recover From Undo Tablespace Corruption
+
+1. Mount the database. (shutdown the database if it is running).
+Make UNDO TABLESPACE' datafile offline drop
+ALTER DATABASE DATAFILE '' OFFLINE DROP;
+Open your database.
+List all rollback segments that need recovery by query the name and status from dba_rollback_segs
+Alter the following hidden parameter in the spfile to list all rollback segments listed from step 4 (_CORRUPTED_ROLLBACK_SEGMENTS)
+ALTER SYSTEM SET "_Corrupted_rollback_SEGMENTS"='_SYSSMU1$','_SYSSMU2$','_SYSSMU3$' SCOPE=SPFILE;
+Shutdown the database (ABORT OR IMMEDIATE).
+Startup the database.
+Make new UNDO TABLESPACE and make it the default undo for the databas 
+ALTER SYSTEM SET  UNDO_TABLESPACE=UNDO2
+Remove the corrupted rollback segments listed before
+DROP ROLLBACK SEGMENT “_SYSSMU1$”;
+DROP ROLLBACK SEGMENT “_SYSSMU2$”;
+DROP ROLLBACK SEGMENT “_SYSSMU3$”; 
+
+
+
+
+_corrupted_rollback_segments = ('_SYSSMU1$','_SYSSMU2$','_SYSSMU3$','_SYSSMU4$',
+                                '_SYSSMU5$','_SYSSMU6$','_SYSSMU7$',
+                                '_SYSSMU8$','_SYSSMU9$','_SYSSMU10$')

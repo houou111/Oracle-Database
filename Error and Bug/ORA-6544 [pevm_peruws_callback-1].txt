@@ -1,0 +1,6 @@
+ORA-6544 [pevm_peruws_callback-1] [604]
+
+Nguyên nhân: server ko thể trả lại app được kết quả do app query sai
+
+Đọc log để có thêm thông tin
+

@@ -1,0 +1,11 @@
+1. Apply lag
+----------------------------------------------
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD#   from v$managed_standby;
+set lines 300
+col value for a50
+select name, value from v$dataguard_stats;
+
+
+2. Performace
+-------------------------------------------
+ASH viewer

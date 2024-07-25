@@ -1,0 +1,36 @@
+I. Check OS information
+--------------------------
+IP
+OS type/version
+Hardware type/version
+
+
+
+
+2. Check Oracle database software
+--------------------------
+grid
+oracle
+
+
+
+
+3. Check alert log
+--------------------------
+- cluster log
+- asm log
+- database log
+
+
+4. Check resource
+--------------------------
+exawatcher
+os watcher
+TFA
+
+
+5. Exadata
+--------------------------
+dbmcli
+cellcli
+

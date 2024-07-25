@@ -1,0 +1,90 @@
+1. Cluster
+--------------------------------------------------------------------------
++ To check the active version of the cluster:
+$ crsctl query crs activeversion
+
++ To determine the overall health on a specific node:
+$ crsctl check crs
+CRS-4638: Oracle High Availability Services is online
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+
++ To determine the location of the voting disk:
+$ crsctl query css votedisk
+## STATE File Universal Id File Name Disk group
+-- ----- ----------------- ---------- ----------
+1. ONLINE 8c2e45d734c64f8abf9f136990f3daf8 (ASMDISK01) [DATA]
+2. ONLINE 99bc153df3b84fb4bf071d916089fd4a (ASMDISK02) [DATA]
+3. ONLINE 0b090b6b19154fc1bf5913bc70340921 (ASMDISK03) [DATA]
+Located 3 voting disk(s).
+
++ To determine the location of the OCR:
+$ cat /etc/oracle/ocr.loc
+ocrconfig_loc=+DATA
+local_only=FALSE
+
++ To determine the list of interfaces available to the cluster:
+$ oifcfg iflist -p -n
+
++ To determine ip scan
+$ srvctl config scan
+SCAN name: c64-scan, Network: 1/172.16.0.0/255.255.0.0/eth0
+SCAN VIP name: scan1, IP: /c64-scan/172.16.4.33
+
++ To determine the public and private interfaces that have been configured:
+$ oifcfg getif
+eth0  172.16.0.0  global  public
+eth1  192.168.1.0  global  cluster_interconnect
+
++ To determine the Virtual IP (VIP) host name, VIP address, VIP subnet mask, and VIP interface name:
+$ srvctl config nodeapps -a
+Network exists: 1/172.16.0.0/255.255.0.0/eth0, type static
+VIP exists: /c64-01-vip/172.16.4.25/172.16.0.0/255.255.0.0/eth0, hosting node c64-01
+VIP exists: /c64-02-vip/172.16.4.26/172.16.0.0/255.255.0.0/eth0, h
+
+
+
+2. ASM instance
+--------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+3. Database instance
+--------------------------------------------------------------------------
++ Start/stop database
+$ srvctl start instance -d orcl -i orcl1,orcl2
+$ srvctl stop instance -d orcl -i orcl1,orcl2
+$ srvctl start database -d orcl -o open
+
++ Config database in cluster
+srvctl config database -d orcl -a
+
++ Kill session
+SQL> SELECT SID, SERIAL#, INST_ID
+	 FROM GV$SESSION WHERE USERNAME='JMW';
+		
+SID SERIAL# INST_ID
+---------- ---------- ----------
+140 3340 2
+
+SQL> ALTER SYSTEM KILL SESSION '140,3340,@2';
+System altered. 
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+I. Recomplie database objects
+========================================================================================
+shutdown immediate
+startup upgrade
+@$ORACLE_HOME/rdbms/admin/utlirp.sql
+
+shutdown immediate
+startup 
+@$ORACLE_HOME/rdbms/admin/utlrp.sql
+
+
+II. repair manual wrapped
+========================================================================================
+At Source
+
+1. Create new directory :
+$ mkdir twr_packages
+
+2. Save the below script with file name pkg_backup.sql
+
+set lines 300 trims on head off pages 0 feed off
+spool ddl_gen.sql
+prompt set lines 400 pages 0 trims on head off feed off long 90000000
+prompt col pkg_ddl for a200
+prompt execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'PRETTY',true);
+prompt execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SQLTERMINATOR',true);
+prompt execute DBMS_METADATA.SET_TRANSFORM_PARAM(DBMS_METADATA.SESSION_TRANSFORM,'SEGMENT_ATTRIBUTES',false);
+select 'spool ' || owner || '_' || name || '.sql' || chr(10) ||
+'select dbms_metadata.get_ddl(''' || type || ''',''' || name || ''',''' || owner || ''') pkg_ddl from dual;' || chr(10) ||
+'spool off;' from dba_source where owner in ('A4M','CF') and type in ('PROCEDURE','PACKAGE','FUNCTION') and line=1 and text like '%wrapped%';
+spool off;
+@ddl_gen.sql
+
+3. Execute the above script which will generate file for each PL/SQL Object.
+$ cd twr_packages
+$ sqlplus "/ as sysdba"
+SQL> @/home/oracle/bin/pkg_backup.sql
+
+4. Copy the two_packages directory to target
+
+At Target
+
+Execute the script for each PL/SQL object creation

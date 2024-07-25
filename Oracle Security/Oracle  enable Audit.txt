@@ -1,0 +1,114 @@
+﻿5.	Lab về monitoring, audit, maintain, performance
+a.	Đặt audit
+Có 2 option đặt audit là by access và by session. Giải thích hai cách này? và thực hiện đặt audit như sau:
+Đặt audit cho user fireid:
+Kiểm tra chế độ audit hiện tại của DB:
+Show parameter audit_trail
+Audit toàn bộ user:
+AUDIT ALL BY fireid BY ACCESS;
+Audit các thao tác select, update, insert, delete:
+AUDIT SELECT TABLE, UPDATE TABLE, INSERT TABLE, DELETE TABLE BY fireid BY ACCESS;
+Audit procedure execute:
+AUDIT EXECUTE PROCEDURE BY fireid BY ACCESS;
+Audit trên 1 bảng:
+AUDIT INSERT, UPDATE, DELETE ON table_name BY ACCESS;
+View Audit Trail
+The audit trail is stored in the SYS.AUD$ table. It's contents can be viewed directly or via the following views.
+•	DBA_AUDIT_EXISTS
+•	DBA_AUDIT_OBJECT
+•	DBA_AUDIT_SESSION
+•	DBA_AUDIT_STATEMENT
+•	DBA_AUDIT_TRAIL
+•	DBA_OBJ_AUDIT_OPTS
+•	DBA_PRIV_AUDIT_OPTS
+•	DBA_STMT_AUDIT_OPTS
+The audit trail contains a lot of data, but the following are most likely to be of interest.
+•	USERNAME : Oracle Username.
+•	TERMINAL : Machine that the user performed the action from.
+•	TIMESTAMP : When the action occured.
+•	OBJECT_OWNER : The owner of the object that was interacted with.
+•	OBJECT_NAME : The name of the object that was interacted with.
+•	ACTION_NAME : The action that occured against the object. (INSERT, UPDATE, DELETE, SELECT, EXECUTE)
+Select * from SYS.AUD$;
+SELECT USERNAME, LOGOFF_TIME, LOGOFF_LREAD, LOGOFF_PREAD,
+    LOGOFF_LWRITE, LOGOFF_DLOCK
+    FROM DBA_AUDIT_SESSION;
+
+SELECT * FROM DBA_OBJ_AUDIT_OPTS
+    WHERE OWNER = 'LAUREL' AND OBJECT_NAME LIKE 'EMP%';
+
+
+select 'standard audit', sessionid,
+    proxy_sessionid, statementid, entryid, extended_timestamp, global_uid,
+    username, client_id, null, os_username, userhost, os_process, terminal,
+    instance_number, owner, obj_name, null, new_owner,
+    new_name, action, action_name, audit_option, transactionid, returncode,
+    scn, comment_text, sql_bind, sql_text,
+    obj_privilege, sys_privilege, admin_option, grantee, priv_used,
+    ses_actions, logoff_time, logoff_lread, logoff_pread, logoff_lwrite,
+    logoff_dlock, session_cpu
+  from 
+  dba_audit_trail;
+
+  
+  
+  
+  Thực hiện Standard  Audit 
+SQL> show parameter audit 
+ 
+NAME                  TYPE        VALUE 
+--------------------- ----------- ------------------------ 
+audit_file_dest       string      /u01/app/oracle/admin/orcl/adump 
+audit_sys_operations  boolean     FALSE 
+audit_syslog_level    string 
+audit_trail           string      NONE 
+ 
+SQL> alter system set audit_trail=DB,EXTENDED  scope=spfile; 
+ 
+  Restart database 
+shutdown  immediate 
+startup 
+ 
+-  Giám sát bảng  dept của user scott 
+SQL> audit select,insert,delete on scott.dept by access; 
+ 
+-  Kiểm tra thử 
+SQL>select USERNAME,ACTION,SQL_TEXT from DBA_AUDIT_TRAIL where 
+OBJ_NAME='DEPT'; 
+ 
+-  Bỏ Audit 
+noaudit select,insert,delete on scott.dept; 
+ 
+-  Xóa log Audit 
+ 
+ 
+truncate table sys.aud$; 
+ 
+-  Thực hiện FGA 
+BEGIN 
+  DBMS_FGA.add_policy( 
+    object_schema   => 'SCOTT', 
+    object_name     => 'EMP', 
+    policy_name     => 'EMP_AUDIT', 
+    audit_condition => 'EMPNO=7902', 
+  audit_column    => 'SAL', 
+    statement_types => 'DELETE,UPDATE,SELECT'); 
+END; 
+/ 
+ 
+-  Kiểm tra  
+CONN scott/Admin#123 
+SELECT ename FROM emp where empno=7934; 
+select TIMESTAMP,DB_USER,SQL_TEXT  FROM dba_fga_audit_trail; 
+SELECT sal FROM emp where empno=7902; 
+select TIMESTAMP,DB_USER,SQL_TEXT  FROM dba_fga_audit_trail; 
+ 
+-  Drop policy 
+BEGIN 
+  DBMS_FGA.drop_policy( 
+    object_schema   => 'SCOTT', 
+    object_name     => 'EMP', 
+    policy_name     => 'EMP_AUDIT'); 
+END; 
+/ 
+truncate table sys.fga_log$;

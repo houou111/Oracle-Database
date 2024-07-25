@@ -1,0 +1,31 @@
+-- +----------------------------------------------------------------------------+
+-- |                          Jeffrey M. Hunter                                 |
+-- |                      jhunter@idevelopment.info                             |
+-- |                         www.idevelopment.info                              |
+-- |----------------------------------------------------------------------------|
+-- |      Copyright (c) 1998-2015 Jeffrey M. Hunter. All rights reserved.       |
+-- |----------------------------------------------------------------------------|
+-- | DATABASE : Oracle                                                          |
+-- | FILE     : dba_file_use_7.sql                                              |
+-- | CLASS    : Database Administration                                         |
+-- | PURPOSE  : Reports on all datafiles/controlfiles/redo log files. This      |
+-- |            script was designed to work with Oracle7 and Oracle8. This      |
+-- |            script can be run against higher database versions (i.e.        |
+-- |            Oracle8i) but will not return information about true TEMPORARY  |
+-- |            tablespaces. (i.e. use of "tempfiles")                          |
+-- | NOTE     : As with any code, ensure to test this script in a development   |
+-- |            environment before attempting to run it in production.          |
+-- +----------------------------------------------------------------------------+
+
+SET TERMOUT OFF;
+COLUMN current_instance NEW_VALUE current_instance NOPRINT;
+SELECT rpad(instance_name, 17) current_instance FROM v$instance;
+SET TERMOUT ON;
+
+PROMPT 
+PROMPT +------------------------------------------------------------------------+
+PROMPT | Report   : File Usage                                                  |
+PROMPT | Instance : &current_instance                                           |
+PROMPT +------------------------------------------------------------------------+
+
+

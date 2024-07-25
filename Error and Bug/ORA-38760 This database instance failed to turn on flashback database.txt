@@ -1,0 +1,26 @@
+
+
+
+SQL> shutdown immediate;
+SQL> startup mount;
+SQL> alter database flashback off;
+SQL> alter database backup controlfile to trace noresetlogs;
+SQL> shutdown immediate;
+ 
+ 
+go to the trace file generated after executing (alter database backup controlfile to trace noresetlogs;)
+ 
+trace file location can be found from the query:
+ 
+SQL>select * from v$diag_info;
+ 
+ 
+it will contain script with SQL Commands, you can rename the trace file with ".sql" extension.
+ 
+ 
+SQL> startup nomount
+SQL>@trace_file.sql
+SQL> recover database;
+SQL> alter database open;
+ 
+**** so basically you are going to re-create the control files again....

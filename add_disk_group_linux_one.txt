@@ -1,0 +1,125 @@
+# STEP 1: GET WWID FROM STORAGE ADMIN and SCAN WWID ON SERVER AS ROOT
+Ex:
+3600507680c80845b38000000000003cf
+echo "1" > /sys/class/fc_host/host0/issue_lip
+echo "1" > /sys/class/fc_host/host1/issue_lip
+echo "1" > /sys/class/fc_host/host2/issue_lip
+echo "1" > /sys/class/fc_host/host3/issue_lip
+echo "1" > /sys/class/fc_host/host4/issue_lip
+echo "1" > /sys/class/fc_host/host5/issue_lip
+echo "1" > /sys/class/fc_host/host6/issue_lip
+echo "1" > /sys/class/fc_host/host7/issue_lip
+echo "1" > /sys/class/fc_host/host8/issue_lip
+echo "1" > /sys/class/fc_host/host9/issue_lip
+
+echo "- - -" > /sys/class/scsi_host/host0/scan 
+echo "- - -" > /sys/class/scsi_host/host1/scan
+echo "- - -" > /sys/class/scsi_host/host2/scan
+echo "- - -" > /sys/class/scsi_host/host3/scan
+echo "- - -" > /sys/class/scsi_host/host4/scan
+echo "- - -" > /sys/class/scsi_host/host5/scan
+echo "- - -" > /sys/class/scsi_host/host6/scan
+echo "- - -" > /sys/class/scsi_host/host7/scan
+echo "- - -" > /sys/class/scsi_host/host8/scan
+echo "- - -" > /sys/class/scsi_host/host9/scan
+
+# STEP 2: GET MPATH DETAILS BY RUNNING BELOW COMMAND ON NODE 1 AND MATCH IT WITH WWID GIVEN BY STORAGE ADMIN
+$ multipath -ll | grep <wwid>
+
+# Ex:
+$ multipath -ll | grep 3600507680c80845b38000000000003cf
+mpaths (3600507680c80845b38000000000003cf) dm-21 IBM     ,2145
+
+# STEP 3: CHANGE PERMISSION AND OWNERSHIP OF THE NEW DISK BY UPDATING THE 12-DM-PERMISSIONS.RULES FILE AS ROOT
+vi /etc/udev/rules.d/12-dm-permissions.rules
+
+# Example content:
+ENV{DM_NAME}=="mpathb", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+ENV{DM_NAME}=="mpaths", OWNER:="grid", GROUP:="asmadmin", MODE:="660"
+
+# STEP 4: RUN BELOW COMMANDS ONCE /ETC/UDEV/RULES.D/12-DM-PERMISSIONS.RULES FILE IS UPDATED
+$ udevadm control --reload-rules
+$ udevadm trigger
+
+# STEP 5: PERFORM STEP 1 TO 4 ON NODE 2
+# Note: mpath name can be different on Node 1 and Node 2. Update /etc/udev/rules.d/12-dm-permissions.rules file with respective names in Node 1 and Node 2
+
+# STEP 6: ADD DISK AT ASM LEVEL USING COMMAND GIVEN BELOW
+# login as grid
+# Note: If you are running from Node 1, use the mpath name of node 1.
+
+SQL> COL PATH FOR A30
+SQL> SELECT PATH, OS_MB/1024 "Size (GB)", HEADER_STATUS FROM V$ASM_DISK WHERE HEADER_STATUS!='MEMBER';
+
+PATH                           OS_MB/1024 HEADER_STATUS
+------------------------------ ---------- -------------
+/dev/mapper/mpaths                    400 CANDIDATE
+
+SQL> alter diskgroup <DG NAME> add disk '/dev/< mpath name >' rebalance power <>;
+
+Ex:
+alter diskgroup FRA add disk '/dev/mapper/mpaths' rebalance power 6;
+
+# Monitor the progress of the rebalance operation
+set line 120
+SELECT SYSDATE, GROUP_NUMBER, OPERATION, STATE, POWER, ACTUAL,
+SOFAR, EST_WORK, EST_RATE, EST_MINUTES FROM V$ASM_OPERATION;
+
+SELECT GROUP_NUMBER, DISK_NUMBER, MOUNT_STATUS, HEADER_STATUS, NAME, PATH FROM
+V$ASM_DISK ORDER BY GROUP_NUMBER, DISK_NUMBER;
+
+
+# STEP 7: remove old disk from OS
+
+multipath -F
+
+
+ALTER DISKGROUP CRS ADD DISK 'ORCL:CRS1' NAME CRS1,'ORCL:CRS2' NAME CRS2,'ORCL:CRS3' NAME CRS3 drop disk CRS01,CRS02,CRS03 REBALANCE POWER 11;
+ALTER DISKGROUP DATA1 ADD DISK 'ORCL:DATA011' NAME DATA011 drop disk DATA11,DATA12 REBALANCE POWER 11;
+ALTER DISKGROUP DATA2 ADD DISK 'ORCL:DATA021' NAME DATA021,'ORCL:DATA022' NAME DATA022,'ORCL:DATA023' NAME DATA023,'ORCL:DATA024' NAME DATA024,'ORCL:DATA025' NAME DATA025,'ORCL:DATA026' NAME DATA026,'ORCL:DATA027' NAME DATA027 
+drop disk DATA21,DATA22,DATA23,DATA24,DATA25,DATA26,DATA27,DATA28,DATA29,DATA210 REBALANCE POWER 11;
+ALTER DISKGROUP FRA ADD DISK 'ORCL:FRA01' NAME FRA01,'ORCL:FRA02' NAME FRA02 drop disk FRA1,FRA2,FRA3 REBALANCE POWER 11;
+
+
+alter diskgroup DATA add disk '/dev/mapper/mpathh' NAME DATA_0002 rebalance power 5;
+/dev/mapper/mpathao
+
+
+### Step 8 : Check ASM
+
+ SET TERMOUT ON;
+ SET ECHO        OFF
+ SET FEEDBACK    6
+ SET HEADING     ON
+ SET LINESIZE    180
+ SET PAGESIZE    50000
+ SET TERMOUT     ON
+ SET TIMING      OFF
+ SET TRIMOUT     ON
+ SET TRIMSPOOL   ON
+ SET VERIFY      OFF
+ CLEAR COLUMNS
+ CLEAR BREAKS
+ CLEAR COMPUTES
+ COLUMN disk_group_name        FORMAT a25           HEAD 'Disk Group Name'
+ COLUMN disk_file_path         FORMAT a20           HEAD 'Path'
+ COLUMN disk_file_name         FORMAT a20           HEAD 'File Name'
+ COLUMN disk_file_fail_group   FORMAT a20           HEAD 'Fail Group'
+ COLUMN total_mb               FORMAT 999,999,999   HEAD 'File Size (MB)'
+ COLUMN used_mb                FORMAT 999,999,999   HEAD 'Used Size (MB)'
+ COLUMN pct_used               FORMAT 999.99        HEAD 'Pct. Used'
+ BREAK ON report ON disk_group_name SKIP 1
+ COMPUTE sum LABEL ""              OF total_mb used_mb ON disk_group_name
+ COMPUTE sum LABEL "Grand Total: " OF total_mb used_mb ON report
+ SELECT
+     NVL(a.name, '[CANDIDATE]')                       disk_group_name
+   , b.path                                           disk_file_path
+   , b.name                                           disk_file_name
+   , b.failgroup                                      disk_file_fail_group
+   , b.total_mb                                       total_mb
+   , (b.total_mb - b.free_mb)                         used_mb
+   FROM
+     v$asm_diskgroup a RIGHT OUTER JOIN v$asm_disk b USING (group_number)
+ ORDER BY
+     a.name
+ /

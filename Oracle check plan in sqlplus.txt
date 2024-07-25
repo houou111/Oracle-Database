@@ -1,0 +1,6 @@
+set autotrace only
+
+
+select xxxxxxxx
+from xxxxxxxx
+where xxxxxxxx

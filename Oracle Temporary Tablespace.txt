@@ -1,0 +1,185 @@
+1. Set default temporary tablespace
+-------------------------------------------------
+ 
+ALTER DATABASE default TEMPORARY TABLESPACE TEMP_TBS;
+ALTER DATABASE default TEMPORARY TABLESPACE TEMP_GROUP;
+
+SELECT PROPERTY_NAME, PROPERTY_VALUE FROM DATABASE_PROPERTIES WHERE
+PROPERTY_NAME='DEFAULT_TEMP_TABLESPACE';
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+FRA' size 1G autoextend on next 1G;
+alter database default temporary tablespace TEMP_TBS;
+
+BEGIN 
+  FOR r IN (select username,TEMPORARY_TABLESPACE FROM dba_users
+	  where username not in ('XS$NULL'))
+  LOOP 
+  BEGIN
+  EXECUTE IMMEDIATE 'ALTER user "'|| r.username||'" temporary tablespace TEMP_TBS'; 
+  EXECUTE IMMEDIATE 'ALTER user "'|| r.username||'" LOCAL TEMPORARY TABLESPACE '||r.TEMPORARY_TABLESPACE; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/ 
+
+
+   
+
+   
+2. Create new TEMPORARY TABLESPACE
+-------------------------------------------------
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+FRA' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+FRA' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+DATA' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+DATA' size 1G  autoextend on next 1G;
+   
+   
+3.Drop TEMP/TEMPORARY TABLESPACE
+-------------------------------------------------
+alter database tempfile '+DATA/CMSPROD19C/TEMPFILE/temp.450.10169669513' drop;
+alter database tempfile '+DATA/CMSPROD19C/TEMPFILE/temp.449.10169669514' drop;
+alter database tempfile '+DATA/CMSPROD19C/TEMPFILE/temp.448.10169669515' drop;
+
+
+
+show parameter db_files
+SELECT file#, name from v$tempfile;
+SELECT s.sid, s.serial#, s.username, s.status, u.tablespace, u.segfile#, u.contents, u.extents, u.blocks
+FROM v$session s, v$sort_usage u
+WHERE s.saddr=u.session_addr
+ORDER BY u.tablespace, u.segfile#, u.segblk#, u.blocks;
+SQL> select sid, username, osuser, program, machine from v$session where sid in
+(<sid returned from above query>);
+
+
+
+col TABLESPACE for a20
+col OSUSER for a20
+SELECT b.tablespace,b.segfile#,b.segblk#,b.blocks,a.sid,a.serial#,
+a.username,a.osuser, a.status
+FROM v$session a,v$sort_usage b
+WHERE a.saddr = b.session_addr;
+
+DROP TABLESPACE TEMP INCLUDING CONTENTS AND DATAFILES;
+
+
+
+4. Create group temporary TABLESPACE
+-------------------------------------------------
+CREATE TEMPORARY TABLESPACE TEMP_TBS_01 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS_02 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+ALTER DATABASE default TEMPORARY TABLESPACE TEMP_GROUP;
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS_03 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+CREATE TEMPORARY TABLESPACE TEMP_TBS_04 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS_01 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+	 
+ALTER TABLESPACE TEMP_TBS_02 TABLESPACE GROUP TEMP_GROUP; 
+
+
+
+5. Check size
+-------------------------------------------------
+SQL> SELECT * from DBA_TEMP_FREE_SPACE;
+ 
+TABLESPACE_NAME TABLESPACE_SIZE ALLOCATED_SPACE FREE_SPACE
+----------------------------------- --------------- --------------- ----------
+TEMP 250609664 250609664 249561088
+
+--SHRINK
+ALTER TABLESPACE TEMP_TBS SHRINK SPACE KEEP 10G;
+
+--Offline/Online tablespace
+
+SQL> ALTER TABLESPACE lmtemp TEMPFILE OFFLINE;
+SQL> ALTER TABLESPACE lmtemp TEMPFILE ONLINE;
+
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS_01 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+CREATE TEMPORARY TABLESPACE TEMP_TBS_02 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+
+
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_01 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_02 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+
+ALTER DATABASE default TEMPORARY TABLESPACE TEMP_GROUP;
+
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS_03 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+CREATE TEMPORARY TABLESPACE TEMP_TBS_04 TEMPFILE '+FRA' size 1G autoextend on next 1G TABLESPACE GROUP TEMP_GROUP;
+
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_03 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS_04 add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+
+
+
+CREATE TEMPORARY TABLESPACE TEMP_TBS TEMPFILE '+FRA' size 1G autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+alter tablespace TEMP_TBS add tempfile '+FRA' size 1G  autoextend on next 1G;
+
+ALTER DATABASE default TEMPORARY TABLESPACE TEMP_TBS;
+
+
+
+TEMP_TBS_01
+
+
+DROP TABLESPACE TEMP INCLUDING CONTENTS AND DATAFILES;

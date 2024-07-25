@@ -1,0 +1,48 @@
+Select CURRENT_SCN from v$database;
+
+
+SELECT SYSDATE, TO_CHAR(CURRENT_SCN) AS current_scn_value, SCN_TO_TIMESTAMP(CURRENT_SCN) AS current_scn_timestamp
+FROM v$database;
+
+
+
+Select to_char(CURRENT_SCN) from v$database;
+
+
+select dbms_flashback.get_system_change_number from dual;
+
+
+select timestamp_to_scn(sysdate) from dual;
+
+select timestamp_to_scn(sysdate) from dual;
+
+
+
+Select sysdate, timestamp_to_scn(sysdate) from dual;
+
+
+Select SCN_TO_TIMESTAMP(29383635) from dual;
+
+
+select timestamp_to_scn(start_time) from dba_capture;
+
+37208057
+29358676
+
+
+421223275926
+421458305176
+
+
+select scn_to_timestamp(4426538972) as timestamp from dual;
+
+
+421458305177
+
+select scn_to_timestamp(421458305177) as timestamp from dual;
+
+
+SELECT ORA_ROWSCN, last_name FROM employees WHERE employee_id = 188;
+
+SELECT SCN_TO_TIMESTAMP(ORA_ROWSCN), last_name FROM employees
+   WHERE employee_id = 188;

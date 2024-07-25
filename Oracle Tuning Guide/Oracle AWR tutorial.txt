@@ -1,0 +1,89 @@
+﻿
+----Single----
+SQL> @?/rdbms/admin/awrrpt.sql
+
+----Rac----
+SQL> @?/rdbms/admin/awrgrpt.sql
+
+
+
+
+
+
+#Sript lấy AWR bằng tay
+SQL> BEGIN
+  	DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ();
+  	END;  	
+
+#Ví dụ:
+SQL> desc chien.test;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ------------
+ ID                                                 NUMBER
+ GROUP_ID                                  NOT NULL NUMBER
+ CREATED_AT                                NOT NULL DATE
+ TEXT                                      NOT NULL VARCHAR2(50)
+ NUM                                                NUMBER(2)
+
+SQL> insert into chien.test values (29, 19, sysdate, 'tttest awr', 1);
+1 row created.
+SQL> commit;
+Commit complete.
+
+SQL> BEGIN
+  2  DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT ();
+  3  END;
+  4  /
+PL/SQL procedure successfully completed.
+
+
+SQL> @$ORACLE_HOME/rdbms/admin/awrrpt.sql
+Current Instance
+~~~~~~~~~~~~~~~~
+   DB Id    DB Name      Inst Num Instance
+----------- ------------ -------- ------------
+ 2582268585 TESTDB              1 testdb
+Specify the Report Type
+~~~~~~~~~~~~~~~~~~~~~~~
+Would you like an HTML report, or a plain text report?
+Enter 'html' for an HTML report, or 'text' for plain text
+Defaults to 'html'
+Enter value for report_type: 
+
+Type Specified:  html
+Instances in this Workload Repository schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   DB Id     Inst Num DB Name      Instance     Host
+------------ -------- ------------ ------------ ------------
+* 2582268585        1 TESTDB       testdb       db01.perform
+                                                ancetest
+
+Using 2582268585 for database Id
+Using 1 for instance number
+Specify the number of days of snapshots to choose from
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Entering the number of days (n) will result in the most recent
+(n) days of snapshots being listed.  Pressing <return> without
+specifying a number lists all completed snapshots.
+Enter value for num_days: 3
+Listing the last 3 days of Completed Snapshots                                                       
+Instance     DB Name        Snap Id    Snap Started   Snap Level
+------------ ------------ --------- ------------------ -----
+testdb       TESTDB            8071 30 Nov 2013 08:00      1
+                               8072 30 Nov 2013 10:00      1
+                               8073 30 Nov 2013 11:00      1
+                               8074 30 Nov 2013 11:15      1
+                               8075 30 Nov 2013 11:17      1
+Specify the Begin and End Snapshot Ids
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enter value for begin_snap: 8074
+Begin Snapshot Id specified: 8074
+Enter value for end_snap: 8075
+End   Snapshot Id specified: 8075
+Specify the Report Name
+~~~~~~~~~~~~~~~~~~~~~~~
+The default report file name is awrrpt_1_8074_8075.html.  To use this name,
+press <return> to continue, otherwise enter an alternative.
+Enter value for report_name: awr_test.html
+Using the report name awr_test.html
+#Lấy file trên đường dẫn hiện session vừa connect.

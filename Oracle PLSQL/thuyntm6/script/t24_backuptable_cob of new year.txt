@@ -1,0 +1,99 @@
+[t24db01@oracle /home/oracle/R14SCRIPT/YEAREND>]$sh backup_FBNK_PL_CLOSE_OUT_WORK.sh
+-----------  Backup data of table FBNK_PL_CLOSE_OUT_WORK (y/n)? -----------------
+y
++++++ BACKUP DATA OF TABLE FBNK_PL_CLOSE_OUT_WORK +++++
+
+0 rows created.
+
+
+Commit complete.
+
+[oraem@dc-ora-db01 ~]$ /u01/app/agent13c/agent_13.2.0.0.0/bin/emctl pingOMS
+Oracle Enterprise Manager Cloud Control 13c Release 2  
+Copyright (c) 1996, 2016 Oracle Corporation.  All rights reserved.
+---------------------------------------------------------------
+EMD pingOMS error: Failure connecting to https://dc-em13c-app.techcombank.com.vn:4903/empbs/upload , err No route to host
+
+
+
+
+echo "-----------  Backup table FBNK.CATEG.ENT.LWORK.DAY and FBNK.ACCT.ENT.LWORK.DAY (y/n)? -----------------"
+read answer
+if [ "$answer" = Y -o "$answer" = y ]
+then
+export NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS"
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export PATH=$ORACLE_HOME/bin:$PATH
+export ORACLE_SID=cobr14dc1
+   
+sqlplus -s  / as sysdba <<EOF
+set linesize 1000
+set time on
+prompt +++++ CREATE BACKUP OF FBNK.CATEG.ENT.LWORK.DAY +++++
+create table T24Live.FBNK_CATE000_BK as select * from T24live.FBNK_CATE000;
+
+prompt +++++ CHECK (FBNK.CATEG.ENT.LWORK.DAY BACKUP)  +++++
+SELECT CASE 
+                    WHEN (SELECT COUNT(*) FROM T24Live.FBNK_CATE000_BK) = 
+                         (SELECT COUNT(*) FROM T24Live.FBNK_CATE000) 
+                    THEN 'OK' 
+                    ELSE 'NOT OK'
+                   END "CHECK" 
+FROM dual;
+
+prompt +++++ CREATE BACKUP OF FBNK.ACCT.ENT.LWORK.DAY +++++
+create table T24Live.FBNK_ACCT_ENT_LWORK_DAY_BK as select * from T24live.FBNK_ACCT_ENT_LWORK_DAY;
+
+prompt +++++ CHECK (FBNK.ACCT.ENT.LWORK.DAY BACKUP) +++++
+SELECT CASE 
+                    WHEN (SELECT COUNT(*) FROM T24Live.FBNK_ACCT_ENT_LWORK_DAY_BK) = 
+                         (SELECT COUNT(*) FROM T24Live.FBNK_ACCT_ENT_LWORK_DAY) 
+                    THEN 'OK' 
+                    ELSE 'NOT OK'
+                   END "CHECK" 
+FROM dual;
+exit; 
+EOF
+fi
+
+
+[root@dr-card-db-02 ~]# nslookup dc-card-db-scan
+Server:         10.98.1.34
+Address:        10.98.1.34#53
+
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.69
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.70
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.98
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.99
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.100
+Name:   dc-card-db-scan.techcombank.com.vn
+Address: 10.100.100.68
+
+------------
+[t24db01@oracle /home/oracle>]$sh test.sh
+-----------  Backup table FBNK.CATEG.ENT.LWORK.DAY and FBNK.ACCT.ENT.LWORK.DAY (y/n)? -----------------
+y
++++++ CREATE TABLE FBNK.CATEG.ENT.LWORK.DAY +++++
+
+Table created.
+
++++++ CHECK BACKUP TABLE (FBNK.CATEG.ENT.LWORK.DAY)  +++++
+
+CHECK
+------
+OK
+
++++++ CREATE TABLE FBNK.ACCT.ENT.LWORK.DAY +++++
+
+Table created.
+
++++++ CHECK BACKUP TABLE (FBNK.ACCT.ENT.LWORK.DAY) +++++
+
+CHECK
+------
+OK

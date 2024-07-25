@@ -1,0 +1,15 @@
+export PATH
+export GGATE=/u01/app/ggfor11g
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export JAVA_HOME=/usr/java/jdk1.8.0_121
+export PATH=$ORACLE_HOME/bin:$PATH:$JAVA_HOME/bin:$GGATE/bin
+export LIBPATH=$ORACLE_HOME/lib:$GGATE
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+
+echo -e '\033[1mCREATE_TIME :\033[0m'`date +%d/%m/%y:%T` > /tmp/info_gg.txt
+
+$GGATE/ggsci >> /tmp/info_gg.txt << EOF
+info all
+EOF
+
+chmod 770 /tmp/info_gg.txt

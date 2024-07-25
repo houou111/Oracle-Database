@@ -1,0 +1,55 @@
+Step1:ADD 2nd network
+
+grid@mynode]$oifcfg iflist
+eth0  133.22.67.0
+eth1  192.168.122.0
+eth1  169.254.0.0
+eth2  10.1.1.0
+[grid@mynode]$ oifcfg setif -global eth2/10.1.1.0:public
+[grid@mynode]$ oifcfg getif
+eth0  133.22.67.0 global  public
+eth1 192.168.122.0  global  cluster_interconnect,asm
+eth2 10.1.1.0 global  public
+[root@mynode]#srvctl add network -netnum 2 subnet 10.1.1.0/255.255.252.0/eth2
+[root@mynode]#srvctl config network -netnum 2
+Network 2 exists
+Subnet IPv4: 10.1.1.0/255.255.252.0/eth0, static
+Subnet IPv6:
+Step2:ADD node VIPs
+
+[root@mynode]# srvctl add vip -node salessrv145 -netnum 2 -address salessrv145v2/255.255.252.0
+[root@mynode]# srvctl add vip -node salessrv146 -netnum 2 -address salessrv146v2/255.255.252.0
+Step3:ADD node listener on network number 2
+
+[grid@mynode]$ srvctl add listener -listener listnet2 -netnum 2 -endpoints "TCP:1522"
+Step4:ADD SCAN on network number 2
+
+[root@mynode]# srvctl add scan -scanname scantest -netnum 2
+Step5:START node VIPs
+
+[root@mynode]# srvctl start vip -vip salessrv145v2
+[root@mynode]# srvctl start vip -vip salessrv146v2
+Step6:START ListNet2 node listener on network number 2
+
+[grid@mynode]$ srvctl start listener -listener listnet2
+[grid@mynode]$ srvctl status listener -listener listnet2
+Listener LISTNET2 is enabled
+Listener LISTNET2 is running on node(s): salessrv145,salessrv146.
+Step7:START SCAN on network number 2
+
+[root@mynode]# srvctl start scan -netnum 2
+Step8:Add and start a new SCAN listener on network 2 (as grid user)
+
+grid@mynode]$srvctl add scan_listener -netnum 2 -listener scanlsnr_2 -endpoints "TCP:1522"
+grid@mynode]$srvctl start scan_listener -netnum 2
+Step9:Check configuration and status for SCAN
+
+[root@mynode]#srvctl config scan -netnum 2
+SCAN name: scantest, Network: 2
+Subnet IPv4: 10.1.1.0/255.255.252.0/eth2
+Subnet IPv6:
+SCAN 0 IPv4 VIP: 10.1.1.250
+
+[root@mynode]# srvctl status scan -netnum 2
+SCAN VIP scan1_net2 is enabled
+SCAN VIP scan1_net2 is running on node salessrv146

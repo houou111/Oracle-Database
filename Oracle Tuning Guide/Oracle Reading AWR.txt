@@ -1,0 +1,31 @@
+awr -> trung binh duoi 10 la tot nhat
+ITL wait: concurency: update vao cung 1 block -> initrans
+
+buffer busy wait-> 2 transction nhay vao cung 1 block -> hash nos ra
+free buffer wait -> het cho tren buffer
+
+SQL order by get: quet du lieu len
+
+don vi đọc:block
+
+cursor sharing: exact/force
+
+awr single
+awr compare
+awr sql
+sql report
+sql monitoring
+
+parallel : 
+- 1-2 phiên chạy
+- ko đc cho nhiều người dùng
+
+-> tốn nhiều IO, tốn nhiều CPU có thể enable parallel
+
+IO intensive 
+CPU intensive
+
+
+hash partition:
+- where cái gì: PK, ID, dữ liệu balance -> băm được các giỏ khá đều
+- hash 2-4 8

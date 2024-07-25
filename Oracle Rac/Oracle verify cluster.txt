@@ -1,0 +1,32 @@
+<GRID_HOME>/runcluvfy.sh stage -pre crsinst -n <HOSTNAME1>,<HOSTNAME2> -method root
+
+
+1. Verify all cluster
+------------------------------------------------------------------------
+$ORACLE_HOME/runcluvfy.sh stage -pre crsinst -n ho-2f-g2db-01,ho-2f-g2db-02 -method root -verbose
+
+
+runcluvfy.sh stage -pre crsinst -n ho-2f-g2db-01,ho-2f-g2db-02 -verbose
+
+
+
+
+2. Verify network
+------------------------------------------------------------------------
+cluvfy stage -post hwos -n dc-oradb-01,dc-oradb-02,dc-oradb-03,dc-oradb-04 -verbose
+
+cluvfy stage -post hwos -n ho-2f-g2db-01,ho-2f-g2db-02 -verbose
+
+
+
+crsctl disable crs
+crsctl stop crs -f
+
+
+en9: flags=1e084863,18c0<UP,BROADCAST,NOTRAILERS,RUNNING,SIMPLEX,MULTICAST,GROUPRT,64BIT,CHECKSUM_OFFLOAD(ACTIVE),LARGESEND,CHAIN>
+        inet 10.236.191.34 netmask 0xffffff00 broadcast 10.236.191.255
+         tcp_sendspace 262144 tcp_recvspace 262144 rfc1323 1
+
+en9: flags=1e084863,18c0<UP,BROADCAST,NOTRAILERS,RUNNING,SIMPLEX,MULTICAST,GROUPRT,64BIT,CHECKSUM_OFFLOAD(ACTIVE),LARGESEND,CHAIN>
+        inet 10.236.191.33 netmask 0xffffff00 broadcast 10.236.191.255
+               tcp_sendspace 262144 tcp_recvspace 262144 rfc1323 1

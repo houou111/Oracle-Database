@@ -1,0 +1,15 @@
+for i in $(ps -ef | grep ora_smon_ | grep -v grep | cut -b58-70); do
+
+export ORACLE_SID=$i
+export ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1
+export PATH=$ORACLE_HOME/bin:$PATH
+
+$ORACLE_HOME/bin/sqlplus -s /nolog <<EOF
+connect / as sysdba
+shutdown immediate;
+exit
+EOF
+}
+
+
+done

@@ -1,0 +1,194 @@
+
+
+----Case 0: check when error
+select * from dba_unused_col_tabs; 
+select col#, name, type#, length, precision# from sys.col$ 
+where obj# in (select object_id from dba_objects where object_name='object A' and object_type='TABLE') 
+minus 
+select col#, name, type#, length, precision# from sys.col$ 
+where obj# in (select object_id from dba_objects where object_name='object B' and object_type='TABLE');
+
+
+----Case 1: partitioning-an-existing-table
+
+
+
+
+----Case 2: Combie 2 table ( same structure)
+
+Bước 1:
+create table target gồm 2 partition tương ứng mỗi partition với 2 bảng Source_1 và Source_2
+
+Bước 2:
+Rồi thực hiện exchange source_1 và source_2 --> target_1
+
+
+
+DROP TABLE DWH_BK.I$FBNK_ACCOUNT_PAR cascade CONSTRAINT;
+  
+CREATE TABLE DWH_BK.I$FBNK_ACCOUNT_PAR
+(
+  WINDOW_ID         NUMBER(20),
+  OPTYPE            VARCHAR2(50 BYTE),
+  RECID             VARCHAR2(255 BYTE),
+  XMLRECORD         SYS.XMLTYPE DEFAULT '<row></row>',
+  RECID_BEFORE      VARCHAR2(255 BYTE),
+  JOURNAL_TIME      TIMESTAMP(6),
+  RECORD_TIMESTAMP  TIMESTAMP(6),
+  FILESEQNO         NUMBER,
+  FILERBA           NUMBER,
+  ORA_ROWID         VARCHAR2(100 BYTE),
+  LAG_TIME          NUMBER
+)
+XMLTYPE XMLRECORD STORE AS SECUREFILE BINARY XML (
+  TABLESPACE  DWH_BK
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  NOCACHE
+  LOGGING
+      STORAGE    (
+                  INITIAL          104K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  MAXEXTENTS       UNLIMITED
+                  PCTINCREASE      0
+                  BUFFER_POOL      DEFAULT
+                  FLASH_CACHE      DEFAULT
+                  CELL_FLASH_CACHE DEFAULT
+                 ))
+PARTITION BY RANGE (RECORD_TIMESTAMP)
+INTERVAL( NUMTODSINTERVAL(1,'DAY'))
+(
+  partition p1 values less than (TO_DATE(' 2016-05-20 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+)
+PARTITION BY RANGE (CREATION_DATE)
+INTERVAL( NUMTOYMINTERVAL(1,'MONTH'))
+(
+  PARTITION P1 VALUES LESS THAN (TO_DATE(' 2016-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+)
+TABLESPACE DWH_BK
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+
+ALTER TABLE DWH_BK.I$FBNK_ACCOUNT_PAR
+  EXCHANGE PARTITION p1
+  WITH TABLE DWH_BK.I$FBNK_ACCOUNT
+  WITHOUT VALIDATION
+  
+
+CREATE UNIQUE INDEX DWH_BK.PK_I$FBNK_ACCOUNT2 ON DWH_BK.I$FBNK_ACCOUNT_PAR
+(WINDOW_ID,RECORD_TIMESTAMP)
+LOGGING
+TABLESPACE DWH_IND_TBS
+PCTFREE    10
+INITRANS   2
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARALLEL ( DEGREE 2 INSTANCES 1 ) local;
+
+
+ALTER TABLE DWH_BK.I$FBNK_ACCOUNT_PAR ADD (
+  CONSTRAINT PK_I$FBNK_ACCOUNT2
+  PRIMARY KEY
+  (WINDOW_ID,RECORD_TIMESTAMP)
+  USING INDEX DWH_BK.PK_I$FBNK_ACCOUNT2
+  ENABLE VALIDATE);
+
+  
+  ALTER TABLE DWH_BK.I$FBNK_ACCOUNT_PAR
+  EXCHANGE PARTITION p1
+  WITH TABLE DWH_BK.I$FBNK_ACCOUNT
+  WITHOUT VALIDATION
+
+DROP TABLE DWH_BK.I$FBNK_ACCOUNT;
+RENAME DWH_BK.I$FBNK_ACCOUNT_PAR TO DWH_BK.I$FBNK_ACCOUNT;
+
+
+
+
+----Case 3: move table to another schema partition exchange
+
+ CREATE TABLE "DWH2017"."TABLE2MOVE" 
+(	"ID" NUMBER, 
+	"TEXT" VARCHAR2(100)
+) 
+   partition BY hash (id) (partition p1);
+   
+        
+CREATE TABLE "DWH"."TABLE2MOVE" 
+(	"ID" NUMBER, 
+"TEXT" VARCHAR2(100)
+) ;
+   
+insert into "DWH"."TABLE2MOVE"  values (1,'so1');
+insert into "DWH"."TABLE2MOVE"  values (2,'so2');
+insert into "DWH"."TABLE2MOVE"  values (3,'so3');
+commit;
+
+ALTER TABLE DWH2017.table2move exchange partition p1 WITH TABLE DWH.table2move;
+
+SELECT * FROM NEW_SCHEMA.table2move;
+SELECT * FROM  SOURCE_SCHEMA.table2move;.
+		 
+select count(*) from DWH.TABLE2MOVE;
+select count(*) from DWH2017.TABLE2MOVE;
+
+
+
+
+----Case 4: move partition table to another schema partition exchange
+DWH -> DWH2017
+
+TABLE DWH.ACCOUNT_TEST
+
+CREATE TABLE DWH2017.ACCOUNT_TEST (get DDL)
+
+grant select, alter on DWH.ACCOUNT_TEST to DWH2017 ;
+
+CREATE TABLE DWH2017.temp_table as select * from DWH.ACCOUNT_TEST
+
+alter table DWH.ACCOUNT_TEST exchange partition SYS_P49388 with table DWH2017.temp_table INCLUDING INDEXES WITHOUT VALIDATION ;
+
+alter table DWH2017.ACCOUNT_TEST exchange partition SYS_P51179 with table DWH2017.temp_table INCLUDING INDEXES WITHOUT VALIDATION ;
+
+
+if select count(*) from DWH2017.temp_table ==0
+drop DWH2017.temp_table
+
+
+
+
+
+
+

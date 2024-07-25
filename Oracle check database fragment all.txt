@@ -1,0 +1,182 @@
+set lines 200 
+set pages 200
+select name, DATABASE_ROLE, OPEN_MODE from v$database;
+	
+archive log list;	
+show parameter recover	
+select * from v$flash_recovery_area_usage;
+
+select sum(bytes/1024/1024/1024) from v$datafile;
+
+select sum(bytes/1024/1024/1024) from  dba_segments; 
+
+COLUMN group_name             FORMAT a25           HEAD 'Disk Group|Name'
+COLUMN sector_size            FORMAT 99,999        HEAD 'Sector|Size'
+COLUMN block_size             FORMAT 99,999        HEAD 'Block|Size'
+COLUMN allocation_unit_size   FORMAT 999,999,999   HEAD 'Allocation|Unit Size'
+COLUMN state                  FORMAT a11           HEAD 'State'
+COLUMN type                   FORMAT a6            HEAD 'Type'
+COLUMN total_mb               FORMAT 999,999,999   HEAD 'Total Size (MB)'
+COLUMN used_mb                FORMAT 999,999,999   HEAD 'Used Size (MB)'
+COLUMN pct_used               FORMAT 999.99        HEAD 'Pct. Used'
+BREAK ON report ON disk_group_name SKIP 1
+COMPUTE sum LABEL "Grand Total: " OF total_mb used_mb ON report
+SELECT
+    name                                     group_name
+  , sector_size                              sector_size
+  , block_size                               block_size
+  , allocation_unit_size                     allocation_unit_size
+  , state                                    state
+  , type                                     type
+  , total_mb                                 total_mb
+  , (total_mb - free_mb)                     used_mb
+  , ROUND((1- (free_mb / total_mb))*100, 2)  pct_used
+FROM
+    v$asm_diskgroup
+WHERE
+    total_mb != 0
+ORDER BY
+    name;
+
+
+select TABLESPACE_NAME, TRUNC(TABLESPACE_SIZE/1024/1024/1024,2) SIZE_GB, 
+TRUNC(ALLOCATED_SPACE/1024/1024/1024,2) ALLOCATED_GB, 
+TRUNC(FREE_SPACE/1024/1024/1024,2) FREE_GB,
+TRUNC(((ALLOCATED_SPACE - FREE_SPACE)/ALLOCATED_SPACE*100),2) "% USED"  
+from dba_temp_free_space;
+
+
+column "TOTAL ALLOC (MB)" for 999,999,999,990.00	
+column "TOTAL PHYS ALLOC (MB)" for 99,999,990.00	
+column "USED (MB)" for 99,999,990.00	
+column "FREE (MB)" for 9,999,990.00	
+column "% USED" for 990.00	
+select 
+   a.tablespace_name,	
+   a.bytes_alloc/(1024*1024) "TOTAL ALLOC (MB)",	
+   a.physical_bytes/(1024*1024) "TOTAL PHYS ALLOC (MB)",	
+   nvl(b.tot_used,0)/(1024*1024) "USED (MB)",	
+   (nvl(b.tot_used,0)/a.bytes_alloc)*100 "% USED" 	
+from 	
+   (select 	
+      tablespace_name, 	
+	  sum(bytes) physical_bytes, 
+      sum(decode(autoextensible,'NO',bytes,'YES',maxbytes)) bytes_alloc 
+    from 
+      dba_data_files 
+    group by 
+      tablespace_name ) a,
+   (select 
+      tablespace_name, 
+      sum(bytes) tot_used 
+    from 
+      dba_extents
+    group by 
+      tablespace_name ) b
+where 
+   a.tablespace_name = b.tablespace_name (+) 
+order by 1;
+
+
+COLUMN TABLE_NAME FORMAT A40
+COLUMN OBJECT_NAME FORMAT A40
+COLUMN OWNER FORMAT A20
+select a.owner, a.table_name,b.num_rows,a.Size_MB,a.Percent 
+from 
+(
+SELECT
+   owner, 
+   table_name, 
+   TRUNC(sum(bytes)/1024/1024) Size_MB,
+   ROUND( ratio_to_report( sum(bytes) ) over () * 100) Percent
+FROM
+(SELECT segment_name table_name, owner, bytes
+ FROM dba_segments
+ WHERE segment_type IN ('TABLE', 'TABLE PARTITION', 'TABLE SUBPARTITION')
+ UNION ALL
+ SELECT i.table_name, i.owner, s.bytes
+ FROM dba_indexes i, dba_segments s
+ WHERE s.segment_name = i.index_name
+ AND   s.owner = i.owner
+ AND   s.segment_type IN ('INDEX', 'INDEX PARTITION', 'INDEX SUBPARTITION')
+ UNION ALL
+ SELECT l.table_name, l.owner, s.bytes
+ FROM dba_lobs l, dba_segments s
+ WHERE s.segment_name = l.segment_name
+ AND   s.owner = l.owner
+ AND   s.segment_type IN ('LOBSEGMENT', 'LOB PARTITION')
+ UNION ALL
+ SELECT l.table_name, l.owner, s.bytes
+ FROM dba_lobs l, dba_segments s
+ WHERE s.segment_name = l.index_name
+ AND   s.owner = l.owner
+ AND   s.segment_type = 'LOBINDEX')
+WHERE owner in 
+(
+SELECT  owner
+  FROM dba_segments
+  WHERE OWNER not in ('SYS')
+  GROUP BY owner
+order by sum(bytes) desc
+FETCH FIRST 3 ROWS ONLY
+ )
+GROUP BY table_name, owner
+HAVING SUM(bytes)/1024/1024 > 10  /* Ignore really small tables */
+ORDER BY SUM(bytes) desc
+) a, dba_tables b
+WHERE a.owner=b.owner
+and a.owner not in ('SYS')
+AND a.table_name=b.table_name
+ORDER by 4 desc
+;
+
+set lines 200
+set pages 200
+col owner for a20
+col table_name for a40
+col "Fragmented size (mb)" for 999,999.00
+select owner,table_name,round((blocks*8)/1024,2) "Fragmented size (mb)", 
+round((num_rows*avg_row_len/1024/1024),2) "Actual size (mb)", 
+round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2) "Reclaim size (mb)",
+((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10 "Reclaimable space % " 
+from dba_tables 
+where round((blocks*8/1024),2)>0
+and  ((round((blocks*8/1024),2)-round((num_rows*avg_row_len/1024/1024),2))/round((blocks*8/1024),2))*100 -10>20
+and round((blocks*8)/1024,2)-round((num_rows*avg_row_len/1024/1024),2)>100
+and owner not in ('SYS')
+order by 1,6 desc;
+
+set linesize 1000 pagesize 0 feedback off trimspool on
+with
+ hwm as (
+  -- get highest block id from each datafiles ( from x$ktfbue as we don't need all joins from dba_extents )
+  select /*+ materialize */ ktfbuesegtsn ts#,ktfbuefno relative_fno,max(ktfbuebno+ktfbueblks-1) hwm_blocks
+  from sys.x$ktfbue group by ktfbuefno,ktfbuesegtsn
+ ),
+ hwmts as (
+  -- join ts# with tablespace_name
+  select name tablespace_name,relative_fno,hwm_blocks
+  from hwm join v$tablespace using(ts#)
+ ),
+ hwmdf as (
+  -- join with datafiles, put 5M minimum for datafiles with no extents
+  select file_name,nvl(hwm_blocks*(bytes/blocks),5*1024*1024) hwm_bytes,bytes,autoextensible,maxbytes
+  from hwmts right join dba_data_files using(tablespace_name,relative_fno)
+ )
+select
+ case when autoextensible='YES' and maxbytes>=bytes
+ then -- we generate resize statements only if autoextensible can grow back to current size
+  '/* reclaim '||to_char(ceil((bytes-hwm_bytes)/1024/1024),999999)
+   ||'M from '||to_char(ceil(bytes/1024/1024),999999)||'M */ '
+   ||'alter database datafile '''||file_name||''' resize '||ceil(hwm_bytes/1024/1024)||'M;'
+ else -- generate only a comment when autoextensible is off
+  '/* reclaim '||to_char(ceil((bytes-hwm_bytes)/1024/1024),999999)
+   ||'M from '||to_char(ceil(bytes/1024/1024),999999)
+   ||'M after setting autoextensible maxsize higher than current size for file '
+   || file_name||' */'
+ end SQL
+from hwmdf
+where
+ bytes-hwm_bytes>1024*1024 -- resize only if at least 1MB can be reclaimed
+order by 1 desc
+/

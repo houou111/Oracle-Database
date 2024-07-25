@@ -1,0 +1,85 @@
+1. Find most change object
+-------------------------------------
+	set lines 200
+	set pages 200
+	select * from 
+	(
+	SELECT to_char(begin_interval_time,'YYYY_MM_DD HH24:MI') snap_time, dhsso.object_name, sum(db_block_changes_delta) as maxchages
+	FROM dba_hist_seg_stat dhss,
+	dba_hist_seg_stat_obj dhsso,
+	dba_hist_snapshot dhs
+	WHERE dhs.snap_id = dhss.snap_id
+	AND dhs.instance_number = dhss.instance_number
+	AND dhss.obj# = dhsso.obj#
+	AND dhss.dataobj# = dhsso.dataobj#
+	--AND begin_interval_time BETWEEN to_date('2021_12_13 00','YYYY_MM_DD HH24') AND to_date('2021_12_13 00','YYYY_MM_DD HH24')
+	--AND begin_interval_time > to_date('2022_03_16 00','YYYY_MM_DD HH24')
+	AND begin_interval_time >sysdate-1
+	GROUP BY to_char(begin_interval_time,'YYYY_MM_DD HH24:MI'), dhsso.object_name 
+	order by 3 desc)
+	where rownum <100;
+
+SQL> select owner,table_name from dba_tables where table_name in ('DB_THUEBAO','MV_PHANLOAI_KHACHHANG','PTM_CDBR','QLHS_DANHSACH_LUU','TBL_CT_NO','MV_RENEW_PRO','THUEBAO_TRATRUOC_TTKD','TBL_CT_NO','DB_THUEBAO_XULY_CN_BSC') order by 1;
+
+OWNER                TABLE_NAME
+-------------------- ------------------------------
+TTKDHCM_KTNV         TBL_CT_NO
+TTKDHCM_KTNV         QLHS_DANHSACH_LUU
+TTKDHCM_KTNV         MV_THONGTIN_TIEPTHI
+TTKDHCM_KTNV         MV_PHANLOAI_KHACHHANG
+TTKDHCM_KTNV         MV_RENEW_PRO
+TTKD_BCT             THUEBAO_TRATRUOC_TTKD
+TTKD_BCT             PTM_CDBR
+TTKD_BCT             DB_THUEBAO_XULY_CN_BSC
+
+
+
+2. Find sql_text related
+-------------------------------------
+SELECT to_char(begin_interval_time,'YYYY_MM_DD HH24:MI'),
+dbms_lob.substr(sql_text,4000,1),
+dhss.instance_number,
+dhss.sql_id,executions_delta,rows_processed_delta
+FROM dba_hist_sqlstat dhss,
+dba_hist_snapshot dhs,
+dba_hist_sqltext dhst
+WHERE upper(dhst.sql_text) LIKE '%AUDIT_ORDER%'
+AND dhss.snap_id=dhs.snap_id
+AND dhss.instance_Number=dhs.instance_number
+--AND begin_interval_time BETWEEN to_date('2021_11_29 13','YYYY_MM_DD HH24') AND to_date('2020_11_29 16','YYYY_MM_DD HH24')
+AND begin_interval_time > to_date('2021_12_13 00','YYYY_MM_DD HH24')
+AND dhss.sql_id = dhst.sql_id;
+
+
+
+
+SELECT distinct dbms_lob.substr(sql_text,4000,1),dhss.sql_id
+FROM dba_hist_sqlstat dhss,
+dba_hist_snapshot dhs,
+dba_hist_sqltext dhst
+WHERE upper(dhst.sql_text) LIKE '%DBTB_20200501%'
+AND dhss.snap_id=dhs.snap_id
+AND dhss.instance_Number=dhs.instance_number
+AND begin_interval_time BETWEEN to_date('2020_05_20 00','YYYY_MM_DD HH24') AND to_date('2020_05_25 00','YYYY_MM_DD HH24')
+AND dhss.sql_id = dhst.sql_id
+order by 1,2;
+
+
+3. Find program related
+-------------------------------------
+SELECT instance_number, to_char(sample_time,'yyyy_mm_dd hh24:mi:ss'), user_id, program
+FROM dba_hist_active_sess_history
+WHERE sql_id in ('19gwc4cnk2mft'')
+AND snap_id BETWEEN 31856 AND 31860;
+
+INSTANCE_NUMBER TO_CHAR(SAMPLE_TIME    USER_ID PROGRAM
+--------------- ------------------- ---------- ----------------------------------------------------------------
+              1 2013_05_22 17:26:22         25 OMS
+              1 2013_05_22 18:20:22         25 OMS
+              1 2013_05_22 18:40:31         25 OMS
+              1 2013_05_22 19:56:41         25 OMS
+              1 2013_05_22 19:34:41         25 OMS
+              1 2013_05_22 19:14:11         25 OMS
+              1 2013_05_22 20:49:00         25 OMS
+              1 2013_05_22 20:36:20         25 OMS
+              1 2013_05_22 20:25:50         25 OMS

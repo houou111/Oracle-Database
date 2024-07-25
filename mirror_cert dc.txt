@@ -1,0 +1,35 @@
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = '123';
+GO
+
+USE master;
+CREATE CERTIFICATE EPO_DC_cert 
+   WITH SUBJECT = 'EPO_DC certificate for database mirroring', 
+   EXPIRY_DATE = '12/31/2114';
+GO
+drop endpoint epo_mirroring
+CREATE ENDPOINT epo_mirroring
+   STATE = STARTED
+   AS TCP (
+      LISTENER_PORT=5022
+      , LISTENER_IP = ALL
+   ) 
+   FOR DATABASE_MIRRORING ( 
+      AUTHENTICATION = CERTIFICATE EPO_DC_cert
+      , ENCRYPTION = REQUIRED ALGORITHM AES
+      , ROLE = ALL
+   );
+GO
+
+BACKUP CERTIFICATE EPO_DC_cert TO FILE = 'C:\EPO_DC_cert.cer';
+GO
+
+GRANT CONNECT ON ENDPOINT::epo_mirroring TO mirroruser;
+GO
+
+
+CREATE CERTIFICATE EPO_DR_cert
+   AUTHORIZATION mirroruser
+   FROM FILE = 'C:\EPO_DR_cert.cer';
+GO
+
+ALTER DATABASE "ePO4_DC-ENCRYPTION"     SET PARTNER =     'TCP://DR-EPO-DB.headquarter.techcombank.com.vn:5022'

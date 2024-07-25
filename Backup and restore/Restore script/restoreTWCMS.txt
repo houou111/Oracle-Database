@@ -1,0 +1,274 @@
+-- in case need linking library
+sh /usr/openv/netbackup/bin/oracle_link
+
+-- add host to Netbackup
+
+-- list backup file in netbackup
+/usr/openv/netbackup/bin/bplist  -C dr-cardlinux-db01.techcombank.com.vn -t 4 -S dr-backup-01.headquarter.techcombank.com.vn -s 07/20/2017 00:00:00 -e 07/26/2017 23:00:00 -l -b -R /
+
+-- restore spfile from netbackup
+startup nomount
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore spfile from '/c-842430029-20170726-01';
+release channel t1;
+}
+
+-- create pfile from spfile
+SQL> Create pfile='' from spfile='';
+
+-- modify pfile
+vi init...ora
+
+-- restore controlfile from netbackup
+run{
+allocate channel t1 device type 'sbt_tape';
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+restore controlfile from '/c-842430029-20170726-01';
+release channel t1;
+}
+
+-- restore database
+run {
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+allocate channel t5 device type 'sbt_tape' ;
+allocate channel t6 device type 'sbt_tape' ;
+allocate channel t7 device type 'sbt_tape' ;
+allocate channel t8 device type 'sbt_tape' ;
+allocate channel t10 device type 'sbt_tape' ;
+allocate channel t20 device type 'sbt_tape' ;
+allocate channel t30 device type 'sbt_tape' ;
+allocate channel t40 device type 'sbt_tape' ;
+allocate channel t50 device type 'sbt_tape' ;
+allocate channel t60 device type 'sbt_tape' ;
+allocate channel t70 device type 'sbt_tape' ;
+allocate channel t80 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+set newname for datafile 1 to "+DATA01" ;
+set newname for datafile 2 to "+DATA01" ;
+set newname for datafile 3 to "+DATA01" ;
+set newname for datafile 4 to "+DATA01" ;
+set newname for datafile 5 to "+DATA01" ;
+set newname for datafile 6 to "+DATA01" ;
+set newname for datafile 7 to "+DATA01" ;
+set newname for datafile 8 to "+DATA01" ;
+set newname for datafile 9 to "+DATA01" ;
+set newname for datafile 10 to "+DATA01" ;
+set newname for datafile 11 to "+DATA01" ;
+set newname for datafile 12 to "+DATA01" ;
+set newname for datafile 13 to "+DATA01" ;
+set newname for datafile 14 to "+DATA01" ;
+set newname for datafile 15 to "+DATA01" ;
+set newname for datafile 16 to "+DATA01" ;
+set newname for datafile 17 to "+DATA01" ;
+set newname for datafile 18 to "+DATA01" ;
+set newname for datafile 19 to "+DATA01" ;
+set newname for datafile 20 to "+DATA01" ;
+set newname for datafile 21 to "+DATA01" ;
+set newname for datafile 22 to "+DATA01" ;
+set newname for datafile 23 to "+DATA01" ;
+set newname for datafile 24 to "+DATA01" ;
+set newname for datafile 25 to "+DATA01" ;
+set newname for datafile 26 to "+DATA01" ;
+set newname for datafile 27 to "+DATA01" ;
+set newname for datafile 28 to "+DATA01" ;
+set newname for datafile 29 to "+DATA01" ;
+set newname for datafile 30 to "+DATA01" ;
+set newname for datafile 31 to "+DATA01" ;
+set newname for datafile 32 to "+DATA01" ;
+set newname for datafile 33 to "+DATA01" ;
+set newname for datafile 34 to "+DATA01" ;
+set newname for datafile 35 to "+DATA01" ;
+set newname for datafile 36 to "+DATA01" ;
+set newname for datafile 37 to "+DATA01" ;
+set newname for datafile 38 to "+DATA01" ;
+set newname for datafile 39 to "+DATA01" ;
+set newname for datafile 40 to "+DATA01" ;
+set newname for datafile 41 to "+DATA01" ;
+set newname for datafile 42 to "+DATA01" ;
+set newname for datafile 43 to "+DATA01" ;
+set newname for datafile 44 to "+DATA01" ;
+set newname for datafile 45 to "+DATA01" ;
+set newname for datafile 46 to "+DATA01" ;
+set newname for datafile 47 to "+DATA01" ;
+set newname for datafile 48 to "+DATA01" ;
+set newname for datafile 49 to "+DATA01" ;
+set newname for datafile 50 to "+DATA01" ;
+set newname for datafile 51 to "+DATA01" ;
+set newname for datafile 52 to "+DATA01" ;
+set newname for datafile 53 to "+DATA01" ;
+set newname for datafile 54 to "+DATA01" ;
+set newname for datafile 55 to "+DATA01" ;
+set newname for datafile 56 to "+DATA01" ;
+set newname for datafile 57 to "+DATA01" ;
+set newname for datafile 58 to "+DATA01" ;
+set newname for datafile 59 to "+DATA01" ;
+set newname for datafile 60 to "+DATA01" ;
+set newname for datafile 61 to "+DATA01" ;
+set newname for datafile 62 to "+DATA01" ;
+set newname for datafile 63 to "+DATA01" ;
+set newname for datafile 64 to "+DATA01" ;
+set newname for datafile 65 to "+DATA01" ;
+set newname for datafile 66 to "+DATA01" ;
+set newname for datafile 67 to "+DATA01" ;
+set newname for datafile 68 to "+DATA01" ;
+set newname for datafile 69 to "+DATA01" ;
+set newname for datafile 70 to "+DATA01" ;
+set newname for datafile 71 to "+DATA01" ;
+set newname for datafile 72 to "+DATA01" ;
+set newname for datafile 73 to "+DATA01" ;
+set newname for datafile 74 to "+DATA01" ;
+set newname for datafile 75 to "+DATA01" ;
+set newname for datafile 76 to "+DATA01" ;
+set newname for datafile 77 to "+DATA01" ;
+set newname for datafile 78 to "+DATA01" ;
+set newname for datafile 79 to "+DATA01" ;
+set newname for datafile 80 to "+DATA01" ;
+set newname for datafile 81 to "+DATA01" ;
+set newname for datafile 82 to "+DATA01" ;
+set newname for datafile 83 to "+DATA01" ;
+set newname for datafile 84 to "+DATA01" ;
+set newname for datafile 85 to "+DATA01" ;
+set newname for datafile 86 to "+DATA01" ;
+set newname for datafile 87 to "+DATA01" ;
+set newname for datafile 88 to "+DATA01" ;
+set newname for datafile 89 to "+DATA01" ;
+set newname for datafile 90 to "+DATA01" ;
+set newname for datafile 91 to "+DATA01" ;
+set newname for datafile 92 to "+DATA01" ;
+set newname for datafile 93 to "+DATA01" ;
+set newname for datafile 94 to "+DATA01" ;
+set newname for datafile 95 to "+DATA01" ;
+set newname for datafile 96 to "+DATA01" ;
+set newname for datafile 97 to "+DATA01" ;
+set newname for datafile 98 to "+DATA01" ;
+set newname for datafile 99 to "+DATA01" ;
+set newname for datafile 100 to "+DATA01" ;
+set newname for datafile 101 to "+DATA01" ;
+set newname for datafile 102 to "+DATA01" ;
+set newname for datafile 103 to "+DATA01" ;
+set newname for datafile 104 to "+DATA01" ;
+set newname for datafile 105 to "+DATA01" ;
+set newname for datafile 106 to "+DATA01" ;
+set newname for datafile 107 to "+DATA01" ;
+set newname for datafile 108 to "+DATA01" ;
+set newname for datafile 109 to "+DATA01" ;
+set newname for datafile 110 to "+DATA01" ;
+set newname for datafile 111 to "+DATA01" ;
+set newname for datafile 112 to "+DATA01" ;
+set newname for datafile 113 to "+DATA01" ;
+set newname for datafile 114 to "+DATA01" ;
+set newname for datafile 115 to "+DATA01" ;
+set newname for datafile 116 to "+DATA01" ;
+set newname for datafile 117 to "+DATA01" ;
+set newname for datafile 118 to "+DATA01" ;
+set newname for datafile 119 to "+DATA01" ;
+set newname for datafile 120 to "+DATA01" ;
+set newname for datafile 121 to "+DATA01" ;
+set newname for datafile 122 to "+DATA01" ;
+set newname for datafile 123 to "+DATA01" ;
+set newname for datafile 124 to "+DATA01" ;
+set newname for datafile 125 to "+DATA01" ;
+set newname for datafile 126 to "+DATA01" ;
+set newname for datafile 127 to "+DATA01" ;
+set newname for datafile 128 to "+DATA01" ;
+set newname for datafile 129 to "+DATA01" ;
+set newname for datafile 130 to "+DATA01" ;
+set newname for datafile 131 to "+DATA01" ;
+set newname for datafile 132 to "+DATA01" ;
+set newname for datafile 133 to "+DATA01" ;
+set newname for datafile 134 to "+DATA01" ;
+set newname for datafile 135 to "+DATA01" ;
+set newname for datafile 136 to "+DATA01" ;
+set newname for datafile 137 to "+DATA01" ;
+set newname for datafile 138 to "+DATA01" ;
+set newname for datafile 139 to "+DATA01" ;
+set newname for datafile 140 to "+DATA01" ;
+set newname for datafile 141 to "+DATA01" ;
+set newname for datafile 142 to "+DATA01" ;
+set newname for datafile 143 to "+DATA01" ;
+set newname for datafile 144 to "+DATA01" ;
+set newname for datafile 145 to "+DATA01" ;
+set newname for datafile 146 to "+DATA01" ;
+set newname for datafile 147 to "+DATA01" ;
+set newname for datafile 148 to "+DATA01" ;
+set newname for datafile 149 to "+DATA01" ;
+set newname for datafile 150 to "+DATA01" ;
+set newname for datafile 151 to "+DATA01" ;
+set newname for datafile 152 to "+DATA01" ;
+set newname for datafile 153 to "+DATA01" ;
+set newname for datafile 154 to "+DATA01" ;
+set newname for datafile 155 to "+DATA01" ;
+set newname for datafile 156 to "+DATA01" ;
+set newname for datafile 157 to "+DATA01" ;
+restore database;
+}
+
+switch database to copy;
+
+-- recover database
+run {
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+allocate channel t5 device type 'sbt_tape' ;
+allocate channel t6 device type 'sbt_tape' ;
+allocate channel t7 device type 'sbt_tape' ;
+allocate channel t8 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-cardlinux-db01.techcombank.com.vn,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+recover database;
+}
+
+
+-- clear redo logfiles
+ALTER DATABASE clear LOGFILE GROUP 11;
+ALTER DATABASE clear LOGFILE GROUP 12;
+ALTER DATABASE clear LOGFILE GROUP 13;
+ALTER DATABASE clear LOGFILE GROUP 14;
+ALTER DATABASE clear LOGFILE GROUP 21;
+ALTER DATABASE clear LOGFILE GROUP 22;
+ALTER DATABASE clear LOGFILE GROUP 23;
+ALTER DATABASE clear LOGFILE GROUP 24;
+ALTER DATABASE clear LOGFILE GROUP 31;
+ALTER DATABASE clear LOGFILE GROUP 32;
+ALTER DATABASE clear LOGFILE GROUP 33;
+ALTER DATABASE clear LOGFILE GROUP 34;
+ALTER DATABASE clear LOGFILE GROUP 41;
+ALTER DATABASE clear LOGFILE GROUP 42;
+ALTER DATABASE clear LOGFILE GROUP 43;
+ALTER DATABASE clear LOGFILE GROUP 44;
+
+
+ALTER DATABASE drop LOGFILE GROUP 11;
+ALTER DATABASE drop LOGFILE GROUP 12;
+ALTER DATABASE drop LOGFILE GROUP 13;
+ALTER DATABASE drop LOGFILE GROUP 14;
+ALTER DATABASE drop LOGFILE GROUP 21;
+ALTER DATABASE drop LOGFILE GROUP 22;
+ALTER DATABASE drop LOGFILE GROUP 23;
+ALTER DATABASE drop LOGFILE GROUP 24;
+ALTER DATABASE drop LOGFILE GROUP 31;
+ALTER DATABASE drop LOGFILE GROUP 32;
+ALTER DATABASE drop LOGFILE GROUP 33;
+ALTER DATABASE drop LOGFILE GROUP 34;
+ALTER DATABASE drop LOGFILE GROUP 41;
+ALTER DATABASE drop LOGFILE GROUP 42;
+ALTER DATABASE drop LOGFILE GROUP 43;
+ALTER DATABASE drop LOGFILE GROUP 44;
+
+
+
+-- active database
+alter system set fal_server='';
+ALTER DATABASE ACTIVATE PHYSICAL STANDBY DATABASE;
+
+
+-- recreate tempfile
+alter tablespace temp add tempfile '+DATA01' size 50m reuse autoextend on next 1m maxsize 500m;
+
+-- turn off archivelog mode

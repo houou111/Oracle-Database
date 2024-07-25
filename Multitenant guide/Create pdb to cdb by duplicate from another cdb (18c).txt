@@ -1,0 +1,8 @@
+rman target=sys/SysPassword1@cdb1 auxiliary=sys/SysPassword1@cdb3 <<EOF
+
+DUPLICATE PLUGGABLE DATABASE pdb1 AS pdb2 TO cdb3 
+FROM ACTIVE DATABASE 
+SECTION SIZE 400M;
+
+exit;
+EOF

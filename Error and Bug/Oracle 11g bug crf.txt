@@ -1,0 +1,30 @@
+Oracle Cluster Health Monitor (CHM) using large amount of space (more than default) (Doc ID 1343105.1)
+
+/u01/app/11.2.0/grid/bin/crsctl stop res ora.crf -init
+
+cd /u01/app/11.2.0/grid/crf/db/dc-ora-db01/
+
+rm -rf *.bdb
+
+/u01/app/11.2.0/grid/bin/crsctl start res ora.crf -init
+
+
+
+
+One reason for the large bdb files is that the retention period is large.   Issue "GI_HOME/bin/oclumon.pl" to get the current value of the retention period  that is given in seconds.  Issue "oclumon manage -repos resize <desired value in seconds>" to change the retention period.  One example is "oclumon manage -repos resize 259200" that retains the CHM data for 3 days (259200 seconds is the number of seconds in 3 days)
+
+
+
+$ORACLE_HOME/perl/bin/perl $ORACLE_HOME/bin/oclumon.pl
+
+query> help
+For help from command line   : oclumon <verb> -h
+For help in interactive mode : <verb> -h
+Currently supported verbs are  :
+showobjects, dumpnodeview, manage, version, debug, quit, exit, and help
+
+
+Quyền, 3:54 PM
+grid@coretest1:/u01/app/11.2.0/grid/perl/bin$ perl $ORACLE_HOME/bin/oclumon.pl manage -get repsize
+
+CHM Repository Size = 61511

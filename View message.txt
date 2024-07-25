@@ -1,0 +1,1 @@
+SELECT object_type, message_type, message_level, reason, suggested_action  FROM dba_outstanding_alerts;  

@@ -1,0 +1,49 @@
+1. Expdp
+----------------------------
+FULL=[YES | NO] - SCHEMAS=HR - TABLES=AAA.BBB:CCC
+
+CLUSTER=[YES | NO]
+
+COMPRESSION=[ALL | DATA_ONLY | METADATA_ONLY | NONE]
+
+CONTENT=[ALL | DATA_ONLY | METADATA_ONLY]
+
+DIRECTORY=directory_object
+
+DUMPFILE=[directory_object:]file_name [, ...]  
+	(DUMPFILE=dpump_dir2:exp1.dmp, exp2%U.dmp)
+	
+LOGFILE=[directory_object:]file_name
+	
+ENCRYPTION = [ALL | DATA_ONLY | ENCRYPTED_COLUMNS_ONLY | METADATA_ONLY | NONE]
+
+EXCLUDE=object_type[:name_clause] [, ...]
+	EXCLUDE=INDEX:"LIKE 'EMP%'"
+	EXCLUDE=CONSTRAINT
+	EXCLUDE=REF_CONSTRAINT
+	EXCLUDE=SCHEMA:"='HR'"
+	EXCLUDE=GRANT
+	EXCLUDE=USER
+	EXCLUDE=VIEW,PACKAGE, FUNCTION
+	EXCLUDE=VIEW,PACKAGE, FUNCTION
+	EXCLUDE=STATISTIC
+
+FILESIZE=20G
+
+FLASHBACK_SCN=scn_value
+
+FLASHBACK_TIME="TO_TIMESTAMP(time-value)"
+
+NETWORK_LINK=source_database_link
+
+PARFILE=[directory_path]file_name
+
+QUERY = [schema.][table_name:] query_clause
+
+REMAP_DATA=[schema.]tablename.column_name:[schema.]pkg.function
+
+
+
+2. IMPDP
+----------------------------
+SQLFILE=[directory_object:]file_name

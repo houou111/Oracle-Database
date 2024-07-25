@@ -1,0 +1,9 @@
+wipefs -a /dev/sdb
+wipefs -a /dev/sdc
+wipefs -a /dev/sdd
+wipefs -a /dev/sde
+wipefs -a /dev/sdf
+
+udevadm control --reload-rules && udevadm trigger
+
+

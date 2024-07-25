@@ -1,0 +1,118 @@
+CREATE TABLE emp_info
+(
+emp_id NUMBER NOT NULL,
+join_date DATE NOT NULL,
+email VARCHAR2(100)
+)
+PARTITION BY RANGE (join_date)
+(
+PARTITION emp_info_p0 VALUES LESS THAN (TO_DATE('01-JAN-2011', 'DD-MON-YYYY')) TABLESPACE APP_DATA,
+ PARTITION emp_info_p1 VALUES LESS THAN (TO_DATE('01-JAN-2012', 'DD-MON-YYYY')) TABLESPACE APP_DATA,
+ PARTITION emp_info_p2 VALUES LESS THAN (TO_DATE('01-JAN-2013', 'DD-MON-YYYY')) TABLESPACE APP_DATA,
+ PARTITION emp_info_p3 VALUES LESS THAN (TO_DATE('01-JAN-2014', 'DD-MON-YYYY')) TABLESPACE APP_DATA,
+ PARTITION emp_info_p4 VALUES LESS THAN (TO_DATE('01-JAN-2015', 'DD-MON-YYYY')) TABLESPACE APP_DATA
+ );
+ 
+ 
+declare
+begin
+for i in 1..100000
+loop
+insert into emp_info values (i,'13-APR-2010','xyz'||i);
+end loop;
+end;
+/
+ 
+
+ 
+declare
+begin
+for i in 100001..200000
+loop
+insert into emp_info values (i,'13-APR-2011','xyz'||i);
+end loop;
+end;
+/
+ 
+
+ 
+declare
+begin
+for i in 200001..300000
+loop
+insert into emp_info values (i,'13-APR-2012','xyz'||i);
+end loop;
+end;
+/
+ 
+
+ 
+declare
+begin
+for i in 300001..400000
+loop
+insert into emp_info values (i,'13-APR-2013','xyz'||i);
+end loop;
+end;
+/
+ 
+
+ 
+declare
+begin
+for i in 400001..500000
+loop
+insert into emp_info values (i,'13-APR-2014','xyz'||i);
+end loop;
+end;
+/
+ 
+
+ 
+commit;
+ 
+Commit complete.
+
+select count(*) from emp_info;
+ 
+COUNT(*)
+----------
+500000
+ 
+select TABLE_NAME,PARTITION_NAME,NUM_ROWS from user_tab_partitions where table_name='EMP_INFO';
+ 
+TABLE_NAME      PARTITION_NAME     NUM_ROWS
+--------------- ---------------- ----------
+EMP_INFO        EMP_INFO_P0          100000
+EMP_INFO        EMP_INFO_P1          100000
+EMP_INFO        EMP_INFO_P2          100000
+EMP_INFO        EMP_INFO_P3          100000
+EMP_INFO        EMP_INFO_P4          100000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

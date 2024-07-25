@@ -1,0 +1,471 @@
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYS.DBA_JOB_DEFRAG_MONTHY'
+      ,start_date      => TO_TIMESTAMP_TZ('2018/12/05 23:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,repeat_interval => 'FREQ=MONTHLY;BYMONTHDAY=21,22,23,24,25,26,27;BYDAY=SUN;INTERVAL=1;'
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'STORED_PROCEDURE'
+      ,job_action      => 'SYS.DBA_DEFRAG_MONTHY'
+      ,comments        => 'Job to defrag table every 3rd Sunday of month'
+    );
+
+END;
+/
+
+BEGIN
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYS.DBA_JOB_DEFRAG_MONTHY');
+	END;
+/
+
+drop table t24live.FBNK_STMT_PRINTED_INI; 
+
+=========================T24LIVE.FBNK_RE_C019=========================
+START_REDEF_TABLE:
+                                                                                                                                                    
+PL/SQL procedure successfully completed.
+
+Elapsed: 01:18:03.38
+COPY_TABLE_DEPENDENTS:
+                             
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:15:12.34
+=========================SYNC_INTERIM_TABLE:
+
+PL/SQL procedure successfully completed.
+
+
+SYS_LOB0060110878C00002$$                                                                                                        FBNK_RE_C019
+SYS_LOB0102756181C00002$$                                                                                                        FBNK_RE_C019_INI
+
+SYS@cobr14dr1 > select index_name,table_Name from dba_indexes where  table_name like 'FBNK_RE_C019%';
+
+INDEX_NAME                                                                                                                       TABLE_NAME
+-------------------------------------------------------------------------------------------------------------------------------- --------------------------------------------------------------------------------------------------------------------------------
+SYS_IL0102756181C00002$$                                                                                                         FBNK_RE_C019_INI
+TMP$$_PK_FBNK_RE_C0190                                                                                                           FBNK_RE_C019_INI
+PK_FBNK_RE_C019                                                                                                                  FBNK_RE_C019
+SYS_IL0060110878C00002$$                                                                                                         FBNK_RE_C019
+
+SYS@cobr1
+
+select segment_name,sum(bytes/1024/1024/1024) from dba_segments where 
+  2  segment_name in ('FBNK_RE_C019','FBNK_RE_C019_INI','SYS_LOB0060110878C00002$$','SYS_LOB0102756181C00002$$','SYS_IL0102756181C00002$$','TMP$$_PK_FBNK_RE_C0190','PK_FBNK_RE_C019','SYS_IL0060110878C00002$$') group by segment_name;
+
+SEGMENT_NAME                                                                                                                     SUM(BYTES/1024/1024/1024)
+-------------------------------------------------------------------------------------------------------------------------------- -------------------------
+SYS_LOB0102756181C00002$$                                                                                                                        .00012207
+SYS_IL0060110878C00002$$                                                                                                                        .000061035
+FBNK_RE_C019_INI                                                                                                                                63.3391113
+PK_FBNK_RE_C019                                                                                                                                 24.4863281
+TMP$$_PK_FBNK_RE_C0190                                                                                                                          29.6904297
+SYS_IL0102756181C00002$$                                                                                                                        .000061035
+SYS_LOB0060110878C00002$$                                                                                                                        .00012207
+FBNK_RE_C019                                                                                                                                    49.0734253
+
+8 rows selected.
+
+
+
+
+CREATE TABLE SYS.index_rebuild_online
+(
+  TABLE_NAME    VARCHAR2(150 BYTE),
+  Index_name    varchar2(150 byte)
+);
+--CREATE OR REPLACE procedure SYS.DBA_archive_data_yearly as
+declare
+   cmd            VARCHAR2 (4000);
+   timeStart      DATE;
+   timeEnd        DATE;
+   elapsed        VARCHAR2 (50);
+   duration       number;
+   post_rebuild number;
+   pre_rebuild number;
+   CURSOR c_idx
+   IS
+
+  SELECT b.table_name,b.index_name,b.partitioned
+    FROM sys.index_rebuild_online a, dba_indexes b
+   where 'T24LIVE.'||a.table_name||'.'||a.index_name=b.owner||'.'||b.table_name||'.'||b.index_name
+   and b.index_type not like 'LOB%'
+   and b.index_type <> 'FUNCTION-BASED NORMAL'
+   ORDER BY index_name;
+BEGIN
+   FOR idx IN c_idx
+   LOOP
+
+      if idx.partitioned = 'NO' then
+      SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = idx.index_name
+         GROUP BY segment_name;
+
+         cmd := 'alter index T24LIVE.' || idx.index_name || ' rebuild online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         EXECUTE IMMEDIATE cmd;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+           SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = idx.index_name
+         GROUP BY segment_name;
+
+         INSERT INTO sys.index_rebuild_online_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)--,start_seq,end_seq)
+              VALUES (idx.table_name, idx.index_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);--,start_seq,end_seq);
+
+         COMMIT;
+
+      else
+
+      FOR c_idx1 IN (SELECT partition_name  FROM dba_ind_partitions
+                    WHERE index_name = idx.index_name AND index_owner = 'T24LIVE' )
+      LOOP
+                SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO pre_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         cmd := 'alter index T24LIVE.' || idx.index_name || ' rebuild partition '||c_idx1.partition_name||' online';
+         DBMS_OUTPUT.put_line(cmd);
+         timeStart := SYSDATE;
+         EXECUTE IMMEDIATE cmd;
+
+         timeEnd := SYSDATE;
+         elapsed := TO_CHAR ( (timeEnd - timeStart) DAY (0) TO SECOND);
+
+         SELECT SUM (bytes) / 1024 / 1024 / 1024 INTO post_rebuild
+             FROM dba_segments
+            WHERE owner = 'T24LIVE' AND segment_name = idx.index_name and partition_name=c_idx1.partition_name
+         GROUP BY segment_name,partition_name;
+
+         INSERT INTO sys.index_rebuild_online_log (table_name, index_name,start_time,elapsed_time, Pre_size,post_size)--,start_seq,end_seq)
+              VALUES (idx.table_name, idx.index_name||'.'||c_idx1.partition_name,timeStart, substr(elapsed,10,10), pre_rebuild, post_rebuild);--,start_seq,end_seq);
+              commit;
+
+      end loop;
+      end if;
+
+      END LOOP;
+
+
+EXCEPTION
+   WHEN OTHERS THEN ROLLBACK;
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+==============create table
+CREATE TABLE T24LIVE.FBNK_STMT_PRINTED_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    HIGH
+  CACHE
+  NOLOGGING)
+NOCOMPRESS 
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARTITION BY HASH (RECID)
+  PARTITIONS 128
+ NOCACHE
+NOPARALLEL
+MONITORING;
+
+CREATE TABLE T24LIVE.FBNK_RE_C018_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    MEDIUM
+  CACHE
+  NOLOGGING)
+NOCOMPRESS 
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    40
+INITRANS   100
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARTITION BY HASH (RECID)
+  PARTITIONS 128
+  CACHE
+NOPARALLEL
+MONITORING;
+
+CREATE TABLE T24LIVE.FBNK_RE_C019_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    HIGH
+  CACHE
+  LOGGING
+      STORAGE    (
+                  INITIAL          104K
+                  NEXT             1M
+                  MINEXTENTS       1
+                  MAXEXTENTS       UNLIMITED
+                  PCTINCREASE      0
+                  BUFFER_POOL      DEFAULT
+                  FLASH_CACHE      DEFAULT
+                  CELL_FLASH_CACHE DEFAULT
+                 ))
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            INITIAL          64K
+            NEXT             1M
+            MAXSIZE          UNLIMITED
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING 
+NOCOMPRESS 
+NOCACHE
+NOPARALLEL
+MONITORING;
+================================================T24LIVE.FBNK_STMT_PRINTED
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4; 
+
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE','FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/ 
+
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS('T24LIVE','FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI',
+   DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);
+END;
+/
+
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE','FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE','FBNK_STMT_PRINTED','FBNK_STMT_PRINTED_INI');
+END;
+/
+================================================T24LIVE.FBNK_RE_C018
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/  
+
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI',
+   DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);
+END;
+/
+
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI');
+END;
+/
+
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI');
+END;
+/
+================================================T24LIVE.FBNK_RE_CONSOL_PROFIT
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4;
+
+   
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/  
+
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI',
+   DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);
+END;
+/
+
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI');
+END;
+/
+
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE','FBNK_RE_C018','FBNK_RE_C018_INI');
+END;
+/
+================================================T24LIVE.FBNK_RE_C019
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4; 
+
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE','FBNK_RE_C019','FBNK_RE_C019_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/ 
+
+
+DECLARE
+num_errors PLS_INTEGER;
+BEGIN
+DBMS_REDEFINITION.COPY_TABLE_DEPENDENTS('T24LIVE','FBNK_RE_C019','FBNK_RE_C019_INI',
+   DBMS_REDEFINITION.CONS_ORIG_PARAMS, TRUE, TRUE, TRUE, TRUE, num_errors);
+END;
+/
+
+select object_name, base_table_name, ddl_txt from       DBA_REDEFINITION_ERRORS;
+
+BEGIN 
+DBMS_REDEFINITION.SYNC_INTERIM_TABLE('T24LIVE','FBNK_RE_C019','FBNK_RE_C019_INI');
+END;
+/
+
+BEGIN
+DBMS_REDEFINITION.FINISH_REDEF_TABLE('T24LIVE','FBNK_RE_C019','FBNK_RE_C019_INI');
+END;
+/
+
+================================================T24LIVE.FBNK_IC_C010
+================================================T24LIVE.F_LCR_AUTO_WRK_TCB
+================================================T24LIVE.FBNK_ACCT_ENT_TODAY
+
+
+===================================================================?????????????
+BEGIN
+DBMS_REDEFINITION.CAN_REDEF_TABLE('T24LIVE','FBNK_CATEG_ENT_ACTIVITY',DBMS_REDEFINITION.CONS_USE_PK);
+END;
+/
+
+alter session force parallel dml parallel 4;
+alter session force parallel query parallel 4; 
+
+BEGIN
+DBMS_REDEFINITION.START_REDEF_TABLE('T24LIVE','FBNK_CATEG_ENT_ACTIVITY','FBNK_CATEG_ENT_ACTIVITY_INI',
+null,dbms_redefinition.cons_use_pk);
+END;
+/ 
+
+CREATE TABLE T24LIVE.FBNK_CATEG_ENT_ACTIVITY_INI
+(
+  RECID      VARCHAR2(255 BYTE),
+  XMLRECORD  BLOB
+)
+LOB (XMLRECORD) STORE AS SECUREFILE (
+  TABLESPACE  DATAT24LIVE
+  ENABLE      STORAGE IN ROW
+  CHUNK       8192
+  COMPRESS    HIGH
+  CACHE
+  NOLOGGING)
+NOCOMPRESS 
+TABLESPACE DATAT24LIVE
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    10
+INITRANS   1
+MAXTRANS   255
+STORAGE    (
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+PARTITION BY HASH (RECID)
+  PARTITIONS 128
+  NOCACHE
+NOPARALLEL
+MONITORING;
+
+
+CREATE UNIQUE INDEX T24LIVE.FBNK_CATEG_ENT_ACTIVITY_PK_INI ON T24LIVE.FBNK_CATEG_ENT_ACTIVITY_INI
+(RECID)
+  TABLESPACE INDEXT24LIVE
+  PCTFREE    10
+  INITRANS   2
+  MAXTRANS   255
+  STORAGE    (
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL 
+NOPARALLEL;
+
+
+ALTER TABLE T24LIVE.FBNK_CATEG_ENT_ACTIVITY_INI ADD (
+  CONSTRAINT FBNK_CATEG_ENT_ACTIVITY_PK_INI
+  PRIMARY KEY
+  (RECID)
+  USING INDEX LOCAL
+  ENABLE VALIDATE);
+

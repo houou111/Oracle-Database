@@ -1,0 +1,155 @@
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+t24r14dc1
+
+SQL> set timing on
+SQL> SELECT t.RECID FROM t24live.FBNK_LIMIT t WHERE RECID LIKE '27833109%' ESCAPE '\';
+
+RECID
+--------------------------------------------------------------------------------
+27833109.0010000.01
+27833109.0000100.01
+27833109.0012500.01
+27833109.0000100.02
+27833109.0002400.01
+27833109.0009700.01
+
+6 rows selected.
+
+Elapsed: 00:00:15.03
+SQL>     SELECT t.RECID FROM T24LIVE.FBNK_LD_L000 t 
+  2  WHERE NVL(t24live.NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c1')),0)=27833109;
+
+RECID
+--------------------------------------------------------------------------------
+LD1631285930
+LD1336000174
+LD1629405948
+LD1619468918
+
+Elapsed: 00:00:00.12
+SQL> SELECT RECID, t.XMLRECORD.GetClobVal() FROM t24live.FBNK_AUTO_TRANSFER_TCB t;
+182608 rows selected.
+
+Elapsed: 00:02:30.73
+=====================================================================================================
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+t24r14dr
+
+SQL> set timing on
+SQL> sho parameter event
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+event                                string
+xml_db_events                        string      enable
+SQL>   SELECT t.RECID FROM t24live.FBNK_LIMIT t WHERE RECID LIKE '27833109%' ESCAPE '\';
+
+RECID
+--------------------------------------------------------------------------------
+27833109.0010000.01
+27833109.0000100.01
+27833109.0012500.01
+27833109.0000100.02
+27833109.0002400.01
+27833109.0009700.01
+
+6 rows selected.
+
+Elapsed: 00:00:00.02
+SQL>  SELECT t.RECID FROM T24LIVE.FBNK_LD_L000 t 
+  2  WHERE NVL(t24live.NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c1')),0)=27833109;
+
+RECID
+--------------------------------------------------------------------------------
+LD1631285930
+LD1336000174
+LD1629405948
+LD1619468918
+
+Elapsed: 00:00:00.01
+SQL> SELECT RECID, t.XMLRECORD.GetClobVal() FROM t24live.FBNK_AUTO_TRANSFER_TCB t;
+182608 rows selected.
+
+Elapsed: 00:02:21.49
+=====================================================================================================
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+cobr14dr
+
+SQL> set timing on
+SQL> set timing on
+SQL>   SELECT t.RECID FROM t24live.FBNK_LIMIT t WHERE RECID LIKE '27833109%' ESCAPE '\';
+
+RECID
+--------------------------------------------------------------------------------
+27833109.0010000.01
+27833109.0000100.01
+27833109.0012500.01
+27833109.0000100.02
+27833109.0002400.01
+27833109.0009700.01
+
+6 rows selected.
+
+Elapsed: 00:00:00.02
+SQL>     SELECT t.RECID FROM T24LIVE.FBNK_LD_L000 t 
+  2  WHERE NVL(t24live.NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c1')),0)=27833109;
+
+RECID
+--------------------------------------------------------------------------------
+LD1631285930
+LD1336000174
+LD1629405948
+LD1619468918
+
+Elapsed: 00:00:00.17
+SQL> SELECT RECID, t.XMLRECORD.GetClobVal() FROM t24live.FBNK_AUTO_TRANSFER_TCB t;
+182604 rows selected.
+
+Elapsed: 00:02:24.39
+=====================================================================================================
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+cobr14dc1
+
+Elapsed: 00:00:00.01
+SQL> SELECT t.RECID FROM t24live.FBNK_LIMIT t WHERE RECID LIKE '27833109%' ESCAPE '\';
+
+RECID
+--------------------------------------------------------------------------------
+27833109.0010000.01
+27833109.0000100.01
+27833109.0012500.01
+27833109.0000100.02
+27833109.0002400.01
+27833109.0009700.01
+
+6 rows selected.
+
+Elapsed: 00:00:00.01
+SQL> SELECT t.RECID FROM T24LIVE.FBNK_LD_L000 t 
+  2  WHERE NVL(t24live.NUMCAST(EXTRACTVALUE(t.XMLRECORD,'/row/c1')),0)=27833109;
+
+RECID
+--------------------------------------------------------------------------------
+LD1631285930
+LD1336000174
+LD1629405948
+LD1619468918
+
+Elapsed: 00:00:00.00
+SQL> SELECT RECID, t.XMLRECORD.GetClobVal() FROM t24live.FBNK_AUTO_TRANSFER_TCB t;
+182595 rows selected.
+
+Elapsed: 00:02:21.09
+=====================================================================================================

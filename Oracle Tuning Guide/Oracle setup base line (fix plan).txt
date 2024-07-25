@@ -1,0 +1,171 @@
+I.	Trường hợp plan vẫn đang được lưu trong memory
+----------------------------------------------------
+0. Enable parameter
+------------------------------------------------------------------
+alter SYSTEM set optimizer_capture_sql_plan_baselines = true;
+alter SYSTEM set optimizer_capture_sql_plan_baselines = false;
+
+ALTER SYSTEM SET OPTIMIZER_USE_SQL_PLAN_BASELINES=false;
+ALTER SYSTEM SET OPTIMIZER_USE_SQL_PLAN_BASELINES=true;
+
+
+1- Check plan from history to get snap_id of good plan
+------------------------------------------------------
+select snap_id,sql_id, executions_delta,plan_hash_value,(elapsed_time_delta/1000000)/executions_delta ETA_PER_EXEC, optimizer_cost 
+from dba_hist_sqlstat
+where sql_id='&SQL_ID' and executions_delta>0 
+order by ETA_PER_EXEC;
+
+select snap_id,sql_id, executions_delta,plan_hash_value,(elapsed_time_delta/1000000)/executions_delta ETA_PER_EXEC, optimizer_cost 
+from dba_hist_sqlstat
+where sql_id='&SQL_ID' and executions_delta>0 
+order by 1;
+
+
+
+2- set plan
+------------------------------------------------------
+- Plan must be fixed
+
+var v_num number;
+exec :v_num:=dbms_spm.load_plans_from_cursor_cache(sql_id => '938auffs25c47',plan_hash_value => 1042515887, fixed => 'YES', enabled => 'YES');
+
+
+declare
+ l_spm pls_integer;
+begin
+   l_spm := dbms_spm.load_plans_from_cursor_cache(sql_id => '938auffs25c47',plan_hash_value=>1042515887);
+end;
+/ 
+
+
+
+
+3-thay đổi tham số autopurge thành NO (đảm bảo không bị xóa sau thời gian giới hạn)
+------------------------------------------------------
+select sql_handle,plan_name,enabled,accepted,fixed,autopurge from DBA_SQL_PLAN_BASELINES;
+
+var v_num number;
+exec :v_num:=dbms_spm.ALTER_SQL_PLAN_BASELINE(sql_handle =>'SQL_11d22e791e12c50d',plan_name => 'SQL_PLAN_13njfg4g15j8d154b5a8d', attribute_name => 'autopurge' ,attribute_value => 'NO');
+
+
+
+4- Kiểm tra
+------------------------------------------------------
+select * from table(dbms_xplan.display_sql_plan_baseline(sql_handle=>'SQL_11d22e791e12c50d',  format=>'basic'));
+
+
+SELECT * FROM TABLE(DBMS_XPLAN.display_cursor(sql_id=>'a3styrs9ggzg5', format=>'LAST'));
+
+
+
+
+
+II.	Trường hợp plan không còn được lưu trong memory
+----------------------------------------------------
+1. Create SQL Tuning Set (STS)
+------------------------------------------------------
+exec DBMS_SQLTUNE.CREATE_SQLSET(sqlset_name => 'SAMPLE_TUNING_SET', description => 'SQL Tuning Set for loading plan into SQL Plan Baseline');
+
+
+
+2. Load plan to STS
+------------------------------------------------------
+--Check plan from history to get snap_id of good plan
+select snap_id,sql_id, executions_delta,plan_hash_value,(elapsed_time_delta/1000000)/executions_delta ETA_PER_EXEC, optimizer_cost 
+from dba_hist_sqlstat
+where sql_id='bzuhvsdh74f20' and executions_delta>0 
+order by ETA_PER_EXEC;
+
+select snap_id,sql_id, executions_delta,plan_hash_value,(elapsed_time_delta/1000000)/executions_delta ETA_PER_EXEC, optimizer_cost 
+from dba_hist_sqlstat
+where sql_id='1txgg431sfskx' and executions_delta>0 
+order by 1;
+
+
+1txgg431sfskx
+
+
+
+--Load 
+DECLARE
+cur sys_refcursor;
+BEGIN
+OPEN cur FOR
+  SELECT VALUE(P) FROM TABLE( dbms_sqltune.select_workload_repository(begin_snap=>764, end_snap=>765,basic_filter=>'sql_id =''1txgg431sfskx''',attribute_list=>'ALL')) p;
+  DBMS_SQLTUNE.LOAD_SQLSET( sqlset_name=> 'SAMPLE_TUNING_SET', populate_cursor=>cur);
+CLOSE cur;
+END;
+/
+
+--check
+SELECT * FROM TABLE(DBMS_SQLTUNE.SELECT_SQLSET(sqlset_name => 'SAMPLE_TUNING_SET'));
+
+3. Create the baseline from the STS:
+------------------------------------------------------
+DECLARE
+  l_plans_loaded  PLS_INTEGER;
+BEGIN
+  l_plans_loaded := DBMS_SPM.load_plans_from_sqlset(
+    sqlset_name =>'SAMPLE_TUNING_SET',
+	basic_filter=>'plan_hash_value = ''3893226745''',
+	fixed => 'YES');
+END;
+/
+
+
+
+SQL_57bba3f17aff07e6	SQL_PLAN_5gfx3y5xgy1z634339c39	YES	YES	YES	YES	MANUAL-LOAD-FROM-STS	11/14/2022 4:38:33.652898 PM
+
+4. Check
+------------------------------------------------------
+select sql_handle, plan_name, enabled, accepted, fixed,autopurge,origin,created from dba_sql_plan_baselines
+order by created desc;
+
+
+select * from table( dbms_xplan.display_sql_plan_baseline( sql_handle=>'SQL_8956c446a78a773f', format=>'basic'));
+
+
+--alter attribute autopurge
+var v_num number;
+exec :v_num:=dbms_spm.ALTER_SQL_PLAN_BASELINE(plan_name => 'SQL_PLAN_5gfx3y5xgy1z634339c39', attribute_name => 'autopurge' ,attribute_value => 'NO');
+
+var v_num number;
+exec :v_num:=dbms_spm.ALTER_SQL_PLAN_BASELINE(sql_handle =>'SQL_2247965e37b8e2c8',plan_name => 'SQL_PLAN_24jwqbsvvjsq8670dd1f3', attribute_name => 'autopurge' ,attribute_value => 'NO');
+
+
+
+
+5. Drop STS table
+------------------------------------------------------
+exec DBMS_SQLTUNE.DROP_SQLSET(sqlset_name => 'SAMPLE_TUNING_SET');
+
+
+
+
+III. Delete baseline
+----------------------------------------------------------------------------------------------------------------------------------
+To delete all the unaccepted plans run please check the code
+
+SET SERVEROUTPUT ON
+DECLARE
+v_return_value pls_integer;
+CURSOR C1 IS SELECT DISTINCT SQL_HANDLE FROM DBA_SQL_PLAN_BASELINES where accepted='NO';
+BEGIN
+   FOR I IN C1 LOOP
+      v_return_value:=dbms_spm.drop_sql_plan_baseline(sql_handle=>I.SQL_HANDLE);
+   END LOOP;
+END;
+/
+
+
+IV. Noted
+----------------------------------------------------------------------------------------------------------------------------------
+- Plan must be fixed
+
+Setting optimizer_capture_sql_plan_baselines = TRUE on the system level, will cause a sql baseline plan to be created in the SPM for each new sql (and new plans for existing sql's to be added to their baseline plan).
+
+Setting optimizer_capture_sql_plan_baselines = FALSE on the system level means, that a baseline plan will not be created for any NEW sql.
+But when new plans are found for any existing sql (which already have a baseline), the new plan will be added to it's baseline (regardless of the setting of optimizer_capture_sql_plan_baseline).
+
+Disabling spm for a specific sql can be done by calling dbms_spm.drop_sql_plan_baseline ( and fixed plan)

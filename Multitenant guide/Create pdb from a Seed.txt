@@ -1,0 +1,4 @@
+1. Creation of a PDB from a Seed
+-----------------------------------
+CREATE PLUGGABLE DATABASE hrpdb
+ADMIN USER dba1 IDENTIFIED BY password;

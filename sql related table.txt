@@ -1,0 +1,24 @@
+set lines 200
+set pages 200
+set long 999999
+select sql_id,sql_fulltext,parsing_schema_name,elapsed_time,MODULE,FIRST_LOAD_TIME
+from v$sql
+where upper(sql_fulltext) like '%CMS_TRANSACTION%'
+order by first_load_time desc;
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where upper(sql_text) like '%CMS_TRANSACTION%'
+
+
+
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where sql_id=''

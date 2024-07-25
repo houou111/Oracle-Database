@@ -1,0 +1,86 @@
+1. Backup option
+------------------------------------------------------------------------------------------
+%a	Specifies the activation ID of the database
+%c	Specifies the copy number of the backup piece within a set of duplexed backup pieces. If you did not duplex a backup, then this variable is 1 for backup sets and 0 for proxy copies. If one of these commands is enabled, then the variable shows the copy number. The maximum value for %c is 256.
+%d	Specifies the name of the database
+%D	Specifies the current day of the month from the Gregorian calendar in format DD
+%e	Specifies the archived log sequence number
+%f	Specifies the absolute file number
+%F	Combines the DBID, day, month, year, and sequence into a unique and repeatable generated name. This variable translates into c-IIIIIIIIII-YYYYMMDD-QQ, where: IIIIIIIIII stands for the DBID. The DBID is printed in decimal so that it can be easily associated with the target database. YYYYMMDD is a time stamp in the Gregorian calendar of the day the backup is generated. QQ is the sequence in hexadecimal number that starts with 00 and has a maximum of FF (256).
+%h	Specifies the archived redo log thread number
+%I	Specifies the DBID
+%M	Specifies the month in the Gregorian calendar in format MM
+%N	Specifies the tablespace name
+%n	Specifies the name of the database, padded on the right with x characters to a total length of eight characters. For example, if the prod1 is the database name, then the padded name is prod1xxx.
+%p	Specifies the piece number within the backup set. This value starts at 1 for each backup set and is incremented by 1 as each backup piece is created.
+%s	Specifies the backup set number. This number is a counter in the control file that is incremented for each backup set. The counter value starts at 1 and is unique for the lifetime of the control file. If you restore a backup control file, then duplicate values can result. Also, created controlfile initializes the counter back to 1.
+%t	Specifies the backup set time stamp, which is a 4-byte value derived as the number of seconds elapsed since a fixed reference time. The combination of %s and %t can be used to form a unique name for the backup set.
+%T	Specifies the year, month and day in the Gregorian calendar in this format: YYYYMMDD
+%u	Specifies an 8-character name constituted by compressed representations of the backup set or image copy number and the time the backup set or image copy was created.
+%U	Specifies a system-generated unique filename (default). The meaning of %U  is different for image copies and backup pieces.
+%Y	Specifies the year in the format YYYY
+
+
+
+2. Script example
+------------------------------------------------------------------------------------------
+RUN {
+CROSSCHECK ARCHIVELOG ALL;
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL  LEVEL 0 DATABASE FORMAT '/backup/oemdb/db_lv0_%D%M%Y_%U.dbf' TAG LEVEL0 ;
+sql 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG  ALL not backed up 1 times FORMAT '/backup/oemdb/arch_lv0_%D%M%Y_%U.dbf' TAG ARCH ;
+DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-1';
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE FORMAT '/backup/oemdb/ctl_lv0_%D%M%Y_%U.dbf' TAG CTLFILE;
+CROSSCHECK BACKUP;
+CROSSCHECK COPY;
+delete noprompt obsolete redundancy 3;
+}
+
+
+
+RUN {
+CROSSCHECK ARCHIVELOG ALL;
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL  LEVEL 0 DATABASE FORMAT '/backup/gwdb/db_lv0_%D%M%Y_%U.dbf' TAG LEVEL0 ;
+sql 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG  ALL not backed up 1 times FORMAT '/backup/gwdb/arch_lv0_%D%M%Y_%U.dbf' TAG ARCH ;
+DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-1';
+backup spfile include current controlfile format '/backup/gwdb/ctl_lv0_%D%M%Y_%U.dbf' tag CTLFILE;
+CROSSCHECK BACKUP;
+CROSSCHECK COPY;
+delete noprompt obsolete redundancy 3;
+}
+
+
+
+#Backup lv 0
+run {
+ALLOCATE CHANNEL c1 DEVICE TYPE disk;
+ALLOCATE CHANNEL c2 DEVICE TYPE disk;
+ALLOCATE CHANNEL c3 DEVICE TYPE disk;
+ALLOCATE CHANNEL c4 DEVICE TYPE disk;
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 0 DATABASE FORMAT  '/backup_dwh/bk_20_12_2016/data_%d_%Y%M%D_%U' FILESPERSET 4 TAG FULLBKP;
+SQL 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+BACKUP AS COMPRESSED BACKUPSET NOT BACKED UP ARCHIVELOG ALL FORMAT '/backup_dwh/bk_20_12_2016/arch_%d_%Y%M%D_%U' FILESPERSET 4 TAG  ARCH;
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE FORMAT '/backup_dwh/bk_20_12_2016/ctl_%d_%Y%M%D_%U' TAG CTLFILE;
+}
+
+
+#Backup lv 1
+run {
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 1 CUMULATIVE DATABASE 
+FORMAT  '/usr/oracle/backup/dbbk/db1_%T_%d_%u_%s' FILESPERSET 4 TAG FULLBKP;
+}
+
+
+#Backup archivelog
+run{
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL 
+FORMAT  '/u01/app/oracle/backup/db01/db01_arch_%T_%d_%u_%s_%U' FILESPERSET 4 DELETE INPUT TAG  ARCH;
+}
+
+
+#Backup controlfile ( Luu ý : backup sau khi backup database)
+run{
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE 
+FORMAT  '/u01/app/oracle/backup/db01/db01_controlfile_%T_%d_%u_%s' TAG CTLFILE;
+}

@@ -1,0 +1,589 @@
+﻿1. IP: 
+hostnamectl set-hostname ha-ssmi-db-01
+vi /etc/hosts
+------------------------------------------------------------------------
+echo "
+# Public IPs
+10.252.90.21           ha-ssmi-db-01    
+10.252.90.22           ha-ssmi-db-02
+
+# Private IPs
+10.252.225.185           ha-ssmi-db-01-priv
+10.252.225.186           ha-ssmi-db-02-priv
+
+#Virtual Network
+10.252.90.23           ha-ssmi-db-01-vip
+10.252.90.24           ha-ssmi-db-02-vip
+
+# SCAN
+10.252.90.25         ha-ssmi-db-scan
+
+# OEM
+10.253.130.31		 ha-oem-db-v
+" >> /etc/hosts 
+
+
+2. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+----------------------------------------------	-----------------------------
++CREATE REPO:
+# mount /dev/cdrom /media/
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///media/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# For ORACLE
+dnf install -y bc binutils elfutils-libelf elfutils-libelf-devel fontconfig-devel glibc glibc-devel ksh libaio libaio-devel libXrender 
+dnf install -y libXrender-devel libX11 libXau libXi libXtst libgcc librdmacm-devel libstdc++ libstdc++-devel libxcb make net-tools  nfs-utils 
+dnf install -y targetcli smartmontools sysstat unixODBC libnsl libnsl.i686 libnsl2 libnsl2.i686 bc librdmacm libibverbs 
+
+dnf install -y elfutils-libelf elfutils-libelf-devel fontconfig-devel glibc glibc-devel ksh libaio libaio-devel 
+dnf install -y libXrender libXrender-devel libX11 libXau libXi libXtst libgcc librdmacm-devel libstdc++ libstdc++-devel libxcb make net-tools
+
+
+
+dnf groupinstall "Server with GUI" -y
+
+
+##Copy and install oracleasmlib
+dnf install -y  kmod-redhat-oracleasm oracleasmlib oracleasm-support
+dnf install -y  oracleasmlib oracleasm-support
+
+# basic tool
+yum install -y telnet mlocate chrony unzip nfs-utils lsof
+
+# GUI- GNOME
+yum install -y NetworkManager-libreswan-gnome PackageKit-command-not-found PackageKit-gtk3-module abrt-desktop at-spi2-atk at-spi2-core avahi baobab caribou caribou-gtk2-module caribou-gtk3-module cheese control-center dconf empathy eog evince evince-nautilus file-roller file-roller-nautilus firewall-config firstboot fprintd-pam gdm gedit glib-networking gnome-bluetooth gnome-boxes gnome-calculator gnome-classic-session gnome-clocks gnome-color-manager gnome-contacts gnome-dictionary gnome-disk-utility gnome-documents gnome-font-viewer gnome-getting-started-docs gnome-icon-theme gnome-icon-theme-extras gnome-icon-theme-symbolic gnome-initial-setup gnome-packagekit gnome-packagekit-updater gnome-screenshot gnome-session gnome-session-xsession gnome-settings-daemon gnome-shell gnome-software gnome-system-log gnome-system-monitor gnome-terminal gnome-terminal-nautilus gnome-themes-standard gnome-tweak-tool gnome-user-docs gnome-weather gucharmap gvfs-afc gvfs-afp gvfs-archive gvfs-fuse gvfs-goa gvfs-gphoto2 gvfs-mtp gvfs-smb initial-setup initial-setup-gui libcanberra-gtk2 libcanberra-gtk3 libproxy-mozjs librsvg2 libsane-hpaio metacity mousetweaks nautilus nautilus-sendto nm-connection-editor orca rhn-setup-gnome sane-backends-drivers-scanners seahorse setroubleshoot sushi totem totem-nautilus unoconv vinagre vino xdg-user-dirs-gtk yelp alacarte dconf-editor dvgrab fonts-tweak-tool gconf-editor gedit-plugins gnome-shell-browser-plugin gnote seahorse-nautilus seahorse-sharing vim-X11 xguest
+
+
+
+3. Config ntp server - dns server 
+---------------------------------------------------------------------------
+### NTP server 
+vi /etc/sysconfig/ntpd
+OPTIONS="-x -g -p /var/run/ntpd.pid"
+
+
+vi /etc/ntp.conf
+server 10.193.74.38
+
+
+ntpdate -buv 10.193.74.38
+hwclock -w --localtime
+
+
+
+### Using cronnyd for Linux 7 +
+-------------------------------------
+vi /etc/chrony.conf
+
+server 10.193.74.38 iburst
+server 10.193.74.39 iburst
+server 10.193.74.40 iburst
+
+
+systemctl stop chronyd
+systemctl start chronyd
+systemctl enable chronyd
+
+
+### DNS server 
+vi /etc/resolv.conf
+
+
+4. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+echo "
+### shmmax : 60% of Server (for sga,hugepages)
+kernel.shmmax = 25769803776
+
+# shmmni : default
+kernel.shmmni = 4096
+
+### shmall=shmmax/shmmni
+kernel.shmall = 6291456
+
+### kernel.sem : increase if so much database
+#kernel.sem = 2048 64000 2048 512
+kernel.sem = 1024 32000 1024 256
+
+
+kernel.pid_max = 4000000
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+vm.max_map_count = 300000	
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 10
+
+### huge pages for SGA 
+##vm.nr_hugepages = 6100
+
+### min_free_kbytes= 1% total size of Server
+vm.min_free_kbytes = 256000
+vm.swappiness=10
+
+### tuning for RAC interconect 
+net.ipv4.ipfrag_high_thresh = 16777216
+net.ipv4.ipfrag_low_thresh = 15728640
+net.ipv4.ipfrag_time = 60
+
+" >> /etc/sysctl.conf
+
+
+
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+
+5. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# echo "oracle soft nproc 16000
+oracle hard nproc 32000
+oracle soft nofile 10240
+oracle hard nofile 65536
+oracle soft stack 10240
+
+* soft memlock unlimited
+* hard memlock unlimited
+" >> /etc/security/limits.conf
+
+
+# echo "session    required     pam_limits.so
+">> /etc/pam.d/login
+
+# echo "if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+" >> /etc/profile
+
+
+
+
+6. DISABLE FIREWALL,SElinux, TPH: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+systemctl stop firewalld
+systemctl disable firewalld
+
+systemctl stop iptables
+systemctl disable iptables
+
+systemctl stop tuned
+systemctl disable tuned
+
+
+service iptables stop
+chkconfig iptables off
+
+
+# vi /etc/selinux/config 
+SELINUX=permissive
+
+setenforce 0
+
+
+
+7. Disable transparent_hugepage
+---------------------------------------------------------------------------
+echo "
+[Unit]
+Description=Disable Transparent Huge Pages (THP)
+DefaultDependencies=no
+After=sysinit.target local-fs.target
+Before=mongod.service
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo never | tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null'
+[Install]
+WantedBy=basic.target
+" >> /etc/systemd/system/disable-transparent-huge-pages.service
+
+
+systemctl daemon-reload
+systemctl enable disable-transparent-huge-pages
+systemctl start disable-transparent-huge-pages
+
+cat /sys/kernel/mm/transparent_hugepage/enabled
+
+
+
+
+7. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+-----Full: Oracle & Grid-----
+groupadd -g 1001 oinstall
+groupadd -g 1002 dba
+groupadd -g 1003 racoper
+groupadd -g 1004 asmdba
+groupadd -g 1005 asmoper
+groupadd -g 1006 asmadmin
+useradd -m -u 1000 -g oinstall -G asmadmin,asmdba,asmoper -d /home/grid -s /bin/bash -c "Grid Infrastructure Owner" grid
+useradd -m -u 1001 -g oinstall -G asmadmin,dba,racoper,asmdba -d /home/oracle -s /bin/bash -c "Oracle Software Owner" oracle
+
+chage -m 0 -M 99999 -I -1 -E -1 grid
+usermod -e '' grid
+chage -l grid
+
+chage -m 0 -M 99999 -I -1 -E -1 oracle
+usermod -e '' oracle
+chage -l oracle
+
+
+
+-----Simple: Oracle & Grid-----
+groupadd -g 2001 oinstall
+useradd -m -u 2000 -g oinstall -d /home/oracle -s /bin/bash oracle
+chage -m 0 -M 99999 -I -1 -E -1 oracle
+usermod -e '' oracle
+chage -l oracle
+
+
+useradd -m -u 2002 -g oinstall -d /home/grid -s /bin/bash grid
+chage -m 0 -M 99999 -I -1 -E -1 grid
+usermod -e '' grid
+chage -l grid
+
+
+
+-----Oraem-----
+useradd -m -u 3000 -g oraem -d /home/oraem -s /bin/bash oraem
+chage -m 0 -M 99999 -I -1 -E -1 oraem
+usermod -e '' oraem
+chage -l oraem
+
+
+
+8. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/19c/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /u01/dump
+# mkdir -p /home/oracle/bin
+# mkdir -p /home/oracle/dbscript/log
+# mkdir -p /u01/app/oracle/product/19c/dbhome_1
+# chmod -R 775 /u01
+# chown -R oracle:oinstall /u01
+# chown -R oracle:oinstall /home/oracle/bin
+# chown -R oracle:oinstall /home/oracle/dbscript
+
+
+9. Fix scp
+---------------------------------------------------------------------------
+# Rename the original scp.
+mv /usr/bin/scp /usr/bin/scp.orig
+
+vi /usr/bin/scp
+
+/usr/bin/scp.orig -T $*
+
+chmod 555 /usr/bin/scp
+
+After installation:
+
+ mv /usr/bin/scp.orig /usr/bin/scp
+
+
+
+
+10. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
+echo " 
+export TZ=Asia/Ho_Chi_Minh
+export ORACLE_UNQNAME=saas_ho
+export ORACLE_SID=saas_ho1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=\$ORACLE_BASE/diag/rdbms/\$ORACLE_UNQNAME/\$ORACLE_SID/trace
+lias alert=\"tail -300f \$DUMP/alert_\$ORACLE_SID.log\"
+lias s=\"sqlplus / as sysdba\"
+env | grep ORACLE
+umask 022
+
+export SHLIB_PATH=\$ORACLE_HOME/lib32:\$ORACLE_HOME/rdbms/lib32
+export CLASSPATH=\$ORACLE_HOME/JRE:\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib/:\$ORACLE_HOME/network/jlib
+export LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib
+" >> /home/oracle/.bash_profile
+
+
+echo "
+export ORACLE_SID=+ASM
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/19c/grid
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP_ASM=\$ORACLE_BASE/diag/asm/+asm/\$ORACLE_SID/trace
+export DUMP_CRS=\$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log
+lias s=\"sqlplus / as sysdba\"
+lias alert_asm=\"tail -300f \$DUMP_ASM/alert_\$ORACLE_SID.log\"
+lias alert_crs=\"tail -300f \$ORACLE_BASE/diag/crs/\$HOSTNAME/crs/trace/alert.log\"
+env | grep ORACLE
+" >> /home/oracle/bin/grid
+
+
+echo "
+export ORACLE_UNQNAME=saas_ho
+export ORACLE_SID=saas_ho1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/19c/dbhome_1
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=\$ORACLE_BASE/diag/rdbms/\$ORACLE_UNQNAME/\$ORACLE_SID/trace
+lias alert=\"tail -300f \$DUMP/alert_\$ORACLE_SID.log\"
+lias s=\"sqlplus / as sysdba\"
+env | grep ORACLE
+" >> /home/oracle/bin/ssmiuat
+
+
+echo "
+export ORACLE_HOME=/u01/app/oracle/agent/agent_13.4.0.0.0
+export PATH=\$ORACLE_HOME/bin:\$ORACLE_HOME/OPatch:\$PATH
+export DUMP=/u01/app/agent13c/agent_inst/sysman/log
+" >> /home/oracle/bin/em13c
+
+
+chown -R oracle:oinstall /u01
+chown -R oracle:oinstall /home/oracle
+
+
+$ vi /home/oracle/bin/em13c
+export ORACLE_HOME=/u01/app/agent13c/agent_13.4.0.0.0
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+export DUMP=/u01/app/agent13c/agent_inst/sysman/log
+
+
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+alias s="sqlplus / as sysdba"
+
+alias s="sqlplus / as sysdba"
+alias alert_asm="tail -300f $DUMP_ASM/alert_$ORACLE_SID.log"
+alias alert_crs="tail -300f $ORACLE_BASE/diag/crs/$HOSTNAME/crs/trace/alert.log"
+
+
+
+
+11. CONFIG ASMLIB DONE ON NODE1 AND NODE2 WITH ROOT:
+---------------------------------------------------------------------------
+# /usr/sbin/oracleasm configure -i
+Configuring the Oracle ASM library driver.
+
+This will configure the on-boot properties of the Oracle ASM library
+driver.  The following questions will determine whether the driver is
+loaded on boot and what permissions it will have.  The current values
+will be shown in brackets ('[]').  Hitting <ENTER> without typing an
+answer will keep that current value.  Ctrl-C will abort.
+
+Default user to own the driver interface []:                                     
+oracle
+Default group to own the driver interface []:                                      
+oinstall
+Start Oracle ASM library driver on boot (y/n) [n]:                                      
+y
+Scan for Oracle ASM disks on boot (y/n) [y]:                                     
+y
+Writing Oracle ASM library driver configuration: done
+
+
+
+# vi /etc/sysconfig/oracleasm-_dev_oracleasm
+
+#
+# This is a configuration file for automatic loading of the Oracle
+# Automatic Storage Management library kernel driver.  It is generated
+# By running /etc/init.d/oracleasm configure.  Please use that method
+# to modify this file
+#
+
+# ORACLEASM_UID: Default user owning the /dev/oracleasm mount point.
+ORACLEASM_UID=oracle
+
+# ORACLEASM_GID: Default group owning the /dev/oracleasm mount point.
+ORACLEASM_GID=oinstall
+
+# ORACLEASM_SCANBOOT: 'true' means scan for ASM disks on boot.
+ORACLEASM_SCANBOOT=true
+
+# ORACLEASM_SCANORDER: Matching patterns to order disk scanning
+ORACLEASM_SCANORDER="mpath dm"
+
+# ORACLEASM_SCANEXCLUDE: Matching patterns to exclude disks from scan
+ORACLEASM_SCANEXCLUDE="sd"
+
+# ORACLEASM_USE_LOGICAL_BLOCK_SIZE: 'true' means use the logical block size
+# reported by the underlying disk instead of the physical. The default
+# is 'false'
+ORACLEASM_USE_LOGICAL_BLOCK_SIZE=false
+
+
+
+/usr/sbin/oracleasm init
+
+
+
++DONE ON NODE 1:
+/usr/sbin/oracleasm createdisk CRS01 /dev/sdg1
+/usr/sbin/oracleasm createdisk CRS02 /dev/sdh1
+/usr/sbin/oracleasm createdisk CRS03 /dev/sdi1
+/usr/sbin/oracleasm createdisk DATA01 /dev/sdj1
+/usr/sbin/oracleasm createdisk DATA02 /dev/sdk1
+/usr/sbin/oracleasm createdisk DATA03 /dev/sdl1
+/usr/sbin/oracleasm createdisk DATA04 /dev/sdm1
+/usr/sbin/oracleasm createdisk FRA01 /dev/sdn1
+
+
+/usr/sbin/oracleasm createdisk DATA201 /dev/sdj1
+
+/usr/sbin/oracleasm createdisk CRS01 /dev/sdc1
+/usr/sbin/oracleasm createdisk CRS02 /dev/sdd1
+/usr/sbin/oracleasm createdisk CRS03 /dev/sde1
+/usr/sbin/oracleasm createdisk DATA01  /dev/sdf1
+/usr/sbin/oracleasm createdisk FRA01 /dev/sdg1 
+
+
+/usr/sbin/oracleasm createdisk DATA01 /dev/sdc1
+/usr/sbin/oracleasm createdisk DATA02 /dev/sdd1
+
+
+
+
+[root@dr-ora-db01 Packages]# vi /u01/app/19c/grid/crs/install/crsconfig_params
+ASM_DISCOVERY_STRING="ORCL:*"
+
++CHECK ON NODE 2:
+[root@racnode2 ~]#  /usr/sbin/oracleasm scandisks
+Reloading disk partitions: done
+Cleaning any stale ASM disks...
+Scanning system for ASM disks...
+Instantiating disk "FRAVOL1"
+Instantiating disk "DATAVOL1"
+Instantiating disk "CRSVOL1"
+
+
+*** Open GUI
+---------------------------------------------------------------------------
++Install X11 Forwarding:
+
+dnf groupinstall "Server with GUI"
+
+
+chay bang quyen root
+xhost +SI:localuser:oracle
+# vi /etc/ssh/sshd_config
+X11Forwarding yes
+AddressFamily inet
+
+
+# systemctl restart sshd
+----------------------------
+# xauth list $DISPLAY
+ha-ids-krx-db-u01/unix:10 MIT-MAGIC-COOKIE-1 325a283b3c3eeea579fdecd10dfe168d
+ha-g2-db-u21/unix:10  MIT-MAGIC-COOKIE-1  09454ec15bfa718b45f6cea964c1b169
+
+# echo $DISPLAY
+localhost:10.0
+
+
+# su - <user>
+$ xauth add ha-ssmi-db-01/unix:10  MIT-MAGIC-COOKIE-1  31f73186bd5a8e6c54dd9a3eb263ca38
+$ export DISPLAY=localhost:10.0
+
+
+
+12. INSTALLATION
+---------------------------------------------------------------------------
+chown -R oracle:oinstall /u01
+cd /u01/setup/
+mv Grid_19c_Linux-x86-64.zip /u01/app/19c/grid/
+cd /u01/app/19c/grid/
+unzip Grid_19c_Linux-x86-64.zip
+
+rm -rf OPatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+
+chown -R oracle:oinstall $ORACLE_HOME
+
+
+
+
+
+Please wait ...Error in CreateOUIProcess(): 13
+
+
+export TMP=/u01/setup
+export TMPDIR=$TMP
+
+.grid
+
+chmod +x gridSetup.sh
+./gridSetup.sh
+
+
+$ ./gridSetup.sh -applyRU /u01/setup/34130714
+
+$ ./runInstaller -applyRU /u01/setup/34130714
+
+
+13. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+
+patch to lastest patch
+
+
+
+14. Setup housekeeping - Backup
+---------------------------------------------------------------------------
+root
+crontab -e
+05 05 * * * sync; echo 1 > /proc/sys/vm/drop_caches
+
+
+crontab -e
+
+###House keeping Database
+00 04 * * * sh /home/oracle/dbscript/clean_db_logs.sh >> /home/oracle/dbscript/log/clean_db_logs.out 2>&1
+
+###Backup database
+00 23 * * 1,5 sh /home/oracle/dbscript/backup_db12c_lv0.sh dbsh1
+00 23 * * 0,2,3,4,6 sh /home/oracle/dbscript/backup_db12c_lv1.sh dbsh1
+
+
+
+15. setup sqlnet.ora
+---------------------------------------------------------------------------
+SQLNET.ALLOWED_LOGON_VERSION_SERVER = 10
+SQLNET.ALLOWED_LOGON_VERSION_CLIENT = 10
+SQLNET.EXPIRE_TIME = 10
+SQLNET.INBOUND_CONNECT_TIMEOUT=600
+
+
+
+
+alter system set db_block_checking=FULL sid='*';
+alter system set db_block_checksum=FULL sid='*';
+alter system set db_lost_write_protect=typical sid='*';
+
+alter system set fast_start_mttr_target=900 sid='*';
+alter system set archive_lag_target=900 sid='*';
+
+
+

@@ -1,0 +1,30 @@
+ORA-08102
+
+ERROR at line 1:
+ORA-08102: index key not found, obj# 98830, file 69, block 120164 (2)
+
+ERROR at line 1:
+ORA-08102: index key not found, obj# 98832, file 69, block 120172 (2)
+
+ERROR at line 1:
+ORA-08102: index key not found, obj# 98831, file 69, block 120140 (2)
+
+
+SQL> column stmts format a50;
+SQL> select 'ALTER ' || object_type || ' ' || owner || '.' || object_name || ' REBUILD;' stmt from dba_objects where object_id in (98829, 98830, 98831) and object_type = 'INDEX';
+
+STMT
+--------------------------------------------------
+ALTER INDEX ERPAPP.FINNS5S1 REBUILD;
+ALTER INDEX ERPAPP.FINNS6S1 REBUILD;
+ALTER INDEX ERPAPP.FINNS7S1 REBUILD;
+
+
+SQL> select 'DROP INDEX ' || b.owner || '.' || b.index_name || ';' || chr(10) || 'CREATE INDEX ' || b.owner || '.' || b.index_name || ' ON ' || c.table_owner || '.' || c.table_name || ' (' || c.column_name || ') TABLESPACE ' || b.tablespace_name || ';' stmt from dba_objects a inner join dba_indexes b on a.object_type = 'INDEX' and a.owner = b.owner and a.object_name = b.index_name inner join dba_ind_columns c on b.owner = c.index_owner and b.index_name = c.index_name where a.object_id in (98829, 98830, 98831);
+
+
+STMT
+--------------------------------------------------------------------------------
+DROP INDEX ERPAPP.FINNS5S1;
+CREATE INDEX ERPAPP.FINNS5S1 ON ERPAPP.FINLOC1S025 (SWITCH_SUM_PH) TABLESPACE FI
+NCCORP;

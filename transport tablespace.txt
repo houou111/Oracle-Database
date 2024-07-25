@@ -1,0 +1,66 @@
+Step 0: transport check
+----------------------------------------------------------------------------------------------------------------------
+EXEC SYS.DBMS_TTS.TRANSPORT_SET_CHECK(ts_list => 'DWH2013_TBS,DWH2014_TBS,DWH2015_TBS', incl_constraints => TRUE);
+EXEC SYS.DBMS_TTS.TRANSPORT_SET_CHECK(ts_list => 'DWH2014_TBS', incl_constraints => TRUE);
+EXEC SYS.DBMS_TTS.TRANSPORT_SET_CHECK(ts_list => 'DWH2015_TBS', incl_constraints => TRUE)
+
+SELECT * FROM transport_set_violations;
+no rows selected
+
+
+
+Step 1: Identified tablespace need to transport. 
+----------------------------------------------------------------------------------------------------------------------
+Note : can not transport tablespace with sys object
+SQL> create tablespace tbs_test datafile '/u01/oracle/product/10.2.0/db_1/oradata/TTSone/tbs_test01.dbf' size 1M;
+Tablespace created.
+ 
+
+Step 2:  As RMAN needs to put the dump file that contains metadata of the transported tablespace and datafile in the auxiliary instance, create a folder for both files.  
+Moreover, create an Oracle directory that will be used in the RMAN command to define the output folder of the data pump export file.  
+Do all the above actions in the first database as follows:
+----------------------------------------------------------------------------------------------------------------------
+
+SQL> create or replace directory ora_dump as '+RECOC1/DWHYEAR/DATAFILE/';
+Directory created.
+
+[oracle@localhost ~]$ cd /home/oracle/
+[oracle@localhost ~]$ mkdir ora_dump aux
+
+
+Step 3:  Now connect to RMAN and back up the database ()
+--------------------------------------------------------------------------------------------------------
+
+RMAN> BACKUP AS COMPRESSED datafile xxx ;
+RMAN> BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE
+
+
+Step 4:  Now connect to RMAN and run the following commands to create a transportable set of the newly created tablespace
+--------------------------------------------------------------------------------------------------------------------------
+run
+{
+transport tablespace DWH2013_TBS,DWH2014_TBS,DWH2015_TBS
+auxiliary destination '+RECOC1'
+tablespace destination '+RECOC1'
+datapump directory ora_dump
+dump file 'tbs_dump.dmp'
+export log 'tbs_log.log'
+import script 'tbs_script.sql';
+}
+
+
+Step 5:  Connect 
+--------------------------------------------------------------------------------------------------------------------------
+
+SQL> create directory ora_dump as '/home/oracle/ora_dump';
+ 
+Directory created.
+ 
+SQL> @/home/oracle/aux/tbs_script.sql
+Directory created.
+ 
+PL/SQL procedure successfully completed.
+ 
+Directory dropped.
+ 
+SQL> select name from v$tablespace ;

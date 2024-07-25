@@ -1,0 +1,573 @@
+Extend /u01 File System On Exadata Compute Node
+  
+
+Introduction
+I have been working on an Exadata X4-2 quarter Rack which has multiple databases running (database consolidation). After running these databases for a while on the Exadata cluster, we started seeing that /u01 file system filled up very quickly as the databases generates trace files and other diagnostic files. Initially we cleared the space using automated scripts and as well as manually using ADRCI. Later I decided to look in to the possibility of increasing the size of /u01 file system to minimize the extra work. Reading the Exadata Manuals I came across a procedure that you can use on Exadata X2 and above to extend the logical volume space on which the /u01 file system is mounted.
+
+By default /u01 file system on Exadata Computed nodes X2 and above are configured with 100GB space by Oracle ACS. This space may not be sufficient to store trace files, log file and diagnostic files for multiple databases in database consolidation environment. Also 100GB space can't be sufficient if you want to install multiple Oracle RDBMS Homes. So, the solution to this is to extend the size of /u01 file system.
+
+In this article, I will demonstrate how you can extend the size of /u01 file system on Exadata Compute nodes.
+
+Why Extend /u01 file system size?
+To store trace files, log files, diagnostic file and other files for multiple databases.
+To install multiple Oracle RDBMS homes.
+Environment Details
+ 
+
+Exadata Model
+
+X4-2 Quarter Rack HP 1.2TB
+
+Exadata Components
+
+Storage Cell (3), Compute node (2) & Infiniband Switch (1)
+
+Exadata Storage cells
+
+DBM01CEL01 – DBM01CEL03
+
+Exadata Compute nodes
+
+DBM01DB01 – DBM01DB02
+
+Exadata Software Version
+
+11.2.3.3.1
+
+Exadata DB Version
+
+11.2.0.4 BP5
+
+Procedure to Extend the Size Of /u01 File System on Exadata Compute Nodes
+File system /u01 is built on volume group, so it makes it easy to extend the size of logical volume (LVDbOra1) on which /u01 file system is mounted.
+
+Here we are going to increase the size of /u01 file system one compute node at a time (rolling). If you get outage for entire cluster you can do this in parallel (non-rolling). My recommendation is to run with the commands first on any one node to make sure there are no issues before doing it in parallel.
+
+ 
+
+        I.            Prerequisites
+
+ 
+
+root user access
+Exadata Storage Software Version:
+11.2.3.2.1 and above
+11.2.3.2.1 or earlier
+ 
+
+      II.            Steps
+
+ 
+
+1.      Identify the current size of /u01 file system
+
+[root@dbm01db01 bin]# df -h /u01
+
+Filesystem           Size Used Avail Use% Mounted on
+
+/dev/mapper/VGExaDb-LVDbOra1
+
+                       99G   14G   80G   15% /u01
+
+ 
+
+Currently 100GB is allocated to /u01 File system and it is mounted on “/dev/VGExaDb/LVDbOra1” logical volume.
+
+ 
+
+2.      Determine the amount of free space on the VGExaDb volume group using the vgdisplay command as follows:
+
+[root@dbm01db01 ~]# vgdisplay VGExaDb | grep Free
+
+Free   PE / Size       381204 / 1.45 TB
+
+ 
+
+This output shows that we have around 1.45 TB of free space on our existing VGExaDB volume group.
+
+ 
+
+3.      Determine the name of your logical volume used for /u01.
+
+[root@dbm01db01 ~]# lvm lvscan
+
+   ACTIVE '/dev/VGExaDb/LVDbSys1' [30.00 GB] inherit
+
+   ACTIVE '/dev/VGExaDb/LVDbSys2' [30.00 GB] inherit
+
+   ACTIVE '/dev/VGExaDb/LVDbSwap1' [24.00 GB] inherit
+
+   ACTIVE   '/dev/VGExaDb/LVDbOra1' [100.00 GB] inherit
+
+ 
+
+4.      Determine the volume Group details.
+
+[root@dbm01db01 ~]# lvm lvdisplay /dev/VGExaDb/LVDbOra1
+
+--- Logical volume ---
+
+LV Name               /dev/VGExaDb/LVDbOra1
+
+VG Name               VGExaDb
+
+LV UUID               9owa3w-aKu3-LyBX-V4ys-2Seq-bOPp-r87kjt
+
+LV Write Access       read/write
+
+LV Status             available
+
+# open                0
+
+LV Size               100.00 GB
+
+Current LE            25600
+
+Segments              1
+
+Allocation            inherit
+
+Read ahead sectors    auto
+
+- currently set to    256
+
+Block device          252:3
+
+ 
+
+5.      To increase the size of the /u01 file system, stop all Oracle databases, cluster services and ExaWatcher on your compute node using "crsctl stop crs" and then unmount the /u01 file system using umount.
+
+As ‘oracle’ user stop the database instance.
+
+ 
+
+[oracle@dbm01db01 ~]$ srvctl status database -d dbm
+
+Instance dbm1 is running on node dbm01db01
+
+Instance dbm2 is running on node dbm01db02
+
+ 
+
+[oracle@dbm01db01 ~]$ srvctl stop instance -d dbm -i dbm1
+
+ 
+
+[oracle@dbm01db01 ~]$ srvctl status database -d dbm
+
+Instance dbm1 is not running on node dbm01db01
+
+Instance dbm2 is running on node dbm01db02
+
+ 
+
+As ‘root’ user stop the Clusterware
+
+ 
+
+[oracle@dbm01db01 ~]$ su - root
+
+Password:
+
+ 
+
+[root@dbm01db01 ~]# cd /u01/app/11.2.0.4/grid/bin/
+
+[root@dbm01db01 bin]# ./crsctl stop crs
+
+CRS-2791: Starting shutdown of Oracle High Availability Services-managed resources on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.crsd' on 'dbm01db01'
+
+CRS-2790: Starting shutdown of Cluster Ready Services-managed resources on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.DBFS_DG.dg' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.registry.acfs' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.DATA_DBM01.dg' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.RECO_DBM01.dg' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.LISTENER.lsnr' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.LISTENER.lsnr' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.dbm01db01.vip' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.DATA_DBM01.dg' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.registry.acfs' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.RECO_DBM01.dg' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.dbm01db01.vip' on 'dbm01db01' succeeded
+
+CRS-2672: Attempting to start 'ora.dbm01db01.vip' on 'dbm01db03'
+
+CRS-2676: Start of 'ora.dbm01db01.vip' on 'dbm01db03' succeeded
+
+CRS-2677: Stop of 'ora.DBFS_DG.dg' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.asm' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.asm' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.ons' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.ons' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.net1.network' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.net1.network' on 'dbm01db01' succeeded
+
+CRS-2792: Shutdown of Cluster Ready Services-managed resources on 'dbm01db01' has completed
+
+CRS-2677: Stop of 'ora.crsd' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.ctssd' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.evmd' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.asm' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.drivers.acfs' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.mdnsd' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.evmd' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.ctssd' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.mdnsd' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.asm' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.cluster_interconnect.haip' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.drivers.acfs' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.cluster_interconnect.haip' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.cssd' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.cssd' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.diskmon' on 'dbm01db01'
+
+CRS-2673: Attempting to stop 'ora.crf' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.diskmon' on 'dbm01db01' succeeded
+
+CRS-2677: Stop of 'ora.crf' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.gipcd' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.gipcd' on 'dbm01db01' succeeded
+
+CRS-2673: Attempting to stop 'ora.gpnpd' on 'dbm01db01'
+
+CRS-2677: Stop of 'ora.gpnpd' on 'dbm01db01' succeeded
+
+CRS-2793: Shutdown of Oracle High Availability Services-managed resources on 'dbm01db01' has completed
+
+CRS-4133: Oracle High Availability Services has been stopped.
+
+ 
+
+[root@dbm01db01 bin]# ./crsctl check crs
+
+CRS-4639: Could not contact Oracle High Availability Services
+
+ 
+
+As ‘oracle’ user stop OEM agent
+
+ 
+
+[oracle@dbm01db01 ~]$ su - oracle
+
+[oracle@dbm01db01 ~]$ /u01/app/oracle/product/Agent12c/core/12.1.0.3.0/bin/emctl stop agent
+
+Oracle Enterprise Manager Cloud Control 12c Release 3
+
+Copyright (c) 1996, 2013 Oracle Corporation. All rights reserved.
+
+Stopping agent ..... stopped.
+
+ 
+
+As ‘root’ user stop ExaWatcher
+
+ 
+
+[root@dbm01db01 ~]#   /opt/oracle.ExaWatcher/ExaWatcher.sh --stop
+
+10501 ?   SN       0:00 /bin/bash ./ExaWatcher.sh --fromconf
+
+[INFO ] ExaWatcher successfully terminated!
+
+ 
+
+6.       Unmount the /u01 file system as follows:
+
+[root@dbm01db01 ~]# umount /u01
+
+ 
+
+7.       Verify that /u01 file system is unmounted
+
+[root@dbm01db01 ~]# df -h /u01
+
+Filesystem           Size Used Avail Use% Mounted on
+
+/dev/mapper/VGExaDb-LVDbSys1
+
+                       30G 9.6G     19G 34% /
+
+ 
+
+8.       Use lvm lvextend to increase the size of your logical volume.
+
+Here we will increase our size by 500 GB. So after resize /u01 will be 600GB.
+
+[root@dbm01db01 ~]# lvm lvextend -L +250G --verbose /dev/VGExaDb/LVDbOra1
+
+lvextend -L +60G --verbose /dev/VGExaDb/LVDbSys1
+lvextend -L +60G --verbose /dev/VGExaDb/LVDbSys2
+
+   Finding volume group VGExaDb
+
+   Archiving volume group "VGExaDb" metadata (seqno 6).
+
+Extending logical volume LVDbOra1 to 600.00 GB
+
+   Found volume group "VGExaDb"
+
+   Found volume group "VGExaDb"
+
+   Loading VGExaDb-LVDbOra1 table (252:3)
+
+   Suspending VGExaDb-LVDbOra1 (252:3) with device flush
+
+   Found volume group "VGExaDb"
+
+   Resuming VGExaDb-LVDbOra1 (252:3)
+
+   Creating volume group backup "/etc/lvm/backup/VGExaDb" (seqno 7).
+
+Logical volume LVDbOra1 successfully resized
+
+ 
+
+9.       Verify the file system using the following command:
+
+[root@dbm01db01 ~]# e2fsck -f /dev/VGExaDb/LVDbOra1
+
+e2fsck 1.39 (29-May-2006)
+
+Pass 1: Checking inodes, blocks, and sizes
+
+Pass 2: Checking directory structure
+
+Pass 3: Checking directory connectivity
+
+Pass 4: Checking reference counts
+
+Pass 5: Checking group summary information
+
+DBORA: 68224/13107200 files (1.0% non-contiguous), 3971060/26214400 blocks
+
+ 
+
+10.   Resize the /u01 file system using the following command:
+
+[root@dbm01db01 ~]# resize2fs -f /dev/VGExaDb/LVDbOra1
+
+resize2fs 1.39 (29-May-2006)
+
+Resizing the filesystem on /dev/VGExaDb/LVDbOra1 to 157286400 (4k) blocks.
+
+The filesystem on /dev/VGExaDb/LVDbOra1 is now 157286400 blocks long.
+
+ 
+
+11.   Mount the /u01 file system
+
+Exadata X4:
+
+ 
+
+[root@dbm01db01 ~]# mount -t ext3 /dev/VGExaDb/LVDbOra1 /u01
+
+ 
+
+Exadata X5 or Exadata Image 12.1.2.1.0 & above:
+
+ 
+
+[root@dbm01db01 ~]# mount -t ext4 /dev/VGExaDb/LVDbOra1 /u01
+
+ 
+
+Exadata X5 uses the “ext4” file system type while the older Exadata systems use “ext3”.
+
+ 
+
+12.   Verify the new size
+
+[root@dbm01db01 ~]# df -h /u01
+
+Filesystem           Size Used Avail Use% Mounted on
+
+/dev/mapper/VGExaDb-LVDbOra1
+
+                     591G   14G 547G     3% /u01
+
+ 
+
+13.   Determine the free space available on the VGExaDb volume group after extending /u01 file system. Still we have ~ 980GB free space in the volume group.
+
+[root@dbm01db01 ~]# vgdisplay VGExaDb | grep Free
+
+Free   PE / Size       253204 / 989.08 GB
+
+ 
+
+14.   Start Cluster services, database instance on compute node, ExaWatcher and OEM grid agent.
+
+[root@dbm01db01 ~]# cd /u01/app/11.2.0.4/grid/bin/
+
+[root@dbm01db01 bin]# ./crsctl start crs
+
+CRS-4123: Oracle High Availability Services has been started.
+
+ 
+
+Wait for some time... and check the status
+
+ 
+
+[root@dbm01db01 bin]# ./crsctl check crs
+
+CRS-4638: Oracle High Availability Services is online
+
+CRS-4537: Cluster Ready Services is online
+
+CRS-4529: Cluster Synchronization Services is online
+
+CRS-4533: Event Manager is online
+
+ 
+
+[oracle@dbm01db01 ~]$ srvctl start instance -d dbm -i dbm2
+
+[oracle@dbm01db01 ~]$ srvctl status database -d dbm
+
+Instance dbm1 is running on node dbm01db01
+
+Instance dbm2 is running on node dbm01db02
+
+ 
+
+SQL> select inst_id,name,open_mode,database_role from gv$database order by 1;
+
+ 
+
+   INST_ID NAME     OPEN_MODE           DATABASE_ROLE
+
+---------- --------- -------------------- ----------------
+
+       1 DBM     READ WRITE           PRIMARY
+
+       2 DBM     READ WRITE           PRIMARY
+
+ 
+
+2 rows selected.
+
+ 
+
+[root@dbm01db01 ~]# /opt/oracle.cellos/vldrun -script oswatcher
+
+Logging started to /var/log/cellos/validations.log
+
+Command line is /opt/oracle.cellos/validations/bin/vldrun.pl -quiet -script oswatcher
+
+Run validation oswatcher - PASSED
+
+2015-07-30 12:34:52 -0500 The each boot completed with SUCCESS
+
+ 
+
+[oracle@dbm01db01 ~]$ cd /u01/app/oracle/product/Agent12c/core/12.1.0.3.0/bin/
+
+[oracle@dbm01db01 bin]$ ./emctl start agent
+
+Oracle Enterprise Manager Cloud Control 12c Release 3
+
+Copyright (c) 1996, 2013 Oracle Corporation. All rights reserved.
+
+       Starting agent .............. started.
+
+ 
+
+Repeat the above steps for all the compute nodes in the Exadata Cluster to extend the size of /u01 file system.
+
+Important Notes
+1. Online resizing option.
+
+You can perform the online resize of the /u01 file system without having to shutdown the database, cluster services, ExaWatcher and OEM agent.
+
+Execute the following command to check the online resize option.
+
+[root@dbm01db01 ~]# tune2fs -l /dev/mapper/VGExaDb-LVDbOra1 | grep resize_inode
+
+Filesystem features:     has_journal resize_inode dir_index filetype needs_recovery sparse_super large_file
+
+ 
+
+If the resize_inode is not listed in the output then the file system must be unmounted before resizing.
+
+ 
+
+2. Volume Group VGExaDB must have at least 1GB free space to be used for creating LVM snapshot by dbnodeupdate.sh utility during firmware upgrade on compute nodes. If you are using snapshot based backup of root (/) and /u01 file systems then there must be at least 6GB free space available in Volume Group.
+
+ 
+
+3. Before making any changes to the file system or OS patches, create a snapshot based backup.
+
+ 
+
+Known Issues
+While unmounting /u01 you might see an issue such as below. This is because there are processes that are still using the file system and can’t be unmounted.
+
+[root@dbm01db01 ~]# umount /u01
+
+umount: /u01: device is busy.
+
+ 
+
+Use the “fuser” OS command to identify the processes that are using /u01 file system and stop/kill them before issuing the umount command again.
+
+[root@dbm01db01 ~]# fuser -mv /u01
+
+                   USER       PID ACCESS COMMAND
+
+/u01:              root       2546 F..e. java
+
+                   oracle     5429 f.ce. tnslsnr
+
+                   oracle    12941 F.ce. java
+
+                   oracle    14511 F.ce. oracle_14511_db
+
+ 
+
+From the output above we can see that are few processes that are accessing the /u01 file system. Use the kill OS command and retry the umount command.
+
+[root@dbm01db01 ~]# kill -9 2456 12941 14511
+
+Issue the umount command now:
+
+[root@dbm01db01 ~]# umount /u01

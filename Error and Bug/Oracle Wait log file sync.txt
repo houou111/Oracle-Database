@@ -1,0 +1,7 @@
+Adaptive Log File Sync Optimization (Doc ID 1541136.1)
+
+Bug 25178179 - Several sessions wait on 'log file sync' in a RAC environment (Doc ID 25178179.8)
+
+
+
+ALTER SYSTEM SET "_use_adaptive_log_file_sync"= <FALSE/TRUE>  scope=<both/spfile/memory>;

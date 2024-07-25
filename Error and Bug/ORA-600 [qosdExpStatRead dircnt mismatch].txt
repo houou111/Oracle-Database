@@ -1,0 +1,11 @@
+col DIR_OWN# for 9999999999999999 
+with aa as (select count(*) aa_cnt,dir_own# from opt_directive$ group by dir_own#) 
+select AA_CNT,to_char(aa.DIR_OWN#),to_char(bb.DIR_OWN#),bb.DIR_CNT 
+ from aa,opt_directive_own$ bb where aa.dir_own#(+)=bb.dir_own# 
+and dir_cnt<>aa.aa_cnt; 
+
+update opt_directive_own$ a set dir_cnt=(select count(*) from opt_directive$ b where a.dir_own#=b.dir_own#) 
+where dir_own#=11562264825347337427 ; 
+commit
+
+

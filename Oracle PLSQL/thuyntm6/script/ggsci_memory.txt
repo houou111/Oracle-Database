@@ -1,0 +1,242 @@
+---view report ET24DC
+CACHEMGR virtual memory values (may have been adjusted)
+CACHEPAGEOUTSIZE (default):               8M
+PROCESS VM AVAIL FROM OS (min):         128G
+CACHESIZEMAX (strict force to disk):     96G
+
+
+GGSCI (dc-core-db-01) 2> send ET24DC cachemgr cachestats
+
+Sending CACHEMGR request to EXTRACT ET24DC ...
+
+CACHE OBJECT MANAGER statistics
+
+CACHE MANAGER VM USAGE
+vm current     =  19.25M   vm anon queues =  14.38M
+vm anon in use =   4.88M   vm file        =      0 
+vm used max    =  19.25M   ==> CACHE BALANCED
+
+CACHE CONFIGURATION
+cache size            =  64G   cache force paging =  96G
+buffer min            =  64K   buffer max (soft)  =   8M
+pageout eligible size =   8M
+
+================================================================================
+RUNTIME STATS FOR SUPERPOOL
+
+CACHE Transaction Stats
+trans active    =     40    max concurrent =    394 
+non-zero total  =   4.65M   trans total    =  24.11M
+
+CACHE File Caching
+filecache rqsts        =      0    bytes to disk      =      0 
+file retrieves         =      0    objs filecached    =      0 
+queue entries          =      0    queue processed    =      1 
+queue entry not needed =      0    queue not signaled =      0 
+fc requesting obj      =      0 
+
+CACHE MANAGEMENT
+buffer links   =  19.09K  anon gets   =      0 
+forced unmaps  =      0   cnnbl try   =      0 
+cached out     =      0 
+
+Allocation Request Distribution
+< 128B:    6.07K
+ 128B:    13.73K     4.55M    | 512B:     3.01M     1.61M
+   2K:     1.07M     1.11M    |   8K:   503.60K    12.83K
+  32K:     5.05K        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+Cached Transaction Size Distribution
+    0:    19.47M
+ < 4K:     3.64M
+   4K:  337.100K   384.47K    |  16K:   177.75K   116.75K
+  64K:    16.75K     2.28K    | 256K:       42         0 
+   1M:        0         4     |   4M:        0         0 
+  16M:        0         0     |  64M:        0         0 
+ 256M:        0         0     |   1G:        0         0 
+   4G:        0         0     |  16G:        0         0 
+  64G:        0         0     | 256G:        0         0 
+   1T:        0         0     |   4T:        0         0 
+  16T:        0         0     |  64T:        0         0 
+ 256T:        0         0     |1024T:        0         0 
+
+================================================================================
+CUMULATIVE STATS FOR SUPERPOOL (PREVIOUS RUNS ONLY)
+
+CACHE Transaction Stats
+trans active    =     14    max concurrent =   1.01K
+non-zero total  =   2.27G   trans total    =  9.100G
+
+CACHE File Caching
+filecache rqsts        =      0    bytes to disk      =      0 
+file retrieves         =      0    objs filecached    =      0 
+queue entries          =      0    queue processed    =    855 
+queue entry not needed =      0    queue not signaled =      0 
+fc requesting obj      =      0 
+
+CACHE MANAGEMENT
+buffer links   =  94.84M  anon gets   =      0 
+forced unmaps  =      0   cnnbl try   =      0 
+cached out     =      0 
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      2.75G    | 512B:   739.70M   780.19M
+   2K:   389.06M   236.55M    |   8K:   471.52M    18.30M
+  32K:   115.07M        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+Cached Transaction Size Distribution
+    0:     7.74G
+ < 4K:   890.42M
+   4K:    27.35M    44.53M    |  16K:    78.05M    40.52M
+  64K:    47.41M     1.99M    | 256K:   722.86K   945.30K
+   1M:     1.08M   188.34K    |   4M:     3.71K      371 
+  16M:      640       297     |  64M:      189        80 
+ 256M:        3         0     |   1G:        0         0 
+   4G:        0         0     |  16G:        0         0 
+  64G:        0         0     | 256G:        0         0 
+   1T:        0         0     |   4T:        0         0 
+  16T:        0         0     |  64T:        0         0 
+ 256T:        0         0     |1024T:        0         0 
+
+
+QUEUE Statistics
+num queues =     15     q hits =   4.67M     q misses =    135 
+
+queue size  q hits  curlen  maxlen     cannibalized
+  0   64K   4.65M    110     124       0 
+  1  128K      0       0       0       0 
+  2  256K      0       0       0       0 
+  3  512K  19.07K      5       6       0 
+  4    1M      3       1       1       0 
+  5    2M      4       0       1       0 
+  6    4M      2       1       1       0 
+  7    8M      0       0       0       0 
+  8   16M      0       0       0       0 
+  9   32M      0       0       0       0 
+ 10   64M      0       0       0       0 
+ 11  128M      0       0       0       0 
+ 12  256M      0       0       0       0 
+ 13  512M      0       0       0       0 
+ 14    1G      0       0       0       0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #0
+POOL INFO   group: et24dc  id: p12371_BLOB  instance: 0  tid: 0x3ff94c6e150
+trans active  =       0   trans concurrent (max) =     1 
+trans total   =    1.71M  (1.71M)
+flag          = 0x00000030
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:    6.07K
+ 128B:    13.73K    21.78K    | 512B:   969.17K   181.94K
+   2K:   335.53K   713.15K    |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #0 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_BLOB  instance: 0  tid: 0x3ff94c6e150
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000030
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #1
+POOL INFO   group: et24dc  id: p12371_ORA-LOB-MEMPOOL  instance: 0  tid: (nil)
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000279
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #1 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_ORA-LOB-MEMPOOL  instance: 0  tid: (nil)
+trans active  =       0   trans concurrent (max) =     0 
+trans total   =       0   (0 )
+flag          = 0x00000279
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0         0     | 512B:        0         0 
+   2K:        0         0     |   8K:        0         0 
+  32K:        0         0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+RUNTIME STATS FOR CACHE POOL #2
+POOL INFO   group: et24dc  id: p12371_extr  instance: 1  tid: 0x3ff893ee150
+trans active  =      40   trans concurrent (max) =   394 
+trans total   =   22.40M  (22.40M)
+flag          = 0x00000135
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      4.53M    | 512B:     2.06M     1.43M
+   2K:   750.53K   419.89K    |   8K:   503.60K    12.83K
+  32K:     5.05K        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+================================================================================
+CUMULATIVE STATS FOR CACHE POOL #2 (PREVIOUS RUNS ONLY)
+POOL INFO   group: et24dc  id: p12371_extr  instance: 1  tid: 0x3ff893ee150
+trans active  =      40   trans concurrent (max) =   394 
+trans total   =    8.85G  (8.85G)
+flag          = 0x00000135
+last error    = (0=<none>)
+
+Allocation Request Distribution
+< 128B:       0 
+ 128B:        0      2.75G    | 512B:   739.70M   780.19M
+   2K:   389.06M   236.55M    |   8K:   471.52M    18.30M
+  32K:   115.07M        0     | 128K:        0         0 
+ 512K:        0         0     |   2M:        0         0 
+   8M:        0         0     |  32M:        0         0 
+ 128M:        0         0     | 512M:        0         0 
+   2G:        0         0     |   8G:        0 
+
+.
+
+
+GGSCI (dc-core-db-01) 3> 

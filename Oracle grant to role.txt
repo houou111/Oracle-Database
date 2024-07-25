@@ -1,0 +1,26 @@
+I. Check grant to role
+--------------------------------------------------------------------------------------------------------------------------------
+1. Role role grant:
+------------------------------------------------------
+select tblu.Role,  granted_role 
+from ROLE_ROLE_PRIVS tblp inner join dba_roles tblu on tblp.role=tblu.role 
+where  tblu.role  like ' %'   
+order by role, granted_role;
+
+
+2. Role System Granted
+------------------------------------------------------
+select tblu.Role, privilege 
+from ROLE_SYS_PRIVS tblp inner join dba_roles tblu on tblp.role=tblu.role 
+where tblu.role  like ' %'   order by role, privilege;
+
+
+
+3. Role Table Granted:
+------------------------------------------------------
+select tblu.Role, owner, table_name, column_Name, privilege 
+from ROLE_TAB_PRIVS tblp inner join dba_roles tblu on tblp.role=tblu.role 
+where tblu.role  like ' %'  order by role, table_name;
+
+
+

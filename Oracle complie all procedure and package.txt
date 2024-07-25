@@ -1,0 +1,53 @@
+1. Complie all package
+-------------------------------------
+locate utlrp
+
+@?/rdbms/admin/utlrp.sql
+
+
+
+2. Complie scpecific package
+-------------------------------------
+
+SET ECHO ON
+SET FEEDBACK 1
+SET NUMWIDTH 10
+SET LINESIZE 196
+SET TRIMSPOOL ON
+SET TAB OFF
+SET PAGESIZE 99
+
+column d_owner format a22
+column p_owner format a22
+column d_name format a22;
+column p_name format a22;
+column d_edition format a22;
+column p_edition format a22;
+column reason format a18;
+column d_type# format 99999;
+column p_type# format 99999;
+column d_obj# format 9999999999;
+column p_obj# format 9999999999;
+     
+select du.name d_owner, d.name d_name, d.type# d_type#,
+       d.obj# d_obj#, d.defining_edition d_edition,
+       pu.name p_owner, p.name p_name, p.type# p_type#,
+       p.obj# p_obj#, p.defining_edition p_edition,
+   case
+      when d.type# = 8 then 'alter function ' || du.name || '.' || d.name || ' compile;'
+      when d.type# = 7 then 'alter procedure ' || du.name || '.' || d.name || ' compile;'
+      when d.type# = 11 then 'alter package ' || du.name || '.' || d.name || ' compile body;'
+  else
+    'N/A'
+   end CMD
+   from sys."_ACTUAL_EDITION_OBJ" d, sys.user$ du, sys.dependency$ dep,
+        sys."_ACTUAL_EDITION_OBJ" p, sys.user$ pu
+   where d.obj# = dep.d_obj# and p.obj# = dep.p_obj#
+     and d.owner# = du.user# and p.owner# = pu.user#
+     and d.status = 1                                    -- Valid dependent
+     and bitand(dep.property, 1) = 1                     -- Hard dependency
+     and d.subname is null                               -- !Old type version
+     and not(p.type# = 32 and d.type# = 1)               -- Index to indextype
+     and not(p.type# = 29 and d.type# = 5)               -- Synonym to Java
+     and not(p.type# in(5, 13) and d.type# in (2, 55))   -- TABL/XDBS to TYPE
+     and (p.status not in (1, 2, 4) or p.stime != dep.p_timestamp);

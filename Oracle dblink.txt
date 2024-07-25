@@ -1,0 +1,93 @@
+1. Query DBLINK
+--------------------------------------------------
+set lines 200
+set pages 200
+col OWNER for a20
+col DB_LINK for a20
+col USERNAME for a20
+col HOST for a50
+col CREATED for a10
+select * from dba_db_links order by 2;
+
+
+
+
+OWNER      DB_LINK    USERNAME   HOST       CREATED
+---------- ---------- ---------- ---------- ----------
+SYS        TWO_TEST   HOANNT_DBA TWOdr      26-JUL-16
+SYS        TWA_2_TWO  TWA        TWO        08-DEC-15
+SYS        TWA.TWO_86 TWA        TWO        20-MAR-14
+SYS        TWO_86     TWA        TWO        20-MAR-14
+SYS        TWO_85     TWA        TWO        29-JUL-13
+
+
+
+
+2. Query dblink usage
+--------------------------------------------------
+set lines 1000
+column userid format a15
+column ntimestamp# format a30
+column sqltext format a40
+column comment$text format a200
+select userid, ntimestamp#, sqltext, comment$text from aud$ where comment$text like '%DBLINK%';
+
+
+
+
+3. Create and drop dblink
+--------------------------------------------------
+CREATE PUBLIC DATABASE LINK DBLINK1
+CONNECT TO a4m 
+IDENTIFIED BY a4ma4m
+USING 'TWRDEV';
+
+CREATE PUBLIC DATABASE LINK old
+CONNECT TO dba01 
+IDENTIFIED BY oracle123456
+USING 'old';
+
+drop public database link DBLINK2 ;
+
+
+
+4. Drop/create dblink in another schema
+--------------------------------------------------
+create or replace procedure ADMIN_QNI."procedure_test_dblink"
+is
+begin
+  execute immediate '
+    drop database link CSS_HPG_GOC' ;
+end;
+/
+
+begin
+  ADMIN_QNI."procedure_test_dblink";
+end;
+/
+
+drop procedure ADMIN_QNI."procedure_test_dblink"
+/
+	
+	
+	
+define _owner='QLSC_LSN'
+define _db_link='TESTDBL'
+
+create or replace procedure &_owner.."procedure_test_dblink"
+is
+begin
+  execute immediate '
+    drop database link &_db_link' ;
+end;
+/
+
+execute &_owner.."procedure_test_dblink";
+
+
+drop procedure &_owner.."procedure_test_dblink"
+/
+	
+
+
+

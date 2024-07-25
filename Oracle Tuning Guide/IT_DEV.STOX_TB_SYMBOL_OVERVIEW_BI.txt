@@ -1,0 +1,452 @@
+DROP VIEW IT_DEV.STOX_TB_SYMBOL_OVERVIEW_BI_DBA;
+
+/* Formatted on 11/15/2022 9:04:29 AM (QP5 v5.326) */
+CREATE OR REPLACE FORCE VIEW IT_DEV.STOX_TB_SYMBOL_OVERVIEW_BI_DBA
+(
+    STOCKSYMBOL,
+    TRADINGDATE,
+    EXCHANGE,
+    IS_VNI30,
+    IS_HNX30,
+    ICB_LEVEL1,
+    ICB_LEVEL2,
+    ICB_LEVEL3,
+    ICB_LEVEL4,
+    ICB_CODE_PATH,
+    FREEFLOAT,
+    FREEFLOATRATE,
+    CPLH,
+    CPNY,
+    PHANTRAM_SOHUUNUOCNGOAI,
+    KL_NUOCNGOAI_NAMGIU,
+    KL_NUOCNGOAI_CONDUOCMUA,
+    PHANTRAM_SOHUUNHANUOC,
+    PHANTRAM_SOHUUNDTKHAC,
+    KL_NUOCNGOAI_DUOCPHEPSOHUU,
+    PHANTRAMTOIDA_NUOCNGOAI_DUOCNAMGIU,
+    BETA,
+    GTSS,
+    EPS,
+    PE,
+    PB,
+    ROE,
+    ROA,
+    EBIT,
+    EBITDA,
+    DIVIDENDYIELD,
+    DIVIDENDYIELDPLAN,
+    OPEN_PRICE,
+    HIGHEST_PRICE,
+    LOWEST_PRICE,
+    REFERENCE_PRICE,
+    REFERENCE_PRICE_ADJUSTED,
+    CLOSEPRICE,
+    AVGPRICE,
+    CLOSEPRICEADJUSTED,
+    VH,
+    TOTALTRADE,
+    TOTALBUYTRADE,
+    TOTALBUYTRADEVOLUME,
+    TOTALSELLTRADE,
+    TOTALSELLTRADEVOLUME,
+    PT_EVEN_TRADED_VOL,
+    PT_EVEN_TRADED_VAL,
+    PT_ODD_TRADED_VOL,
+    PT_ODD_TRADED_VAL,
+    NM_EVEN_TRADED_VOL,
+    NM_EVEN_TRADED_VAL,
+    NM_ODD_TRADED_VOL,
+    NM_ODD_TRADED_VAL,
+    LOCAL_INDIV_VOL,
+    LOCAL_INDIV_VAL,
+    FOREIGN_INDIV_VOL,
+    FOREIGN_INDIV_VAL,
+    LOCAL_INST_VOL,
+    LOCAL_INST_VAL,
+    FOREIGN_INST_VOL,
+    FOREIGN_INST_VAL,
+    OPEN_PRICE_ADJUSTED,
+    HIGHEST_PRICE_ADJUSTED,
+    LOWEST_PRICE_ADJUSTED
+)
+BEQUEATH DEFINER
+AS
+    WITH
+        stoxplus_martket
+        AS
+            (SELECT open_price,
+                    highest_price,
+                    lowest_price,
+                    reference_price,
+                    reference_price_adjusted,
+                    TO_NUMBER (average_price)
+                        close_price,
+                    /*Jira SSMI-27/28
+           Sửa lại code để lấy trường average price của upcom làm close price adjusted
+           */
+                    --to_number(close_price_adjusted) close_price_adjusted,
+                    TO_NUMBER (close_price_adjusted)
+                        close_price_adjusted,
+                    TO_NUMBER (average_price)
+                        average_price,
+                    --
+                    total_trade
+                        totaltrade,
+                    total_buy_trade
+                        totalbuytrade,
+                    total_buy_trade_volume
+                        totalbuytradevolume,
+                    total_sell_trade
+                        totalselltrade,
+                    total_sell_trade_volume
+                        totalselltradevolume,
+                    organ_code,
+                    --
+                    ticker,
+                    CAST (
+                        TO_TIMESTAMP (trading_date,
+                                      'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE)
+                        trading_date,
+                    'UPCOM'
+                        AS exchange,
+                    --jira SSMI55
+                    OPEN_PRICE_ADJUSTED,
+                    HIGHEST_PRICE_ADJUSTED,
+                    LOWEST_PRICE_ADJUSTED
+               FROM ssi_datafeed.marketupcomstock
+             UNION ALL                        --longth edit union -> union all
+             SELECT open_price,
+                    highest_price,
+                    lowest_price,
+                    reference_price,
+                    reference_price_adjusted,
+                    TO_NUMBER (close_price)
+                        close_price,
+                    TO_NUMBER (close_price_adjusted)
+                        close_price_adjusted,
+                    TO_NUMBER (average_price)
+                        average_price,
+                    --
+                    total_trade
+                        totaltrade,
+                    total_buy_trade
+                        totalbuytrade,
+                    total_buy_trade_volume
+                        totalbuytradevolume,
+                    total_sell_trade
+                        totalselltrade,
+                    total_sell_trade_volume
+                        totalselltradevolume,
+                    organ_code,
+                    --
+                    ticker,
+                    CAST (
+                        TO_TIMESTAMP (trading_date,
+                                      'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE)
+                        trading_date,
+                    'HOSE'
+                        AS exchange,
+                    --jira SSMI55
+                    OPEN_PRICE_ADJUSTED,
+                    HIGHEST_PRICE_ADJUSTED,
+                    LOWEST_PRICE_ADJUSTED
+               FROM ssi_datafeed.markethosestock
+             UNION ALL                        --longth edit union -> union all
+             SELECT DISTINCT
+                    open_price,
+                    highest_price,
+                    lowest_price,
+                    reference_price,
+                    reference_price_adjusted,
+                    TO_NUMBER (close_price)
+                        close_price,
+                    TO_NUMBER (close_price_adjusted)
+                        close_price_adjusted,
+                    TO_NUMBER (average_price)
+                        average_price,
+                    --
+                    total_trade
+                        totaltrade,
+                    total_buy_trade
+                        totalbuytrade,
+                    total_buy_trade_volume
+                        totalbuytradevolume,
+                    total_sell_trade
+                        totalselltrade,
+                    total_sell_trade_volume
+                        totalselltradevolume,
+                    organ_code,
+                    --
+                    ticker,
+                    CAST (
+                        TO_TIMESTAMP (trading_date,
+                                      'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE)
+                        trading_date,
+                    'HNX'
+                        AS exchange,
+                    --jira SSMI55
+                    OPEN_PRICE_ADJUSTED,
+                    HIGHEST_PRICE_ADJUSTED,
+                    LOWEST_PRICE_ADJUSTED
+               FROM ssi_datafeed.markethnxstock),
+        info1
+        AS
+            (SELECT co.organ_code,
+                    co.ticker,
+                    mii.icb_code,
+                    mii.icb_code_path,
+                    miil.icb_name_path,
+                    SUBSTR (icb_name_path, 0, INSTR (icb_name_path, '/') - 1)
+                        AS icb_level1,
+                    SUBSTR (miil.icb_name_path,
+                            INSTR (miil.icb_name_path, '/') + 1,
+                              INSTR (miil.icb_name_path,
+                                     '/',
+                                     1,
+                                     2)
+                            - (INSTR (miil.icb_name_path, '/') + 1))
+                        AS icb_level2,
+                    SUBSTR (miil.icb_name_path,
+                              INSTR (miil.icb_name_path,
+                                     '/',
+                                     1,
+                                     2)
+                            + 1,
+                              INSTR (miil.icb_name_path,
+                                     '/',
+                                     1,
+                                     3)
+                            - (  INSTR (miil.icb_name_path,
+                                        '/',
+                                        1,
+                                        2)
+                               + 1))
+                        AS icb_level3,
+                    SUBSTR (miil.icb_name_path,
+                              INSTR (miil.icb_name_path,
+                                     '/',
+                                     1,
+                                     3)
+                            + 1,
+                            LENGTH (miil.icb_name_path))
+                        AS icb_level4,
+                    miil.icb_name,
+                    CASE
+                        WHEN LOWER (co.com_group_code) = 'vnindex'
+                        THEN
+                            'hose'
+                        ELSE
+                            CAST (
+                                REPLACE (LOWER (co.com_group_code),
+                                         'index',
+                                         '') AS VARCHAR2 (20))
+                    END
+                        exchange
+               FROM ssi_datafeed.mastericbindustry  mii
+                    JOIN ssi_datafeed.mastericbindustrylanguage miil
+                        ON mii.icb_code = miil.icb_code
+                    JOIN ssi_datafeed.comorganization co
+                        ON co.icb_code = mii.icb_code
+              WHERE language = 'vn'),
+        rtt
+        AS
+            (SELECT DISTINCT
+                    CAST (
+                        TO_TIMESTAMP (trading_date,
+                                      'yyyy-MM-dd"T"HH24:MI:SS.FF') AS DATE)
+                        trading_date,
+                    ticker,
+                    rtd19,
+                    rtd7,
+                    rtd14,
+                    rtd21,
+                    rtd25,
+                    rtq12,
+                    rtq14,
+                    rtq73,
+                    rtq72,
+                    rtd20,
+                    CAST (NVL (rtd5, 0) AS DECIMAL (18, 2))
+                        rtd5,
+                    CAST (NVL (rtd3, 0) AS DECIMAL (18, 2))
+                        rtd3,
+                    rtd4,
+                    rtd36
+               FROM ssi_datafeed.ratiottm),
+        os
+        AS
+            (SELECT DISTINCT
+                    organ_code,
+                    TO_DATE (SUBSTR (public_date, 1, 10), 'yyyy-mm-dd')
+                        trading_date,
+                    foreigner_percentage,
+                    foreigner_volumn,
+                    foreigner_room,
+                    state_percentage,
+                    other_percentage,
+                    total_foreign_room,
+                    MAXIMUM_FOREIGN_PERCENTAGE
+               FROM ssi_datafeed.corownership)
+    SELECT /*+ leading(rtt, os, binfo, stoxplus_martket) */
+           stoxplus_martket.ticker
+               AS stocksymbol,
+           stoxplus_martket.trading_date
+               AS tradingdate,
+           stoxplus_martket.exchange,
+           DECODE (indexcode, 'VN30', '1', '0')
+               is_vni30,
+           DECODE (indexcode, 'HNX30', '1', '0')
+               is_hnx30,
+           info1.icb_level1,
+           info1.icb_level2,
+           info1.icb_level3,
+           info1.icb_level4,
+           info1.icb_code_path,
+           rtt.rtd5
+               AS freefloat,
+           TO_NUMBER (DECODE (rtt.rtd3, 0, NULL, rtt.rtd5 / rtt.rtd3))
+               freefloatrate,
+           --CASE
+           --    WHEN rtt.rtd3 = 0 THEN NULL ELSE (CAST(rtt.rtd5 AS DECIMAL(18,2) ) / CAST(rtt.rtd3 AS DECIMAL(18,2)))
+           --END AS freefloatrate,
+           rtt.rtd3
+               AS cplh,
+           rtt.rtd4
+               AS cpny,
+           os.foreigner_percentage
+               AS phantram_sohuunuocngoai,
+           os.foreigner_volumn
+               AS kl_nuocngoai_namgiu,
+           os.foreigner_room
+               AS kl_nuocngoai_conduocmua,
+           os.state_percentage
+               AS phantram_sohuunhanuoc,
+           os.other_percentage
+               AS phantram_sohuundtkhac,
+           os.total_foreign_room
+               AS kl_nuocngoai_duocphepsohuu,
+           os.MAXIMUM_FOREIGN_PERCENTAGE
+               AS PhanTramToiDa_nuocngoai_duocnamgiu,
+           rtt.rtd19
+               AS beta,
+           rtt.rtd7
+               AS gtss,
+           rtt.rtd14
+               AS eps,
+           rtt.rtd21
+               AS pe,
+           rtt.rtd25
+               AS pb,
+           rtt.rtq12
+               AS roe,
+           rtt.rtq14
+               AS roa,
+           rtt.rtq72
+               AS ebit,
+           CASE WHEN rtt.rtq73 = 'NULL' THEN NULL ELSE rtt.rtq73 END
+               ebitda,
+           rtt.rtd20
+               AS DividendYield,
+           rtt.rtd36
+               AS DividendYieldPlan,
+           stoxplus_martket.open_price,
+           stoxplus_martket.highest_price,
+           stoxplus_martket.lowest_price,
+           stoxplus_martket.reference_price,
+           stoxplus_martket.reference_price_adjusted,
+           --decode(stoxplus_martket.exchange,'UPCOM',stoxplus_martket.average_price,stoxplus_martket.close_price) closeprice,
+           CASE
+               WHEN stoxplus_martket.exchange = 'UPCOM'
+               THEN
+                   TO_NUMBER (stoxplus_martket.average_price)
+               ELSE
+                   stoxplus_martket.close_price
+           END
+               closeprice,
+           --sinfo.avgprice,
+           stoxplus_martket.average_price
+               avgprice,
+           --to_number(stoxplus_martket.close_price_adjusted) AS closepriceadjusted,
+           --( to_number(stoxplus_martket.close_price) * to_number(rtt.rtd3) ) AS vh
+           stoxplus_martket.close_price_adjusted
+               AS closepriceadjusted,
+           /*Jira SSMI-27/28
+           Sửa lại công thức tính số vốn hóa các mã CK của upcom = giá avg price * số CPLH
+           */
+           CASE
+               WHEN stoxplus_martket.exchange = 'UPCOM'
+               THEN
+                   TO_NUMBER (stoxplus_martket.average_price * rtt.rtd3)
+               ELSE
+                   stoxplus_martket.close_price * rtt.rtd3
+           END
+               vh,
+           stoxplus_martket.totaltrade,
+           stoxplus_martket.totalbuytrade,
+           stoxplus_martket.totalbuytradevolume,
+           stoxplus_martket.totalselltrade,
+           stoxplus_martket.totalselltradevolume,
+           --them 8 fields theo jira SSMI-48
+           hnx.PTMATCHEDQTY
+               PT_Even_Traded_VOL,
+           hnx.PTMATCHEDVALUE
+               PT_Even_Traded_VAL,
+           hnx.PTODDMATCHEDQTY
+               PT_Odd_Traded_VOL,
+           hnx.PTODDMATCHVALUE
+               PT_Odd_Traded_VAL,
+           hnx.MATCHEDQTY
+               NM_Even_Traded_VOL,
+           hnx.MATCHVALUE
+               NM_Even_Traded_VAL,
+           hnx.ODDMATCHEDQTY
+               NM_Odd_Traded_VOL,
+           hnx.ODDMATCHVALUE
+               NM_Odd_Traded_VAL,
+           --them 8 fields theo jira SSMI-49
+           inv.L_INDIV_QTY
+               LOCAL_INDIV_VOL,
+           inv.L_INDIV_VAL
+               LOCAL_INDIV_VAL,
+           inv.F_INDIV_QTY
+               FOREIGN_INDIV_VOL,
+           inv.F_INDIV_VAL
+               FOREIGN_INDIV_VAL,
+           inv.L_INST_QTY
+               LOCAL_INST_VOL,
+           inv.L_INST_VAL
+               LOCAL_INST_VAL,
+           inv.F_INST_QTY
+               FOREIGN_INST_VOL,
+           inv.F_INST_VAL
+               FOREIGN_INST_VAL,
+           --jira SSMI55
+           stoxplus_martket.OPEN_PRICE_ADJUSTED,
+           stoxplus_martket.HIGHEST_PRICE_ADJUSTED,
+           stoxplus_martket.LOWEST_PRICE_ADJUSTED
+      FROM stoxplus_martket
+           JOIN info1 ON stoxplus_martket.ticker = info1.ticker
+           LEFT JOIN rtt
+               ON     stoxplus_martket.ticker = rtt.ticker
+                  AND rtt.trading_date = stoxplus_martket.trading_date
+           LEFT JOIN os
+               ON     stoxplus_martket.organ_code = os.organ_code
+                  AND os.trading_date = stoxplus_martket.trading_date
+           LEFT JOIN (SELECT DISTINCT stocksymbol,
+                                      indexcode,
+                                      tradingdate,
+                                      exchange
+                        FROM it_dev.tb_basket_index
+                       WHERE indexcode IN ('HNX30', 'VN30')) binfo
+               ON     stoxplus_martket.ticker = binfo.stocksymbol
+                  AND stoxplus_martket.trading_date = binfo.tradingdate
+           LEFT JOIN ssi_datafeed.tb_hnx_file_dailytradinginfo hnx
+               ON     stoxplus_martket.ticker = hnx.symbol
+                  AND hnx.tradingdate = stoxplus_martket.trading_date
+                  AND stoxplus_martket.exchange = hnx.exchange
+           LEFT JOIN ssi_datafeed.tb_datafeed_file_investortype inv
+               ON     stoxplus_martket.ticker = inv.symbol
+                  AND inv.tradingdate = stoxplus_martket.trading_date;
+
+
+GRANT SELECT ON IT_DEV.STOX_TB_SYMBOL_OVERVIEW_BI_DBA TO BI_VIEWER WITH GRANT OPTION;

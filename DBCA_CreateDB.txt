@@ -1,0 +1,152 @@
+1. RAC
+------------------------------------------------------------------------------------------
+dbca -silent \
+-createDatabase \
+-templateName General_Purpose.dbc \
+-gdbName slog \
+-totalMemory 8000 \
+-storageType ASM -asmSysPassword Ssi_1234 \
+-diskGroupName DATA \
+-recoveryGroupName FRA -redoLogFileSize 1024 \
+-nodeinfo ha-saas-db-01,ha-saas-db-02 \
+-characterset AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-SysPassword Ssi_1234 -SystemPassword Ssi_1234 \
+-emConfiguration NONE \
+-ignorePreReqs
+
+alter database archivelog;
+alter system set db_recovery_file_dest_size=200G;
+alter system set sga_target=48G scope=spfile;
+alter system set sga_max_size=48G scope=spfile;
+alter system set pga_aggregate_limit=48G scope=spfile;
+alter system set pga_aggregate_target=24G scope=spfile;
+
+alter system set "_kgl_large_heap_warning_threshold"=104857600 scope=spfile ; 
+alter system set session_cached_cursors=500 scope=spfile ; 
+alter system set open_cursors=1000;
+alter system set processes=1000 scope=spfile;
+alter system set db_securefile='PERMITTED' ;
+
+
+EXEC dbms_stats.init_package();
+
+
+create tablespace AUDIT_TBS datafile '+DATA' size 1G autoextend on next 1G;
+BEGIN
+	DBMS_AUDIT_MGMT.SET_AUDIT_TRAIL_LOCATION(
+	audit_trail_type => DBMS_AUDIT_MGMT.AUDIT_TRAIL_AUD_STD,
+	audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+BEGIN
+  DBMS_AUDIT_MGMT.set_audit_trail_location(
+    audit_trail_type           => DBMS_AUDIT_MGMT.AUDIT_TRAIL_FGA_STD,
+    audit_trail_location_value => 'AUDIT_TBS');
+END;
+/
+
+RMAN>
+CONFIGURE RETENTION POLICY TO REDUNDANCY 1;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '/backup/taybac/%F';
+CONFIGURE DEVICE TYPE DISK PARALLELISM 16 BACKUP TYPE TO COMPRESSED BACKUPSET;
+CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT   '/backup/taybac/data_%d_%Y%M%D_%U';
+CONFIGURE ARCHIVELOG DELETION POLICY TO BACKED UP 1 TIMES TO DISK;
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '+DATA/taybac/snapcf_taybac.f';
+
+alter database add logfile thread 1 group 11 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 12 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 13 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 1 group 14 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 21 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 22 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 23 ('+DATA','+FRA') size 4G;
+alter database add logfile thread 2 group 24 ('+DATA','+FRA') size 4G;
+
+
+2. RACONENODE
+------------------------------------------------------------------------------------------
+dbca -silent \
+-createDatabase -RACONENODE \
+-templateName General_Purpose.dbc
+-sid tbperf -gdbName tbperf \
+-RACONENODESERVICENAME tbperf_srv \
+-totalMemory 2048 \
+-storageType ASM \
+-diskGroupName DATA01 \
+-recoveryGroupName FRA -redoLogFileSize 200 \
+-nodelist dr-tbperf-db-01,dr-tbperf-db-02 \
+-characterSet AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-SysPassword oracle123456 -SystemPassword oracle123456
+-emConfiguration NONE
+
+
+3. SINGLE
+------------------------------------------------------------------------------------------
+dbca -silent \
+-createDatabase \
+-templateName General_Purpose.dbc \
+-gdbName boscdb \
+-totalMemory 6000 \
+-storageType ASM \
+-diskGroupName DATA \
+-recoveryGroupName DATA -redoLogFileSize 1024 \
+-characterSet AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-SysPassword Abcd#123456 -SystemPassword Abcd#123456 \
+-emConfiguration NONE \
+-ignorePreReqs
+
+
+dbca -silent \
+-createDatabase \
+-templateName General_Purpose.dbc \
+-gdbName bonddb \
+-totalMemory 6000 \
+-storageType ASM \
+-diskGroupName DATA \
+-recoveryGroupName FRA -redoLogFileSize 1024 \
+-characterSet AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-SysPassword Abcd#123456 -SystemPassword Abcd#123456 \
+-emConfiguration NONE \
+-ignorePreReqs
+
+
+4. Drop database
+------------------------------------------------------------------------------------------
+dbca -silent -deleteDatabase -sourceDB ssmiuat -SysPassword Ssi_1234 -SystemPassword Ssi_1234
+dbca -silent -deleteDatabase -sourceDB pedev -SysPassword oracle123456 -SystemPassword oracle123456
+dbca -silent -deleteDatabase -sourceDB gcddev -SysPassword oracle123456 -SystemPassword oracle123456
+dbca -silent -deleteDatabase -sourceDB bpfdev -SysPassword oracle123456 -SystemPassword oracle123456
+dbca -silent -deleteDatabase -sourceDB gwdr -SysPassword Abcd#123456 -SystemPassword Abcd#123456
+
+
+
+
+
+
+dbca -silent -deleteDatabase -sourceDB g2foho -SysPassword Ssi_1234 -SystemPassword Ssi_1234
+
+
+
+
+SQL> alter system set FILESYSTEMIO_OPTIONS = SETALL;
+SQL> alter system set db_block_checksum=full;
+SQL> alter system set db_lost_write_protect=full;
+SQL> alter system set db_block_checking=full;
+SQL> alter system set db_lost_write_protect=typical;
+
+
+alter system set db_block_checking=FULL sid='*';
+alter system set db_block_checksum=FULL sid='*';
+alter system set db_lost_write_protect=typical sid='*';
+
+
+
+alter system set fast_start_mttr_target=900 sid='*';
+alter system set archive_lag_target=900 sid='*';
+alter system set log_buffer=128M scope=spfile sid='*';
+

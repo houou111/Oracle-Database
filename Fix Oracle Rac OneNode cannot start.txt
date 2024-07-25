@@ -1,0 +1,24 @@
+Error : cannot start Rac one node - Share memory get problem
+---------------------------------------------------------------
+
+
+Solution: Change Rac one node to Full Rac
+---------------------------------------------------------------
+Convert Rac one node to full Rac
+
+
+srvctl convert database -d mstest -c Rac
+
+
+---add to pfile
+mstest_1.instance_number=1
+mstest_2.instance_number=2
+
+create spfile from pfile
+
+srvctl modify database -d mstest -p '+DATA01/MSTEST/PARAMETERFILE/spfile.ora'
+
+
+---Add new instance
+srvctl add instance -d mstest -i mstest_2 -n xxxxxxx
+

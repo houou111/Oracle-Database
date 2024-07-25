@@ -1,0 +1,56 @@
+set lines 200
+set pages 200
+col sid_n_serial for a20
+col username for a20
+col osuser for a20
+col module for a20
+col program for a35
+col tablespace for a20
+col mb_used for 99999
+
+
+select 
+   s.sid || ',' || s.serial# sid_n_serial, 
+   s.username, 
+   s.osuser, 
+   p.spid, 
+   s.module,
+   p.program, 
+   sum (t.blocks) * tbs.block_size / 1024 / 1024 mb_used, 
+   t.tablespace,
+   count(*) nbr_statements
+ from 
+   v$sort_usage    t, 
+   v$session       s, 
+   dba_tablespaces tbs, 
+   v$process       p
+ where 
+   t.session_addr = s.saddr
+and 
+   s.paddr = p.addr
+and 
+   t.tablespace = tbs.tablespace_name
+group by 
+   s.sid, 
+   s.serial#, 
+   s.username, 
+   s.osuser, 
+   p.spid, 
+   s.module,
+   p.program, 
+   tbs.block_size, 
+   t.tablespace
+order by 
+7 desc 
+;
+
+
+select * from (
+select USER_ID,SESSION_ID,SESSION_SERIAL#,sql_id,MODULE,MACHINE,max(temp_space_allocated)/1024/1024/1024 GB
+from dba_hist_active_sess_history 
+where SQL_EXEC_START> TO_DATE('01-FEB-21','dd-MON-yy')
+group by SESSION_ID,SESSION_SERIAL#,USER_ID,MODULE,MACHINE,sql_id
+HAVING sum(temp_space_allocated) >0 )
+where rownum <100
+order by 7 desc
+;

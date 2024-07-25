@@ -1,0 +1,30 @@
+#!/bin/bash
+export ORACLE_HOME=/oracle/db
+export PATH=$ORACLE_HOME/jdk/jre/bin:$ORACLE_HOME/bin:$PATH   
+export ORACLE_SID=bhttdb1
+export RDA_HOME=/export/home/oracle/tools/rda
+export REPORT=/oracle/backup/tools/report
+export OSWHOME=/oracle/backup/tools/oswbb
+export SERVICE='OSW'
+
+MONTH=`date +%m`
+if test `date "+%d%H"` -eq 2116; then
+	LAST_MONTH=`expr $MONTH `
+	cd $REPORT/
+	if [ ! -d thang$LAST_MONTH ]; then
+		mkdir -p thang$LAST_MONTH
+	fi
+	# Kill OSWatcher process
+	kill -9 `ps -ef|grep -v grep |grep $SERVICE|awk '{print $2}'`
+	# Start OSW
+	cd $OSWHOME
+	cp -r archive $REPORT/thang$LAST_MONTH/archive_$ORACLE_SID
+	rm -rf archive
+	nohup ./startOSWbb.sh 60 23 &
+else
+	cd $OSWHOME
+	# Kill OSWatcher process
+	kill -9 `ps -ef|grep -v grep |grep $SERVICE|awk '{print $2}'`
+	# Start OSW
+	nohup ./startOSWbb.sh 60 23 &
+fi

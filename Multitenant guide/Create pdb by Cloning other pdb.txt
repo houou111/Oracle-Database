@@ -1,0 +1,3 @@
+2. Creation of a PDB by Cloning
+-----------------------------------
+CREATE PLUGGABLE DATABASE salespdb FROM hrpdb;

@@ -1,0 +1,133 @@
+1. find all active rollback segment in the undo tablespace to be dropped.
+-------------------------------------------------------------------------
+SQL> 
+select segment_name, tablespace_name, status 
+from dba_rollback_segs 
+WHERE status = 'NEEDS RECOVERY';
+
+SEGMENT_NAME TABLESPACE_NAME STATUS
+—————————— —————————— —————-
+_SYSSMU10_820739558$ UNDOTBS1 OFFLINE
+
+_SYSSMU9_2448906239$ UNDOTBS1 OFFLINE
+
+_SYSSMU8_3066916762$ UNDOTBS1 OFFLINE
+
+_SYSSMU7_892861194$ UNDOTBS1 OFFLINE
+
+_SYSSMU6_1956589931$ UNDOTBS1 OFFLINE
+
+_SYSSMU5_2919322705$ UNDOTBS1 OFFLINE
+
+_SYSSMU4_3876247569$ UNDOTBS1 OFFLINE
+
+_SYSSMU3_4245574747$ UNDOTBS1 OFFLINE
+
+for eaxmple :_SYSSMU2_6654314$ UNDOTBS1 PARTLY AVAILABLE
+
+ 
+ 
+ 
+
+2. Create pfile and set a parameter including all active rollback segments 
+---------------------------------------------------------------------------
+_offline_rollback_segments=(_SYSSMU36_27964530$,_SYSSMU37_2095457494$,_SYSSMU38_241047223$,_SYSSMU39_3693609271$,_SYSSMU40_3531092592$,_SYSSMU41_1779522522$,_SYSSMU42_924666036$,_SYSSMU43_3134372923$,_SYSSMU44_9703551$,_SYSSMU45_2071694704$)
+
+ 
+3. Shutdown database and Mount the database using pfile
+---------------------------------------------------------------------------
+SQL> startup mount pfile='initanar.ora'
+
+ 
+4. Offline undo datafile for drop
+---------------------------------------------------------------------------
+SQL> alter database datafile '/app/oracle/oradata/anar/undotbs1.dbf' offline drop;
+
+alter database datafile '+DATAC1/IDCBAC/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.705.982696179'     offline drop;
+alter database datafile '+DATAC1/IDCBAC/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.1293.983702691'    offline drop;
+
+
+5. Open database
+---------------------------------------------------------------------------
+SQL> alter database open;
+
+ 
+6. Drop the undo segment
+---------------------------------------------------------------------------
+SQL> drop rollback segment "_SYSSMU50_4037118444$";
+
+ 
+7. Add a new undo tablespace and set it as instance’s undo tablespace
+---------------------------------------------------------------------------
+SQL> alter system set undo_tablespace=undotbs2;
+
+ 
+8. Drop original undo tablespace
+---------------------------------------------------------------------------
+SQL>Drop Tablespace undotbs1 including contents and datafiles;
+
+ 
+9. Shutdown database and start with Spfile
+---------------------------------------------------------------------------
+SQL> Shutdown immediate
+SQL> Startup
+
+
+select con_id,name,segment_name, status 
+from dba_rollback_segs,v$containers
+ where STATUS='NEEDS RECOVERY';
+
+alter database datafile '+DATAC1/IDCTRUNG/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.26198.1023060905' offline drop;
+alter database datafile '+DATAC1/IDCTRUNG/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.9759.1023065195' offline drop;
+
+
+alter database datafile '/app/oracle/oradata/anar/undotbs1.dbf' offline drop;
+
+'_SYSSMU50_4037118444$'
+
+drop rollback segment "_SYSSMU50_4037118444$";
+
+alter system set "_offline_rollback_segments"='(_SYSSMU50_4037118444$)' scope=spfile;
+
+
+
+
+
+
+
+II. Fix in PDB
+
+
+
+
+
+
+select con_id,name,segment_name, status 
+from dba_rollback_segs,v$containers
+ where STATUS='NEEDS RECOVERY';
+
+alter database datafile '+DATAC1/IDCTRUNG/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.26198.1023060905' offline drop;
+alter database datafile '+DATAC1/IDCTRUNG/720F18EB59181BA1E053AA3410ACE1F9/DATAFILE/undo_4.9759.1023065195' offline drop;
+
+
+alter database datafile '/app/oracle/oradata/anar/undotbs1.dbf' offline drop;
+
+_offline_rollback_segments='(_SYSSMU2_6654314$)'
+
+ALTER PLUGGABLE DATABASE KONTUM close immediate;
+
+ALTER PLUGGABLE DATABASE KONTUM UNPLUG INTO '/home/oracle/bin/kontum.xml';
+
+drop pluggable database KONTUM keep datafiles;
+
+create pluggable database KONTUM using '/home/oracle/bin/kontum.xml' NOCOPY TEMPFILE REUSE;
+
+
+
+alter pluggable database KONTUM using '/home/oracle/bin/kontum.xml' NOCOPY TEMPFILE REUSE;
+
+_SYSSMU50_4037118444$
+
+drop rollback segment "_SYSSMU50_4037118444$";
+
+_offline_rollback_segments=(_SYSSMU50_4037118444$)

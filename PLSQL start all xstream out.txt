@@ -1,0 +1,50 @@
+1. Start all XStream Out
+-------------------------------------------------------------
+DECLARE     
+cmd    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select APPLY_NAME FROM DBA_APPLY WHERE PURPOSE = 'XStream Out') 
+	LOOP       
+		cmd :='BEGIN DBMS_XSTREAM_ADM.START_OUTBOUND(server_name => '''||r.APPLY_NAME||'''); END;';
+		execute immediate cmd;
+	END LOOP; 
+END; 
+/ 
+
+
+2. Stop all XStream Out
+-------------------------------------------------------------
+DECLARE     
+cmd    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select APPLY_NAME FROM DBA_APPLY WHERE PURPOSE = 'XStream Out') 
+	LOOP       
+		cmd :='BEGIN DBMS_XSTREAM_ADM.STOP_OUTBOUND(server_name => '''||r.APPLY_NAME||'''); END;';
+		execute immediate cmd;
+	END LOOP; 
+END; 
+/ 
+
+
+3. Drop all  XStream Out
+-------------------------------------------------------------
+DECLARE     
+cmd    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select APPLY_NAME FROM DBA_APPLY WHERE PURPOSE = 'XStream Out') 
+	LOOP       
+		cmd :='BEGIN DBMS_XSTREAM_ADM.DROP_OUTBOUND(server_name => '''||r.APPLY_NAME||'''); END;';
+		execute immediate cmd;
+	END LOOP; 
+END; 
+/ 
+
+
+
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT41');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT42');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT43');
+exec DBMS_XSTREAM_ADM.DROP_OUTBOUND('XOUT44');

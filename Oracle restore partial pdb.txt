@@ -1,0 +1,87 @@
+Steps to RESTORE & RECOVER container DB with a single PDB
+
+In order to clone a single PDB database PRFIN1 on a new server with CDB, the steps required are restore of ROOT, SEED and PRFIN1 (PDB) databases. Once restore are done then you can use RECOVER command to recover only the PDB you want to clone or build i.e. PRFIN1 pdb.
+
+1.       Build a new instance & start in NOMOUNT state.
+2.       Controlfile restore from source database backup.
+3.       shutdown and start the instance in mount state using restored controlfile
+3.5	     determine backup of database
+4.       start restore of ROOT, PDB$SEED and PRFIN1 database.
+5.       recover PRFIN1 database to the desired sequence and exclude PRFIN2 pdb.
+6.       open CDB database with resetlogs.
+7.       open PRFIN1 pluggable database.
+8.       drop the PRFIN2 pdb since its empty and in mount state.
+
+
+
+Step 1 - Start the instance in NOMOUNT state
+-----------------------------------------------------------------------------
+
+
+Step 2 - Restore controlfile from backup
+-----------------------------------------------------------------------------
+
+
+Step 3 - Shutdown and start instance in mount state
+-----------------------------------------------------------------------------
+
+
+Step 3.5 - determine backup of database
+-----------------------------------------------------------------------------
+Rman > report schema
+Rman > list backup of pluggable database "CDB$ROOT","PDB$SEED",P_CES
+
+
+
+Step 4 - Restore Database (Only ROOT, SEED and required PDB)
+-----------------------------------------------------------------------------
+RUN
+{
+set until time "to_date('2023-02-15:19:56:00', 'yyyy-mm-dd:hh24:mi:ss')";
+set newname for database to '/tempbk/%b';
+ restore database root ; 
+  restore database "PDB$SEED"; 
+ restore database P_CES;
+ switch datafile 1  ,3  ,4  ,5  ,6  ,7  ,8  ,9  ,46 ,47 ,53 ,54 ,55 ,56 ,57 ,58 ,59 ,60 ,61 ,84 ,85  to copy;
+}  
+
+
+Step 5 - Recover Database (Exclude PDBs not required)
+-----------------------------------------------------------------------------
+RMAN> 
+RUN
+{
+set until time "to_date('2023-02-15:19:56:00', 'yyyy-mm-dd:hh24:mi:ss')";
+recover database skip forever tablespace QLCTN:SYSTEM,QLCTN:SYSAUX,QLCTN:UNDOTBS1,QLCTN:USERS,QLCTN:DATA,QLCTN:UNDO_2,P_TFM:SYSTEM,P_TFM:SYSAUX,P_TFM:UNDOTBS1,P_TFM:TEMP,P_TFM:UNDO_2,P_TFM:USERS,P_TFM:DATA,P_TFM:TEMP1,P_AUTO_DOC:DATA,P_AUTO_DOC:SYSAUX ,P_AUTO_DOC:SYSTEM ,P_AUTO_DOC:UNDOTBS1,P_AUTO_DOC:UNDO_2 ,P_AUTO_DOC:USERS  ,P_SALESPIPELINE:SYSAUX,P_SALESPIPELINE:SYSTEM,P_SALESPIPELINE:UNDOTBS1  ,P_SALESPIPELINE:UNDO_2,P_SALESPIPELINE:USERS;
+}
+
+
+Step 6 - open CDB database with RESETLOGS
+-----------------------------------------------------------------------------
+alter database open resetlogs;
+
+	
+Step 7 - Open the recovered PDB databases
+-----------------------------------------------------------------------------
+Run the below command from RMAN
+
+ SQL> select name,open_mode from v$pdbs;
+
+NAME                           OPEN_MODE
+------------------------------ ----------
+PDB$SEED                       READ ONLY
+PRFIN1                         MOUNTED
+PRFIN2                         MOUNTED 
+
+SQL> DROP PLUGGABLE DATABASE prfin2 including datafiles;
+
+Pluggable database dropped.
+
+SQL> alter pluggable database all open;
+
+ SQL> select name,open_mode from v$pdbs;
+
+ NAME                           OPEN_MODE
+------------------------------ ----------
+PDB$SEED                       READ ONLY
+PRFIN1                         READ WRITE

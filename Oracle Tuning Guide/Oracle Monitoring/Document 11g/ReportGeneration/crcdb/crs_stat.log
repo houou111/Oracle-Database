@@ -1,0 +1,31 @@
+Resource Name                           |Resource Type   |Target    |State       |Node           |FC|RC|State Details
+----------------------------------------|----------------|----------|------------|---------------|--|--|---------------
+ora.DATA01.dg                           |diskgroup      L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.DATA01.dg                           |diskgroup      L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.DATA02.dg                           |diskgroup      L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.DATA02.dg                           |diskgroup      L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.LISTENER.lsnr                       |Listener       L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.LISTENER.lsnr                       |Listener       L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.LISTENER_SCAN1.lsnr                 |SCAN Listener  C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.METADATA.dg                         |diskgroup      L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.METADATA.dg                         |diskgroup      L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.asm                                 |ASM            L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|Started
+ora.asm                                 |ASM            L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|Started
+ora.crc4db.crc4db1.inst                 |Instance       C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.crc4db.crc4db2.inst                 |Instance       C|ONLINE    |ONLINE      |crcsrv02       | 0| 1|
+ora.crc4db.db                           |Database       C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.crcdb.db                            |database       C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|Open
+ora.crcdb.db                            |database       C|ONLINE    |ONLINE      |crcsrv02       | 0| 0|Open
+ora.crcsrv01.vip                        |Cluster VIP    C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.crcsrv02.vip                        |Cluster VIP    C|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.cvu                                 |cvu            C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.gsd                                 |Gbl Svc Daemon L|OFFLINE   |OFFLINE     |(crcsrv01)     | 0| 0|
+ora.gsd                                 |Gbl Svc Daemon L|OFFLINE   |OFFLINE     |(crcsrv02)     | 0| 0|
+ora.net1.network                        |Network (VIP)  L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.net1.network                        |Network (VIP)  L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.oc4j                                |OC4J           C|OFFLINE   |OFFLINE     |(crcsrv02)     | 0| 0|
+ora.ons                                 |Ora Notif Svc  L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.ons                                 |Ora Notif Svc  L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.registry.acfs                       |registry       L|ONLINE    |ONLINE      |crcsrv01       | 0| 0|
+ora.registry.acfs                       |registry       L|ONLINE    |ONLINE      |crcsrv02       | 0| 0|
+ora.scan1.vip                           |SCAN VIP       C|ONLINE    |ONLINE      |crcsrv01       | 0| 0|

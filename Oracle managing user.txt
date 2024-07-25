@@ -1,0 +1,42 @@
+﻿#Kiểm tra thông tin đang kêt nối
+SQL> SELECT SYS_CONTEXT ('USERENV', 'SESSION_USER') 
+     FROM DUAL;
+
+	 
+#Xem thông tin các role gán cho User
+SQL> Select a.grantee User_name, a.granted_role role, b.privilege 
+     From DBA_ROLE_PRIVS a, DBA_SYS_PRIVS b 
+	 Where a.granted_role=b.grantee and a.grantee='BOJBSV';
+	 
+	 
+#Xem thông tin các object mà user đó sở hữu
+SQL> Select * from dba_OBJECTS where OWNER='BOJBSV';
+
+
+#Xem thông tin các quyền và object mà user đó đã gán 
+
+SQL>Select * from dba_tab_privs where GRANTOR='FOJBSV';
+
+
+#Xem thông tin các tablespace mà User có dữ liệu:
+
+SQL>Select tablespace_name from all_all_tables where OWNER='BOJBSV';	
+
+SELECT * FROM DBA_SYS_PRIVS 
+SELECT * FROM DBA_TAB_PRIVS 
+SELECT * FROM DBA_ROLE_PRIVS
+
+
+col GRANTEE    for a20
+col OWNER      for a20
+col TABLE_NAME for a40
+col GRANTOR    for a20
+col user_name  for a20
+
+select * from DBA_SYS_PRIVS where GRANTEE='BOJBSV';
+Select * from DBA_TAB_PRIVS where GRANTEE='BOJBSV';
+Select * from DBA_ROLE_PRIVS where GRANTEE='BOJBSV';
+
+Select a.grantee User_name, a.granted_role role, b.privilege 
+From DBA_ROLE_PRIVS a, DBA_SYS_PRIVS b 
+Where a.granted_role=b.grantee and a.grantee='BOJBSV';

@@ -1,0 +1,10 @@
+Increase the Memory Foot Print for the SORT operation for the Parameter "_smm_isort_cap"
+
+Parameter : _smm_isort_cap = maximum work area for insertion sort(v1). Its default value is 100M. After this value is reached, Oracle will spill to disk.
+
+To Reduce the Contention on 'direct path read temp'/'direct path write temp' consider increasing this parameter value from 100M to 180M:
+
+alter system set "_smm_isort_cap" = 184320;
+
+By Increasing this Parameter value it will reduce the Contention on the wait events 'direct path read temp' & 'direct path write temp'
+

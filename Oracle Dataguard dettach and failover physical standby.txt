@@ -1,0 +1,156 @@
+I. Detach 10.1.72.82
+-------------------------------------------------------------------------------------------------------
+1. Cancel sync process (10.1.72.82)
+-----------------------------------------------------
+select PROCESS,STATUS,BLOCK#,BLOCKS,SEQUENCE#,THREAD# from v$managed_standby;
+set lines 300 
+col value for a50 
+select name, value from v$dataguard_stats;
+
+
+alter database recover managed standby database cancel;
+alter database recover managed standby database finish;
+
+
+2. Remove  from broker (10.0.72.89)
+-----------------------------------------------------
+dgmgrl sys/Tiennhieudelamgi#2018@cmsprod19c
+
+connect sys
+disable database cmsprodnew
+remove database cmsprodnew
+show configuration verbose;
+
+show parameter log_archive_dest
+alter system set log_archive_dest_n='' scope=both;
+ 
+
+3. Create restore point and activate Standby (10.1.72.82)
+-----------------------------------------------------
+CREATE RESTORE POINT before_failover GUARANTEE FLASHBACK DATABASE;
+
+SET PAGESIZE 60
+SET LINESIZE 300
+SET VERIFY OFF
+ 
+COLUMN scn FOR 999,999,999,999,999
+COLUMN Incar FOR 99
+COLUMN name FOR A25
+COLUMN storage_size FOR 999,999,999,999
+COLUMN guarantee_flashback_database FOR A3
+ 
+SELECT 
+      database_incarnation# as Incar,
+      scn,
+      name,
+      time,
+      storage_size,
+      guarantee_flashback_database
+FROM 
+      v$restore_point
+ORDER BY 4
+/
+
+
+alter database activate standby database;
+
+
+4. Change password (10.1.72.82)
+-----------------------------------------------------
+alter user sys identified by Abcd#123456789;
+alter user msb identified by Abcd#123456789;
+alter user msb_a identified by Abcd#123456789;
+
+
+II. SEQUENCE 
+------------------------------------------------------------------------------------------------------
+1. old (10.0.72.89)
+------------------------------------------------------
+select sequence_owner,sequence_name
+from dba_sequences 
+where sequence_owner='MSB' 
+and sequence_name ='DOC_SEQ'
+
+
+2. new (10.1.72.82)
+------------------------------------------------------
+ALTER SEQUENCE MSB.DOC_SEQ INCREMENT BY 1000000;
+
+select MSB.DOC_SEQ.nextval from dual;
+
+ALTER SEQUENCE MSB.DOC_SEQ INCREMENT BY 10;
+
+-- Other way
+DROP SEQUENCE MSB.DOC_SEQ;
+
+CREATE SEQUENCE MSB.DOC_SEQ
+  START WITH 2000000000
+  INCREMENT BY 10
+  MAXVALUE 9999999999999999999999999999
+  MINVALUE 1
+  NOCYCLE
+  CACHE 100000
+  NOORDER
+  NOKEEP
+  GLOBAL;
+
+
+GRANT ALTER, SELECT ON MSB.DOC_SEQ TO ISOGW;
+
+
+III. Open read only old (10.0.72.89)
+------------------------------------------------------
+Shutdown immediate
+
+startup mount
+
+alter database open read only
+
+
+CREATE RESTORE POINT before_insert_gap GUARANTEE FLASHBACK DATABASE;
+
+SET PAGESIZE 60
+SET LINESIZE 300
+SET VERIFY OFF
+ 
+COLUMN scn FOR 999,999,999,999,999
+COLUMN Incar FOR 99
+COLUMN name FOR A25
+COLUMN storage_size FOR 999,999,999,999
+COLUMN guarantee_flashback_database FOR A3
+ 
+SELECT 
+      database_incarnation# as Incar,
+      scn,
+      name,
+      time,
+      storage_size,
+      guarantee_flashback_database
+FROM 
+      v$restore_point
+ORDER BY 4
+/
+
+
+IV. Change domain
+------------------------------------------------------
+Map domain way4db.msb.com.vn, cmsprod-scan sang IP database 10.1.72.82 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

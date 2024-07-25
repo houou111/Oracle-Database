@@ -1,0 +1,31 @@
+1. Map SQL_HANDLE to SQL_ID:
+-----------------------------------------------------------------
+SELECT *
+FROM
+  (SELECT t.SQL_HANDLE,
+    t.SIGNATURE,
+    t.SQL_TEXT,
+    s.SQL_ID
+  FROM SYS.SQL$TEXT t,
+    DBA_HIST_SQLSTAT s
+  WHERE t.SQL_HANDLE = 'SQL_d804b630101fbd61'
+  AND t.SIGNATURE    = s.FORCE_MATCHING_SIGNATURE
+  )
+WHERE rownum = 1 ;
+
+
+
+2. Map SQL_HANDLE to SQL_ID:
+-----------------------------------------------------------------
+SELECT *
+FROM
+  (SELECT t.SQL_HANDLE,
+    t.SIGNATURE,
+    t.SQL_TEXT,
+    s.SQL_ID
+  FROM SYS.SQL$TEXT t,
+    DBA_HIST_SQLSTAT s
+  WHERE s.SQL_ID = '2rn125rkxz274'
+  AND t.SIGNATURE    = s.FORCE_MATCHING_SIGNATURE
+  )
+WHERE rownum = 1 ;

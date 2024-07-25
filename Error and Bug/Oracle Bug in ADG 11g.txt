@@ -1,0 +1,6 @@
+LGWR (ospid: Xxx): Terminating The Instance Due To Error 4021 (Doc ID 2177473.1)
+
+
+On the Active Data Guard Standby set below parameter and restart standby:
+
+ALTER SYSTEM set "_adg_parselock_timeout"=550 scope=both;

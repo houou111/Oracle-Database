@@ -1,0 +1,73 @@
+Create user DBA01 identified by oracle123456;
+grant resource, connect, unlimited tablespace, dba to DBA01;
+
+
+
+CREATE TABLE DBA01.tab_index
+    (stt                            VARCHAR2(3),
+    schema_name                    VARCHAR2(500),
+    tab_name                       VARCHAR2(500),
+    fk_col                         VARCHAR2(500))
+
+
+
+CREATE OR REPLACE 
+PROCEDURE DBA01.SCAN_MISS_INDEXES (VUSERNAME IN VARCHAR2) 
+IS
+BEGIN
+execute IMMEDIATE ('truncate table DBA01.TAB_INDEX');
+   FOR REC IN (SELECT A. USERNAME FROM DBA_USERS A WHERE A.USERNAME LIKE 'VPDT%' 
+       OR A.USERNAME LIKE 'IOFFICE%' AND A.USERNAME NOT LIKE '%DEMO%' AND A.ACCOUNT_STATUS='OPEN' AND A.USERNAME = DECODE(VUSERNAME, '', A.USERNAME, VUSERNAME))
+   LOOP
+        INSERT INTO DBA01.TAB_INDEX(STT,TAB_NAME,FK_COL,SCHEMA_NAME) 
+                 SELECT ROWNUM, TABLE_NAME, FK_COLUMNS, REC.USERNAME AS SCHEMA_NAME FROM (SELECT CASE WHEN B.TABLE_NAME IS NULL 
+                 THEN 'UNINDEXED' ELSE 'INDEXED' END AS STATUS, A.TABLE_NAME AS TABLE_NAME, 
+                 A.CONSTRAINT_NAME AS FK_NAME, A.FK_COLUMNS AS FK_COLUMNS, B.INDEX_NAME AS INDEX_NAME, 
+                 B.INDEX_COLUMNS AS INDEX_COLUMNS FROM (SELECT A.TABLE_NAME, A.CONSTRAINT_NAME, LISTAGG(A.COLUMN_NAME, ',') 
+                 WITHIN GROUP (ORDER BY A.POSITION) FK_COLUMNS FROM DBA_CONS_COLUMNS A, DBA_CONSTRAINTS B 
+                 WHERE A.CONSTRAINT_NAME = B.CONSTRAINT_NAME AND B.CONSTRAINT_TYPE = 'R'
+                 AND A.OWNER = REC.USERNAME AND A.OWNER = B.OWNER GROUP BY A.TABLE_NAME, A.CONSTRAINT_NAME ) A ,
+               ( SELECT TABLE_NAME, INDEX_NAME, LISTAGG(C.COLUMN_NAME, ',') 
+                 WITHIN GROUP (ORDER BY C.COLUMN_POSITION) INDEX_COLUMNS FROM DBA_IND_COLUMNS C WHERE C.INDEX_OWNER = REC.USERNAME GROUP BY TABLE_NAME, INDEX_NAME ) B 
+                 WHERE A.TABLE_NAME = B.TABLE_NAME(+) AND B.INDEX_COLUMNS(+) LIKE A.FK_COLUMNS || '%'
+                 ORDER BY 1 DESC, 2) WHERE STATUS='UNINDEXED';        
+        COMMIT;                 
+     END LOOP;
+END;
+/
+
+
+
+BEGIN
+DBA01.SCAN_MISS_INDEXES ('VPDT_DIENBIEN_BHXH');
+END;
+/
+
+
+BEGIN
+DBA01.SCAN_MISS_INDEXES('');
+END;
+/
+
+select count(*) from DBA01.TAB_INDEX;
+
+
+
+sqlplus / as sysdba
+set heading off;
+spool go_index.sql
+select 'create index '||schema_name||'.'||'IDX_TUNING_'||stt||' on '||schema_name||'.'||tab_name||'('||fk_col||') nologging;'     
+from DBA01.TAB_INDEX;
+spool off;
+@go_index.sql
+
+
+
+sqlplus / as sysdba
+set heading off;
+spool drop_index.sql
+select 'drop index '||schema_name||'.'||'IDX_TUNING_'||stt||';' from DBA01.TAB_INDEX;
+spool off;
+@drop_index.sql
+
+

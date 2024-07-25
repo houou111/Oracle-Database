@@ -1,0 +1,4 @@
+SELECT owner,sum(bytes) / 1024 / 1024 / 1024 as "Size in GB"
+  FROM dba_segments
+GROUP BY owner
+order by 2 desc;

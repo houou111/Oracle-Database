@@ -1,0 +1,420 @@
+--tao thu muc de anh xa duong dan chua file dump
+
+mkdir -p /home/oracle/datadump;
+
+
+-- tao 1 thu muc dump_dir de luu file dump export.
+
+
+SQL> create directory DUMP_DIR as '/home/oracle/datapump/';
+
+Directory created.
+
+SQL>
+
+-- tao tablespace de chua cac bang cua schema SH
+
+SQL> create tablespace EXAMPLE datafile '+DATA' size 1G;
+
+Tablespace created.
+
+SQL>
+
+--- thuc hien import du lieu tu file dump vao database 
+
+impdp userid="'/ as sysdba'" SCHEMAS=sh directory=DUMP_DIR dumpfile=sh_01.dmp logfile=import_sh.log
+
+
+-- thuc hien change password cho user sh
+
+SQL>alter user sh identified by "Admin#123";
+
+User altered.
+
+SQL>
+
+--- connect vao schema SH va kiem tra cac object co trong schema nay
+
+SQL> conn sh/Admin#123
+Connected.
+SQL>
+SQL>
+SQL> select table_name from user_Tables;
+
+
+
+exec DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT();
+
+[oracle@oraserver labs]$ vi lab_runload.sql
+
+-- Oracle Database 11g: Administration Workshop I
+-- Oracle Server Technologies - Curriculum Development
+--
+-- ***Training purposes only***
+-- ***Not appropriate for production use***
+--
+set serveroutput on
+prompt
+-- This makes it possible to locate this session in
+-- order to kill it later.
+BEGIN
+  dbms_output.put_line(' ');
+  dbms_output.put_line('SID is ' || sys_context('USERENV','SID'));
+END;
+/
+
+prompt Load is now being generated.
+-- This drops the copy table if it exists, and supresses
+-- the error if it does not exist.
+DECLARE
+  table_nonexistent EXCEPTION;
+  PRAGMA EXCEPTION_INIT(table_nonexistent, -942);
+BEGIN
+  BEGIN
+    execute immediate 'drop table sh.sales_copy';
+    EXCEPTION
+    WHEN table_nonexistent THEN
+      NULL;
+  END;
+  execute immediate 'create table sh.sales_copy as select * from sh.sales';
+  FOR i IN 1..20 LOOP
+    execute immediate 'select * from sh.sales_copy where cust_id=1154';
+    execute immediate 'delete from sh.sales_copy where cust_id=1154';
+    execute immediate 'commit';
+    execute immediate 'insert into sh.sales_copy select * from sh.sales';
+    execute immediate 'commit';
+  END LOOP;
+END;
+/
+
+
+SQL> @lab_runload.sql
+
+
+-- thuc hien capture snapshot
+
+exec DBMS_WORKLOAD_REPOSITORY.CREATE_SNAPSHOT();
+
+
+SQL>@?/rdbms/admin/addmrpt.sql
+
+Current Instance
+~~~~~~~~~~~~~~~~
+
+   DB Id    DB Name      Inst Num Instance
+----------- ------------ -------- ------------
+ 1377699775 ORCL                1 orcl
+
+
+Instances in this Workload Repository schema
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   DB Id     Inst Num DB Name      Instance     Host
+------------ -------- ------------ ------------ ------------
+* 1377699775        1 ORCL         orcl         oraserver
+
+Using 1377699775 for database Id
+Using          1 for instance number
+
+
+Specify the number of days of snapshots to choose from
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Entering the number of days (n) will result in the most recent
+(n) days of snapshots being listed.  Pressing <return> without
+specifying a number lists all completed snapshots.
+
+
+
+Listing the last 3 days of Completed Snapshots
+
+                                                        Snap
+Instance     DB Name        Snap Id    Snap Started    Level
+------------ ------------ --------- ------------------ -----
+orcl         ORCL                63 25 Jun 2014 18:25      1
+                                 64 25 Jun 2014 19:00      1
+
+                                 65 25 Jun 2014 20:51      1
+
+                                 66 25 Jun 2014 22:00      1
+                                 67 25 Jun 2014 23:00      1
+                                 68 26 Jun 2014 00:00      1
+
+                                 69 26 Jun 2014 01:00      1
+                                 70 26 Jun 2014 02:00      1
+                                 71 26 Jun 2014 03:00      1
+
+                                 72 26 Jun 2014 19:04      1
+
+                                 73 26 Jun 2014 20:00      1
+                                 74 26 Jun 2014 21:00      1
+                                 75 26 Jun 2014 22:00      1
+                                 76 26 Jun 2014 23:00      1
+
+                                 77 27 Jun 2014 00:07      1
+                                 78 27 Jun 2014 01:00      1
+
+                                 79 27 Jun 2014 02:23      1
+                                 80 27 Jun 2014 02:38      1
+                                 81 27 Jun 2014 02:53      1
+                                 82 27 Jun 2014 02:57      1
+                                 83 27 Jun 2014 03:44      1
+
+
+
+Specify the Begin and End Snapshot Ids
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enter value for begin_snap: 82
+Begin Snapshot Id specified: 82
+
+Enter value for end_snap: 83
+End   Snapshot Id specified: 83
+
+
+
+Specify the Report Name
+~~~~~~~~~~~~~~~~~~~~~~~
+The default report file name is addmrpt_1_82_83.txt.  To use this name,
+press <return> to continue, otherwise enter an alternative.
+
+Enter value for report_name: /tmp/baocaocaotai.txt
+
+
+
+
+
+-- Toi uu cau lenh SQL su dung tinh nang SQL Tuning Advisor
+
+-- kiem tra xem sql_id co nam trong 
+SELECT SNAP_ID
+FROM DBA_HIST_SQLSTAT
+WHERE SQL_ID='9y4n2jnf8fpc1'
+ORDER BY SNAP_ID;
+
+
+
+
+B1 : tao tunnig task
+
+-- chay trong sqlplus connect bang user sys
+
+[oracle@student ~]$ sqlplus / as sysdba
+
+
+
+SET SERVEROUTPUT ON
+DECLARE
+  l_sql_tune_task_id  VARCHAR2(100);
+BEGIN
+  l_sql_tune_task_id := DBMS_SQLTUNE.create_tuning_task (
+                          begin_snap  => 21,
+                          end_snap    => 25,
+                          sql_id      => '9y4n2jnf8fpc1',
+                          scope       => DBMS_SQLTUNE.scope_comprehensive,
+                          time_limit  => 900,
+                          task_name   => '9y4n2jnf8fpc1_AWR_tuning_task',
+                          description => 'Tuning task for statement 9y4n2jnf8fpc1 in AWR.');
+  DBMS_OUTPUT.put_line('l_sql_tune_task_id: ' || l_sql_tune_task_id);
+END;
+/
+
+B2:
+
+EXEC DBMS_SQLTUNE.execute_tuning_task(task_name => '9y4n2jnf8fpc1_AWR_tuning_task');
+
+B3: 
+
+SET LONG 10000;
+SET PAGESIZE 1000
+SET LINESIZE 200
+SELECT DBMS_SQLTUNE.report_tuning_task('9y4n2jnf8fpc1_AWR_tuning_task') AS recommendations FROM dual;
+SET PAGESIZE 24
+
+-- thuc hien cac khuyen cao cua SQL Tuning Advisor
+
+1- Statistics Finding
+---------------------
+  Table "SH"."SALES_COPY" was not analyzed.
+
+  Recommendation
+  --------------
+  - Consider collecting optimizer statistics for this table.
+    execute dbms_stats.gather_table_stats(ownname => 'SH', tabname =>
+            'SALES_COPY', estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,
+            method_opt => 'FOR ALL COLUMNS SIZE AUTO');
+
+			
+			
+ mo 1 session thuc hien kiem tra statis hien tai cua bang bang cau lenh sau:
+ 
+ select TABLE_NAME,LAST_ANALYZED from dba_tables where table_name='SALES_COPY';
+ 
+ sau do thuc hien cau lenh
+ 
+     execute dbms_stats.gather_table_stats(ownname => 'SH', tabname =>'SALES_COPY', estimate_percent => DBMS_STATS.AUTO_SAMPLE_SIZE,method_opt => 'FOR ALL COLUMNS SIZE AUTO');
+	 
+ select TABLE_NAME,LAST_ANALYZED from dba_tables where table_name='SALES_COPY';
+
+
+thu hien khuyen cao thu 2
+
+truoc khi thuc hien kiem tra thoi gian chay cau lenh
+set timing on
+delete from sh.sales_copy where cust_id=1154;
+rollback;
+
+SQL> create index SH.SALER_COPY_IND1 on SH.SALES_COPY("CUST_ID") online nologging parallel 2;
+
+delete from sh.sales_copy where cust_id=1154;
+
+EXEC DBMS_SQLTUNE.DROP_TUNING_TASK(task_name => '9y4n2jnf8fpc1_AWR_tuning_task');
+
+
+note : khi tuning cau lenh insert 
+
+insert /*+ append parallel(SH.SALES_COPY, 2) nologging */ into sh.sales_copy select * from sh.sales;
+
+insert /*+ append parallel(SH.SALES_COPY, 2) */ into sh.sales_copy select * from sh.sales;
+
+
+-- kiem tra phan manh va giam phan manh cho table
+
+
+-- auto maintain task
+
+select  c1 from
+table(dbms_space.asa_recommendations('FALSE', 'FALSE', 'FALSE'));
+
+-- manual analyzed
+-- check manual 
+
+SELECT SUM(bytes)/1024/1024 MB
+FROM dba_extents
+WHERE owner = 'SH'
+AND segment_name = 'SALES_COPY';
+
+        MB
+----------
+        12
+
+
+DECLARE
+  l_object_id  NUMBER;
+BEGIN
+  -- Create a segment advisor task for the SH.SALES_COPY table.
+  DBMS_ADVISOR.create_task (
+    advisor_name      => 'Segment Advisor',
+    task_name         => 'SALES_COPY_SEGMENT_ADVISOR',
+    task_desc         => 'Segment Advisor For SALES_COPY');
+
+  DBMS_ADVISOR.create_object (
+    task_name   => 'SALES_COPY_SEGMENT_ADVISOR',
+    object_type => 'TABLE',
+    attr1       => 'SH', 
+    attr2       => 'SALES_COPY', 
+    attr3       => NULL, 
+    attr4       => 'null',
+    attr5       => NULL,
+    object_id   => l_object_id);
+
+  DBMS_ADVISOR.set_task_parameter (
+    task_name => 'SALES_COPY_SEGMENT_ADVISOR',
+    parameter => 'RECOMMEND_ALL',
+    value     => 'TRUE');
+
+  DBMS_ADVISOR.execute_task(task_name => 'SALES_COPY_SEGMENT_ADVISOR');
+END;
+/
+  -- check recomment
+  
+SET LINESIZE 250
+COLUMN task_name FORMAT A20
+COLUMN object_type FORMAT A20
+COLUMN schema FORMAT A20
+COLUMN object_name FORMAT A30
+COLUMN object_name FORMAT A30
+COLUMN message FORMAT A40
+COLUMN more_info FORMAT A40
+
+SELECT 
+       o.type AS object_type,
+       o.attr1 AS schema,
+       o.attr2 AS object_name,
+       f.message,
+       f.more_info
+FROM   dba_advisor_findings f
+       JOIN dba_advisor_objects o ON f.object_id = o.object_id AND f.task_name = o.task_name
+WHERE  f.task_name IN ('SALES_COPY_SEGMENT_ADVISOR')
+ORDER BY f.task_name, f.impact DESC;
+
+-- shrink space
+
+ALTER TABLE SH.SALES_COPY ENABLE ROW MOVEMENT;
+
+ALTER TABLE SH.SALES_COPY  SHRINK SPACE;
+
+EXEC DBMS_ADVISOR.DELETE_TASK('SALES_COPY_SEGMENT_ADVISOR');
+
+SELECT SUM(bytes)/1024/1024 MB
+FROM dba_extents
+WHERE owner = 'SH'
+AND segment_name = 'SALES_COPY';
+        MB
+----------
+    11.625
+
+
+
+-- Create a segment advisor task for the USERS tablespace.
+  
+  DBMS_ADVISOR.create_task (
+    advisor_name      => 'Segment Advisor',
+    task_name         => 'USERS_SEGMENT_ADVISOR',
+    task_desc         => 'Segment Advisor For USERS');
+
+  DBMS_ADVISOR.create_object (
+    task_name   => 'USERS_SEGMENT_ADVISOR',
+    object_type => 'TABLESPACE',
+    attr1       => 'USERS', 
+    attr2       => NULL, 
+    attr3       => NULL, 
+    attr4       => 'null',
+    attr5       => NULL,
+    object_id   => l_object_id);
+
+  DBMS_ADVISOR.set_task_parameter (
+    task_name => 'USERS_SEGMENT_ADVISOR',
+    parameter => 'RECOMMEND_ALL',
+    value     => 'TRUE');
+
+  DBMS_ADVISOR.execute_task(task_name => 'USERS_SEGMENT_ADVISOR');
+END;
+/ 
+
+-- find recomment
+
+SET LINESIZE 250
+COLUMN task_name FORMAT A20
+COLUMN object_type FORMAT A20
+COLUMN schema FORMAT A20
+COLUMN object_name FORMAT A30
+COLUMN object_name FORMAT A30
+COLUMN message FORMAT A40
+COLUMN more_info FORMAT A40
+
+SELECT f.task_name,
+       f.impact,
+       o.type AS object_type,
+       o.attr1 AS schema,
+       o.attr2 AS object_name,
+       f.message,
+       f.more_info
+FROM   dba_advisor_findings f
+       JOIN dba_advisor_objects o ON f.object_id = o.object_id AND f.task_name = o.task_name
+WHERE  f.task_name IN ('USERS_SEGMENT_ADVISOR')
+ORDER BY f.task_name, f.impact DESC;
+
+EXEC DBMS_ADVISOR.DELETE_TASK('USERS_SEGMENT_ADVISOR');
+
+
+
+

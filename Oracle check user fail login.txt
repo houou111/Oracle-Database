@@ -1,0 +1,9 @@
+col os_username for a15
+col userhost for a30
+select username, os_username, userhost, count(*) 
+from dba_audit_trail 
+where returncode=1017 and timestamp > trunc(sysdate)-1 group by username, os_username, userhost order by username desc; 
+
+
+
+select * from 

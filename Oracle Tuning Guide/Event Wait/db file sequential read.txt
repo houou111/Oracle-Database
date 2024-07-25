@@ -1,0 +1,35 @@
+db filesequential read
+
+
+- The Oracle process wants a block that is currently not in the SGA, and it is waiting for the database block to be read into the SGA from disk.
+- The two important numbers to look for are the TIME_WAITED and AVERAGE_WAIT by individual sessions.
+- Significant db file sequential read wait time is most likely an application issue.
+
+
+select b.sid,
+nvl(substr(a.object_name,1,30),
+'P1='||b.p1||' P2='||b.p2||' P3='||b.p3) object_name,
+a.subobject_name,
+a.object_type
+from dba_objects a, v$session_Wait b, x$bh c
+where c.obj = a.object_id(+)
+and b.p1 = c.file#(+)
+and b.p2 = c.dbablk(+)
+and b.event = 'db file sequential read'
+union
+select b.sid,
+nvl(substr(a.object_name,1,30),
+'P1='||b.p1||' P2='||b.p2||' P3='||b.p3) object_name,
+a.subobject_name,
+a.object_type
+from dba_objects a, v$session_Wait b, x$bh c
+where c.obj = a.data_object_id(+)
+and b.p1 = c.file#(+)
+and b.p2 = c.dbablk(+)
+and b.event = 'db file sequential read'
+order by 1;
+
+
+
+-> increase memory
+-> tuning SQL

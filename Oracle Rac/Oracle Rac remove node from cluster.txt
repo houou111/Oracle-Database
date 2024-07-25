@@ -1,0 +1,21 @@
+1. Unpin Node
+------------------------------
+Stop node need to unpin
+
+[root@racnode1 ~]# $GRID_HOME/bin/olsnodes -s -t
+racnode1        Active  Unpinned
+racnode2        Active  Unpinned
+racnode3        Active  Unpinned
+
+
+$GRID_HOME/bin/crsctl unpin css -n racnode3
+
+
+2.	Delete Node from Clusterware Configuration
+------------------------------
+[root@racnode1 ~]# $GRID_HOME/bin/crsctl delete node -n dbnode2
+CRS-4661: Node racnode3 successfully deleted.
+
+[root@racnode1 ~]# $GRID_HOME/bin/olsnodes -t -s
+racnode1        Active  Unpinned
+racnode2        Active  Unpinned

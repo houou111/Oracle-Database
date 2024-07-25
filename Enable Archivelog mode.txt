@@ -1,0 +1,25 @@
+﻿# Set parameter log_archive_dest
+
+	SQL> alter system set LOG_ARCHIVE_DEST_1= 'LOCATION=USE_DB_RECOVERY_FILE_DEST';
+	SQL> alter system set LOG_ARCHIVE_DEST_1= 'LOCATION=USE_DB_RECOVERY_FILE_DEST' scope=spfile;
+	SQL> ALTER SYSTEM SET log_archive_dest_state_1 ='ENABLE';
+		
+# Shutdown immediate all database instances
+	
+	SQL> Shutdown immediate;
+	
+# Startup database in mount mode, enable archivelog mode
+
+	SQL> Startup mount;
+	SQL> Alter database archivelog;
+	
+# Khởi động lại database	
+
+	SQL> shutdown immediate;
+	SQL> startup
+	
+#Kiểm tra chế độ archivelog
+
+	SQL> archive log list; 
+
+

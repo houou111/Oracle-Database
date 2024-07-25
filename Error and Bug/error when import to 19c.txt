@@ -1,0 +1,93 @@
+DataPump Import Fails With Errors ORA-39097 ORA-39065 ORA-56935 / ORA-56938 (Doc ID 1307959.1)
+
+
+
+	
+Copyright (c) 2021, Oracle. All rights reserved. Oracle Confidential.
+
+
+Click to add to Favorites		DataPump Import Fails With Errors ORA-39097 ORA-39065 ORA-56935 / ORA-56938 (Doc ID 1307959.1)	To BottomTo Bottom	
+
+In this Document
+Symptoms
+Changes
+Cause
+Solution
+References
+
+APPLIES TO:
+Oracle Database - Enterprise Edition - Version 11.2.0.2 to 12.1.0.2 [Release 11.2 to 12.1]
+Oracle Database Cloud Schema Service - Version N/A and later
+Gen 1 Exadata Cloud at Customer (Oracle Exadata Database Cloud Machine) - Version N/A and later
+Oracle Database Exadata Express Cloud Service - Version N/A and later
+Oracle Cloud Infrastructure - Database Service - Version N/A and later
+Information in this document applies to any platform.
+SYMPTOMS
+DataPump import fails with the following errors:
+
+ORA-39097: Data Pump job encountered unexpected error -56935
+ORA-39065: unexpected master process exception in DISPATCH
+ORA-56935: existing datapump jobs are using a different version of time zone data file
+ - or -
+
+ORA-39346: data loss in character set conversion for object DATABASE_EXPORT/SCHEMA/TABLE/STATISTICS/TABLE_STATISTICS
+ORA-39097: Data Pump job encountered unexpected error -56938
+ORA-39065: unexpected master process exception in DISPATCH
+ORA-56938: no secondary time zone data file being loaded by on-demand or a datapump job
+ORA-39097: Data Pump job encountered unexpected error -56938
+ORA-39065: unexpected master process exception in MAIN
+ORA-56938: no secondary time zone data file being loaded by on-demand or a datapump job
+ORA-56938: no secondary time zone data file being loaded by on-demand or a datapump job
+CHANGES
+ 
+
+CAUSE
+The errors are caused by the fact that a previous DataPump import job exited ungracefully, without cleaning up DST_UPGRADE_STATE due to secondary timezone table.
+The errors could be also introduced after multiple import jobs were running and changed the data in the secondary timezone table.
+
+This can be checked with the following query:
+
+connect / as sysdba
+
+SELECT PROPERTY_NAME, SUBSTR (property_value, 1, 30) value
+FROM   DATABASE_PROPERTIES
+WHERE  PROPERTY_NAME LIKE 'DST_%'
+ORDER  BY PROPERTY_NAME;
+
+PROPERTY_NAME              VALUE
+-------------------------- -------------------------------
+DST_PRIMARY_TT_VERSION     11
+DST_SECONDARY_TT_VERSION   3
+DST_UPGRADE_STATE          DATAPUMP(1)
+
+Above query shows the row having DATAPUMP(<x>) value where <x> is a number equal or greater than 1 for DST_UPGRADE_STATE property.
+
+This problem is addressed in unpublished
+Bug 11836540 - ABORTED DATA PUMP DID NOT CLEAN UP DST_UPGRADE_STATE
+
+The bug is fixed in 12.2.
+
+SOLUTION
+To solve the issue, use any of below alternatives:
+
+Upgrade to 12.2 when available
+
+- OR -
+
+Apply interim Patch 11836540, if available for your platform and Oracle version.
+
+To check for conflicting patches, please use the MOS Patch Planner Tool
+Please refer to
+Note 1317012.1 - How To Use MOS Patch Planner To Check And Request The Conflict Patches?
+
+If no patch exists for your version, please contact Oracle Support for a backport request.
+
+- OR -
+
+Use next workaround:
+connect / as sysdba
+ALTER SESSION SET EVENTS '30090 TRACE NAME CONTEXT FOREVER, LEVEL 32';
+exec dbms_dst.unload_secondary;
+
+Then re-check the new value for DST_UPGRADE_STATE property. This should return "NONE". If the value for DATAPUMP was > 1 (for example DATAPUMP(2) or DATAPUMP(3) ) then it might be needed to call dbms_dst.unload_secondary several times until the return value will be "NONE".
+After that, restart the import.

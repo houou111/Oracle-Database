@@ -1,0 +1,40 @@
+SQL> select instance_name from v$instance;
+
+INSTANCE_NAME
+----------------
+dwprd2
+
+Elapsed: 00:00:00.00
+SQL> SELECT A.TABLE_OWNER||'.'||A.TABLE_NAME tab , A.OWNER||'.'||A.INDEX_NAME idx
+  2      FROM sys.DBA_INDEXES A, sys.DBA_TABLES B
+  3      WHERE A.TABLE_OWNER=B.OWNER
+  4          AND A.TABLE_NAME=B.TABLE_NAME
+  5          AND B.PARTITIONED='YES'
+  6          AND A.PARTITIONED='NO'
+  7          and A.index_type not like 'FUNCTION%'
+  8          AND A.TABLE_OWNER='T24REP'
+  9          and A. table_name in ('OGG_STMT_ENTRY','FBNK_STMT_ENTRY','FBNK_STMT_ENTRY_HBK');
+        
+no rows selected
+
+Elapsed: 00:00:00.04
+SQL> 
+SQL> select owner,constraint_name,table_name,constraint_type,status from dba_constraints where owner='T24REP' 
+  2          and table_name in ('OGG_STMT_ENTRY','FBNK_STMT_ENTRY','FBNK_STMT_ENTRY_HBK');
+
+OWNER
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME                TABLE_NAME                     C STATUS
+------------------------------ ------------------------------ - --------
+T24REP
+FBNK_STMT_HBK_PAR_PK           FBNK_STMT_ENTRY_HBK            P ENABLED
+
+T24REP
+FBNK_STMT_ENTRY_PARTITION_PK   FBNK_STMT_ENTRY                P ENABLED
+
+T24REP
+PK_OGG_STMT_ENTRY_ID           OGG_STMT_ENTRY                 P ENABLED
+
+
+Elapsed: 00:00:01.24
+SQL> 

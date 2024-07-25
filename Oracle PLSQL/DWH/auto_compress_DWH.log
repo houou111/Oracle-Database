@@ -1,0 +1,579 @@
+Wed Dec 26 09:17:42 +07 2018
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Dec 26 09:17:42 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('DWH') AND partitioned = 'YES';
+	       || ' rebuild partition '|| c_index.PARTITION_NAME|| ' TABLESPACE '|| c_partition.DEFAULT_TABLESPACE|| ' online PARALLEL 4';
+                                                                                    *
+ERROR at line 62:
+ORA-06550: line 62, column 85:
+PLS-00201: identifier 'C_PARTITION.DEFAULT_TABLESPACE' must be declared
+ORA-06550: line 61, column 13:
+PL/SQL: Statement ignored
+ORA-06550: line 79, column 44:
+PLS-00201: identifier 'C_PARTITION.DEFAULT_TABLESPACE' must be declared
+ORA-06550: line 78, column 13:
+PL/SQL: Statement ignored
+
+
+Elapsed: 00:00:00.04
+SQL> Wed Dec 26 09:52:43 +07 2018
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Dec 26 09:52:43 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('DWH') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE DWH.CATEG_ENTRY MOVE PARTITION SYS_P706159 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CATEG_ENTRY',PartName =>'SYS_P706159',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE DWH.CATEG_ENTRY MOVE PARTITION SYS_P706650 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CATEG_ENTRY',PartName =>'SYS_P706650',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE DWH.CATEG_ENTRY MOVE PARTITION SYS_P706993 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CATEG_ENTRY',PartName =>'SYS_P706993',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE DWH.CMS_TRANSACTION MOVE PARTITION SYS_P706373 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CMS_TRANSACTION',PartName =>'SYS_P706373',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.CMS_TRANSACTION MOVE PARTITION SYS_P706615 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CMS_TRANSACTION',PartName =>'SYS_P706615',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.CMS_TRANSACTION MOVE PARTITION SYS_P706939 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CMS_TRANSACTION',PartName =>'SYS_P706939',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.CONSOLIDATE_ASST_LIAB MOVE PARTITION SYS_P706089 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CONSOLIDATE_ASST_LIAB',PartName =>'SYS_P706089',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE DWH.CONSOLIDATE_ASST_LIAB MOVE PARTITION SYS_P706659 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CONSOLIDATE_ASST_LIAB',PartName =>'SYS_P706659',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE DWH.CONSOLIDATE_ASST_LIAB MOVE PARTITION SYS_P706935 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CONSOLIDATE_ASST_LIAB',PartName =>'SYS_P706935',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE DWH.FUNDS_TRANSFER MOVE PARTITION SYS_P699277 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'FUNDS_TRANSFER',PartName =>'SYS_P699277',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.FUNDS_TRANSFER MOVE PARTITION SYS_P705840 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'FUNDS_TRANSFER',PartName =>'SYS_P705840',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.GROUP_ACCOUNT MOVE PARTITION SYS_P706147 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'GROUP_ACCOUNT',PartName =>'SYS_P706147',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.GROUP_ACCOUNT MOVE PARTITION SYS_P706653 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'GROUP_ACCOUNT',PartName =>'SYS_P706653',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.GROUP_ACCOUNT MOVE PARTITION SYS_P707020 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'GROUP_ACCOUNT',PartName =>'SYS_P707020',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.RE_CONSOL_SPEC_ENTRY MOVE PARTITION SYS_P705471 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'RE_CONSOL_SPEC_ENTRY',PartName =>'SYS_P705471',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE DWH.RE_CONSOL_SPEC_ENTRY MOVE PARTITION SYS_P706693 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'RE_CONSOL_SPEC_ENTRY',PartName =>'SYS_P706693',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+ALTER TABLE DWH.STMT_ENTRY MOVE PARTITION SYS_P706654 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'STMT_ENTRY',PartName =>'SYS_P706654',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE DWH.STMT_ENTRY MOVE PARTITION SYS_P706996 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'STMT_ENTRY',PartName =>'SYS_P706996',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:38.39
+SQL> Wed Dec 26 09:59:11 +07 2018
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Dec 26 09:59:11 2018
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+new  10:       WHERE owner IN ('DWH') AND partitioned = 'YES' and a.OWNER = b.USERNAME;
+ALTER TABLE DWH.CATEG_ENTRY MOVE PARTITION SYS_P706159 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CATEG_ENTRY',PartName =>'SYS_P706159',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+ALTER TABLE DWH.CATEG_ENTRY MOVE PARTITION SYS_P706650 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CATEG_ENTRY',PartName =>'SYS_P706650',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8221 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8222 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8223 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8224 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8225 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8226 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8227 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8228 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8229 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8230 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8231 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8232 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8233 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8234 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8235 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8236 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8237 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8238 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8239 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8240 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8241 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8242 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8243 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8244 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8245 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8246 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8247 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8248 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8249 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8250 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8251 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8252 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8253 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8254 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8127 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8128 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8139 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8140 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8141 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8142 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8143 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8144 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8145 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8129 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8146 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8147 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8148 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8149 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8150 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8151 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8130 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8131 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8132 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8152 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8133 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8153 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8154 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8155 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8156 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8157 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8158 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8134 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8135 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8159 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8136 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8137 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8138 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8160 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8161 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8162 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8163 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8164 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8165 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8166 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8167 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8168 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8169 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8170 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8171 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8172 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8173 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8174 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8175 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8176 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8177 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8178 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8179 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8180 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8181 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8182 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8183 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8184 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8185 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8186 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8187 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8188 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8189 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8190 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8191 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8192 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8193 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8194 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8195 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8196 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8197 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8198 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8199 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8200 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8201 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8219 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8202 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8203 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8204 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8205 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8206 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8207 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8208 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8209 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8210 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8211 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8212 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8213 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8214 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8215 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8216 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8217 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8218 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CATEG_CONST rebuild partition SYS_P8220 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_FACT_CATEG_ENTRY rebuild partition SYS_P706650 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_FACT_CATEG_ENTRY rebuild partition SYS_P706159 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.CMS_TRANSACTION MOVE PARTITION SYS_P706373 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CMS_TRANSACTION',PartName =>'SYS_P706373',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.CMS_TRANSACTION MOVE PARTITION SYS_P706615 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CMS_TRANSACTION',PartName =>'SYS_P706615',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+alter index DWH.PK_CMSTR rebuild partition SYS_P706373 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CMSTR rebuild partition SYS_P706615 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.CONSOLIDATE_ASST_LIAB MOVE PARTITION SYS_P706089 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CONSOLIDATE_ASST_LIAB',PartName =>'SYS_P706089',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+ALTER TABLE DWH.CONSOLIDATE_ASST_LIAB MOVE PARTITION SYS_P706659 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'CONSOLIDATE_ASST_LIAB',PartName =>'SYS_P706659',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE
+=> TRUE ); END;
+alter index DWH.PK_CONSOLIDATE_ASST_LIAB rebuild partition SYS_P706821 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_CONSOLIDATE_ASST_LIAB rebuild partition SYS_P706822 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.FUNDS_TRANSFER MOVE PARTITION SYS_P699277 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'FUNDS_TRANSFER',PartName =>'SYS_P699277',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8583 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8584 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8585 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8586 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8587 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8588 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8589 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8590 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8645 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8646 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8644 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8591 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8592 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8593 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8594 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8595 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8596 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8597 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8598 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8599 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8600 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8601 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8602 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8603 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8604 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8605 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8606 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8607 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8608 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8609 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8610 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8611 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8612 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8613 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8614 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8615 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8616 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8617 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8618 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8619 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8620 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8621 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8622 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8623 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8624 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8625 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8626 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8627 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8628 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8629 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8630 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8631 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8632 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8633 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8634 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8635 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8636 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8637 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8638 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8639 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8640 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8641 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8642 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_FUNDS_TRANSFER rebuild partition SYS_P8643 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_FT_PROCESSDATE_DEBITACC rebuild partition SYS_P699277 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_FT_PROCESSDATE_CREDITACC rebuild partition SYS_P699277 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.GROUP_ACCOUNT MOVE PARTITION SYS_P706147 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'GROUP_ACCOUNT',PartName =>'SYS_P706147',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+ALTER TABLE DWH.GROUP_ACCOUNT MOVE PARTITION SYS_P706653 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'GROUP_ACCOUNT',PartName =>'SYS_P706653',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE
+); END;
+alter index DWH.IDX_GRP_ACC_REC rebuild partition SYS_P706147 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_GRP_ACC_REC rebuild partition SYS_P706653 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.RE_CONSOL_SPEC_ENTRY MOVE PARTITION SYS_P705471 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'RE_CONSOL_SPEC_ENTRY',PartName =>'SYS_P705471',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE =>
+TRUE ); END;
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8519 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8520 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8521 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8522 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8523 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8524 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8525 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8526 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8527 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8528 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8529 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8530 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8531 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8532 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8533 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8534 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8535 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8536 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8537 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8538 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8539 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8540 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8541 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8542 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8543 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8544 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8545 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8546 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8547 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8548 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8549 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8550 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8551 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8552 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8553 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8554 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8555 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8556 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8557 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8558 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8562 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8563 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8564 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8565 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8566 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8567 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8568 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8569 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8559 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8570 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8571 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8572 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8573 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8574 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8575 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8576 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8577 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8560 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8578 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8579 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8580 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8581 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8582 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_RCSE_CONST rebuild partition SYS_P8561 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_RCSE_BKDATE_CUS rebuild partition SYS_P705471 TABLESPACE DWH_TBS online PARALLEL 4
+ALTER TABLE DWH.STMT_ENTRY MOVE PARTITION SYS_P706654 TABLESPACE DWH_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'DWH',TabName =>'STMT_ENTRY',PartName =>'SYS_P706654',GRANULARITY => 'AUTO',estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,degree =>4,CASCADE => TRUE );
+END;
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8364 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8365 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8366 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8367 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8368 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8369 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8370 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8371 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8372 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8373 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8374 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8375 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8376 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8377 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8378 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8379 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8380 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8381 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8382 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8383 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8384 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8385 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8386 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8312 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8313 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8314 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8315 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8311 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8316 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8317 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8318 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8319 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8320 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8321 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8322 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8323 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8324 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8325 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8326 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8327 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8328 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8329 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8330 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8331 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8332 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8333 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8334 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8335 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8336 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8337 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8338 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8339 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8340 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8341 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8342 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8343 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8344 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8345 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8346 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8347 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8348 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8349 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8350 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8351 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8352 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8353 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8354 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8355 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8356 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8357 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8358 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8359 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8360 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8361 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8362 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8363 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8260 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8261 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8262 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8263 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8264 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8265 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8266 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8267 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8268 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8259 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8269 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8270 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8271 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8272 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8273 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8274 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8275 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8276 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8277 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8278 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8279 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8280 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8281 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8282 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8283 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8284 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8285 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8286 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8287 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8288 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8289 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8290 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8291 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8292 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8293 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8294 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8295 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8296 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8297 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8298 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8299 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8300 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8301 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8302 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8303 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8304 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8305 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8306 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8307 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8308 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8309 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P8310 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.NEW_PK_STMT_ENTRY_ID_CONST rebuild partition SYS_P706654 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_STMT_ENTRY_BD_CUS rebuild partition SYS_P706654 TABLESPACE DWH_TBS online PARALLEL 4
+alter index DWH.IDX_STMT_ENTRY_BD_ACC rebuild partition SYS_P706654 TABLESPACE DWH_TBS online PARALLEL 4
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 11:16:16.83
+SQL> sh: /home/oracle/dbscript/auto_compress_dwprd.sh: No such file or directory

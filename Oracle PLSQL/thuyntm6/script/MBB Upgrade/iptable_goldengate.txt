@@ -1,0 +1,767 @@
+[root@dc-mbb-db-02 ~]# iptables -L -v --line-numbers
+Chain INPUT (policy DROP 186K packets, 11M bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+1      47M   27G ACCEPT     all  --  any    any     anywhere             anywhere             state RELATED,ESTABLISHED
+2    11567  954K ACCEPT     icmp --  any    any     anywhere             anywhere
+3    6178K 2109M ACCEPT     all  --  lo     any     anywhere             anywhere
+4      14M   20G ACCEPT     all  --  enccw0.0.f603 any     anywhere             anywhere
+5        0     0 ACCEPT     all  --  any    any     link-local/16        anywhere
+6        0     0 ACCEPT     all  --  any    any     10.0.0.0/11          anywhere             /* user iprange */
+7        0     0 ACCEPT     all  --  any    any     10.192.0.0/11        anywhere             /* user iprange */
+8        0     0 ACCEPT     all  --  any    any     10.128.0.0/11        anywhere             /* user iprange */
+9        0     0 ACCEPT     all  --  any    any     anywhere             anywhere             source IP range 10.96.1.1-10.96.3.254
+10       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             source IP range 10.96.10.1-10.96.11.254
+11       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             source IP range 10.96.128.1-10.96.130.254
+12       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             source IP range 10.96.138.1-10.96.138.254
+13       0     0 ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:ntp
+14       0     0 ACCEPT     tcp  --  any    any     dr-jumpsrv.user.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server,ncube-lm
+15       0     0 ACCEPT     tcp  --  any    any     dc-jump-01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server,ncube-lm
+16       0     0 ACCEPT     tcp  --  any    any     dc-jumpsrv-01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server,ncube-lm
+17      28  3600 ACCEPT     tcp  --  any    any     dr-jumpsrv.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server,ncube-lm
+18       0     0 ACCEPT     tcp  --  any    any     dc-epo-app01.headquarter.techcombank.com.vn  anywhere             multiport dports 8440,8441
+19       0     0 ACCEPT     tcp  --  any    any     dc-epo-app02.headquarter.techcombank.com.vn  anywhere             multiport dports 8440,8441
+20       0     0 ACCEPT     tcp  --  any    any     10.97.4.71           anywhere             multiport dports pcsync-https,etlservicemgr
+21       0     0 ACCEPT     tcp  --  any    any     10.97.4.72           anywhere             multiport dports pcsync-https,etlservicemgr
+22      69  3588 ACCEPT     tcp  --  any    any     dc-pw-cpm01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+23       0     0 ACCEPT     tcp  --  any    any     dc-pw-cpm02.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+24       0     0 ACCEPT     tcp  --  any    any     dc-pw-psm01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+25       6   312 ACCEPT     tcp  --  any    any     DC-PW-PSM2.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+26       0     0 ACCEPT     tcp  --  any    any     DR-PW-CPM.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+27       0     0 ACCEPT     tcp  --  any    any     dr-pw-psm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+28       0     0 ACCEPT     tcp  --  any    any     DR-PW-PSM2.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+29       0     0 ACCEPT     tcp  --  any    any     dr-pw-cpm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+30       0     0 ACCEPT     tcp  --  any    any     dr-pw-psm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+31       0     0 ACCEPT     tcp  --  any    any     10.62.72.0/24        anywhere             multiport dports ssh,http,https,ms-wbt-server
+32       0     0 ACCEPT     udp  --  any    any     dr-rcd-scan.headquarter.techcombank.com.vn  anywhere             multiport dports netbios-ns:netbios-dgm,microsoft-ds,blackjack:commplex-main,49152:65535
+33       0     0 ACCEPT     tcp  --  any    any     dr-rcd-scan.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,epmap,netbios-ns:netbios-ssn,https,microsoft-ds,blackjack:commplex-main,49152:65535
+34       0     0 ACCEPT     tcp  --  any    any     dc-backup-01.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+35       0     0 ACCEPT     tcp  --  any    any     dc-backup-02.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+36       0     0 ACCEPT     tcp  --  any    any     dc-backup-03.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+37       0     0 ACCEPT     tcp  --  any    any     10.97.8.14           anywhere             multiport dports veritas_pbx,vnetd
+38       0     0 ACCEPT     tcp  --  any    any     dr-backup-01.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+39       0     0 ACCEPT     tcp  --  any    any     dr-backup-02.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+40       0     0 ACCEPT     tcp  --  any    any     dr-backup-03.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+41       0     0 ACCEPT     tcp  --  any    any     dr-backup-04.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd
+42       0     0 ACCEPT     tcp  --  any    any     dc-am-manage-01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,epmap,netbios-ssn,microsoft-ds,blackjack:commplex-main,49152:65535
+43       0     0 ACCEPT     tcp  --  any    any     DC-AM-Manage-02.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,epmap,netbios-ssn,microsoft-ds,blackjack:commplex-main,49152:65535
+44     631 32812 ACCEPT     tcp  --  any    any     dc-appmom.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,epmap,netbios-ssn,microsoft-ds,blackjack:commplex-main,49152:65535
+45       0     0 ACCEPT     tcp  --  any    any     10.98.12.30          anywhere             multiport dports ssh,epmap,netbios-ssn,microsoft-ds,blackjack:commplex-main,49152:65535
+46       0     0 ACCEPT     udp  --  any    any     dc-am-manage-01.headquarter.techcombank.com.vn  anywhere             multiport dports netbios-ns:netbios-dgm
+47       0     0 ACCEPT     udp  --  any    any     DC-AM-Manage-02.headquarter.techcombank.com.vn  anywhere             multiport dports netbios-ns:netbios-dgm
+48       0     0 ACCEPT     udp  --  any    any     dc-appmom.headquarter.techcombank.com.vn  anywhere             multiport dports netbios-ns:netbios-dgm
+49       0     0 ACCEPT     udp  --  any    any     10.98.12.30          anywhere             multiport dports netbios-ns:netbios-dgm
+50       4   240 ACCEPT     tcp  --  any    any     10.107.4.37          anywhere             tcp dpt:ssh
+51       0     0 ACCEPT     tcp  --  any    any     dc-los-trs-db01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,oem-agent,ncube-lm /* EM13C_zone */
+52      16   960 ACCEPT     tcp  --  any    any     dc-em13c-app         anywhere             multiport dports ssh,oem-agent,ncube-lm /* EM13C_zone */
+53       0     0 ACCEPT     udp  --  any    any     dc-los-trs-db01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,oem-agent,ncube-lm /* EM13C_zone */
+54       0     0 ACCEPT     udp  --  any    any     dc-em13c-app         anywhere             multiport dports ssh,oem-agent,ncube-lm /* EM13C_zone */
+55   1355K  109M ACCEPT     all  --  any    any     10.99.1.0/24         anywhere
+56     483 28980 ACCEPT     all  --  any    any     10.109.1.0/24        anywhere
+57       0     0 ACCEPT     tcp  --  any    any     192.168.11.41        anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+58       0     0 ACCEPT     tcp  --  any    any     10.100.100.41        anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+59       0     0 ACCEPT     tcp  --  any    any     10.99.1.75           anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+60       0     0 ACCEPT     tcp  --  any    any     192.168.11.42        anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+61       0     0 ACCEPT     tcp  --  any    any     192.168.11.169       anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+62       0     0 ACCEPT     tcp  --  any    any     10.100.100.169       anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+63       0     0 ACCEPT     tcp  --  any    any     10.97.4.133          anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+64       0     0 ACCEPT     tcp  --  any    any     10.97.5.204          anywhere             multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+65       0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere             source IP range 10.109.1.128-10.109.1.134 multiport dports ssh,ncube-lm /* DC-DR synch */
+66    186K   11M LOGGING    all  --  any    any     anywhere             anywhere
+
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+
+Chain OUTPUT (policy DROP 29815 packets, 1792K bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+1      44M   43G ACCEPT     all  --  any    any     anywhere             anywhere             state RELATED,ESTABLISHED
+2        0     0 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-reply
+3    10494 1230K ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-request
+4    6178K 2109M ACCEPT     all  --  any    lo      anywhere             anywhere
+5      15M   17G ACCEPT     all  --  any    enccw0.0.f603  anywhere             anywhere
+6        0     0 ACCEPT     all  --  any    any     anywhere             link-local/16
+7        0     0 ACCEPT     all  --  any    any     anywhere             10.0.0.0/11          /* user iprange */
+8        0     0 ACCEPT     all  --  any    any     anywhere             10.192.0.0/11        /* user iprange */
+9        0     0 ACCEPT     all  --  any    any     anywhere             10.128.0.0/11        /* user iprange */
+10       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.96.1.1-10.96.3.254
+11       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.96.10.1-10.96.11.254
+12       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.96.128.1-10.96.130.254
+13       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.96.138.1-10.96.138.254
+14    155K   11M ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:domain
+15   13792 1048K ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:ntp
+16       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.71           multiport dports etlservicemgr,https
+17       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.73           multiport dports etlservicemgr,https
+18       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.242          multiport dports etlservicemgr,https
+19       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.243          multiport dports etlservicemgr,https
+20       0     0 ACCEPT     udp  --  any    any     anywhere             dr-rcd-scan.headquarter.techcombank.com.vn  multiport dports netbios-ns,ocbinder,microsoft-ds
+21       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-rcd-scan.headquarter.techcombank.com.vn  multiport dports netbios-ssn,microsoft-ds,9524
+22       0     0 ACCEPT     tcp  --  any    any     anywhere             DR-DFS-ITO.headquarter.techcombank.com.vn  multiport dports ftp,commplex-main:commplex-link
+23       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-dmz-dfs-ito.headquarter.techcombank.com.vn  multiport dports ftp,commplex-main:commplex-link
+24       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-epo-app01.headquarter.techcombank.com.vn  multiport dports 8439:pcsync-http
+25       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-epo-app02.headquarter.techcombank.com.vn  multiport dports 8439:pcsync-http
+26       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-am-manage-01.headquarter.techcombank.com.vn  multiport dports epmap,netbios-ssn,microsoft-ds
+27       0     0 ACCEPT     tcp  --  any    any     anywhere             DC-AM-Manage-02.headquarter.techcombank.com.vn  multiport dports epmap,netbios-ssn,microsoft-ds
+28       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-appmom.headquarter.techcombank.com.vn  multiport dports epmap,netbios-ssn,microsoft-ds
+29       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.12.30          multiport dports epmap,netbios-ssn,microsoft-ds
+30       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-backup-01.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+31       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-backup-02.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+32       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-backup-03.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+33       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.8.14           multiport dports veritas_pbx,vnetd
+34    3112  187K ACCEPT     tcp  --  any    any     anywhere             dr-backup-01.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+35       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-02.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+36       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-03.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+37       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-04.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd
+38    243K   63M ACCEPT     udp  --  any    any     anywhere             10.97.4.53           udp dpt:syslog
+39       0     0 ACCEPT     udp  --  any    any     anywhere             10.97.4.71           udp dpt:syslog
+40       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-los-trs-db01.headquarter.techcombank.com.vn  multiport dports radmin-port:4908,oem-agent,ssh,oracle-oms /* em13_zone */
+41   23227 1411K ACCEPT     tcp  --  any    any     anywhere             dc-em13c-app         multiport dports radmin-port:4908,oem-agent,ssh,oracle-oms /* em13_zone */
+42       0     0 ACCEPT     udp  --  any    any     anywhere             dc-los-trs-db01.headquarter.techcombank.com.vn  multiport dports radmin-port:4908,oem-agent,ssh,oracle-oms /* em13_zone */
+43       0     0 ACCEPT     udp  --  any    any     anywhere             dc-em13c-app         multiport dports radmin-port:4908,oem-agent,ssh,oracle-oms /* em13_zone */
+44   42544 2553K ACCEPT     all  --  any    any     anywhere             10.99.1.0/24
+45       0     0 ACCEPT     all  --  any    any     anywhere             10.109.1.0/24
+46       0     0 ACCEPT     tcp  --  any    any     anywhere             192.168.11.41        multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+47      10   600 ACCEPT     tcp  --  any    any     anywhere             10.100.100.41        multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+48       0     0 ACCEPT     tcp  --  any    any     anywhere             10.99.1.75           multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+49       1    60 ACCEPT     tcp  --  any    any     anywhere             192.168.11.42        multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+50       0     0 ACCEPT     tcp  --  any    any     anywhere             192.168.11.169       multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+51       0     0 ACCEPT     tcp  --  any    any     anywhere             10.100.100.169       multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+52    7710  463K ACCEPT     tcp  --  any    any     anywhere             10.97.4.133          multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+53       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.5.204          multiport dports ismserver,9501,tproxy,ncube-lm,pcsync-https,pcsync-http,copy,8446,6016:16019 /* dbs */
+54       0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere             destination IP range 10.109.1.128-10.109.1.134 multiport dports ssh,ncube-lm /* DC-DR synch */
+55   29815 1792K LOGGING    all  --  any    any     anywhere             anywhere
+
+Chain LOGGING (2 references)
+num   pkts bytes target     prot opt in     out     source               destination
+1     208K   13M LOG        all  --  any    any     anywhere             anywhere             limit: avg 20/min burst 5 LOG level warning prefix "IPTABLES DROP:"
+[root@dc-mbb-db-02 ~]# cat /etc/sysconfig/iptables
+# cat /etc/sysconfig/iptables
+## Applied for: 10.98.1.194 10.98.1.195 10.108.1.102
+# Firewall configuration written by system-config-firewall
+# Manual customization of this file is not recommended.
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+:LOGGING - [0:0]
+###################### INPUT RULES      ########################
+#### DEFAULT INPUT RULES (APPLY FOR ALL SERVERS) ####
+# Allow current connections
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+# Allow_ICMP
+-A INPUT -p icmp -j ACCEPT
+# Allow_Loopback_Local
+-A INPUT -i lo -j ACCEPT
+-A INPUT -i enccw0.0.f603 -j ACCEPT
+-A INPUT -s 169.254.0.0/16 -j ACCEPT
+# Allow_In_User
+-A INPUT -s 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.192.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.128.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+# Allow_In_DMZ
+-A INPUT -m iprange --src-range 10.96.1.1-10.96.3.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.10.1-10.96.11.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.128.1-10.96.130.254 -j ACCEPT
+-A INPUT -m iprange --src-range 10.96.138.1-10.96.138.254 -j ACCEPT
+# Allow_IN_NTP
+-A INPUT -p udp -m udp --dport 123 -j ACCEPT
+# Allow_In_Jump_TCP
+-A INPUT -s 10.98.4.38/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.62/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.63/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+-A INPUT -s 10.98.4.166/32 -p tcp -m multiport --dports 22,139,445,3389,1521 -j ACCEPT
+# Allow_In_EPO_TCP
+-A INPUT -s 10.98.4.73/32 -p tcp -m multiport --dports 8440,8441 -j ACCEPT
+-A INPUT -s 10.98.4.74/32 -p tcp -m multiport --dports 8440,8441 -j ACCEPT
+# Allow_In_Arcsight
+-A INPUT -s 10.97.4.71/32 -p tcp -m multiport --dports 8443,9001 -j ACCEPT
+-A INPUT -s 10.97.4.72/32 -p tcp -m multiport --dports 8443,9001 -j ACCEPT
+# Allow_In_CyberArk_TCP
+-A INPUT -s 10.98.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.20/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.22/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.23/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.143/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.144/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+# Allow_In_NOC_TCP
+-A INPUT -s 10.62.72.0/24 -p tcp -m multiport --dports 22,80,443,3389 -j ACCEPT
+# Allow_in_RiskScan_UDP
+-A INPUT -s 10.98.4.136 -p udp -m multiport --dports 137:138,445,1025:5000,49152:65535 -j ACCEPT
+# Allow_in_RiskScan_TCP
+-A INPUT -s 10.98.4.136 -p tcp -m multiport --dports 22,135,137:139,443,445,1025:5000,49152:65535 -j ACCEPT
+# Allow_In_Backup_TCP
+-A INPUT -s 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.13/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.14/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A INPUT -s 10.97.8.143/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+# Allow_In_AM_TCP
+-A INPUT -s 10.97.4.234/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.97.4.235/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.1.63/32 -p tcp  -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.12.30/32 -p tcp -m multiport --dports 22,135,139,445,1025:5000,49152:65535 -j ACCEPT
+# Allow_In_AM_UDP
+-A INPUT -s 10.97.4.234/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.97.4.235/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.98.1.63/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+-A INPUT -s 10.98.12.30/32 -p udp -m multiport --dports 137:138 -j ACCEPT
+# Allow_In_TSCH_Report
+-A INPUT -s 10.107.4.37/32 -p tcp --dport 22 -j ACCEPT
+#### END OF DEFAULT INPUT RULES ####
+
+#### CUSTOM INPUT RULES (APPLY FOR SPECIFIED SERVERS) ####
+# Allow_In_EM13C
+-A INPUT -s 10.99.1.89/32 -p tcp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.97.4.155/32 -p tcp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.99.1.89/32 -p udp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.97.4.155/32 -p udp -m multiport --dports 22,3872,1521 -m comment --comment EM13C_zone -j ACCEPT
+-A INPUT -s 10.99.1.0/24 -j ACCEPT
+-A INPUT -s 10.109.1.0/24 -j ACCEPT
+# Allow_In_DBS
+-A INPUT -s 192.168.11.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 10.100.100.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 10.99.1.75/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 192.168.11.42/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 192.168.11.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 10.100.100.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 10.97.4.133/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A INPUT -s 10.97.5.204/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+# Allow_In_MBB
+-A INPUT -m iprange --src-range 10.109.1.128-10.109.1.134 -p tcp -m multiport --dports 22,1521 -m comment --comment  "DC-DR synch" -j ACCEPT
+#### END OF CUSTOM INPUT RULES ####
+
+#### LOG AND DROP OTHER INPUT CONNECTIONS
+-A INPUT -j LOGGING
+###################### END OF INPUT RULES       ########################
+
+###################### OUTPUT RULES     ########################
+#### DEFAULT OUTPUT RULES (APPLY FOR ALL SERVERS) ####
+# Allow current connections, loopback and PING
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+# Allow_ICMP
+-A OUTPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+# Allow_Loopback_Local
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -o enccw0.0.f603 -j ACCEPT
+-A OUTPUT -d 169.254.0.0/16 -j ACCEPT
+# Allow_Out_User
+-A OUTPUT -d 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.192.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.128.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+# Allow_Out_DMZ
+-A OUTPUT -m iprange --dst-range 10.96.1.1-10.96.3.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.10.1-10.96.11.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.128.1-10.96.130.254 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.96.138.1-10.96.138.254 -j ACCEPT
+# Allow_Out_DNS
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+# Allow_Out_NTP
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
+# Allow_Out_Arcsight
+-A OUTPUT -d 10.97.4.71/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.73/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.242/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+-A OUTPUT -d 10.97.4.243/32 -p tcp -m multiport --dports 9001,443 -j ACCEPT
+# Allow_Out_RiskScan_UDP
+-A OUTPUT -d 10.98.4.136 -p udp -m multiport --dports 137,183,445 -j ACCEPT
+# Allow_Out_RiskScan_TCP
+-A OUTPUT -d 10.98.4.136 -p tcp -m multiport --dports 139,445,9524 -j ACCEPT
+# Allow_Out_FTP_TCP
+-A OUTPUT -d 10.97.5.238/32 -p tcp -m multiport --dports 21,5000:5001 -j ACCEPT
+-A OUTPUT -d 10.96.128.128/32 -p tcp -m multiport --dports 21,5000:5001 -j ACCEPT
+# Allow_Out_EPO_TCP
+-A OUTPUT -d 10.98.4.73/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+-A OUTPUT -d 10.98.4.74/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+# Allow_Out_AM_TCP
+-A OUTPUT -d 10.97.4.234/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.97.4.235/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.98.1.63/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+-A OUTPUT -d 10.98.12.30/32 -p tcp -m multiport --dports 135,139,445 -j ACCEPT
+# Allow_Out_Backup_TCP
+-A OUTPUT -d 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.13/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.14/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+-A OUTPUT -d 10.97.8.143/32 -p tcp -m multiport --dports 1556,13724 -j ACCEPT
+# Allow_Out_LogServer
+-A OUTPUT -d 10.97.4.53/32 -p udp -m udp --dport 514 -j ACCEPT
+-A OUTPUT -d 10.97.4.71/32 -p udp -m udp --dport 514 -j ACCEPT
+#### END OF DEFAULT OUTPUT RULES ####
+
+#### CUSTOM OUTPUT RULES (APPLY FOR SPECIFIED SERVERS) ####
+# Allow_Out_EM13
+-A OUTPUT -d 10.99.1.89/32 -p tcp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.97.4.155/32 -p tcp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.99.1.89/32 -p udp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.97.4.155/32 -p udp -m multiport --dports 4899:4908,3872,22,1159 -m comment --comment em13_zone -j ACCEPT
+-A OUTPUT -d 10.99.1.0/24 -j ACCEPT
+-A OUTPUT -d 10.109.1.0/24 -j ACCEPT
+# Allow_Out_DBS
+-A OUTPUT -d 192.168.11.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 10.100.100.41/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 10.99.1.75/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 192.168.11.42/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 192.168.11.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 10.100.100.169/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 10.97.4.133/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+-A OUTPUT -d 10.97.5.204/32 -p tcp -m multiport --dports 9500,9501,8081,1521,8443,8444,8445,8446,6016:16019 -m comment --comment  "dbs" -j ACCEPT
+# Allow_Out_MBB
+-A OUTPUT -m iprange --dst-range 10.109.1.128-10.109.1.134 -p tcp -m multiport --dports 22,1521 -m comment --comment  "DC-DR synch" -j ACCEPT
+#### END OF CUSTOM OUTPUT RULES ####
+
+#### LOG AND REJECT OTHER OUTPUT CONNECTIONS ##
+-A OUTPUT -j LOGGING
+###################### END OF OUTPUT RULES      ########################
+
+-A LOGGING -m limit --limit 20/min -j LOG --log-level 4 --log-prefix "IPTABLES DROP:"
+
+COMMIT
+[root@dc-mbb-db-02 ~]#
+
+=======================================================================================================================
+[root@dc-oradb-02 ~]# iptables -L -v --line-numbers
+Chain INPUT (policy DROP 253K packets, 21M bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+1    3812M  793G ACCEPT     all  --  any    any     anywhere             anywhere             state RELATED,ESTABLISHED
+2        0     0 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-reply
+3      343 20796 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-request
+4      34M   16G ACCEPT     all  --  lo     any     anywhere             anywhere
+5        0     0 ACCEPT     all  --  any    any     10.0.0.0/11          anywhere             /* user iprange */
+6      344 19688 ACCEPT     all  --  any    any     10.32.0.0/11         anywhere             /* user iprange */
+7        0     0 ACCEPT     all  --  any    any     10.128.0.0/9         anywhere             /* user iprange */
+8        0     0 ACCEPT     all  --  any    any     192.168.20.0/24      anywhere             /* user iprange */
+9        0     0 ACCEPT     all  --  any    any     192.168.40.0/24      anywhere             /* user iprange */
+10       0     0 ACCEPT     all  --  any    any     10.96.0.0/16         anywhere             /* DMZ iprange */
+11       0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere             tcp dpt:8441 source IP range 10.98.4.73-10.98.4.74 /* EPO iprange */
+12       0     0 ACCEPT     udp  --  any    any     DC-HEAD-01.headquarter.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+13       0     0 ACCEPT     udp  --  any    any     DC-HEAD-02.headquarter.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+14       0     0 ACCEPT     udp  --  any    any     dc-head-03.headquarter.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+15       0     0 ACCEPT     udp  --  any    any     dc-user-01.user.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+16       0     0 ACCEPT     udp  --  any    any     dc-user-02.user.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+17       0     0 ACCEPT     udp  --  any    any     dc-user-03.user.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+18       0     0 ACCEPT     udp  --  any    any     DR-HEAD-01.headquarter.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+19       0     0 ACCEPT     udp  --  any    any     dr-user-01.user.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+20       0     0 ACCEPT     udp  --  any    any     dr-user-02.user.techcombank.com.vn  anywhere             multiport dports domain,bootpc /* AD iprange */
+21       0     0 ACCEPT     udp  --  any    any     10.242.1.13          anywhere             multiport dports domain,bootpc /* AD iprange */
+22       0     0 ACCEPT     udp  --  any    any     10.243.1.13          anywhere             multiport dports domain,bootpc /* AD iprange */
+23       0     0 ACCEPT     udp  --  any    any     192.168.11.119       anywhere             multiport dports domain,bootpc /* AD iprange */
+24       0     0 ACCEPT     udp  --  any    any     192.168.20.191       anywhere             multiport dports domain,bootpc /* AD iprange */
+25       0     0 ACCEPT     udp  --  any    any     192.168.20.192       anywhere             multiport dports domain,bootpc /* AD iprange */
+26       0     0 ACCEPT     udp  --  any    any     192.168.21.192       anywhere             multiport dports domain,bootpc /* AD iprange */
+27       0     0 ACCEPT     udp  --  any    any     10.97.4.7            anywhere             udp dpt:ntp /* time connection */
+28       0     0 ACCEPT     udp  --  any    any     10.97.5.7            anywhere             udp dpt:ntp /* time connection */
+29       0     0 ACCEPT     tcp  --  any    any     10.97.4.72           anywhere             tcp dpt:pcsync-https
+30       0     0 ACCEPT     tcp  --  any    any     dc-tcb-bppm-01.headquarter.techcombank.com.vn  anywhere             multiport dports bmcpatrolagent,cops-tls
+31       0     0 ACCEPT     tcp  --  any    any     tcb-eye-01.headquarter.techcombank.com.vn  anywhere             multiport dports bmcpatrolagent,cops-tls
+32       2   104 ACCEPT     tcp  --  any    any     dc-jumpsrv-01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+33       0     0 ACCEPT     tcp  --  any    any     dc-pw-db01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+34      19   988 ACCEPT     tcp  --  any    any     dc-pw-cpm01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+35       0     0 ACCEPT     tcp  --  any    any     dc-pw-cpm02.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+36       0     0 ACCEPT     tcp  --  any    any     dc-pw-psm01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+37       0     0 ACCEPT     tcp  --  any    any     dc-pw-psm02.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+38       6   312 ACCEPT     tcp  --  any    any     DC-PW-PSM2.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+39       0     0 ACCEPT     tcp  --  any    any     10.98.4.89           anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+40       0     0 ACCEPT     tcp  --  any    any     dr-pw-vault.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+41       0     0 ACCEPT     tcp  --  any    any     DR-PW-CPM.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+42       0     0 ACCEPT     tcp  --  any    any     10.108.4.20          anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+43       0     0 ACCEPT     tcp  --  any    any     dr-pw-psm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+44       0     0 ACCEPT     tcp  --  any    any     DR-PW-PSM2.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+45       0     0 ACCEPT     tcp  --  any    any     10.108.4.89          anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+46       0     0 ACCEPT     tcp  --  any    any     dr-pw-cpm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+47       0     0 ACCEPT     tcp  --  any    any     dr-pw-psm.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,netbios-ssn,microsoft-ds,ms-wbt-server
+48       0     0 ACCEPT     tcp  --  any    any     dc-monitorlog.headquarter.techcombank.com.vn  anywhere             multiport dports epmap,netbios-ns,netbios-ssn,microsoft-ds
+49       0     0 ACCEPT     tcp  --  any    any     10.97.4.71           anywhere             tcp dpt:etlservicemgr
+50       0     0 ACCEPT     udp  --  any    any     DC-APP-MONITOR.headquarter.techcombank.com.vn  anywhere             udp dpt:snmp
+51       0     0 ACCEPT     tcp  --  any    any     10.97.4.133          anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+52       0     0 ACCEPT     tcp  --  any    any     10.97.5.204          anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+53       0     0 ACCEPT     tcp  --  any    any     10.99.1.75           anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+54       0     0 ACCEPT     tcp  --  any    any     10.100.100.41        anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+55       0     0 ACCEPT     tcp  --  any    any     10.100.100.169       anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+56       0     0 ACCEPT     tcp  --  any    any     192.168.11.41        anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+57       0     0 ACCEPT     tcp  --  any    any     192.168.11.42        anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+58       0     0 ACCEPT     tcp  --  any    any     192.168.11.169       anywhere             multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+59       0     0 ACCEPT     tcp  --  any    any     10.98.1.56           anywhere             multiport dports ncube-lm,lm-x
+60      42  2004 ACCEPT     tcp  --  any    any     10.98.1.57           anywhere             multiport dports ncube-lm,lm-x
+61      40  1916 ACCEPT     tcp  --  any    any     10.98.1.58           anywhere             multiport dports ncube-lm,lm-x
+62       0     0 ACCEPT     tcp  --  any    any     10.98.1.156          anywhere             multiport dports ncube-lm,lm-x
+63       0     0 ACCEPT     tcp  --  any    any     10.98.1.157          anywhere             multiport dports ncube-lm,lm-x
+64       0     0 ACCEPT     tcp  --  any    any     10.98.1.158          anywhere             multiport dports ncube-lm,lm-x
+65       0     0 ACCEPT     tcp  --  any    any     dr-jumpsrv.user.techcombank.com.vn  anywhere             tcp dpt:ssh
+66      15   780 ACCEPT     tcp  --  any    any     dr-jumpsrv.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+67       0     0 ACCEPT     tcp  --  any    any     10.62.72.0/24        anywhere             tcp dpt:ssh
+68       0     0 ACCEPT     tcp  --  any    any     dc-backup-01.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd,bpcd
+69       0     0 ACCEPT     tcp  --  any    any     dc-backup-02.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd,bpcd
+70       0     0 ACCEPT     tcp  --  any    any     dr-backup-01.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd,bpcd
+71       0     0 ACCEPT     tcp  --  any    any     dr-backup-02.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd,bpcd
+72       0     0 ACCEPT     tcp  --  any    any     dr-backup-03.headquarter.techcombank.com.vn  anywhere             multiport dports veritas_pbx,vnetd,bpcd
+73       0     0 ACCEPT     udp  --  any    any     dr-rcd-scan.headquarter.techcombank.com.vn  anywhere             multiport dports netbios-ns,netbios-dgm,microsoft-ds,blackjack:commplex-main,49152:65535
+74       0     0 ACCEPT     tcp  --  any    any     dr-rcd-scan.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,epmap,netbios-ssn,https,microsoft-ds,blackjack:commplex-main,49152:65535
+75    324K   17M ACCEPT     tcp  --  any    any     anywhere             anywhere             tcp dpt:ncube-lm
+76       0     0 ACCEPT     tcp  --  any    any     dc-los-trs-db01.headquarter.techcombank.com.vn  anywhere             multiport dports ssh,oem-agent,ncube-lm
+77     194 11640 ACCEPT     tcp  --  any    any     dc-em13c-app         anywhere             multiport dports ssh,oem-agent,ncube-lm
+78     586 30472 ACCEPT     tcp  --  any    any     dc-am-manage-01.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+79       0     0 ACCEPT     tcp  --  any    any     DC-AM-Manage-02.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+80     130  6760 ACCEPT     tcp  --  any    any     dc-appmom.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+81       0     0 ACCEPT     tcp  --  any    any     dr-jumpsrv.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+82       0     0 ACCEPT     tcp  --  any    any     dr-jumpsrv.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+83       0     0 ACCEPT     tcp  --  any    any     dc-jumpsrv-01.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+84       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02-priv
+85    103K 6221K ACCEPT     udp  --  any    any     anywhere             dc-oradb-02-priv
+86     383 30794 ACCEPT     all  --  any    any     dc-oradb-01          anywhere
+87      86 27937 ACCEPT     all  --  any    any     dc-oradb-01-priv     anywhere
+88    808M 1994G ACCEPT     all  --  any    any     link-local/16        anywhere
+89       0     0 ACCEPT     all  --  enccw0.0.f500:1 any     anywhere             anywhere
+90     241 62424 ACCEPT     all  --  enccw0.0.f500 any     anywhere             anywhere
+91       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-01-vip      tcp dpt:ncube-lm
+92       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02-vip      tcp dpt:ncube-lm
+93       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02          tcp dpt:ncube-lm
+94       0     0 ACCEPT     tcp  --  any    any     anywhere             10.99.1.218          tcp dpt:ncube-lm
+95       0     0 ACCEPT     tcp  --  any    any     anywhere             10.99.1.219          tcp dpt:ncube-lm
+96       0     0 ACCEPT     tcp  --  any    any     dc-oradb-01          anywhere             tcp dpt:ssh
+97       0     0 ACCEPT     tcp  --  any    any     dc-oradb-02          anywhere             tcp dpt:ssh
+98       0     0 ACCEPT     tcp  --  any    any     10.109.1.204         anywhere             tcp dpt:ssh
+99       0     0 ACCEPT     tcp  --  any    any     10.109.1.205         anywhere             tcp dpt:ssh
+100   9832  590K ACCEPT     tcp  --  any    any     dc-monitor.headquarter.techcombank.com.vn  anywhere             tcp dpt:ssh
+101      0     0 ACCEPT     udp  --  any    any     10.97.4.53           anywhere             udp dpt:syslog
+102      0     0 ACCEPT     tcp  --  any    any     dr-los-trs-app1.headquarter.techcombank.com.vn  anywhere             tcp dpt:can-nds
+103      3   180 ACCEPT     tcp  --  any    any     10.107.4.37          anywhere             tcp dpt:ssh
+104      0     0 ACCEPT     tcp  --  any    any     10.99.1.188          anywhere             multiport dports mevent,7910:7949
+105   253K   21M LOGGING    all  --  any    any     anywhere             anywhere
+
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+
+Chain OUTPUT (policy DROP 7015 packets, 425K bytes)
+num   pkts bytes target     prot opt in     out     source               destination
+1    4054M 2009G ACCEPT     all  --  any    any     anywhere             anywhere             state RELATED,ESTABLISHED
+2        0     0 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-reply
+3       13  1028 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-request
+4      34M   16G ACCEPT     all  --  any    lo      anywhere             anywhere
+5        0     0 ACCEPT     all  --  any    any     anywhere             DC-HEAD-01.headquarter.techcombank.com.vn
+6      269 15333 ACCEPT     all  --  any    any     anywhere             DC-HEAD-02.headquarter.techcombank.com.vn
+7        0     0 ACCEPT     all  --  any    any     anywhere             dc-head-03.headquarter.techcombank.com.vn
+8        0     0 ACCEPT     all  --  any    any     anywhere             dc-user-01.user.techcombank.com.vn
+9        0     0 ACCEPT     all  --  any    any     anywhere             dc-user-02.user.techcombank.com.vn
+10       0     0 ACCEPT     all  --  any    any     anywhere             dc-user-03.user.techcombank.com.vn
+11       0     0 ACCEPT     all  --  any    any     anywhere             DR-HEAD-01.headquarter.techcombank.com.vn
+12       0     0 ACCEPT     all  --  any    any     anywhere             dr-user-01.user.techcombank.com.vn
+13       0     0 ACCEPT     all  --  any    any     anywhere             dr-user-02.user.techcombank.com.vn
+14       0     0 ACCEPT     all  --  any    any     anywhere             10.242.1.13
+15       0     0 ACCEPT     all  --  any    any     anywhere             10.243.1.13
+16       0     0 ACCEPT     all  --  any    any     anywhere             192.168.11.119
+17       0     0 ACCEPT     all  --  any    any     anywhere             192.168.20.191
+18       0     0 ACCEPT     all  --  any    any     anywhere             192.168.20.192
+19       0     0 ACCEPT     all  --  any    any     anywhere             192.168.21.192
+20       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.99.1.28-10.99.1.34
+21       0     0 ACCEPT     all  --  any    any     anywhere             anywhere             destination IP range 10.99.1.158-10.99.1.164
+22       0     0 ACCEPT     all  --  any    any     anywhere             10.0.0.0/11          /* user iprange */
+23       1    40 ACCEPT     all  --  any    any     anywhere             10.32.0.0/11         /* user iprange */
+24       0     0 ACCEPT     all  --  any    any     anywhere             10.128.0.0/9         /* user iprange */
+25       0     0 ACCEPT     all  --  any    any     anywhere             192.168.20.0/24      /* user iprange */
+26       0     0 ACCEPT     all  --  any    any     anywhere             192.168.40.0/24      /* user iprange */
+27       0     0 ACCEPT     all  --  any    any     anywhere             10.96.0.0/16         /* DMZ iprange */
+28       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-epo-app01.headquarter.techcombank.com.vn  multiport dports 8439:pcsync-http
+29       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-epo-app02.headquarter.techcombank.com.vn  multiport dports 8439:pcsync-http
+30       0     0 ACCEPT     udp  --  any    any     anywhere             DC-HEAD-01.headquarter.techcombank.com.vn  multiport dports domain,bootps
+31       0     0 ACCEPT     udp  --  any    any     anywhere             DC-HEAD-02.headquarter.techcombank.com.vn  multiport dports domain,bootps
+32       0     0 ACCEPT     udp  --  any    any     anywhere             dc-head-03.headquarter.techcombank.com.vn  multiport dports domain,bootps
+33       0     0 ACCEPT     udp  --  any    any     anywhere             dc-user-01.user.techcombank.com.vn  multiport dports domain,bootps
+34       0     0 ACCEPT     udp  --  any    any     anywhere             dc-user-02.user.techcombank.com.vn  multiport dports domain,bootps
+35       0     0 ACCEPT     udp  --  any    any     anywhere             dc-user-03.user.techcombank.com.vn  multiport dports domain,bootps
+36   46567 3860K ACCEPT     udp  --  any    any     anywhere             vip.headquarter.techcombank.com.vn  udp dpt:domain
+37       0     0 ACCEPT     tcp  --  any    any     anywhere             vip.headquarter.techcombank.com.vn  tcp dpt:domain
+38     288 16796 ACCEPT     udp  --  any    any     anywhere             10.98.1.219          udp dpt:domain
+39       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.219          tcp dpt:domain
+40       0     0 ACCEPT     udp  --  any    any     anywhere             DR-HEAD-01.headquarter.techcombank.com.vn  multiport dports domain,bootps
+41       0     0 ACCEPT     udp  --  any    any     anywhere             dr-user-01.user.techcombank.com.vn  multiport dports domain,bootps
+42       0     0 ACCEPT     udp  --  any    any     anywhere             dr-user-02.user.techcombank.com.vn  multiport dports domain,bootps
+43       0     0 ACCEPT     udp  --  any    any     anywhere             10.242.1.13          multiport dports domain,bootps
+44       0     0 ACCEPT     udp  --  any    any     anywhere             10.243.1.13          multiport dports domain,bootps
+45       0     0 ACCEPT     udp  --  any    any     anywhere             192.168.11.119       multiport dports domain,bootps
+46       0     0 ACCEPT     udp  --  any    any     anywhere             192.168.20.191       multiport dports domain,bootps
+47       0     0 ACCEPT     udp  --  any    any     anywhere             192.168.20.192       multiport dports domain,bootps
+48       0     0 ACCEPT     udp  --  any    any     anywhere             192.168.21.192       multiport dports domain,bootps
+49    4293  326K ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:ntp
+50       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.71           tcp dpt:etlservicemgr
+51       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.73           tcp dpt:https
+52       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.242          tcp dpt:https
+53       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.4.243          tcp dpt:https
+54       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-dbsql.headquarter.techcombank.com.vn  multiport dports ms-sql-s,ms-sql-m
+55       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-dbsql-backup.headquarter.techcombank.com.vn  multiport dports ms-sql-s,ms-sql-m
+56       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.56           multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+57       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.57           multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+58       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.58           multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+59       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.156          multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+60       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.157          multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+61       0     0 ACCEPT     tcp  --  any    any     anywhere             10.98.1.158          multiport dports afs3-vlserver:afs3-errors,http,https,pt2-discover,adobeserver-1
+62      28  1680 ACCEPT     tcp  --  any    any     anywhere             dc-backup-01.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd,bpcd
+63       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-backup-02.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd,bpcd
+64       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-01.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd,bpcd
+65       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-02.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd,bpcd
+66       0     0 ACCEPT     tcp  --  any    any     anywhere             dr-backup-03.headquarter.techcombank.com.vn  multiport dports veritas_pbx,vnetd,bpcd
+67       0     0            tcp  --  any    any     anywhere             anywhere             multiport dports daytime
+68       0     0            tcp  --  any    any     anywhere             10.99.1.0            tcp dpt:ncube-lm
+69       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-los-trs-db01.headquarter.techcombank.com.vn  multiport dports 4897:4908,oem-agent,ssh,oracle-oms
+70    6606  406K ACCEPT     tcp  --  any    any     anywhere             dc-em13c-app         multiport dports 4897:4908,oem-agent,ssh,oracle-oms
+71       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.204         tcp dpt:ncube-lm
+72       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.205         tcp dpt:ncube-lm
+73     213 17488 ACCEPT     tcp  --  any    any     anywhere             10.109.1.215         tcp dpt:ncube-lm
+74      16   960 ACCEPT     tcp  --  any    any     anywhere             10.109.1.216         tcp dpt:ncube-lm
+75       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.217         tcp dpt:ncube-lm
+76       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.218         tcp dpt:ncube-lm
+77       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.219         tcp dpt:ncube-lm
+78       0     0 ACCEPT     tcp  --  any    any     dc-oradb-02-priv     anywhere
+79    103K 6246K ACCEPT     udp  --  any    any     dc-oradb-02-priv     anywhere
+80     412 24720 ACCEPT     all  --  any    any     anywhere             dc-oradb-01
+81       0     0 ACCEPT     all  --  any    any     anywhere             dc-oradb-01-priv
+82    821M 1887G ACCEPT     all  --  any    any     anywhere             link-local/16
+83       4   160 ACCEPT     all  --  any    enccw0.0.f500  anywhere             anywhere
+84       0     0 ACCEPT     all  --  any    enccw0.0.f500:1  anywhere             anywhere
+85       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-01-vip      tcp dpt:ncube-lm
+86     152  9120 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02-vip      tcp dpt:ncube-lm
+87       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02          tcp dpt:ncube-lm
+88      27  1620 ACCEPT     tcp  --  any    any     anywhere             10.99.1.218          tcp dpt:ncube-lm
+89      25  1500 ACCEPT     tcp  --  any    any     anywhere             10.99.1.219          tcp dpt:ncube-lm
+90       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-01          tcp dpt:ssh
+91       0     0 ACCEPT     tcp  --  any    any     anywhere             dc-oradb-02          tcp dpt:ssh
+92       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.204         tcp dpt:ssh
+93       0     0 ACCEPT     tcp  --  any    any     anywhere             10.109.1.205         tcp dpt:ssh
+94    1607 96420 ACCEPT     tcp  --  any    any     anywhere             10.97.4.133          multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+95       0     0 ACCEPT     tcp  --  any    any     anywhere             10.97.5.204          multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+96       0     0 ACCEPT     tcp  --  any    any     anywhere             10.99.1.75           multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+97       0     0 ACCEPT     tcp  --  any    any     anywhere             10.100.100.41        multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+98       0     0 ACCEPT     tcp  --  any    any     anywhere             10.100.100.169       multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+99       7   420 ACCEPT     tcp  --  any    any     anywhere             192.168.11.41        multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+100      1    60 ACCEPT     tcp  --  any    any     anywhere             192.168.11.42        multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+101      0     0 ACCEPT     tcp  --  any    any     anywhere             192.168.11.169       multiport dports ncube-lm:cichild-lm,prospero-np,tlisrv,tproxy,ismserver,9501,pcsync-https,pcsync-http,copy,8446,16016:16019
+102   576K  160M ACCEPT     udp  --  any    any     anywhere             10.97.4.53           udp dpt:syslog
+103      1    60 ACCEPT     tcp  --  any    any     anywhere             dr-los-trs-app1.headquarter.techcombank.com.vn  tcp dpt:can-nds
+104      6   360 ACCEPT     tcp  --  any    any     anywhere             10.99.1.188          multiport dports mevent,7910:7949
+105   7015  425K LOGGING    all  --  any    any     anywhere             anywhere
+
+Chain LOGGING (2 references)
+num   pkts bytes target     prot opt in     out     source               destination
+1     6468  556K LOG        all  --  any    any     anywhere             anywhere             limit: avg 2/min burst 5 LOG level warning prefix "IPTables-Dropped: "
+[root@dc-oradb-02 ~]# cat /etc/sysconfig/iptables
+# Generated by iptables-save v1.4.21 on Fri Jan  5 11:27:39 2018
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+:LOGGING - [0:0]
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -s 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.32.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.128.0.0/9 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 192.168.20.0/24 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 192.168.40.0/24 -m comment --comment "user iprange" -j ACCEPT
+-A INPUT -s 10.96.0.0/16 -m comment --comment "DMZ iprange" -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 8441 -m iprange --src-range 10.98.4.73-10.98.4.74 -m comment --comment "EPO iprange" -j ACCEPT
+-A INPUT -s 10.98.1.34/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.35/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.36/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.67/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.68/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.69/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.147/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.159/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.98.1.160/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.242.1.13/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.243.1.13/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 192.168.11.119/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 192.168.20.191/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 192.168.20.192/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 192.168.21.192/32 -p udp -m multiport --dports 53,68 -m comment --comment "AD iprange" -j ACCEPT
+-A INPUT -s 10.97.4.7/32 -p udp -m udp --dport 123 -m comment --comment "time connection" -j ACCEPT
+-A INPUT -s 10.97.5.7/32 -p udp -m udp --dport 123 -m comment --comment "time connection" -j ACCEPT
+-A INPUT -s 10.97.4.72/32 -p tcp -m tcp --dport 8443 -j ACCEPT
+-A INPUT -s 10.64.32.74/32 -p tcp -m multiport --dports 3181,3183 -j ACCEPT
+-A INPUT -s 10.64.32.76/32 -p tcp -m multiport --dports 3181,3183 -j ACCEPT
+-A INPUT -s 10.98.4.63/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.16/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.20/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.22/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.23/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.89/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.16/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.19/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.20/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.23/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.24/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.108.4.89/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.143/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.98.4.144/32 -p tcp -m multiport --dports 22,139,445,3389 -j ACCEPT
+-A INPUT -s 10.97.4.9/32 -p tcp -m multiport --dports 135,137,139,445 -j ACCEPT
+-A INPUT -s 10.97.4.71/32 -p tcp -m tcp --dport 9001 -j ACCEPT
+-A INPUT -s 10.98.2.30/32 -p udp -m udp --dport 161 -j ACCEPT
+-A INPUT -s 10.97.4.133/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 10.97.5.204/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 10.99.1.75/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 10.100.100.41/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 10.100.100.169/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 192.168.11.41/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 192.168.11.42/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 192.168.11.169/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A INPUT -s 10.98.1.56/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.1.57/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.1.58/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.1.156/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.1.157/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.1.158/32 -p tcp -m multiport --dports 1521,6200 -j ACCEPT
+-A INPUT -s 10.98.4.38/32 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.98.4.166/32 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.62.72.0/24 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A INPUT -s 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A INPUT -s 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A INPUT -s 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A INPUT -s 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A INPUT -s 10.98.4.136/32 -p udp -m multiport --dports 137,138,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -s 10.98.4.136/32 -p tcp -m multiport --dports 22,135,139,443,445,1025:5000,49152:65535 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -p TCP -m multiport --dport 22,3872,1521 -s 10.99.1.89,10.97.4.155 -j ACCEPT
+-A INPUT -p TCP --dport 22 -s 10.97.4.234,10.97.4.235,10.98.1.63 -j ACCEPT
+-A INPUT -p TCP --dport 22 -s 10.98.4.38,10.98.4.166,10.98.4.63 -j ACCEPT
+-A INPUT -p tcp -d 192.168.2.6 -j ACCEPT
+-A INPUT -p udp -d 192.168.2.6 -j ACCEPT
+-A INPUT -s 10.99.1.204 -j ACCEPT
+-A INPUT -s 192.168.2.5 -j ACCEPT
+-A INPUT -s 169.254.0.0/16 -j ACCEPT
+-A INPUT -i enccw0.0.f500:1 -j ACCEPT
+-A INPUT -i enccw0.0.f500 -j ACCEPT
+-A INPUT -d 10.99.1.215/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -d 10.99.1.216/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -d 10.99.1.217/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -d 10.99.1.218/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -d 10.99.1.219/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A INPUT -s 10.99.1.204,10.99.1.205,10.109.1.204,10.109.1.205 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.97.4.35 -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -s 10.97.4.53/32 -p udp -m udp --dport 514 -j ACCEPT
+-A INPUT -s 10.97.4.246/32 -p tcp -m tcp --dport 1918 -j ACCEPT
+#Report TSCH
+-A INPUT -s 10.107.4.37/32 -p tcp --dport 22 -j ACCEPT
+# Allow_In_MBBDB02
+-A INPUT -s 10.99.1.188/32 -p tcp -m multiport --dports 7900,7910:7949 -j ACCEPT
+-A INPUT -j LOGGING
+-A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -d 10.98.1.34/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.35/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.36/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.67/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.68/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.69/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.147/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.159/32 -j ACCEPT
+-A OUTPUT -d 10.98.1.160/32 -j ACCEPT
+-A OUTPUT -d 10.242.1.13/32 -j ACCEPT
+-A OUTPUT -d 10.243.1.13/32 -j ACCEPT
+-A OUTPUT -d 192.168.11.119/32 -j ACCEPT
+-A OUTPUT -d 192.168.20.191/32 -j ACCEPT
+-A OUTPUT -d 192.168.20.192/32 -j ACCEPT
+-A OUTPUT -d 192.168.21.192/32 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.99.1.28-10.99.1.34 -j ACCEPT
+-A OUTPUT -m iprange --dst-range 10.99.1.158-10.99.1.164 -j ACCEPT
+-A OUTPUT -d 10.0.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.32.0.0/11 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.128.0.0/9 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 192.168.20.0/24 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 192.168.40.0/24 -m comment --comment "user iprange" -j ACCEPT
+-A OUTPUT -d 10.96.0.0/16 -m comment --comment "DMZ iprange" -j ACCEPT
+-A OUTPUT -d 10.98.4.73/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+-A OUTPUT -d 10.98.4.74/32 -p tcp -m multiport --dports 8439:8444 -j ACCEPT
+-A OUTPUT -d 10.98.1.34/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.35/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.36/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.67/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.68/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.69/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.91/32 -p udp -m udp --dport 53 -j ACCEPT
+-A OUTPUT -d 10.98.1.91/32 -p tcp -m tcp --dport 53 -j ACCEPT
+-A OUTPUT -d 10.98.1.219/32 -p udp -m udp --dport 53 -j ACCEPT
+-A OUTPUT -d 10.98.1.219/32 -p tcp -m tcp --dport 53 -j ACCEPT
+-A OUTPUT -d 10.98.1.147/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.159/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.98.1.160/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.242.1.13/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 10.243.1.13/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 192.168.11.119/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 192.168.20.191/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 192.168.20.192/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -d 192.168.21.192/32 -p udp -m multiport --dports 53,67 -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
+-A OUTPUT -d 10.97.4.71/32 -p tcp -m tcp --dport 9001 -j ACCEPT
+-A OUTPUT -d 10.97.4.73/32 -p tcp -m tcp --dport 443 -j ACCEPT
+-A OUTPUT -d 10.97.4.242/32 -p tcp -m tcp --dport 443 -j ACCEPT
+-A OUTPUT -d 10.97.4.243/32 -p tcp -m tcp --dport 443 -j ACCEPT
+-A OUTPUT -d 10.99.1.48/32 -p tcp -m multiport --dports 1433,1434 -j ACCEPT
+-A OUTPUT -d 10.99.1.148/32 -p tcp -m multiport --dports 1433,1434 -j ACCEPT
+-A OUTPUT -d 10.98.1.56/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.98.1.57/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.98.1.58/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.98.1.156/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.98.1.157/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.98.1.158/32 -p tcp -m multiport --dports 7003:7006,80,443,1101,1102 -j ACCEPT
+-A OUTPUT -d 10.97.8.10/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A OUTPUT -d 10.97.8.11/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A OUTPUT -d 10.97.8.136/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A OUTPUT -d 10.97.8.137/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A OUTPUT -d 10.97.8.138/32 -p tcp -m multiport --dports 1556,13724,13782 -j ACCEPT
+-A OUTPUT -p tcp -m multiport --dports 13
+-A OUTPUT -d 10.99.1.0/32 -p tcp -m tcp --dport 1521
+-A OUTPUT -p TCP -m multiport --dport 4897:4908,3872,22,1159 -d 10.99.1.89,10.97.4.155 -j ACCEPT
+-A OUTPUT -d 10.109.1.204/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.205/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.215/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.216/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.217/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.218/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.109.1.219/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -p tcp -s 192.168.2.6 -j ACCEPT
+-A OUTPUT -p udp -s 192.168.2.6 -j ACCEPT
+-A OUTPUT -d 10.99.1.204 -j ACCEPT
+-A OUTPUT -d 192.168.2.5 -j ACCEPT
+-A OUTPUT -d 169.254.0.0/16 -j ACCEPT
+-A OUTPUT -o enccw0.0.f500 -j ACCEPT
+-A OUTPUT -o enccw0.0.f500:1 -j ACCEPT
+-A OUTPUT -d 10.99.1.215/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.99.1.216/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.99.1.217/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.99.1.218/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.99.1.219/32 -p tcp -m tcp --dport 1521 -j ACCEPT
+-A OUTPUT -d 10.99.1.204,10.99.1.205,10.109.1.204,10.109.1.205 -p tcp -m tcp --dport 22 -j ACCEPT
+
+#Guardium
+-A OUTPUT -d 10.97.4.133/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 10.97.5.204/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 10.99.1.75/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 10.100.100.41/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 10.100.100.169/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 192.168.11.41/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 192.168.11.42/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+-A OUTPUT -d 192.168.11.169/32 -p tcp -m multiport --dports 1521:1523,1525,1527,8081,9500,9501,8443,8444,8445,8446,16016:16019 -j ACCEPT
+
+-A OUTPUT -d 10.97.4.53/32 -p udp -m udp --dport 514 -j ACCEPT
+-A OUTPUT -d 10.97.4.246/32 -p tcp -m tcp --dport 1918 -j ACCEPT
+# Allow_Out_MBBDB02
+-A OUTPUT -d 10.99.1.188/32 -p tcp -m multiport --dports 7900,7910:7949 -j ACCEPT
+-A OUTPUT -j LOGGING
+-A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: "
+COMMIT
+# Completed on Fri Jan  5 11:27:39 2018
+[root@dc-oradb-02 ~]#

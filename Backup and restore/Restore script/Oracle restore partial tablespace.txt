@@ -1,0 +1,554 @@
+I. Backup database
+-------------------------------------------------------------------------------
+RMAN> run
+{
+backup as compressed backupset incremental level 0 database format '/backup_dwh_full/last_backup/FULL_%d_%u_%s_%T';
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL FORMAT '/backup_dwh_full/last_backup/arch_%d_%Y%M%D_%U' FILESPERSET 200 TAG  ARCH;
+BACKUP CURRENT CONTROLFILE FORMAT '/home/oracle/controlf_%d_%u_%s_%T';
+}
+
+
+II. Create spfile,controlfile 
+------------------------------------------------------------------------------- 
+SQL> create pfile='$ORACLE_HOME/dbs/initdwhres.ora' from spfile;
+
+SQL> alter database backup controlfile to trace as '/home/oracle/ctlfile_dwhres.sql';
+
+
+
+III. Identifiy What tablespaces are mandatory for partial restore: (run in DC)
+------------------------------------------------------------------------------- 
+- SYSTEM tablespace
+- SYSAUX tablespace
+- Other tablespaces that hold dictionary information
+- Tablespace with rollback segments
+
+SQL> select distinct tablespace_name from dba_segments where owner in ('SYS', 'SYSTEM') order by 1;
+TABLESPACE_NAME
+------------------------------
+AUDIT_TBS
+UNDOTBS1
+UNDOTBS2
+SYSTEM
+SYSAUX
+
+Optional:
+- All tablespaces with user data that I want to use for restore
+
+SQL> set lines 200
+set pages 200
+col name for a60
+Select file#, name from v$datafile where name like '%dwh_tbs%' 
+OR name like '%sysaux%'
+OR name like '%system%'
+OR name like '%undotbs1%' 
+OR name like '%undotbs2%'
+OR name like '%audit_tbs%' order by 1;
+
+     FILE#   NAME
+----------   -----------------------------------------------------------
+         1   +DATA_DG/dwprddr/datafile/system.291.923918967
+         2   +DATA_DG/dwprddr/datafile/sysaux.867.923915385
+         3   +DATA_DG/dwprddr/datafile/undotbs1.863.923915385
+         4   +DATA_DG/dwprddr/datafile/undotbs2.865.923915385
+        38   +DATA_DG/dwprddr/datafile/sysaux.831.979122589
+        83   +DATA_DG/dwprddr/datafile/undotbs1.1279.923921171
+        84   +DATA_DG/dwprddr/datafile/undotbs1.608.923918587
+        85   +DATA_DG/dwprddr/datafile/undotbs1.2133.923922731
+        90   +DATA_DG/dwprddr/datafile/system.493.923919095
+       110   +DATA_DG/dwprddr/datafile/undotbs2.923.923930139
+       169   +DATA_DG/dwprddr/datafile/audit_tbs.564.957265111
+       210   +DATA_DG/dwprddr/datafile/undotbs2.476.923920293
+       211   +DATA_DG/dwprddr/datafile/undotbs2.1170.923917823
+       212   +DATA_DG/dwprddr/datafile/undotbs1.1277.923921079
+       213   +DATA_DG/dwprddr/datafile/undotbs2.654.923930461
+       214   +DATA_DG/dwprddr/datafile/undotbs1.740.923925095
+       215   +DATA_DG/dwprddr/datafile/undotbs2.586.923919045
+       250   +DATA_DG/dwprddr/datafile/audit_tbs.1063.964052809
+       263   +DATA_DG/dwprddr/datafile/undotbs1.1249.924130939
+       264   +DATA_DG/dwprddr/datafile/undotbs1.2004.924134107
+       265   +DATA_DG/dwprddr/datafile/undotbs1.2086.924131431
+       266   +DATA_DG/dwprddr/datafile/undotbs1.1016.924129207
+       267   +DATA_DG/dwprddr/datafile/undotbs2.1956.924135613
+       268   +DATA_DG/dwprddr/datafile/undotbs2.2090.924131469
+       269   +DATA_DG/dwprddr/datafile/undotbs2.1366.924130535
+       270   +DATA_DG/dwprddr/datafile/undotbs2.2080.924131425
+       271   +DATA_DG/dwprddr/datafile/system.1968.924135143
+       332   +DATA_DG/dwprddr/datafile/dwh_tbs.2123.923923425
+       333   +DATA_DG/dwprddr/datafile/dwh_tbs.858.923915391
+       334   +DATA_DG/dwprddr/datafile/dwh_tbs.2110.923924653
+       335   +DATA_DG/dwprddr/datafile/dwh_tbs.473.923920513
+       336   +DATA_DG/dwprddr/datafile/dwh_tbs.1274.923921053
+       337   +DATA_DG/dwprddr/datafile/dwh_tbs.2108.923924825
+       338   +DATA_DG/dwprddr/datafile/dwh_tbs.2114.923925097
+       339   +DATA_DG/dwprddr/datafile/dwh_tbs.789.923925263
+       340   +DATA_DG/dwprddr/datafile/dwh_tbs.782.923925401
+       341   +DATA_DG/dwprddr/datafile/dwh_tbs.337.923925415
+       342   +DATA_DG/dwprddr/datafile/dwh_tbs.1070.923915393
+       343   +DATA_DG/dwprddr/datafile/dwh_tbs.763.923925699
+       344   +DATA_DG/dwprddr/datafile/dwh_tbs.1171.923917825
+       345   +DATA_DG/dwprddr/datafile/dwh_tbs.424.923922487
+       346   +DATA_DG/dwprddr/datafile/dwh_tbs.912.923929683
+       347   +DATA_DG/dwprddr/datafile/dwh_tbs.1026.923915391
+       348   +DATA_DG/dwprddr/datafile/dwh_tbs.807.923918143
+       349   +DATA_DG/dwprddr/datafile/dwh_tbs.477.923920293
+       350   +DATA_DG/dwprddr/datafile/dwh_tbs.762.923915391
+       351   +DATA_DG/dwprddr/datafile/dwh_tbs.485.923920059
+       352   +DATA_DG/dwprddr/datafile/dwh_tbs.1280.923921175
+       353   +DATA_DG/dwprddr/datafile/dwh_tbs.2113.923923851
+       354   +DATA_DG/dwprddr/datafile/dwh_tbs.772.923925959
+       355   +DATA_DG/dwprddr/datafile/dwh_tbs.1032.923915391
+       356   +DATA_DG/dwprddr/datafile/dwh_tbs.1184.923918495
+       357   +DATA_DG/dwprddr/datafile/dwh_tbs.480.923920263
+       358   +DATA_DG/dwprddr/datafile/dwh_tbs.1281.923921175
+       359   +DATA_DG/dwprddr/datafile/dwh_tbs.430.923922387
+       360   +DATA_DG/dwprddr/datafile/dwh_tbs.1275.923921055
+       361   +DATA_DG/dwprddr/datafile/dwh_tbs.2130.923922977
+       362   +DATA_DG/dwprddr/datafile/dwh_tbs.375.923930375
+       363   +DATA_DG/dwprddr/datafile/dwh_tbs.258.923927179
+       364   +DATA_DG/dwprddr/datafile/dwh_tbs.2128.923922981
+       365   +DATA_DG/dwprddr/datafile/dwh_tbs.457.923922061
+       366   +DATA_DG/dwprddr/datafile/dwh_tbs.338.923925417
+       367   +DATA_DG/dwprddr/datafile/dwh_tbs.907.923929327
+       368   +DATA_DG/dwprddr/datafile/dwh_tbs.294.923918905
+       369   +DATA_DG/dwprddr/datafile/dwh_tbs.1008.923915389
+       370   +DATA_DG/dwprddr/datafile/dwh_tbs.1075.923915393
+       371   +DATA_DG/dwprddr/datafile/dwh_tbs.1071.923915393
+       372   +DATA_DG/dwprddr/datafile/dwh_tbs.462.923922025
+       373   +DATA_DG/dwprddr/datafile/dwh_tbs.469.923920739
+       374   +DATA_DG/dwprddr/datafile/dwh_tbs.432.923922381
+       375   +DATA_DG/dwprddr/datafile/dwh_tbs.465.923922023
+       376   +DATA_DG/dwprddr/datafile/dwh_tbs.1030.923915391
+       377   +DATA_DG/dwprddr/datafile/dwh_tbs.826.923927279
+       378   +DATA_DG/dwprddr/datafile/dwh_tbs.460.923920923
+       379   +DATA_DG/dwprddr/datafile/dwh_tbs.761.923925701
+       380   +DATA_DG/dwprddr/datafile/dwh_tbs.1069.923915393
+       381   +DATA_DG/dwprddr/datafile/dwh_tbs.472.923920513
+       382   +DATA_DG/dwprddr/datafile/dwh_tbs.2109.923924655
+       383   +DATA_DG/dwprddr/datafile/dwh_tbs.1068.923915393
+       384   +DATA_DG/dwprddr/datafile/dwh_tbs.488.923919325
+       385   +DATA_DG/dwprddr/datafile/dwh_tbs.1028.923915391
+       386   +DATA_DG/dwprddr/datafile/dwh_tbs.917.923929873
+       387   +DATA_DG/dwprddr/datafile/dwh_tbs.2122.923923427
+       388   +DATA_DG/dwprddr/datafile/dwh_tbs.1154.923917741
+       389   +DATA_DG/dwprddr/datafile/dwh_tbs.2119.923923673
+       390   +DATA_DG/dwprddr/datafile/dwh_tbs.468.923920739
+       391   +DATA_DG/dwprddr/datafile/dwh_tbs.484.923920061
+       392   +DATA_DG/dwprddr/datafile/dwh_tbs.703.923921625
+       393   +DATA_DG/dwprddr/datafile/dwh_tbs.949.923931145
+       394   +DATA_DG/dwprddr/datafile/dwh_tbs.830.923927287
+       395   +DATA_DG/dwprddr/datafile/dwh_tbs.590.923918969
+       396   +DATA_DG/dwprddr/datafile/dwh_tbs.1031.923915391
+       397   +DATA_DG/dwprddr/datafile/dwh_tbs.2112.923925097
+       398   +DATA_DG/dwprddr/datafile/dwh_tbs.290.923918807
+       399   +DATA_DG/dwprddr/datafile/dwh_tbs.1009.923915389
+       400   +DATA_DG/dwprddr/datafile/dwh_tbs.496.923919055
+       401   +DATA_DG/dwprddr/datafile/dwh_tbs.300.923925403
+       402   +DATA_DG/dwprddr/datafile/dwh_tbs.412.923923251
+       403   +DATA_DG/dwprddr/datafile/dwh_tbs.2132.923922731
+       404   +DATA_DG/dwprddr/datafile/dwh_tbs.2136.923922389
+       405   +DATA_DG/dwprddr/datafile/dwh_tbs.1073.923915393
+       406   +DATA_DG/dwprddr/datafile/dwh_tbs.456.923922065
+       407   +DATA_DG/dwprddr/datafile/dwh_tbs.1029.923915391
+       408   +DATA_DG/dwprddr/datafile/dwh_tbs.279.923915393
+       409   +DATA_DG/dwprddr/datafile/dwh_tbs.297.923918809
+       410   +DATA_DG/dwprddr/datafile/dwh_tbs.1179.923918145
+       411   +DATA_DG/dwprddr/datafile/dwh_tbs.1510.923922485
+       412   +DATA_DG/dwprddr/datafile/dwh_tbs.303.923915393
+       423   +DATA_DG/dwprddr/datafile/undotbs1.481.923920261
+       424   +DATA_DG/dwprddr/datafile/undotbs1.2129.923922979
+       425   +DATA_DG/dwprddr/datafile/undotbs1.450.923921173
+       426   +DATA_DG/dwprddr/datafile/undotbs1.821.923927275
+       427   +DATA_DG/dwprddr/datafile/undotbs2.470.923920737
+       428   +DATA_DG/dwprddr/datafile/undotbs2.1136.923920919
+       429   +DATA_DG/dwprddr/datafile/undotbs2.478.923920289
+       430   +DATA_DG/dwprddr/datafile/undotbs2.771.923925959
+       431   +DATA_DG/dwprddr/datafile/dwh_tbs.785.923925265
+       432   +DATA_DG/dwprddr/datafile/dwh_tbs.927.923931071
+       433   +DATA_DG/dwprddr/datafile/dwh_tbs.834.923927303
+       434   +DATA_DG/dwprddr/datafile/dwh_tbs.461.923920921
+       435   +DATA_DG/dwprddr/datafile/dwh_tbs.770.923925961
+       436   +DATA_DG/dwprddr/datafile/dwh_tbs.2137.923922389
+       437   +DATA_DG/dwprddr/datafile/dwh_tbs.262.924085569
+       438   +DATA_DG/dwprddr/datafile/dwh_tbs.2067.924100363
+       439   +DATA_DG/dwprddr/datafile/dwh_tbs.562.924095157
+       440   +DATA_DG/dwprddr/datafile/dwh_tbs.629.924094007
+       441   +DATA_DG/dwprddr/datafile/dwh_tbs.602.924094765
+       442   +DATA_DG/dwprddr/datafile/dwh_tbs.605.924094327
+       443   +DATA_DG/dwprddr/datafile/dwh_tbs.2063.924100573
+       444   +DATA_DG/dwprddr/datafile/dwh_tbs.969.924081441
+       445   +DATA_DG/dwprddr/datafile/dwh_tbs.1401.924092329
+       446   +DATA_DG/dwprddr/datafile/dwh_tbs.691.924092463
+       447   +DATA_DG/dwprddr/datafile/dwh_tbs.599.924095009
+       448   +DATA_DG/dwprddr/datafile/dwh_tbs.1422.924092815
+       449   +DATA_DG/dwprddr/datafile/dwh_tbs.613.924081441
+       450   +DATA_DG/dwprddr/datafile/dwh_tbs.1191.924088779
+       451   +DATA_DG/dwprddr/datafile/dwh_tbs.1182.924088747
+       452   +DATA_DG/dwprddr/datafile/dwh_tbs.1017.924081445
+       460   +DATA_DG/dwprddr/datafile/dwh_tbs.561.924095155
+       461   +DATA_DG/dwprddr/datafile/dwh_tbs.403.924098171
+       462   +DATA_DG/dwprddr/datafile/dwh_tbs.1046.924081449
+       463   +DATA_DG/dwprddr/datafile/dwh_tbs.685.924099711
+       464   +DATA_DG/dwprddr/datafile/dwh_tbs.1175.924088321
+       465   +DATA_DG/dwprddr/datafile/dwh_tbs.1254.924097541
+       471   +DATA_DG/dwprddr/datafile/sysaux.687.924092509
+       472   +DATA_DG/dwprddr/datafile/dwh_tbs.1371.924088783
+       473   +DATA_DG/dwprddr/datafile/dwh_tbs.621.924088815
+       474   +DATA_DG/dwprddr/datafile/dwh_tbs.539.924097265
+       475   +DATA_DG/dwprddr/datafile/dwh_tbs.1260.924097651
+       476   +DATA_DG/dwprddr/datafile/dwh_tbs.1368.924088851
+       477   +DATA_DG/dwprddr/datafile/dwh_tbs.716.924089143
+       478   +DATA_DG/dwprddr/datafile/dwh_tbs.1391.924091699
+       479   +DATA_DG/dwprddr/datafile/dwh_tbs.688.924092509
+       490   +DATA_DG/dwprddr/datafile/audit_tbs.2061.968775077
+       491   +DATA_DG/dwprddr/datafile/audit_tbs.335.968775081
+       646   +DATA_DG/dwprddr/datafile/sysaux.1312.968775415
+       660   +DATA_DG/dwprddr/datafile/system.879.964054343
+       661   +DATA_DG/dwprddr/datafile/system.2058.964054647
+       662   +DATA_DG/dwprddr/datafile/system.1104.964054823
+       663   +DATA_DG/dwprddr/datafile/system.563.964054987
+       664   +DATA_DG/dwprddr/datafile/system.348.964055071
+       807   +DATA_DG/dwprddr/datafile/dwh_tbs.1738.968775553
+       808   +DATA_DG/dwprddr/datafile/dwh_tbs.1504.968775555
+       809   +DATA_DG/dwprddr/datafile/dwh_tbs.944.968775555
+       810   +DATA_DG/dwprddr/datafile/dwh_tbs.698.968775559
+       814   +DATA_DG/dwprddr/datafile/system.793.964061601
+       833   +DATA_DG/dwprddr/datafile/undotbs2.2165.964062841
+       834   +DATA_DG/dwprddr/datafile/undotbs2.1577.964063029
+       835   +DATA_DG/dwprddr/datafile/undotbs1.1618.964063541
+       837   +DATA_DG/dwprddr/datafile/system.1735.964064051
+       856   +DATA_DG/dwprddr/datafile/undotbs1.2021.964047885
+       857   +DATA_DG/dwprddr/datafile/undotbs1.1920.964048211
+       858   +DATA_DG/dwprddr/datafile/undotbs1.2023.964049035
+       859   +DATA_DG/dwprddr/datafile/undotbs1.653.964049757
+       860   +DATA_DG/dwprddr/datafile/undotbs2.768.964049949
+       861   +DATA_DG/dwprddr/datafile/undotbs2.767.964050425
+       862   +DATA_DG/dwprddr/datafile/undotbs2.902.964050737
+       863   +DATA_DG/dwprddr/datafile/sysaux.437.964050949
+       865   +DATA_DG/dwprddr/datafile/undotbs2.2120.964051107
+       866   +DATA_DG/dwprddr/datafile/undotbs2.497.964051451
+       867   +DATA_DG/dwprddr/datafile/undotbs1.502.964051707
+       868   +DATA_DG/dwprddr/datafile/undotbs1.1042.964052737
+       881   +DATA_DG/dwprddr/datafile/dwh_tbs.674.968776107
+       887   +DATA_DG/dwprddr/datafile/sysaux.1342.979828431
+       888   +DATA_DG/dwprddr/datafile/sysaux.1349.979828443
+       926   +DATA_DG/dwprddr/datafile/audit_tbs.527.964063471
+      1304   +DATA_DG/dwprddr/datafile/audit_tbs.1006.964050903
+      1359   +DATA_DG/dwprddr/datafile/sysaux.619.964058051
+      1378   +DATA_DG/dwprddr/datafile/sysaux.670.964058823
+      1391   +DATA_DG/dwprddr/datafile/sysaux.1020.964058913
+      1411   +DATA_DG/dwprddr/datafile/sysaux.1998.964059165
+      1412   +DATA_DG/dwprddr/datafile/sysaux.1405.964059627
+
+
+
+IV. Create new pfile 
+-------------------------------------------------------------------
+Config new pfile for new instance
+
+
+V. Start new instance
+-------------------------------------------------------------------
+Start database using pfile
+RMAN> startup nomount;
+
+
+VI. Restore controlfile and mount database
+-------------------------------------------------------------------
+***** Using backup of controlfile in DC site <- Critical
+
+RMAN> run
+{
+allocate channel c1 device type disk;
+restore controlfile from '/backup_dwh_full/last_backup/controlf_DWPRD_o5t6vuqf_25349_20180702';
+alter database mount;
+release channel c1;
+}
+ 
+
+
+
+
+VII. Restore specified datafiles with File# from III
+-------------------------------------------------------------------
+RMAN> run
+{
+set newname for datafile    1      to '+DATA_DG';
+set newname for datafile    2      to '+DATA_DG';
+set newname for datafile    3      to '+DATA_DG';
+set newname for datafile    4      to '+DATA_DG';
+set newname for datafile   38      to '+DATA_DG';
+set newname for datafile   83      to '+DATA_DG';
+set newname for datafile   84      to '+DATA_DG';
+set newname for datafile   85      to '+DATA_DG';
+set newname for datafile   90      to '+DATA_DG';
+set newname for datafile  110      to '+DATA_DG';
+set newname for datafile  169      to '+DATA_DG';
+set newname for datafile  210      to '+DATA_DG';
+set newname for datafile  211      to '+DATA_DG';
+set newname for datafile  212      to '+DATA_DG';
+set newname for datafile  213      to '+DATA_DG';
+set newname for datafile  214      to '+DATA_DG';
+set newname for datafile  215      to '+DATA_DG';
+set newname for datafile  250      to '+DATA_DG';
+set newname for datafile  263      to '+DATA_DG';
+set newname for datafile  264      to '+DATA_DG';
+set newname for datafile  265      to '+DATA_DG';
+set newname for datafile  266      to '+DATA_DG';
+set newname for datafile  267      to '+DATA_DG';
+set newname for datafile  268      to '+DATA_DG';
+set newname for datafile  269      to '+DATA_DG';
+set newname for datafile  270      to '+DATA_DG';
+set newname for datafile  271      to '+DATA_DG';
+set newname for datafile  332      to '+DATA_DG';
+set newname for datafile  333      to '+DATA_DG';
+set newname for datafile  334      to '+DATA_DG';
+set newname for datafile  335      to '+DATA_DG';
+set newname for datafile  336      to '+DATA_DG';
+set newname for datafile  337      to '+DATA_DG';
+set newname for datafile  338      to '+DATA_DG';
+set newname for datafile  339      to '+DATA_DG';
+set newname for datafile  340      to '+DATA_DG';
+set newname for datafile  341      to '+DATA_DG';
+set newname for datafile  342      to '+DATA_DG';
+set newname for datafile  343      to '+DATA_DG';
+set newname for datafile  344      to '+DATA_DG';
+set newname for datafile  345      to '+DATA_DG';
+set newname for datafile  346      to '+DATA_DG';
+set newname for datafile  347      to '+DATA_DG';
+set newname for datafile  348      to '+DATA_DG';
+set newname for datafile  349      to '+DATA_DG';
+set newname for datafile  350      to '+DATA_DG';
+set newname for datafile  351      to '+DATA_DG';
+set newname for datafile  352      to '+DATA_DG';
+set newname for datafile  353      to '+DATA_DG';
+set newname for datafile  354      to '+DATA_DG';
+set newname for datafile  355      to '+DATA_DG';
+set newname for datafile  356      to '+DATA_DG';
+set newname for datafile  357      to '+DATA_DG';
+set newname for datafile  358      to '+DATA_DG';
+set newname for datafile  359      to '+DATA_DG';
+set newname for datafile  360      to '+DATA_DG';
+set newname for datafile  361      to '+DATA_DG';
+set newname for datafile  362      to '+DATA_DG';
+set newname for datafile  363      to '+DATA_DG';
+set newname for datafile  364      to '+DATA_DG';
+set newname for datafile  365      to '+DATA_DG';
+set newname for datafile  366      to '+DATA_DG';
+set newname for datafile  367      to '+DATA_DG';
+set newname for datafile  368      to '+DATA_DG';
+set newname for datafile  369      to '+DATA_DG';
+set newname for datafile  370      to '+DATA_DG';
+set newname for datafile  371      to '+DATA_DG';
+set newname for datafile  372      to '+DATA_DG';
+set newname for datafile  373      to '+DATA_DG';
+set newname for datafile  374      to '+DATA_DG';
+set newname for datafile  375      to '+DATA_DG';
+set newname for datafile  376      to '+DATA_DG';
+set newname for datafile  377      to '+DATA_DG';
+set newname for datafile  378      to '+DATA_DG';
+set newname for datafile  379      to '+DATA_DG';
+set newname for datafile  380      to '+DATA_DG';
+set newname for datafile  381      to '+DATA_DG';
+set newname for datafile  382      to '+DATA_DG';
+set newname for datafile  383      to '+DATA_DG';
+set newname for datafile  384      to '+DATA_DG';
+set newname for datafile  385      to '+DATA_DG';
+set newname for datafile  386      to '+DATA_DG';
+set newname for datafile  387      to '+DATA_DG';
+set newname for datafile  388      to '+DATA_DG';
+set newname for datafile  389      to '+DATA_DG';
+set newname for datafile  390      to '+DATA_DG';
+set newname for datafile  391      to '+DATA_DG';
+set newname for datafile  392      to '+DATA_DG';
+set newname for datafile  393      to '+DATA_DG';
+set newname for datafile  394      to '+DATA_DG';
+set newname for datafile  395      to '+DATA_DG';
+set newname for datafile  396      to '+DATA_DG';
+set newname for datafile  397      to '+DATA_DG';
+set newname for datafile  398      to '+DATA_DG';
+set newname for datafile  399      to '+DATA_DG';
+set newname for datafile  400      to '+DATA_DG';
+set newname for datafile  401      to '+DATA_DG';
+set newname for datafile  402      to '+DATA_DG';
+set newname for datafile  403      to '+DATA_DG';
+set newname for datafile  404      to '+DATA_DG';
+set newname for datafile  405      to '+DATA_DG';
+set newname for datafile  406      to '+DATA_DG';
+set newname for datafile  407      to '+DATA_DG';
+set newname for datafile  408      to '+DATA_DG';
+set newname for datafile  409      to '+DATA_DG';
+set newname for datafile  410      to '+DATA_DG';
+set newname for datafile  411      to '+DATA_DG';
+set newname for datafile  412      to '+DATA_DG';
+set newname for datafile  423      to '+DATA_DG';
+set newname for datafile  424      to '+DATA_DG';
+set newname for datafile  425      to '+DATA_DG';
+set newname for datafile  426      to '+DATA_DG';
+set newname for datafile  427      to '+DATA_DG';
+set newname for datafile  428      to '+DATA_DG';
+set newname for datafile  429      to '+DATA_DG';
+set newname for datafile  430      to '+DATA_DG';
+set newname for datafile  431      to '+DATA_DG';
+set newname for datafile  432      to '+DATA_DG';
+set newname for datafile  433      to '+DATA_DG';
+set newname for datafile  434      to '+DATA_DG';
+set newname for datafile  435      to '+DATA_DG';
+set newname for datafile  436      to '+DATA_DG';
+set newname for datafile  437      to '+DATA_DG';
+set newname for datafile  438      to '+DATA_DG';
+set newname for datafile  439      to '+DATA_DG';
+set newname for datafile  440      to '+DATA_DG';
+set newname for datafile  441      to '+DATA_DG';
+set newname for datafile  442      to '+DATA_DG';
+set newname for datafile  443      to '+DATA_DG';
+set newname for datafile  444      to '+DATA_DG';
+set newname for datafile  445      to '+DATA_DG';
+set newname for datafile  446      to '+DATA_DG';
+set newname for datafile  447      to '+DATA_DG';
+set newname for datafile  448      to '+DATA_DG';
+set newname for datafile  449      to '+DATA_DG';
+set newname for datafile  450      to '+DATA_DG';
+set newname for datafile  451      to '+DATA_DG';
+set newname for datafile  452      to '+DATA_DG';
+set newname for datafile  460      to '+DATA_DG';
+set newname for datafile  461      to '+DATA_DG';
+set newname for datafile  462      to '+DATA_DG';
+set newname for datafile  463      to '+DATA_DG';
+set newname for datafile  464      to '+DATA_DG';
+set newname for datafile  465      to '+DATA_DG';
+set newname for datafile  471      to '+DATA_DG';
+set newname for datafile  472      to '+DATA_DG';
+set newname for datafile  473      to '+DATA_DG';
+set newname for datafile  474      to '+DATA_DG';
+set newname for datafile  475      to '+DATA_DG';
+set newname for datafile  476      to '+DATA_DG';
+set newname for datafile  477      to '+DATA_DG';
+set newname for datafile  478      to '+DATA_DG';
+set newname for datafile  479      to '+DATA_DG';
+set newname for datafile  490      to '+DATA_DG';
+set newname for datafile  491      to '+DATA_DG';
+set newname for datafile  646      to '+DATA_DG';
+set newname for datafile  660      to '+DATA_DG';
+set newname for datafile  661      to '+DATA_DG';
+set newname for datafile  662      to '+DATA_DG';
+set newname for datafile  663      to '+DATA_DG';
+set newname for datafile  664      to '+DATA_DG';
+set newname for datafile  807      to '+DATA_DG';
+set newname for datafile  808      to '+DATA_DG';
+set newname for datafile  809      to '+DATA_DG';
+set newname for datafile  810      to '+DATA_DG';
+set newname for datafile  814      to '+DATA_DG';
+set newname for datafile  833      to '+DATA_DG';
+set newname for datafile  834      to '+DATA_DG';
+set newname for datafile  835      to '+DATA_DG';
+set newname for datafile  837      to '+DATA_DG';
+set newname for datafile  856      to '+DATA_DG';
+set newname for datafile  857      to '+DATA_DG';
+set newname for datafile  858      to '+DATA_DG';
+set newname for datafile  859      to '+DATA_DG';
+set newname for datafile  860      to '+DATA_DG';
+set newname for datafile  861      to '+DATA_DG';
+set newname for datafile  862      to '+DATA_DG';
+set newname for datafile  863      to '+DATA_DG';
+set newname for datafile  865      to '+DATA_DG';
+set newname for datafile  866      to '+DATA_DG';
+set newname for datafile  867      to '+DATA_DG';
+set newname for datafile  868      to '+DATA_DG';
+set newname for datafile  881      to '+DATA_DG';
+set newname for datafile  887      to '+DATA_DG';
+set newname for datafile  888      to '+DATA_DG';
+set newname for datafile  926      to '+DATA_DG';
+set newname for datafile 1304      to '+DATA_DG';
+set newname for datafile 1359      to '+DATA_DG';
+set newname for datafile 1378      to '+DATA_DG';
+set newname for datafile 1391      to '+DATA_DG';
+set newname for datafile 1411      to '+DATA_DG';
+set newname for datafile 1412      to '+DATA_DG';
+restore datafile    1,   2,   3,   4,  38,  83,  84,  85,  90, 110, 169, 210, 211, 212, 213, 214, 215, 250, 263, 264, 265, 266, 267, 268, 269, 270, 271, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 460, 461, 462, 463, 464, 465, 471, 472, 473, 474, 475, 476, 477, 478, 479, 490, 491, 646, 660, 661, 662, 663, 664, 807, 808, 809, 810, 814, 833, 834, 835, 837, 856, 857, 858, 859, 860, 861, 862, 863, 865, 866, 867, 868, 881, 887, 888, 926,1304,1359,1378,1391,1411,1412;
+}
+
+
+RMAN> switch datafile    1,   2,   3,   4,  38,  83,  84,  85,  90, 110, 169, 210, 211, 212, 213, 214, 215, 250, 263, 264, 265, 266, 267, 268, 269, 270, 271, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 423, 424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 460, 461, 462, 463, 464, 465, 471, 472, 473, 474, 475, 476, 477, 478, 479, 490, 491, 646, 660, 661, 662, 663, 664, 807, 808, 809, 810, 814, 833, 834, 835, 837, 856, 857, 858, 859, 860, 861, 862, 863, 865, 866, 867, 868, 881, 887, 888, 926,1304,1359,1378,1391,1411,1412 to copy;
+
+
+RMAN> recover database skip forever tablespace DWH2016_TBS,DWH2017_TBS,DWH_BK_TBS ,DWH_KRM_TBS,DWH_SRV_TBS,DWH_STAGING_TBS ,DWH_TBS,DWH_VAS_TBS,EDW_DMT_TBS,EDW_SOR_TBS,EDW_STG_TBS,HB_TBS,MBV_TBS,ODI_TBS,T24REP_TBS ,USERS ,USERS02;
+
+
+VIII. Create new control file using script above and mount database:
+-------------------------------------------------------------------
+SQL> shutdown immediate;
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+ 
+SQL> startup nomount
+
+CREATE CONTROLFILE REUSE DATABASE "DWHDEV" RESETLOGS  ARCHIVELOG
+    MAXLOGFILES 192
+    MAXLOGMEMBERS 3
+    MAXDATAFILES 1024
+    MAXINSTANCES 32
+    MAXLOGHISTORY 292
+LOGFILE
+  GROUP 1 '+HST_DG/dwhres/onlinelog/group_1'  SIZE 2000M BLOCKSIZE 512,
+  GROUP 2 '+HST_DG/dwhres/onlinelog/group_2'  SIZE 2000M BLOCKSIZE 512,
+  GROUP 3 '+HST_DG/dwhres/onlinelog/group_3'  SIZE 2000M BLOCKSIZE 512,
+  GROUP 4 '+HST_DG/dwhres/onlinelog/group_4'  SIZE 2000M BLOCKSIZE 512
+DATAFILE
+  '+HST_DG/dwhres/datafile/system.712.976814589',
+  '+HST_DG/dwhres/datafile/sysaux.713.976814595',
+  '+HST_DG/dwhres/datafile/undotbs1.714.976814599',
+  '+HST_DG/dwhres/datafile/undotbs2.715.976814607',
+  '+HST_DG/dwhres/datafile/edw_dmt_tbs.699.976804695',
+  '+HST_DG/dwhres/datafile/edw_sor_tbs.700.976804731',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.718.976814615',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.719.976814619',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.720.976814621',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.721.976814625',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.722.976814629',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.723.976814631',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.724.976814635',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.725.976814639',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.726.976814641',
+  '+HST_DG/dwhres/datafile/edw_stg_tbs.727.976814645',
+  '+HST_DG/dwhres/datafile/edw_dmt_tbs.728.976814649'
+CHARACTER SET AL32UTF8
+;
+
+SQL> alter database open resetlogs;
+Database altered.
+
+Create temporary tablespace:
+SQL> CREATE TEMPORARY TABLESPACE TMP_TBS TEMPFILE '+HST_DG' SIZE 50M REUSE AUTOEXTEND ON NEXT 25M  MAXSIZE 2048M;
+Tablespace altered.
+
+
+Drop all other tablespace (if ư want to use this Database)
+
+
+Final check:
+SQL> col FILE_NAME for a70
+SQL> select tablespace_name, file_name from dba_data_files;
+ 
+TABLESPACE_NAME                FILE_NAME
+------------------------------ ----------------------------------------------------------------------
+EDW_DMT_TBS                    +HST_DG/dwhres/datafile/edw_dmt_tbs.728.976814649
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.727.976814645
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.726.976814641
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.725.976814639
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.724.976814635
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.723.976814631
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.722.976814629
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.721.976814625
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.720.976814621
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.719.976814619
+EDW_STG_TBS                    +HST_DG/dwhres/datafile/edw_stg_tbs.718.976814615
+EDW_SOR_TBS                    +HST_DG/dwhres/datafile/edw_sor_tbs.700.976804731
+EDW_DMT_TBS                    +HST_DG/dwhres/datafile/edw_dmt_tbs.699.976804695
+UNDOTBS2                       +HST_DG/dwhres/datafile/undotbs2.715.976814607
+UNDOTBS1                       +HST_DG/dwhres/datafile/undotbs1.714.976814599
+SYSAUX                         +HST_DG/dwhres/datafile/sysaux.713.976814595
+SYSTEM                         +HST_DG/dwhres/datafile/system.712.976814589
+
+

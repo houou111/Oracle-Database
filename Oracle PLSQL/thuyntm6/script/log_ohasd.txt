@@ -1,0 +1,24 @@
+2018-09-15 07:22:14.433427 : USRTHRD:2667575568:  wait type 20 rc 6
+2018-09-15 07:22:14.433564 : USRTHRD:2667575568:  clsnpoll_GetValue: get type 20 ret 0 req 0
+2018-09-15 07:22:14.433568 : USRTHRD:2667575568:  clsnpoll_GetValue: reply status 1 type 20
+2018-09-15 07:22:15.433614 : USRTHRD:2667575568:  wait type 20 rc 6
+2018-09-15 07:22:15.433706 : USRTHRD:2667575568:  clsnpoll_GetValue: get type 20 ret 0 req 0
+2018-09-15 07:22:15.433709 : USRTHRD:2667575568:  clsnpoll_GetValue: reply status 1 type 20
+2018-09-15 07:22:16.433740 : USRTHRD:2667575568:  wait type 20 rc 6
+2018-09-15 07:22:16.433876 : USRTHRD:2667575568:  clsnpoll_GetValue: get type 20 ret 0 req 0
+2018-09-15 07:22:16.433879 : USRTHRD:2667575568:  clsnpoll_GetValue: reply status 1 type 20
+2018-09-15 07:22:17.433940 : USRTHRD:2667575568:  wait type 20 rc 6
+2018-09-15 07:22:17.434036 : USRTHRD:2667575568:  clsnpoll_GetValue: get type 20 ret 0 req 0
+2018-09-15 07:22:17.434039 : USRTHRD:2667575568:  clsnpoll_GetValue: reply status 1 type 20
+2018-09-15 07:22:18.434073 : USRTHRD:2667575568:  wait type 20 rc 6
+2018-09-15 07:22:18.434179 : USRTHRD:2667575568:  clsnpoll_GetValue: get type 20 ret 0 req 0
+2018-09-15 07:22:18.434182 : USRTHRD:2667575568:  clsnpoll_GetValue: reply status 1 type 20
+
+
+
+scp -r  dirdat/dc00001164*  gguser@10.100.1.10:/gg_data/goldengate/dirdat
+scp -r  dirdat/dc00001163*  gguser@10.100.1.10:/gg_data/goldengate/dirdat
+
+mv et24dc.prm et24dc.prm.DC
+
+defgen.prm  et24dc.prm  et24dc.prm.DR  jagent.prm  mgr.prm  pdwdc.prm  pdwdr.prm.DWHDR  pumpx62.prm  xint1.prm  xint2.prm  xpump1.prm  xpump2.prm

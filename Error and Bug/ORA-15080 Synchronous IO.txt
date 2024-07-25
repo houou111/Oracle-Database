@@ -1,0 +1,55 @@
+ORA-15080 Synchronous I/O Operation Failed With Exadata error:'HARD check failed' (Doc ID 2412871.1)
+
+
+
+SYMPTOMS
+ORA-15080: synchronous I/O operation failed to write block <block no> of disk <disk no> in disk group RECOC1
+ 
+Seeing the following repeated errors in the ASM alert log ORA-15080: synchronous I/O operation failed to write block <block no> of disk <disk no> in disk group RECOC1.
+
+WARNING: Write Failed. group:3 disk:18 AU:31907 offset:0 size:1048576
+path:o/<IP Address>/RECOC1_CD_06_celadm02
+incarnation:0xf0f248be asynchronous result:'I/O error'
+subsys:OSS krq:0x7fa7c3a68388 bufp:0x7fa7c4417000 osderr1:0xcd osderr2:0x0
+Exadata error:'HARD check failed'
+IO elapsed time: 3030 usec Time waited on I/O: 0 usec
+WARNING: Write Failed. group:3 disk:18 AU:1015 offset:1048576 size:1048576
+path:o/<IP Address>/RECOC1_CD_06_celadm02
+incarnation:0xf0f248be asynchronous result:'I/O error'
+subsys:OSS krq:0x7fa7c3a66e98 bufp:0x7fa7c6d77000 osderr1:0xcd osderr2:0x0
+Exadata error:'HARD check failed'
+IO elapsed time: 4054 usec Time waited on I/O: 0 usec
+NOTE: Suppressing further IO Write errors on group:3 disk:18
+WARNING: Write Failed. group:3 disk:18 AU:1015 offset:0 size:1048576
+path:o/<IP Address>/RECOC1_CD_06_exa100celadm02
+incarnation:0xf0f248be asynchronous result:'I/O error'
+subsys:OSS krq:0x7fa7c3a672c8 bufp:0x7fa7c7177000 osderr1:0xcd osderr2:0x0
+Exadata error:'HARD check failed'
+IO elapsed time: 6070 usec Time waited on I/O: 0 usec
+ 
+
+CAUSE
+Issue is due to unpublised Bug 26615291.
+ 
+
+SOLUTION
+Workaround:-
+
+From ASM instance disable the hard check
+
+alter diskgroup RECOC1 set attribute 'hard_check.enabled' = 'FALSE';
+
+ALTER DISKGROUP RECOC1 REBALANCE POWER 32;
+
+ After rebalance completion re-enable the hard check
+
+alter diskgroup RECOC1 set attribute 'hard_check.enabled' = 'TRUE';
+ 
+
+Apply patch for Bug 26615291 if the issue still persists.
+
+
+alter diskgroup DATAC1 set attribute 'hard_check.enabled' = 'TRUE';
+alter diskgroup RECOC1 set attribute 'hard_check.enabled' = 'TRUE';
+ALTER DISKGROUP DATAC1 REBALANCE POWER 32;
+ALTER DISKGROUP RECOC1 REBALANCE POWER 32;

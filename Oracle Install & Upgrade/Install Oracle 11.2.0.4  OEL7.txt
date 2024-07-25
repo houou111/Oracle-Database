@@ -1,0 +1,335 @@
+﻿
+
+1. vi /etc/hosts
+------------------------------------------------------------------------
+# Public IPs
+10.100.100.80           dc-cardlinux-db01       dc-cardlinux-db01.techcombank.com.vn
+10.100.100.81           dc-cardlinux-db02       dc-cardlinux-db02.techcombank.com.vn
+
+10.110.100.80           dr-cardlinux-db01
+10.110.100.81           dr-cardlinux-db02
+
+# Private IPs
+192.168.1.25            dc-cardlinux-db01-priv01
+192.168.1.26            dc-cardlinux-db02-priv01
+
+192.168.1.33            dc-cardlinux-db01-priv02
+192.168.1.34            dc-cardlinux-db02-priv02
+
+
+#Virtual Network
+10.100.100.82           dc-cardlinux-db01-vip
+10.100.100.83           dc-cardlinux-db02-vip
+
+10.110.100.82           dr-cardlinux-db01-vip
+10.110.100.83           dr-cardlinux-db02-vip
+
+# SCAN
+# 10.100.100.84         dc-cardlinux-scan1
+# 10.100.100.85         dc-cardlinux-scan2
+# 10.100.100.86         dc-cardlinux-scan3
+# 10.110.100.84         dr-cardlinux-scan1
+# 10.110.100.85         dr-cardlinux-scan2
+# 10.110.100.86         dr-cardlinux-scan3
+
+#Backup
+10.97.8.10              dc-backup-01    dc-backup-01.headquarter.techcombank.com.vn
+10.97.8.11              dc-backup-02    dc-backup-02.headquarter.techcombank.com.vn
+
+
+
+2. Config ntp server
+---------------------------------------------------------------------------
+vi /etc/sysconfig/ntpd
+#OPTIONS="-g"
+OPTIONS="-x -g -p /var/run/ntpd.pid"
+
+
+3. KERNEL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 17179869184  	##16G 60-85% of Server
+kernel.shmall = 4194304			##shmmax/shmmni
+kernel.shmmni = 4096			##default
+kernel.sem = 250 32000 512 1024
+kernel.pid_max = 4000000
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 10
+vm.nr_hugepages = 8192 			## shmmax/2048/1024
+vm.min_free_kbytes = 171798691	## 0.5% memory
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+
+
+4. SET RESOURCE LIMITS: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+oracle soft nproc 16000
+oracle hard nproc 32000
+oracle soft nofile 1024
+oracle hard nofile 65536
+oracle soft stack 10240
+
+
+* soft memlock unlimited
+* hard memlock unlimited
+
+# vi /etc/pam.d/login
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+# vi /etc/security/limits.d/20-nproc.conf
+*         	soft    nproc     16000
+
+5. DISABLE FIREWALL: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# systemctl stop firewalld
+# systemctl disable firewalld
+
+
+6. DISABLE SElinux: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# vi /etc/selinux/config 
+SELINUX=permissive
+
+
+
+7. INSTALL PACKAGES: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++CREATE REPO:
+# mount /dev/cdrom /media/
+# cd /media/Packages
+# rpm -Uvh  deltarpm-*
+# rpm -Uvh  python-deltarpm-*
+# rpm -Uvh  createrepo-*
+# mkdir /u01/repo
+# cp * /u01/repo/
+# cd ..
+# rpm --import  RPM-GPG-KEY-redhat-beta  RPM-GPG-KEY-redhat-release
+# cd /u01/repo/
+# createrepo /u01/repo/
+
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///u01/repo/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# cd /u01/repo/
+# yum install -y glibc-devel.i686 lftp tigervnc-server compat-libcap1 binutils gcc gcc-c++ gcc.i386 glibc-devel glibc.i686 libgcc libstdc++ make compat-db libXp ksh sysstat libaio-devel compat-libstdc++-33 elfutils-libelf-devel kmod-oracleasm oracleasmlib oracleasm-support
+
+# for ODI
+yum install -y binutils compat-libcap1 compat-libstdc++-33 compat-libstdc++-33.i686 gcc gcc-c++ glibc glibc.i686 glibc-devel libaio libaio-devel libgcc libgcc.i686 libstdc++ libstdc++.i686 libstdc++-devel ksh make sysstat numactl numactl-devel libXext.i686 libXtst.i686 libXi.i686 openmotif openmotif22 redhat-lsb
+
+8. GROUP, USER: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
++FOR ORACLE:
+# groupadd -g 1100 oinstall
+# useradd -m -u 1002 -g oinstall -d /home/oracle -s /bin/bash oracle
+# chage -m 0 -M 99999 -I -1 -E -1 oracle
+# usermod -e '' oracle
+# chage -l oracle
+
+
+
+9. MAKE DIRECTORY: DONE ON NODE1 AND NODE2 WITH ROOT
+---------------------------------------------------------------------------
+# mkdir -p /u01/app/11.2.0/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /home/oracle/bin
+# chown oracle:oinstall /home/oracle/bin
+# chmod -R 775 /home/oracle/bin
+# chmod -R 775 /u01
+# chown oracle:oinstall -R  /u01
+
+
+11. CONFIG profile for oracle : DONE ON NODE1 AND NODE2 WITH ORACLE:
+---------------------------------------------------------------------------
++ profile
+$ vi /home/oracle/.bash_profile
+
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+
+
+
++grid:
+$ vi /home/oracle/bin/grid
+
+export ORACLE_SID=+ASM
+export ORACLE_BASE=/u01/app/grid
+export ORACLE_HOME=/u01/app/11.2.0.4/grid
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+
+
+
++oracle_sid:
+$ vi /home/oracle/bin/oracle_sid
+export ORACLE_UNQNAME=orcl
+export ORACLE_SID=orcl
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0.4/dbhome_1
+export PATH=$PATH:$ORACLE_HOME/bin
+export DUMP=$ORACLE_BASE/diag/rdbms/$ORACLE_UNQNAME/$ORACLE_SID/trace
+alias alert="tail -300f $DUMP/alert_$ORACLE_SID.log"
+
+
+
+12. CONFIG ASMLIB DONE ON NODE1 AND NODE2 WITH ROOT:
+---------------------------------------------------------------------------
+# /usr/sbin/oracleasm configure -i
+Configuring the Oracle ASM library driver.
+
+This will configure the on-boot properties of the Oracle ASM library
+driver.  The following questions will determine whether the driver is
+loaded on boot and what permissions it will have.  The current values
+will be shown in brackets ('[]').  Hitting <ENTER> without typing an
+answer will keep that current value.  Ctrl-C will abort.
+
+Default user to own the driver interface []:                                     
+oracle
+Default group to own the driver interface []:                                      
+oinstall
+Start Oracle ASM library driver on boot (y/n) [n]:                                      
+y
+Scan for Oracle ASM disks on boot (y/n) [y]:                                     
+y
+Writing Oracle ASM library driver configuration: done
+
+
+
+# vi /etc/sysconfig/oracleasm-_dev_oracleasm
+
+#
+# This is a configuration file for automatic loading of the Oracle
+# Automatic Storage Management library kernel driver.  It is generated
+# By running /etc/init.d/oracleasm configure.  Please use that method
+# to modify this file
+#
+
+# ORACLEASM_UID: Default user owning the /dev/oracleasm mount point.
+ORACLEASM_UID=oracle
+
+# ORACLEASM_GID: Default group owning the /dev/oracleasm mount point.
+ORACLEASM_GID=oinstall
+
+# ORACLEASM_SCANBOOT: 'true' means scan for ASM disks on boot.
+ORACLEASM_SCANBOOT=true
+
+# ORACLEASM_SCANORDER: Matching patterns to order disk scanning
+ORACLEASM_SCANORDER="mpath dm"
+
+# ORACLEASM_SCANEXCLUDE: Matching patterns to exclude disks from scan
+ORACLEASM_SCANEXCLUDE="sd"
+
+# ORACLEASM_USE_LOGICAL_BLOCK_SIZE: 'true' means use the logical block size
+# reported by the underlying disk instead of the physical. The default
+# is 'false'
+ORACLEASM_USE_LOGICAL_BLOCK_SIZE=false
+
+
+# /usr/sbin/oracleasm init
+Creating /dev/oracleasm mount point: /dev/oracleasm
+Loading module "oracleasm": oracleasm
+Mounting ASMlib driver filesystem: /dev/oracleasm
+
+
++DONE ON NODE 1:
+# /usr/sbin/oracleasm createdisk CRS01 /dev/mapper/mpathh1
+# /usr/sbin/oracleasm createdisk CRS02 /dev/mapper/mpathi1
+# /usr/sbin/oracleasm createdisk CRS03 /dev/mapper/mpathe1
+# /usr/sbin/oracleasm createdisk FRA01 /dev/mapper/mpatha
+# /usr/sbin/oracleasm createdisk DATA01 /dev/mapper/mpathe
+
+[root@dr-ora-db01 Packages]# vi /u01/app/11.2.0.4/grid/crs/install/crsconfig_params
+ASM_DISCOVERY_STRING="ORCL:*"
+
++CHECK ON NODE 2:
+[root@racnode2 ~]#  /usr/sbin/oracleasm scandisks
+Reloading disk partitions: done
+Cleaning any stale ASM disks...
+Scanning system for ASM disks...
+Instantiating disk "FRAVOL1"
+Instantiating disk "DATAVOL1"
+Instantiating disk "CRSVOL1"
+
+
+13. INSTALLATION
+---------------------------------------------------------------------------
+check java 1.5 or higher
+# cd /u01
+# unzip database_112040_Linux-x86-64_3of7.zip
+# chown -R oracle:oinstall grid
+
+patch 19404309 ( copy cac file)
+cp grid/cvu_prereq.xml $ORA_SHIPS/grid/stage/cvu
+cp database/cvu_prereq.xml $ORA_SHIPS/database/stage/cvu
+
+# cd /u01/setup/grid
+# ./runInstall
+
+patch 18370031 ( patch bug tren 7.2)
+. grid
+mkdir -p $ORACLE_HOME/OPatch/.patch_storage
+/u01/app/11.2.0.4/grid/OPatch/opatch napply -oh /u01/app/11.2.0.4/grid -local /u01/setup/18370031
+
+# unzip database_112040_Linux-x86-64_1of7.zip
+# unzip database_112040_Linux-x86-64_2of7.zip
+# chown -R oracle:oinstall database
+# cd /u01/setup/database
+# ./runInstall
+
+(bug tren 7.2)
+vi $ORACLE_HOME/sysman/lib/ins_emagent.mk
+search for the line $(MK_EMAGENT_NMECTL)
+Change it to $(MK_EMAGENT_NMECTL) -lnnz11
+Alt+R
+
+
+14. Patch
+---------------------------------------------------------------------------
+Check opatch
+cp -R /u01/setup/OPatch $ORACLE_HOME/
+$ORACLE_HOME/OPatch/opatch lsinventory
+
+patch to 11.2.0.4.17
+---user grid
+/u01/app/11.2.0/grid/OPatch/ocm/bin/emocmrsp -no_banner -output /tmp/file.rsp
+
+---user root
+/u01/app/11.2.0/grid/OPatch/opatch auto /u01/setup/23274134/ -ocmrf /tmp/file.rsp
+
+
+SQL> @$ORACLE_HOME/rdbms/admin/catbundle.sql psu apply
+
+alter system set db_block_checking=FULL sid='*';
+alter system set db_block_checksum=FULL sid='*';
+alter system set db_lost_write_protect=typical sid='*';
+
+

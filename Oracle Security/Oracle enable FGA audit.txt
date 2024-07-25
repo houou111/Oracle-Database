@@ -1,0 +1,138 @@
+https://oracledbwr.com/oracle-12c-auditing-tips-and-tricks/
+https://oracle-base.com/articles/10g/auditing-10gr2
+
+
+BEGIN
+  DBMS_FGA.add_policy(
+    object_schema   => 'AUDIT_TEST',
+    object_name     => 'EMP',
+    policy_name     => 'SAL_AUDIT',
+    audit_condition => NULL, -- Equivalent to TRUE
+    audit_column    => 'SAL',
+    statement_types => 'SELECT,INSERT,UPDATE,DELETE');
+END;
+/
+
+
+
+set lines 200
+set pages 200
+col OBJECT_SCHEMA for a15
+col OBJECT_NAME for a25
+col POLICY_OWNER for a20
+col POLICY_NAME for a30
+select OBJECT_SCHEMA,OBJECT_NAME,POLICY_OWNER,POLICY_NAME,enabled from ALL_AUDIT_POLICIES;
+
+
+select db_user,scn,sql_text from dba_fga_audit_trail where db_user='HARI';
+
+SELECT sql_text FROM dba_fga_audit_trail;
+
+
+
+
+begin
+dbms_fga.drop_policy (
+object_schema=>'HARI',
+object_name=>'NEW',
+policy_name=>'FGA_AUDIT');
+end;
+/
+
+
+begin
+dbms_fga.enable_policy (
+object_schema=>'HARI',
+object_name=>'NEW',
+policy_name=>'FGA_AUDIT');
+end;
+/
+
+
+begin
+dbms_fga.disable_policy (
+object_schema=>'HARI',
+object_name=>'NEW',
+policy_name=>'FGA_AUDIT');
+end;
+/
+
+
+
+
+
+
+I. Add policy
+------------------------------------
+
+set serveroutput on
+set lines 200
+set pages 200
+DECLARE
+   v_ddl    VARCHAR2 (4000);
+   cmd      VARCHAR2 (4000);
+
+   CURSOR c_tables
+   IS
+      select owner,table_name 
+	  from dba_tables 
+	  where owner in ('CSS_HPG','CABMAN_HPG','QLVT_HPG')
+	  and table_name in ('DONHANG','HD_KHACHHANG','HD_THANHTOAN','HD_THUEBAO','KHUYENMAI_HDTB','HDTB_DATCOC','CT_TIENHD','CT_PHIEUTT','PHIEUTT_HD','GIAOPHIEU','DB_KHACHHANG','DB_THANHTOAN','DB_THUEBAO','DB_ADSL','DB_CNTT','KHUYENMAI_DBTB','DB_DATCOC','KETCUOI','CAP','BECAP','COT','DOANCONG','LO_PI_A','lO_PI_B','KETCUOI_DT','VATTU','THIETBI','SUDUNG_VT','PHIEU_VT','KHO','CHUNGTU','CHITIET_CT');
+	  
+	  BEGIN
+
+   FOR cc IN c_tables
+   LOOP
+	  DBMS_OUTPUT.put_line ('--'||cc.owner||'.'||cc.table_name);
+   
+      DBMS_OUTPUT.put_line ('BEGIN');
+	  DBMS_OUTPUT.put_line ('DBMS_FGA.add_policy (');
+	  DBMS_OUTPUT.put_line ('object_schema => '''||cc.owner||''',');
+	  DBMS_OUTPUT.put_line ('object_name => '''||cc.table_name||''',');
+	  DBMS_OUTPUT.put_line ('policy_name => '''||cc.owner||'_'||cc.table_name||''',');
+	  DBMS_OUTPUT.put_line ('audit_condition => NULL,');
+	  DBMS_OUTPUT.put_line ('statement_types => ''INSERT,UPDATE,DELETE'');');
+	  DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));
+	  	       
+   END LOOP;
+END;
+/
+
+
+II. Drop policy
+------------------------------------
+
+set serveroutput on
+set lines 200
+set pages 200
+DECLARE
+   v_ddl    VARCHAR2 (4000);
+   cmd      VARCHAR2 (4000);
+
+   CURSOR c_index
+   IS
+      select OBJECT_SCHEMA,OBJECT_NAME,POLICY_NAME
+	  from ALL_AUDIT_POLICIES 
+	  where OBJECT_SCHEMA in ('CSS_HPG','CABMAN_HPG','QLVT_HPG')
+	  and OBJECT_NAME in ('DONHANG','HD_KHACHHANG','HD_THANHTOAN','HD_THUEBAO','KHUYENMAI_HDTB','HDTB_DATCOC','CT_TIENHD','CT_PHIEUTT','PHIEUTT_HD','GIAOPHIEU','DB_KHACHHANG','DB_THANHTOAN','DB_THUEBAO','DB_ADSL','DB_CNTT','KHUYENMAI_DBTB','DB_DATCOC','KETCUOI','CAP','BECAP','COT','DOANCONG','LO_PI_A','lO_PI_B','KETCUOI_DT','VATTU','THIETBI','SUDUNG_VT','PHIEU_VT','KHO','CHUNGTU','CHITIET_CT');
+	  
+	  BEGIN
+
+   FOR cc IN c_index
+   LOOP
+	  DBMS_OUTPUT.put_line ('--'||cc.OBJECT_SCHEMA||'.'||cc.OBJECT_NAME);
+   
+      DBMS_OUTPUT.put_line ('BEGIN');
+	  DBMS_OUTPUT.put_line ('DBMS_FGA.drop_policy (');
+	  DBMS_OUTPUT.put_line ('object_schema => '''||cc.OBJECT_SCHEMA||''',');
+	  DBMS_OUTPUT.put_line ('object_name => '''||cc.OBJECT_NAME||''',');
+	  DBMS_OUTPUT.put_line ('policy_name => '''||cc.POLICY_NAME||''');');
+	  DBMS_OUTPUT.put_line ('END;');
+      DBMS_OUTPUT.put_line ('/');
+      DBMS_OUTPUT.put_line (chr(10));
+	  	       
+   END LOOP;
+END;
+/

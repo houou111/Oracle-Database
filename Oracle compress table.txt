@@ -1,0 +1,260 @@
+### Compression ###
+I. Compress type
+------------------------------------------------------------------------------------------
+1. FOR OLTP (new data)
+-----------------------------------------------
+alter table G3SB.BCACCOUNTINSTRUMENT_HIST modify default attributes compress for oltp;
+
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK COMPRESS BASIC update indexes;
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK move ROW COMPRESS BASIC update indexes;
+
+
+
+2. ADVANCED (old data)
+-----------------------------------------------
+ALTER TABLE … ROW STORE COMPRESS ADVANCED
+
+Online Redefinition (DBMS_REDEFINITION)
+
+ALTER TABLE … MOVE ROW STORE COMPRESS ADVANCED
+
+
+3. Exadata
+-----------------------------------------------
+COMP_QUERY_HIGH
+COMP_QUERY_LOW
+COMP_ARCHIVE_HIGH
+COMP_ARCHIVE_LOW
+
+
+
+II. Example
+------------------------------------------------------------------------------------------
+1. New table
+-------------------------------------------------
+Create compresstion table
+CREATE TABLE emp (emp_id NUMBER, first_name VARCHAR2(128), last_name
+VARCHAR2(128)) ROW STORE COMPRESS ADVANCED;
+
+
+2. Exist table 
+-------------------------------------------------
+ALTER TABLE … ROW STORE COMPRESS ADVANCED
+
+Online Redefinition (DBMS_REDEFINITION)
+
+ALTER TABLE … MOVE ROW STORE COMPRESS ADVANCED
+
+
+
+3. Partition table
+------------------------------------------------
+ALTER TABLE SAAS_LOG.LOG_MASTER_HISTORY ROW STORE COMPRESS ADVANCED;
+
+ALTER TABLE … MOVE TABLE/PARTITION/SUBPARTITION … ONLINE ROW STORE COMPRESS ADVANCED
+
+
+DECLARE
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='SAAS_LOG'
+       AND table_name IN ('LOG_MASTER_HISTORY')
+	   AND (COMPRESS_FOR <> 'ADVANCED' OR COMPRESS_FOR is null)
+       AND PARTITION_NAME NOT IN ('P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' move partition '|| cc.partition_name || ' ONLINE ROW STORE COMPRESS ADVANCED';
+         DBMS_OUTPUT.put_line (cmd);
+      execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+
+
+
+AND (COMPRESS_FOR <> 'ADVANCED' OR COMPRESS_FOR is null)
+
+SAAS_LOG	LOG_MASTER_HISTORY	NO	SYS_P488	0	TO_DATE(' 2020-07-12 00:00:00', 'SYYYY-MM-DD HH24:M	83	2	SAAS_LOG_TBS	10		1	255	8388608	1048576	1	2147483645	2147483645				YES	ENABLED	ADVANCED	4	20	0	0	0	2666	4	13-AUG-22	DEFAULT	DEFAULT	DEFAULT	YES	NO	NO		YES	YES	ON	NO	DISABLED								DISABLED	DISABLED
+
+
+
+
+SET SERVEROUTPUT ON
+DECLARE
+  l_blkcnt_cmp    PLS_INTEGER;
+  l_blkcnt_uncmp  PLS_INTEGER;
+  l_row_cmp       PLS_INTEGER;
+  l_row_uncmp     PLS_INTEGER;
+  l_cmp_ratio     NUMBER;
+  l_comptype_str  VARCHAR2(32767);
+BEGIN
+  DBMS_COMPRESSION.get_compression_ratio (
+    scratchtbsname  => 'USERS',
+    ownname         => 'IDGBILLING',
+    objname         => 'REQUEST_DATA_BAK',
+    subobjname      => NULL,
+    comptype        => DBMS_COMPRESSION.COMP_BASIC,
+    blkcnt_cmp      => l_blkcnt_cmp,
+    blkcnt_uncmp    => l_blkcnt_uncmp,
+    row_cmp         => l_row_cmp,
+    row_uncmp       => l_row_uncmp,
+    cmp_ratio       => l_cmp_ratio,
+    comptype_str    => l_comptype_str,
+    subset_numrows  => DBMS_COMPRESSION.comp_ratio_allrows,
+    objtype         => DBMS_COMPRESSION.objtype_table
+  );
+
+  DBMS_OUTPUT.put_line('Number of blocks used (compressed)       : ' ||  l_blkcnt_cmp);
+  DBMS_OUTPUT.put_line('Number of blocks used (uncompressed)     : ' ||  l_blkcnt_uncmp);
+  DBMS_OUTPUT.put_line('Number of rows in a block (compressed)   : ' ||  l_row_cmp);
+  DBMS_OUTPUT.put_line('Number of rows in a block (uncompressed) : ' ||  l_row_uncmp);
+  DBMS_OUTPUT.put_line('Compression ratio                        : ' ||  l_cmp_ratio);
+  DBMS_OUTPUT.put_line('Compression type                         : ' ||  l_comptype_str);
+END;
+/
+
+
+*** Type of compress:
+COMP_BASIC
+COMP_ADVANCED
+
+
+COMP_NOCOMPRESS
+COMP_QUERY_HIGH
+COMP_QUERY_LOW
+COMP_ARCHIVE_HIGH
+COMP_ARCHIVE_LOW
+COMP_BLOCK
+COMP_LOB_HIGH
+COMP_LOB_MEDIUM
+COMP_LOB_LOW
+COMP_INDEX_ADVANCED_HIGH
+COMP_INDEX_ADVANCED_LOW
+COMP_RATIO_LOB_MINROWS
+COMP_BASIC
+COMP_RATIO_LOB_MAXROWS
+COMP_INMEMORY_NOCOMPRESS
+COMP_INMEMORY_DML
+COMP_INMEMORY_QUERY_LOW
+COMP_INMEMORY_QUERY_HIGH
+COMP_INMEMORY_CAPACITY_LOW
+COMP_INMEMORY_CAPACITY_HIGH
+
+
+
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK COMPRESS BASIC update indexes;
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK move ROW COMPRESS BASIC update indexes;
+
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK ROW STORE COMPRESS ADVANCED update indexes;
+ALTER TABLE IDGBILLING.REQUEST_DATA_BAK MOVE ROW STORE COMPRESS ADVANCED update indexes;
+
+
+ALTER TABLE … MOVE TABLE/PARTITION/SUBPARTITION … ONLINE ROW STORE COMPRESS ADVANCED update indexes;
+
+
+DECLARE
+   v_date        date;
+   v_highvalue   VARCHAR2 (128);
+   cmd           VARCHAR2 (128);
+
+   CURSOR c_partitions
+   IS
+   SELECT table_owner, table_name, partition_name, HIGH_VALUE
+        FROM SYS.dba_tab_partitions
+       WHERE table_owner ='SAAS_LOG'
+       AND table_name IN ('LOG_MASTER_HISTORY')
+       AND PARTITION_NAME NOT IN ('P1');    
+       
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+   
+      v_highvalue := SUBSTR (cc.HIGH_VALUE, 12, 10);
+      v_date :=   TO_DATE (v_highvalue, 'yyyy-mm-dd');
+      IF v_date < to_date(sysdate) - 7
+      THEN
+         cmd :='alter table '|| cc.table_owner|| '.'|| cc.table_name|| ' move partition '|| cc.partition_name || ' ONLINE ROW STORE COMPRESS ADVANCED';
+         DBMS_OUTPUT.put_line (cmd);
+      execute immediate cmd;
+      END IF;
+   END LOOP;
+END;
+/
+
+
+
+
+
+- You can specify that all tables created in a tablespace are compressed by default. 
+CREATE TABLESPACE ... DEFAULT COMPRESS FOR OLTP ... ;
+
+### effect to Insert
+SEGMENT_NAME	 	SIZE_MB	 	TIME
+TEST				3809	
+TEST_OLTP			2997	 	00:04:27.09
+TEST_BASIC			2500	 	00:01:32.28
+TEST_QUERY_LOW		856	 		00:01:04.92
+TEST_QUERY_HIGH		512	 		00:02:16.49
+TEST_ARCHIVE_LOW	488			00:03:05.70
+TEST_ARCHIVE_HIGH	424	 		00:12:02.97 
+
+
+To compress an existing table, the following 3 approaches can be used:
+
+Method 1: 
+
+Option 1 :
+
+SQL> select TABLE_NAME,COMPRESSION from USER_TABLES where table_name='TEST';
+SQL> ALTER TABLE T1 move COMPRESS;
+SQL> select TABLE_NAME,COMPRESSION from USER_TABLES where table_name='TEST';
+
+Option 2 :
+
+SQL> select table_name, partition_name, compression from user_tab_partitions where table_name='SALES';
+SQL> ALTER TABLE sales MOVE PARTITION southwest TABLESPACE TS COMPRESS;
+SQL> select table_name, partition_name, compression from user_tab_partitions where table_name='SALES';
+
+
+NOTE: All constraints, triggers or other dependent objects stay the same but the indexes are marked as unusable. To mark the indexes as usable :
+
+Rebuild the indexes
+
+OR
+
+Specify UPDATE INDEXES as part of the ALTER TABLE statement
+
+Method 2 :
+
+CREATE TABLE AS SELECT
+
+This method allows for creation of a new compressed table without the indexes or constraints.
+Constraints,Indexes if required can be created on the newly created table.
+
+
+Method 3 :
+
+3, DBMS_REDEFINITION:
+
+ALTER TABLE and MOVE statements takes an exclusive lock on the table, and therefore prevents any updates and loads until it completes.If this is not acceptable, the Oracle Database online redefinition utility (the DBMS_REDEFINITION PL/SQL package) can be used:
+
+Thanks 
+LaserSoft
+
+
+

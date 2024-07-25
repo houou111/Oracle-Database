@@ -1,0 +1,85 @@
+1. Example
+--------------------------------------------------
+SELECT empno, deptno, sal,
+       AVG(sal) OVER (PARTITION BY deptno) AS avg_dept_sal
+FROM   emp;
+
+
+SELECT empno, deptno, sal,
+       AVG(sal) OVER () AS avg_sal
+FROM   emp;
+
+
+
+
+
+2. Function and aggrument
+--------------------------------------------------
+avg: trung binh : avg()
+
+
+
+
+
+SELECT start_tsn
+FROM (
+  SELECT start_tsn, 
+         rank() OVER(order by start_tsn desc) as row_rank
+  FROM  v$backup_set
+where BACKUP_TYPE= 'FULL'
+  and PARTIAL_BACKUP_OPTION= 'NONE'
+  and base_set=0
+order by start_tsn desc
+) t
+WHERE row_rank = 2
+
+
+
+set heading off;
+set feedback off;
+set pages 10000;
+set serveroutput on;
+set verify off
+select 'rm ' || a.name
+from v$archived_log a, 
+  (SELECT start_tsn, 
+         rank() OVER(order by start_tsn desc) as row_rank
+  FROM  v$backup_set
+where BACKUP_TYPE= 'FULL'
+  and PARTIAL_BACKUP_OPTION= 'NONE'
+  and base_set=0
+order by start_tsn desc
+) b
+where 1=1
+and a.next_change# < b.start_tsn
+and b.row_rank=2
+
+
+
+
+3. row number
+--------------------------------------------------
+create or replace view dwh.v_MKT_2A_total_asset_daily
+as
+select txdate, 
+sum(INFINA_500k_8days) INFINA_500k_8days, sum(INFINA_5m_8days) INFINA_5m_8days,
+sum(ALL_CUSTOMER_500k_8days) ALL_CUSTOMER_500k_8days, sum(ALL_CUSTOMER_5m_8days) ALL_CUSTOMER_5m_8days
+from
+(
+SELECT a.*,
+case when RN >= 8 AND INFINA_MIN_8_DAYS >= 500000  then 1 else 0 end  INFINA_500k_8days, 
+case when RN >= 8 AND INFINA_MIN_8_DAYS >= 5000000  then 1 else 0 end  INFINA_5m_8days,
+case when RN >= 8 AND ALL_CUSTOMER_MIN_8_DAYS >= 500000  then 1 else 0 end  ALL_CUSTOMER_500k_8days, 
+case when RN >= 8 AND ALL_CUSTOMER_MIN_8_DAYS >= 5000000  then 1 else 0 end  ALL_CUSTOMER_5m_8days
+FROM
+(
+SELECT txdate,custid, TOTAL_VALUE, INFINA_CUSTOMER_TOTAL_VALUE, 
+ROW_NUMBER() OVER (PARTITION BY CUSTID ORDER BY txdate) AS RN,
+MIN(INFINA_CUSTOMER_TOTAL_VALUE) OVER (PARTITION BY CUSTID ORDER BY txdate ROWS BETWEEN 7 PRECEDING AND 0 FOLLOWING) AS INFINA_MIN_8_DAYS,
+MIN(TOTAL_VALUE) OVER (PARTITION BY CUSTID ORDER BY txdate ROWS BETWEEN 7 PRECEDING AND 0 FOLLOWING) AS ALL_CUSTOMER_MIN_8_DAYS
+FROM dwh.V_CORE_CUSTOMER_TOTALASSET_BYDAY_BY_RESOURCE A
+where 1=1
+and CREATEDATE >= TO_DATE('2024/01/19 00:00:00', 'yyyy/mm/dd hh24:mi:ss')
+) a
+)
+group by txdate

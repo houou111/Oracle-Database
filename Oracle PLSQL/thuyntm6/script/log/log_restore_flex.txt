@@ -1,0 +1,706 @@
+[oracle@dr-tcbs-db-01 ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Oct 12 10:32:09 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> startup nomount
+ORA-32004: obsolete or deprecated parameter(s) specified for RDBMS instance
+ORACLE instance started.
+
+Total System Global Area 1.6034E+10 bytes
+Fixed Size                  2269072 bytes
+Variable Size            2852126832 bytes
+Database Buffers         1.3153E+10 bytes
+Redo Buffers               26480640 bytes
+SQL> exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
+[oracle@dr-tcbs-db-01 ~]$ rman target /
+
+Recovery Manager: Release 11.2.0.4.0 - Production on Thu Oct 12 10:32:30 2017
+
+Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FLEX (not mounted)
+
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+4> restore controlfile from '/ctrl_dFLEX_up8sgeva3_s808_p1_t956792131';
+5> release channel t1;
+6> }
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1654 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+
+Starting restore at 12-OCT-2017 10:32:33
+
+channel t1: restoring control file
+channel t1: restore complete, elapsed time: 00:00:57
+output file name=+DATA/flexres/controlfile/current.288.957177181
+output file name=+FRA/flexres/controlfile/current.1015.957094109
+Finished restore at 12-OCT-2017 10:33:30
+
+released channel: t1
+
+RMAN> exit
+
+
+Recovery Manager complete.
+[oracle@dr-tcbs-db-01 ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Oct 12 10:33:54 2017
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Automatic Storage Management, OLAP, Data Mining
+and Real Application Testing options
+
+SQL> alter system set control_files='+DATA/flexres/controlfile/current.288.957177181','+FRA/flexres/controlfile/current.1015.957094109' scope=spfile;
+
+System altered.
+
+SQL> shu immediate ;
+ORA-01507: database not mounted
+
+
+ORACLE instance shut down.
+SQL> startup mount;
+ORA-32004: obsolete or deprecated parameter(s) specified for RDBMS instance
+ORACLE instance started.
+
+Total System Global Area 1.6034E+10 bytes
+Fixed Size                  2269072 bytes
+Variable Size            2852126832 bytes
+Database Buffers         1.3153E+10 bytes
+Redo Buffers               26480640 bytes
+Database mounted.
+SQL> exit
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Automatic Storage Management, OLAP, Data Mining
+and Real Application Testing options
+[oracle@dr-tcbs-db-01 ~]$ rman target /
+
+Recovery Manager: Release 11.2.0.4.0 - Production on Thu Oct 12 10:34:33 2017
+
+Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: FLEX (DBID=1476658124, not open)
+
+RMAN> run{
+2> set until time "to_date('2017-10-08:00:00:00', 'yyyy-mm-dd:hh24:mi:ss')";
+3> allocate channel t1 device type 'sbt_tape' ;
+4> allocate channel t2 device type 'sbt_tape' ;
+5> allocate channel t3 device type 'sbt_tape' ;
+6> allocate channel t4 device type 'sbt_tape' ;
+7> allocate channel t5 device type 'sbt_tape' ;
+8> allocate channel t6 device type 'sbt_tape' ;
+9> allocate channel t7 device type 'sbt_tape' ;
+10> allocate channel t8 device type 'sbt_tape' ;
+11> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+12> set newname for datafile 1 to '+FRA';
+13> set newname for datafile 2 to '+DATA';
+14> set newname for datafile 3 to '+FRA';
+15> set newname for datafile 4 to '+FRA';
+16> set newname for datafile 5 to '+DATA';
+17> set newname for datafile 6 to '+DATA';
+18> restore database;
+19> switch datafile all;
+20> release channel t1;
+21> release channel t2;
+22> release channel t3;
+23> release channel t4;
+24> release channel t5;
+25> release channel t6;
+26> release channel t7;
+27> release channel t8;
+28> }
+
+executing command: SET until clause
+
+using target database control file instead of recovery catalog
+allocated channel: t1
+channel t1: SID=1939 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t2
+channel t2: SID=1996 device type=SBT_TAPE
+channel t2: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t3
+channel t3: SID=2053 device type=SBT_TAPE
+channel t3: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t4
+channel t4: SID=2110 device type=SBT_TAPE
+channel t4: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t5
+channel t5: SID=2167 device type=SBT_TAPE
+channel t5: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t6
+channel t6: SID=2224 device type=SBT_TAPE
+channel t6: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t7
+channel t7: SID=1 device type=SBT_TAPE
+channel t7: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t8
+channel t8: SID=58 device type=SBT_TAPE
+channel t8: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+sent command to channel: t2
+sent command to channel: t3
+sent command to channel: t4
+sent command to channel: t5
+sent command to channel: t6
+sent command to channel: t7
+sent command to channel: t8
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+executing command: SET NEWNAME
+
+Starting restore at 12-OCT-2017 10:34:41
+
+channel t1: starting datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+channel t1: restoring datafile 00001 to +FRA
+channel t1: reading from backup piece bk_dFLEX_um1sfpmne_s705_p1_t956095214
+channel t2: starting datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+channel t2: restoring datafile 00002 to +DATA
+channel t2: restoring datafile 00006 to +DATA
+channel t2: reading from backup piece bk_dFLEX_um2sfpmne_s706_p1_t956095214
+channel t3: starting datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+channel t3: restoring datafile 00004 to +FRA
+channel t3: reading from backup piece bk_dFLEX_um0sfpmne_s704_p1_t956095214
+channel t4: starting datafile backup set restore
+channel t4: specifying datafile(s) to restore from backup set
+channel t4: restoring datafile 00003 to +FRA
+channel t4: reading from backup piece bk_dFLEX_uorsgepnf_s795_p1_t956786415
+channel t5: starting datafile backup set restore
+channel t5: specifying datafile(s) to restore from backup set
+channel t5: restoring datafile 00005 to +DATA
+channel t5: reading from backup piece bk_dFLEX_uoqsgepnf_s794_p1_t956786415
+channel t5: piece handle=bk_dFLEX_uoqsgepnf_s794_p1_t956786415 tag=FLEXDR
+channel t5: restored backup piece 1
+channel t5: restore complete, elapsed time: 00:02:25
+channel t4: piece handle=bk_dFLEX_uorsgepnf_s795_p1_t956786415 tag=FLEXDR
+channel t4: restored backup piece 1
+channel t4: restore complete, elapsed time: 00:02:35
+channel t1: piece handle=bk_dFLEX_um1sfpmne_s705_p1_t956095214 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:08:05
+channel t2: piece handle=bk_dFLEX_um2sfpmne_s706_p1_t956095214 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:08:45
+channel t3: piece handle=bk_dFLEX_um0sfpmne_s704_p1_t956095214 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:16:56
+Finished restore at 12-OCT-2017 10:51:53
+
+datafile 1 switched to datafile copy
+input datafile copy RECID=36 STAMP=957178313 file name=+FRA/flexres/datafile/system.1310.957177321
+datafile 2 switched to datafile copy
+input datafile copy RECID=37 STAMP=957178313 file name=+DATA/flexres/datafile/sysaux.280.957177321
+datafile 3 switched to datafile copy
+input datafile copy RECID=38 STAMP=957178313 file name=+FRA/flexres/datafile/undotbs1.297.957177321
+datafile 4 switched to datafile copy
+input datafile copy RECID=39 STAMP=957178313 file name=+FRA/flexres/datafile/users.1280.957177321
+datafile 5 switched to datafile copy
+input datafile copy RECID=40 STAMP=957178313 file name=+DATA/flexres/datafile/undotbs2.287.957177323
+datafile 6 switched to datafile copy
+input datafile copy RECID=41 STAMP=957178313 file name=+DATA/flexres/datafile/users.289.957177321
+
+released channel: t1
+
+released channel: t2
+
+released channel: t3
+
+released channel: t4
+
+released channel: t5
+
+released channel: t6
+
+released channel: t7
+
+released channel: t8
+
+RMAN> 
+
+RMAN> 
+
+RMAN> run{
+2> allocate channel t1 device type 'sbt_tape' ;
+3> allocate channel t2 device type 'sbt_tape' ;
+4> allocate channel t3 device type 'sbt_tape' ;
+5> allocate channel t4 device type 'sbt_tape' ;
+6> send 'NB_ORA_CLIENT=dr-tcbs-db-01,NB_ORA_SERV=dr-backup-01.headquarter.techcombank.com.vn';
+7> recover database ;
+8> release channel t1;
+9> release channel t2;
+10> release channel t3;
+11> release channel t4;
+12> }
+
+allocated channel: t1
+channel t1: SID=1939 device type=SBT_TAPE
+channel t1: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t2
+channel t2: SID=1996 device type=SBT_TAPE
+channel t2: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t3
+channel t3: SID=2053 device type=SBT_TAPE
+channel t3: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+allocated channel: t4
+channel t4: SID=2110 device type=SBT_TAPE
+channel t4: Veritas NetBackup for Oracle - Release 7.6 (2014102419)
+
+sent command to channel: t1
+sent command to channel: t2
+sent command to channel: t3
+sent command to channel: t4
+
+Starting recover at 12-OCT-2017 10:54:03
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +DATA/flexres/datafile/sysaux.280.957177321
+destination for restore of datafile 00006: +DATA/flexres/datafile/users.289.957177321
+channel t1: reading from backup piece bk_dFLEX_umhsg1jrg_s721_p1_t956354416
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1310.957177321
+channel t2: reading from backup piece bk_dFLEX_umgsg1jrg_s720_p1_t956354416
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +FRA/flexres/datafile/users.1280.957177321
+channel t3: reading from backup piece bk_dFLEX_umfsg1jrg_s719_p1_t956354416
+channel t1: piece handle=bk_dFLEX_umhsg1jrg_s721_p1_t956354416 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:01:15
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +DATA/flexres/datafile/sysaux.280.957177321
+destination for restore of datafile 00006: +DATA/flexres/datafile/users.289.957177321
+channel t1: reading from backup piece bk_dFLEX_un0sg487e_s736_p1_t956440814
+channel t2: piece handle=bk_dFLEX_umgsg1jrg_s720_p1_t956354416 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:01:15
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1310.957177321
+channel t2: reading from backup piece bk_dFLEX_umvsg487e_s735_p1_t956440814
+channel t3: piece handle=bk_dFLEX_umfsg1jrg_s719_p1_t956354416 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:01:15
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +FRA/flexres/datafile/users.1280.957177321
+channel t3: reading from backup piece bk_dFLEX_umusg487e_s734_p1_t956440814
+channel t2: piece handle=bk_dFLEX_umvsg487e_s735_p1_t956440814 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:00:55
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1310.957177321
+channel t2: reading from backup piece bk_dFLEX_unesg6sje_s750_p1_t956527214
+channel t1: piece handle=bk_dFLEX_un0sg487e_s736_p1_t956440814 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:01:10
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +DATA/flexres/datafile/sysaux.280.957177321
+destination for restore of datafile 00006: +DATA/flexres/datafile/users.289.957177321
+channel t1: reading from backup piece bk_dFLEX_unfsg6sje_s751_p1_t956527214
+channel t3: piece handle=bk_dFLEX_umusg487e_s734_p1_t956440814 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:01:10
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +FRA/flexres/datafile/users.1280.957177321
+channel t3: reading from backup piece bk_dFLEX_undsg6sje_s749_p1_t956527214
+channel t2: piece handle=bk_dFLEX_unesg6sje_s750_p1_t956527214 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:00:40
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1310.957177321
+channel t2: reading from backup piece bk_dFLEX_untsg9gvh_s765_p1_t956613617
+channel t1: piece handle=bk_dFLEX_unfsg6sje_s751_p1_t956527214 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:01:00
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +DATA/flexres/datafile/sysaux.280.957177321
+destination for restore of datafile 00006: +DATA/flexres/datafile/users.289.957177321
+channel t1: reading from backup piece bk_dFLEX_unusg9gvh_s766_p1_t956613617
+channel t3: piece handle=bk_dFLEX_undsg6sje_s749_p1_t956527214 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:01:01
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +FRA/flexres/datafile/users.1280.957177321
+channel t3: reading from backup piece bk_dFLEX_unssg9gvh_s764_p1_t956613617
+channel t2: piece handle=bk_dFLEX_untsg9gvh_s765_p1_t956613617 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:01:01
+channel t2: starting incremental datafile backup set restore
+channel t2: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00001: +FRA/flexres/datafile/system.1310.957177321
+channel t2: reading from backup piece bk_dFLEX_uocsgc5bf_s780_p1_t956700015
+channel t3: piece handle=bk_dFLEX_unssg9gvh_s764_p1_t956613617 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:01:00
+channel t3: starting incremental datafile backup set restore
+channel t3: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00004: +FRA/flexres/datafile/users.1280.957177321
+channel t3: reading from backup piece bk_dFLEX_uobsgc5bf_s779_p1_t956700015
+channel t1: piece handle=bk_dFLEX_unusg9gvh_s766_p1_t956613617 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:01:04
+channel t1: starting incremental datafile backup set restore
+channel t1: specifying datafile(s) to restore from backup set
+destination for restore of datafile 00002: +DATA/flexres/datafile/sysaux.280.957177321
+destination for restore of datafile 00006: +DATA/flexres/datafile/users.289.957177321
+channel t1: reading from backup piece bk_dFLEX_uodsgc5bf_s781_p1_t956700015
+channel t2: piece handle=bk_dFLEX_uocsgc5bf_s780_p1_t956700015 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:00:54
+channel t3: piece handle=bk_dFLEX_uobsgc5bf_s779_p1_t956700015 tag=FLEXDR
+channel t3: restored backup piece 1
+channel t3: restore complete, elapsed time: 00:00:59
+channel t1: piece handle=bk_dFLEX_uodsgc5bf_s781_p1_t956700015 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:01:05
+
+starting media recovery
+
+channel t1: starting archived log restore to default destination
+channel t1: restoring archived log
+archived log thread=2 sequence=1787
+channel t1: restoring archived log
+archived log thread=1 sequence=1725
+channel t1: restoring archived log
+archived log thread=2 sequence=1788
+channel t1: reading from backup piece arch_dFLEX_up6sgev0b_s806_p1_t956791819
+channel t2: starting archived log restore to default destination
+channel t2: restoring archived log
+archived log thread=2 sequence=1789
+channel t2: restoring archived log
+archived log thread=2 sequence=1790
+channel t2: restoring archived log
+archived log thread=1 sequence=1726
+channel t2: restoring archived log
+archived log thread=2 sequence=1791
+channel t2: restoring archived log
+archived log thread=2 sequence=1792
+channel t2: restoring archived log
+archived log thread=2 sequence=1793
+channel t2: restoring archived log
+archived log thread=1 sequence=1727
+channel t2: restoring archived log
+archived log thread=2 sequence=1794
+channel t2: restoring archived log
+archived log thread=2 sequence=1795
+channel t2: restoring archived log
+archived log thread=1 sequence=1728
+channel t2: restoring archived log
+archived log thread=1 sequence=1729
+channel t2: restoring archived log
+archived log thread=1 sequence=1730
+channel t2: restoring archived log
+archived log thread=2 sequence=1796
+channel t2: restoring archived log
+archived log thread=1 sequence=1731
+channel t2: restoring archived log
+archived log thread=1 sequence=1732
+channel t2: restoring archived log
+archived log thread=1 sequence=1733
+channel t2: restoring archived log
+archived log thread=2 sequence=1797
+channel t2: restoring archived log
+archived log thread=1 sequence=1734
+channel t2: restoring archived log
+archived log thread=2 sequence=1798
+channel t2: restoring archived log
+archived log thread=1 sequence=1735
+channel t2: restoring archived log
+archived log thread=2 sequence=1799
+channel t2: restoring archived log
+archived log thread=1 sequence=1736
+channel t2: restoring archived log
+archived log thread=1 sequence=1737
+channel t2: restoring archived log
+archived log thread=1 sequence=1738
+channel t2: restoring archived log
+archived log thread=2 sequence=1800
+channel t2: restoring archived log
+archived log thread=1 sequence=1739
+channel t2: restoring archived log
+archived log thread=1 sequence=1740
+channel t2: restoring archived log
+archived log thread=1 sequence=1741
+channel t2: restoring archived log
+archived log thread=2 sequence=1801
+channel t2: restoring archived log
+archived log thread=1 sequence=1742
+channel t2: restoring archived log
+archived log thread=1 sequence=1743
+channel t2: restoring archived log
+archived log thread=1 sequence=1744
+channel t2: restoring archived log
+archived log thread=2 sequence=1802
+channel t2: restoring archived log
+archived log thread=1 sequence=1745
+channel t2: restoring archived log
+archived log thread=1 sequence=1746
+channel t2: restoring archived log
+archived log thread=1 sequence=1747
+channel t2: restoring archived log
+archived log thread=2 sequence=1803
+channel t2: restoring archived log
+archived log thread=1 sequence=1748
+channel t2: restoring archived log
+archived log thread=2 sequence=1804
+channel t2: restoring archived log
+archived log thread=2 sequence=1805
+channel t2: restoring archived log
+archived log thread=2 sequence=1806
+channel t2: restoring archived log
+archived log thread=1 sequence=1749
+channel t2: restoring archived log
+archived log thread=2 sequence=1807
+channel t2: restoring archived log
+archived log thread=1 sequence=1750
+channel t2: restoring archived log
+archived log thread=1 sequence=1751
+channel t2: restoring archived log
+archived log thread=1 sequence=1752
+channel t2: restoring archived log
+archived log thread=2 sequence=1808
+channel t2: restoring archived log
+archived log thread=1 sequence=1753
+channel t2: restoring archived log
+archived log thread=1 sequence=1754
+channel t2: restoring archived log
+archived log thread=1 sequence=1755
+channel t2: restoring archived log
+archived log thread=2 sequence=1809
+channel t2: restoring archived log
+archived log thread=2 sequence=1810
+channel t2: restoring archived log
+archived log thread=2 sequence=1811
+channel t2: restoring archived log
+archived log thread=2 sequence=1812
+channel t2: reading from backup piece arch_dFLEX_up7sgev6e_s807_p1_t956792014
+channel t1: piece handle=arch_dFLEX_up6sgev0b_s806_p1_t956791819 tag=FLEXDR
+channel t1: restored backup piece 1
+channel t1: restore complete, elapsed time: 00:02:15
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1725.503.957178935 thread=1 sequence=1725
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1787.1756.957178883 thread=2 sequence=1787
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1787.1756.957178883 RECID=3743 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1788.1740.957178829 thread=2 sequence=1788
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1788.1740.957178829 RECID=3722 STAMP=957178846
+channel t2: piece handle=arch_dFLEX_up7sgev6e_s807_p1_t956792014 tag=FLEXDR
+channel t2: restored backup piece 1
+channel t2: restore complete, elapsed time: 00:02:28
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1789.1398.957178827 thread=2 sequence=1789
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1789.1398.957178827 RECID=3723 STAMP=957178846
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1790.1623.957178841 thread=2 sequence=1790
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1725.503.957178935 RECID=3765 STAMP=957178937
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1726.628.957178937 thread=1 sequence=1726
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1790.1623.957178841 RECID=3724 STAMP=957178861
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1791.1645.957178843 thread=2 sequence=1791
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1791.1645.957178843 RECID=3729 STAMP=957178865
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1792.852.957178903 thread=2 sequence=1792
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1792.852.957178903 RECID=3752 STAMP=957178921
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1793.927.957178863 thread=2 sequence=1793
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1726.628.957178937 RECID=3766 STAMP=957178937
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1727.1686.957178843 thread=1 sequence=1727
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1793.927.957178863 RECID=3734 STAMP=957178880
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1794.605.957178921 thread=2 sequence=1794
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1794.605.957178921 RECID=3763 STAMP=957178936
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1795.1621.957178923 thread=2 sequence=1795
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1727.1686.957178843 RECID=3726 STAMP=957178862
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1728.836.957178847 thread=1 sequence=1728
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1728.836.957178847 RECID=3731 STAMP=957178865
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1729.1102.957178909 thread=1 sequence=1729
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1729.1102.957178909 RECID=3756 STAMP=957178924
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1730.1070.957178903 thread=1 sequence=1730
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1795.1621.957178923 RECID=3759 STAMP=957178932
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1796.1732.957178925 thread=2 sequence=1796
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1730.1070.957178903 RECID=3750 STAMP=957178921
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1731.793.957178879 thread=1 sequence=1731
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1731.793.957178879 RECID=3740 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1732.618.957178845 thread=1 sequence=1732
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1732.618.957178845 RECID=3730 STAMP=957178865
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1733.1243.957178863 thread=1 sequence=1733
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1796.1732.957178925 RECID=3757 STAMP=957178932
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1797.1641.957178827 thread=2 sequence=1797
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1733.1243.957178863 RECID=3735 STAMP=957178880
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1734.711.957178843 thread=1 sequence=1734
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1797.1641.957178827 RECID=3717 STAMP=957178842
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1798.1488.957178921 thread=2 sequence=1798
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1734.711.957178843 RECID=3728 STAMP=957178862
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1735.349.957178881 thread=1 sequence=1735
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1798.1488.957178921 RECID=3762 STAMP=957178936
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1799.1569.957178933 thread=2 sequence=1799
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1735.349.957178881 RECID=3745 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1736.1166.957178881 thread=1 sequence=1736
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1736.1166.957178881 RECID=3744 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1737.752.957178879 thread=1 sequence=1737
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1737.752.957178879 RECID=3741 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1738.1601.957178905 thread=1 sequence=1738
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1799.1569.957178933 RECID=3767 STAMP=957178938
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1800.557.957178923 thread=2 sequence=1800
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1738.1601.957178905 RECID=3753 STAMP=957178922
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1739.1726.957178881 thread=1 sequence=1739
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1739.1726.957178881 RECID=3742 STAMP=957178903
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1740.1375.957178863 thread=1 sequence=1740
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1740.1375.957178863 RECID=3736 STAMP=957178880
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1741.604.957178843 thread=1 sequence=1741
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1800.557.957178923 RECID=3760 STAMP=957178933
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1801.1371.957178933 thread=2 sequence=1801
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1741.604.957178843 RECID=3727 STAMP=957178862
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1742.1502.957178865 thread=1 sequence=1742
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1742.1502.957178865 RECID=3739 STAMP=957178884
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1743.623.957178861 thread=1 sequence=1743
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1743.623.957178861 RECID=3732 STAMP=957178879
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1744.1611.957178883 thread=1 sequence=1744
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1801.1371.957178933 RECID=3768 STAMP=957178938
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1802.1652.957178933 thread=2 sequence=1802
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1744.1611.957178883 RECID=3746 STAMP=957178908
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1745.1736.957178903 thread=1 sequence=1745
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1745.1736.957178903 RECID=3749 STAMP=957178921
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1746.1705.957178885 thread=1 sequence=1746
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1746.1705.957178885 RECID=3748 STAMP=957178909
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1747.1295.957178909 thread=1 sequence=1747
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1802.1652.957178933 RECID=3769 STAMP=957178938
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1803.274.957178829 thread=2 sequence=1803
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1747.1295.957178909 RECID=3754 STAMP=957178923
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1748.1564.957178923 thread=1 sequence=1748
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1803.274.957178829 RECID=3715 STAMP=957178841
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1804.789.957178827 thread=2 sequence=1804
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1804.789.957178827 RECID=3721 STAMP=957178844
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1805.867.957178841 thread=2 sequence=1805
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1805.867.957178841 RECID=3725 STAMP=957178861
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1806.1528.957178827 thread=2 sequence=1806
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1748.1564.957178923 RECID=3761 STAMP=957178934
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1749.837.957178865 thread=1 sequence=1749
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1806.1528.957178827 RECID=3720 STAMP=957178843
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1807.392.957178935 thread=2 sequence=1807
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1749.837.957178865 RECID=3738 STAMP=957178883
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1750.439.957178883 thread=1 sequence=1750
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1750.439.957178883 RECID=3747 STAMP=957178908
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1751.1147.957178865 thread=1 sequence=1751
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1751.1147.957178865 RECID=3737 STAMP=957178883
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1752.913.957178861 thread=1 sequence=1752
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1807.392.957178935 RECID=3771 STAMP=957178938
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1808.1066.957178925 thread=2 sequence=1808
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1752.913.957178861 RECID=3733 STAMP=957178879
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1753.922.957178903 thread=1 sequence=1753
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1753.922.957178903 RECID=3751 STAMP=957178921
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1754.1027.957178909 thread=1 sequence=1754
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1754.1027.957178909 RECID=3755 STAMP=957178924
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1755.1285.957178933 thread=1 sequence=1755
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1808.1066.957178925 RECID=3758 STAMP=957178932
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1809.942.957178827 thread=2 sequence=1809
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1809.942.957178827 RECID=3716 STAMP=957178841
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1810.767.957178827 thread=2 sequence=1810
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1810.767.957178827 RECID=3719 STAMP=957178842
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_2_seq_1811.1589.957178827 thread=2 sequence=1811
+channel default: deleting archived log(s)
+archived log file name=+FRA/flexres/archivelog/2017_10_12/thread_1_seq_1755.1285.957178933 RECID=3770 STAMP=957178938
+unable to find archived log
+archived log thread=1 sequence=1756
+released channel: t1
+released channel: t2
+released channel: t3
+released channel: t4
+RMAN-00571: ===========================================================
+RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============
+RMAN-00571: ===========================================================
+RMAN-03002: failure of recover command at 10/12/2017 11:03:28
+RMAN-06054: media recovery requesting unknown archived log for thread 1 with sequence 1756 and starting SCN of 4962310470

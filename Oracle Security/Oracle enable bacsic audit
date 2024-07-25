@@ -1,0 +1,89 @@
+alter system set audit_trail='OS' scope=spfile;
+
+alter system set audit_trail='DB' scope=spfile;
+
+
+SQL> show parameter audit
+
+NAME                         TYPE     VALUE                                   
+---------------------------- -------- ----------------------------------------
+AUDIT_FILE_DEST              DIRNAME  /tibero/tibero6/instance/coreuat/audit/
+AUDIT_FILE_SIZE              INT32    104857600
+AUDIT_LOG_TOTAL_SIZE_LIMIT   INT64    314572800
+AUDIT_SYS_OPERATIONS         Y_N      YES
+AUDIT_TRAIL                  STRING   DB
+
+
+
+
+
+Three levels of Auditing:-
+
+- Statement level
+- Object level
+- System/privilege level
+
+
+1. Audit user
+----------------------------------------------
+SQL> audit table by hari;
+
+AUDIT ALL BY G2FO BY ACCESS;
+AUDIT SELECT TABLE, UPDATE TABLE, INSERT TABLE, DELETE TABLE BY G2FO BY ACCESS;
+AUDIT EXECUTE PROCEDURE BY G2FO BY ACCESS;
+
+
+
+Check
+
+select * 
+from DBA_STMT_AUDIT_OPTS;
+
+
+select USERNAME,TIMESTAMP,ACTION_NAME from dba_audit_trail where USERNAME='HARI';
+SQL> select OS_USERNAME,USERNAME, USERHOST, SQL_TEXT, ACTION_NAME from dba_audit_trail where obj_name='T1';
+
+
+
+
+
+2. Audit object
+----------------------------------------------
+SQL> audit insert on dbwr.testtab;
+
+
+audit all on BOJBSV.SYSVAR;
+
+
+select object_name,object_type,ins,sel 
+from dba_obj_audit_opts 
+where owner='DBWR';
+
+select * from DBA_OBJ_AUDIT_OPTS;
+
+select username,timestamp,action_name,sys_privilege,priv_used from dba_audit_trail where username='DBWR'
+
+
+
+SQL> NOAUDIT all on dba01.test;
+
+SQL> NOAUDIT all on BOJBSV.SYSVAR;
+
+
+
+
+
+3. System/Privilege level auditing
+----------------------------------------------
+audit create any table by hari;
+
+
+
+select privilege,user_name 
+from dba_priv_audit_opts 
+where user_name='HARI';
+
+
+select username,timestamp,action_name,sys_privilege,priv_used 
+from dba_audit_trail 
+where username='HARI'

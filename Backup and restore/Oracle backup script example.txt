@@ -1,0 +1,81 @@
+mkdir -p /home/oracle/dbscript/log
+
+vi /home/oracle/dbscript/backup_db_lv0.sh
+
+#!/bin/bash
+
+export ORACLE_SID=$1
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_HOME=$ORACLE_BASE/product/19c/dbhome_1
+export PATH=$ORACLE_HOME/bin:/u01/app/oracle/product/19c/dbhome_1/bin:/u01/app/oracle/product/19c/dbhome_1/OPatch:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/oracle/.local/bin:/home/oracle/bin
+export LOG_DIR=/home/oracle/dbscript/log
+export BACKUP_DIR=/backup/$ORACLE_SID/$(date +"%Y%m%d")
+
+mkdir -p $BACKUP_DIR
+
+echo "
+CONFIGURE DEVICE TYPE DISK PARALLELISM 4 BACKUP TYPE TO BACKUPSET;
+
+RUN {
+CROSSCHECK ARCHIVELOG ALL;
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL  LEVEL 0 DATABASE FORMAT '$BACKUP_DIR/db_lv0_%D%M%Y_%U.dbf' TAG LEVEL0 ;
+sql 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG  ALL not backed up 1 times FORMAT '$BACKUP_DIR/arch_lv0_%D%M%Y_%U.dbf' TAG ARCH ;
+DELETE NOPROMPT ARCHIVELOG UNTIL TIME 'SYSDATE-1';
+backup spfile include current controlfile format '$BACKUP_DIR/ctl_lv0_%D%M%Y_%U.dbf' tag CTLFILE;
+CROSSCHECK BACKUP;
+CROSSCHECK COPY;
+delete noprompt obsolete redundancy 3;
+DELETE noprompt EXPIRED BACKUP;
+}
+" > /home/oracle/dbscript/backup_level0.rman
+
+$ORACLE_HOME/bin/rman target / cmdfile=/home/oracle/dbscript/backup_level0.rman
+
+echo 'Done!'
+
+
+
+
+crontab -l
+
+###Backup database
+00 22 * * * sh /home/oracle/dbscript/backup_db_lv0.sh gwdb >> /home/oracle/dbscript/log/backupdb_gwdb_lv0_$(date +\%Y\%m\%d\%H\%M).out 2>&1
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Backup lv 0
+run {
+ALLOCATE CHANNEL c1 DEVICE TYPE disk;
+ALLOCATE CHANNEL c2 DEVICE TYPE disk;
+ALLOCATE CHANNEL c3 DEVICE TYPE disk;
+ALLOCATE CHANNEL c4 DEVICE TYPE disk;
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 0 DATABASE FORMAT  '/backup_dwh/bk_20_12_2016/data_%d_%Y%M%D_%U' FILESPERSET 4 TAG FULLBKP;
+SQL 'ALTER SYSTEM ARCHIVE LOG CURRENT';
+BACKUP AS COMPRESSED BACKUPSET NOT BACKED UP ARCHIVELOG ALL FORMAT '/backup_dwh/bk_20_12_2016/arch_%d_%Y%M%D_%U' FILESPERSET 4 TAG  ARCH;
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE FORMAT '/backup_dwh/bk_20_12_2016/ctl_%d_%Y%M%D_%U' TAG CTLFILE;
+}
+
+
+#Backup lv 1
+run {
+BACKUP AS COMPRESSED BACKUPSET INCREMENTAL LEVEL 1 CUMULATIVE DATABASE 
+FORMAT  '/usr/oracle/backup/dbbk/db1_%T_%d_%u_%s' FILESPERSET 4 TAG FULLBKP;
+}
+
+
+#Backup archivelog
+run{
+BACKUP AS COMPRESSED BACKUPSET ARCHIVELOG ALL 
+FORMAT  '/u01/app/oracle/backup/db01/db01_arch_%T_%d_%u_%s_%U' FILESPERSET 4 DELETE INPUT TAG  ARCH;
+}
+
+
+#Backup controlfile ( Luu ý : backup sau khi backup database)
+run{
+BACKUP AS COMPRESSED BACKUPSET CURRENT CONTROLFILE 
+FORMAT  '/u01/app/oracle/backup/db01/db01_controlfile_%T_%d_%u_%s' TAG CTLFILE;
+}

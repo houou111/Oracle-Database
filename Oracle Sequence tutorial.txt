@@ -1,0 +1,71 @@
+I. Alter sequence
+-----------------------------------------------------------------
+alter sequence AAA.XXX CACHE 1000;
+
+alter sequence ISEQ$$_92327 CACHE 1000;
+
+set lines 200
+set pages 200
+set serveroutput on
+DECLARE     
+cmd1    VARCHAR2 (4000);
+cmd2    VARCHAR2 (4000);
+cmd3    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select sequence_owner,sequence_name,increment_by,last_number from dba_sequences where sequence_owner='BOJBSV')
+	LOOP       
+		cmd1 :='ALTER SEQUENCE '||r.sequence_owner||'.'||r.sequence_name||' INCREMENT BY '||round(r.last_number*1.1)||' ; ';
+		cmd2 :='select  '||r.sequence_owner||'.'||r.sequence_name||'.nextval from dual; ';
+		cmd3 :='ALTER SEQUENCE '||r.sequence_owner||'.'||r.sequence_name||' INCREMENT BY '||r.increment_by||' ; ';
+		DBMS_OUTPUT.put_line ('===========================================================================================');
+		DBMS_OUTPUT.put_line (cmd1);
+		DBMS_OUTPUT.put_line (cmd2);
+		DBMS_OUTPUT.put_line (cmd3);
+	END LOOP; 
+END; 
+/ 
+
+
+
+ALTER SEQUENCE MSB.DOC_SEQ INCREMENT BY 10;
+
+select MSB.DOC_SEQ.nextval from dual;
+
+
+set lines 200
+set pages 200
+set serveroutput on
+DECLARE     
+cmd1    VARCHAR2 (4000);
+cmd2    VARCHAR2 (4000);
+cmd3    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select sequence_owner,sequence_name,increment_by,last_number from dba_sequences where sequence_owner='BOJBSV')
+	LOOP       
+		cmd1 :='ALTER SEQUENCE '||r.sequence_owner||'.'||r.sequence_name||' CACHE 10000 ; ';
+		DBMS_OUTPUT.put_line ('===========================================================================================');
+		DBMS_OUTPUT.put_line (cmd1);
+	END LOOP; 
+END; 
+/ 
+
+
+
+
+
+DECLARE     
+cmd1    VARCHAR2 (4000);
+cmd2    VARCHAR2 (4000);
+
+BEGIN 
+  FOR r IN (select sequence_owner,sequence_name,increment_by,trunc(last_number*1.1) new_number from dba_sequences where sequence_owner='ESB_PROD')
+	LOOP       
+		cmd1 :='DROP SEQUENCE '||r.sequence_owner||'.'||r.sequence_name||' ; ';
+		cmd3 :='CREATE SEQUENCE '||r.sequence_owner||'.'||r.sequence_name||' START WITH '||r.new_number||' MAXVALUE 99999999999  MINVALUE 1  CYCLE  CACHE 1000  NOORDER  NOKEEP  GLOBAL;';
+		DBMS_OUTPUT.put_line (cmd1);
+		DBMS_OUTPUT.put_line (cmd2);
+	END LOOP; 
+END; 
+/ 

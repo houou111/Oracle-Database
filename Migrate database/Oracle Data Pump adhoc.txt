@@ -1,0 +1,283 @@
+﻿#Tạo thư mục để chứa file pump
+SQL> CREATE OR REPLACE DIRECTORY dump AS '/u01/dump';
+SQL> CREATE OR REPLACE DIRECTORY dump AS '/export';
+SQL> GRANT READ, WRITE ON DIRECTORY dump TO system;
+SQL> GRANT EXEMPT ACCESS POLICY to System;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+expdp '"/ as sysdba"' full=Y dumpfile=G2FO_%U.dmp logfile=G2FO.expdp.log parallel=8 DIRECTORY=dump FILESIZE=20G cluster=n exclude=statistics compression=all		|
+expdp '"/ as sysdba"' tables=G2FO.Y 	dumpfile=G2FO_%U.dmp logfile=G2FO.expdp.log parallel=8 DIRECTORY=dump FILESIZE=20G cluster=n exclude=statistics compression=all		|
+expdp '"/ as sysdba"' schemas=G2FO dumpfile=G2FO_%U.dmp logfile=G2FO.expdp.log parallel=8 DIRECTORY=dump FILESIZE=20G cluster=n exclude=statistics compression=all  |
+expdp '"/ as sysdba"' full=Y 	dumpfile=G2FO_%U.dmp logfile=G2FO.arc2.log  PARALLEL=16 directory=dump cluster=n content=METADATA_ONLY exclude=statistics			|
+impdp '"/ as sysdba"' 			dumpfile=G2FO_%U.dmp  logfile=G2FO.impdp.log parallel=8 DIRECTORY=dump cluster=n transform=disable_archive_logging:Y                | 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+*** Exadata to non-Exadata
+transform=segment_attributes:n:table
+
+## Only contraint
+impdp '"/ as sysdba"' directory=dump dumpfile=HPG_meta_%U.dmp logfile=impdp_hpg_test_meta.log PARALLEL=8 INCLUDE=CONSTRAINT,REF_CONSTRAINT table_exists_action=append 
+
+
+#Oracle Data Pump (expdp and impdp)
+exec DBMS_STATS.GATHER_SCHEMA_STATS(NULL,GRANULARITY => 'ALL' ,CASCADE=> TRUE);
+
+
+#Table Exports/Imports
+$ expdp '"/ as sysdba"' tables=thuctap directory=dump dumpfile=thuctap.dmp logfile=expdp_thuctap.log
+$ impdp '"/ as sysdba"' tables=thuctap directory=dump dumpfile=thuctap.dmp logfile=impdp_thuctap.log TABLE_EXISTS_ACTION=APPEND
+
+
+logfile=DATA_PUMP_DIR:YENBAI.log
+
+
+
+
+
+#Partition Table Exports/Imports
+expdp '"/ as sysdba"' DUMPFILE=scott.dmp DIRECTORY=dump TABLES=(T1:P1,T1:P2)
+
+#Schema Exports/Imports
+$ expdp '"/ as sysdba"' schemas=duong directory=dump dumpfile=DUONG.dmp logfile=expdp_DUONG.log
+$ impdp '"/ as sysdba"' schemas=DUONG directory=dump dumpfile=DUONG.dmp logfile=impdp_DUONG.log
+
+#Database Exports/Imports
+$ expdp '"/ as sysdba"' full=Y directory=dump dumpfile=oratest.dmp logfile=expdp_oratest.log
+$ impdp '"/ as sysdba"' full=Y directory=dump dumpfile=oratest.dmp logfile=impdp_oratest.log
+-> Exadata impdp system/123456 remap_schema=dwh:abc remap_tablespace=DWH2017_TBS:USERS directory=dump dumpfile=A.dmp transform=segment_attributes:n:table
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------|
+export DB_link
+ expdp '"/ as sysdba"' DIRECTORY=DUMP DUMPFILE=t24rep%U  PARALLEL=8 FILESIZE=20G CLUSTER=N schemas=T24REP include=DB_link content=METADATA_ONLY
+-----------------------------------------------------------------------------------------------------------------------------------------------|
+
+
+
+------------------------------------------------------------------------------------------------------------------------|
+Post impdp:																												|
+Note for:																												|
+- sys privilege not include	( if not expdp full db)																		|
+- enable queue																											|
+- config dblink																											|
+																														|
+																														|
+																														|
+																														|
+------------------------------------------------------------------------------------------------------------------------|
+
+expdp '"/ as sysdba"' parfile=/tmp/PCA.par
+
+vi /tmp/PCA.par
+
+DIRECTORY=dump
+logfile=PCA.log 
+dumpfile=PCA%U
+parallel=8 
+full=yes
+exclude=table:"IN('LEDGER_STAT_161126','LEDGER_STAT_170506','LEDGER_STAT_1712_11000','LEDGER_STAT_1712_12000','LEDGER_STAT_1712_17000','LEDGER_STAT_1712_18000','LEDGER_STAT_1712_REV','LEDGER_STAT_201607','LEDGER_STAT_20161205','LEDGER_STAT_20170505','LEDGER_STAT_201708','LEDGER_STAT_201708_NEW','LEDGER_STAT_201709','LEDGER_STAT_201709_20171027','LEDGER_STAT_201710','LEDGER_STAT_201710_NEW','LEDGER_STAT_201712','LEDGER_STAT_201712_180126','LEDGER_STAT_201712_180319','LEDGER_STAT_201712_NEW','LEDGER_STAT_20180117','LEDGER_STAT_201801_180319','LEDGER_STAT_201801_180326','LEDGER_STAT_201802','LEDGER_STAT_201802_180309','LEDGER_STAT_201804','LEDGER_STAT_201806_KEY_S','LEDGER_STAT_BK201806','LEDGER_STAT_BK_20170629','LEDGER_STAT_BK_20180301','LEDGER_STAT_BK_201805','LEDGER_STAT_BK_20180704','LEDGER_STAT_BK_FTP_20171004','LEDGER_STAT_REPORT','LEDGER_STAT_REPORT_1611','LEDGER_STAT_REPORT_20170123','LEDGER_STAT_REPORT_20180117','LEDGER_STAT_REPORT_BK_20180301','LEDGER_STAT_REV_201804','MANHTV2_TMP_TBL_LEDGER_STAT_1','PHATTV_BACK_UP_LEDGER_STAT')"
+exclude=statistics
+cluster=n
+FILESIZE=20G
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------|
+[oracle@dc-ora-db01 bin]$ more mig_export_script.sh 																									|
+export ORACLE_SID=$1																																	|
+export EXP_BKP_DIR=/backup200/dump																														|
+export PARALLEL_THREADS=5																																|
+																																						|
+mkdir -p ${EXP_BKP_DIR}/${ORACLE_SID}																													|
+export DT=`date +%d%b%y_%H%M`																															|
+export CREATE_DIR_LOG=${EXP_BKP_DIR}/${ORACLE_SID}/expdp_${ORACLE_SID}_cr_dir.log																		|
+																																						|
+sqlplus -s "/ as sysdba" <<EOF >> ${CREATE_DIR_LOG}																										|
+WHENEVER SQLERROR EXIT SQL.SQLCODE																														|
+col WRL_PARAMETER for a80																																|
+col Dir_Path for a120																																	|
+set lines 300 pages 50000																																|
+select to_char(sysdate,'DD-MON-YY HH24:MI:SS') sdate from dual;																							|
+create or replace directory ibmexpdir as '${EXP_BKP_DIR}/${ORACLE_SID}';																				|
+select directory_name || ' => ' || directory_path Dir_Path from dba_directories where directory_name='IBMEXPDIR';										|
+select * from v\$encryption_wallet;																														|
+exit;																																					|
+EOF																																						|
+																																						|
+expdp "'/ as sysdba'" DIRECTORY=ibmexpdir DUMPFILE=expdp_${ORACLE_SID}_%U.dmp \																			|
+LOGFILE=expdp_${ORACLE_SID}.log PARALLEL=${PARALLEL_THREADS} CONTENT=ALL CLUSTER=N FULL=Y EXCLUDE=STATISTICS,INDEX_STATISTICS reuse_dumpfiles=true \	|
+EXCLUDE=SCHEMA:\"IN \(\'SYS\', \'SYSTEM\', \'SYSAUX\'\,\'ORDDATA\',\'SYSMAN\',\'APEX_030200\'\,\'OWBSYS_AUDIT\',\'OUTLN\',\'OWBSYS\',\'SCOTT\',\		|
+\'FLOWS_FILES\',\'OE\'\,\'OLAPSYS\',\'MDDATA\',\'SPATIAL_WFS_ADMIN_USR\',\'SPATIAL_CSW_ADMIN_USR\',\'MGMT_VIEW\',\'APEX_PUBLIC_USER\'\)\"				|
+																																						|
+echo "Script execution ended   at : `date`" >> ${CREATE_DIR_LOG}																						|
+																																						|
+--------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+expdp system/password DIRECTORY=DATA_PUMP_DIR DUMPFILE=abc.dmp FULL=Y 
+EXCLUDE=TABLE:\"IN \(\'NAME\', \'ADDRESS\' , \'EMPLOYEE\' , \'DEPT\'\)\" 
+EXCLUDE=SCHEMA:\"IN \(\'WMSYS\', \'OUTLN\'\)\"
+
+EXCLUDE=TABLE:\"IN \(\'ATOMICINFO.LEDGER_STAT_REPORT\'\)\" 
+
+expdp '"/ as sysdba"' parfile=/tmp/PCA.par
+
+vi /tmp/PCA.par
+
+DIRECTORY=dump
+logfile=PCA.log 
+dumpfile=PCA%U
+parallel=8 
+full=yes
+exclude=table:"IN('LEDGER_STAT_161126','LEDGER_STAT_170506','LEDGER_STAT_1712_11000','LEDGER_STAT_1712_12000','LEDGER_STAT_1712_17000','LEDGER_STAT_1712_18000','LEDGER_STAT_1712_REV','LEDGER_STAT_201607','LEDGER_STAT_20161205','LEDGER_STAT_20170505','LEDGER_STAT_201708','LEDGER_STAT_201708_NEW','LEDGER_STAT_201709','LEDGER_STAT_201709_20171027','LEDGER_STAT_201710','LEDGER_STAT_201710_NEW','LEDGER_STAT_201712','LEDGER_STAT_201712_180126','LEDGER_STAT_201712_180319','LEDGER_STAT_201712_NEW','LEDGER_STAT_20180117','LEDGER_STAT_201801_180319','LEDGER_STAT_201801_180326','LEDGER_STAT_201802','LEDGER_STAT_201802_180309','LEDGER_STAT_201804','LEDGER_STAT_201806_KEY_S','LEDGER_STAT_BK201806','LEDGER_STAT_BK_20170629','LEDGER_STAT_BK_20180301','LEDGER_STAT_BK_201805','LEDGER_STAT_BK_20180704','LEDGER_STAT_BK_FTP_20171004','LEDGER_STAT_REPORT','LEDGER_STAT_REPORT_1611','LEDGER_STAT_REPORT_20170123','LEDGER_STAT_REPORT_20180117','LEDGER_STAT_REPORT_BK_20180301','LEDGER_STAT_REV_201804','MANHTV2_TMP_TBL_LEDGER_STAT_1','PHATTV_BACK_UP_LEDGER_STAT')"
+exclude=statistics
+cluster=n
+FILESIZE=20G
+
+##Find schema
+select distinct tablespace_name from dba_segments where OWNER='DWH' or OWNER='G2FO_BK' or OWNER='G2FO_STAGING' or OWNER='TCB_G2FO_VAS';
+
+
+
+DWH
+G2FO_BK
+G2FO_STAGING
+TCB_G2FO_VAS
+
+set head off echo off
+select 'select dbms_metadata.get_ddl(''TABLESPACE'',''' 
+|| tablespace_name || ''') from dual;' from dba_tablespaces
+where tablespace_name in (select distinct tablespace_name from dba_segments where OWNER='DWH' or OWNER='G2FO_BK' or OWNER='G2FO_STAGING' or OWNER='TCB_G2FO_VAS');
+
+
+## EVM ##
+create public database link dexxis_old connect to system identified by manager1 using 'dexxis_old';
+
+CREATE OR REPLACE DIRECTORY dump AS '/home/oracle/dump';
+GRANT READ, WRITE ON DIRECTORY dump TO system;
+GRANT EXEMPT ACCESS POLICY to System;
+
+create public database link dexxis_old connect to system identified by gemalto1 using 'dexxis_old';
+create public database link dexxisua_old connect to system identified by gemalto1 using 'dexxisua_old';
+expdp system/gemalto1@dexxis full=Y exclude=statistics NETWORK_LINK=dexxis_old directory=dump dumpfile=dexxisua.dmp logfile=expdp_dexxisua.log
+expdp system/gemalto1@dexxis full=Y exclude=statistics NETWORK_LINK=dexxisua_old directory=dump dumpfile=dexxisuaa.dmp logfile=expdp_dexxisua.log
+impdp system/gemalto1@dexxis full=Y  directory=dump dumpfile=dexxisua.dmp logfile=impdp_dexxis.log
+impdp system/gemalto1@dexxisua full=Y  directory=dump dumpfile=dexxisuaa.dmp logfile=impdp_dexxisua.log
+
+
+
+
+httk04
+123456a@
+citadhn/tM8@%KRetail
+citadhcm/tM7@%LRetail
+
+
+
+#Partition Table Exports/Imports
+expdp '"/ as sysdba"' dumpfile=DWH%U.dmp parallel=8 FILESIZE=20G cluster=n DIRECTORY=dump TABLES=DWH.Account:SYS_P305243 logfile=expdp_dwh.log 
+expdp '"/ as sysdba"'
+
+## DWHUAT ##
+SQL> CREATE OR REPLACE DIRECTORY dump AS '/backup_dwh/dump';
+SQL> GRANT READ, WRITE ON DIRECTORY dump TO system;
+SQL> GRANT EXEMPT ACCESS POLICY to System;
+
+expdp '"srv_db	_backup/ as sysdba"' tables=DWH.LOS_WL_CL_DATACHECKLIST,DWH.LOS_VERIFICATION_TSD  directory=dump dumpfile=LOS%U.dmp logfile=LOS.log parallel=8 FILESIZE=20G cluster=n exclude=statistics
+impdp system/123456 full=Y directory=dump parallel=8 dumpfile=DWH%U.dmp logfile=DWH.log cluster=n remap_tablespace=DWH2017_TBS:G2FO_CURRENT_TBS 
+
+expdp system/123456 full=Y parallel=8 FILESIZE=20G cluster=n exclude=statistics directory=dump dumpfile=dwhuat%U.dmp logfile=expdp_dwhuat.log 
+
+impdp system/123456 full=Y parallel=24 directory=dump cluster=n dumpfile=dwhuat%U.dmp logfile=impdp_dwhuat.log 
+impdp "'sys/db#Chivas#123 as sysdba'" full=Y parallel=24 directory=dump cluster=n dumpfile=dwhuat%U.dmp logfile=impdp_dwhuat.log 
+
+DWH.CUSTOMER 
+
+expdp '"/ as sysdba"' tables=EDW_ADM.SQLN_EXPLAIN_PLAN directory=dump dumpfile=EDW_ADM.dmp logfile=EDW_ADM.log
+
+impdp system/123456 table_exists_action=append directory=dump remap_tablespace=DWH2017_TBS:G2FO_CURRENT_TBS cluster=n dumpfile=ACC.dmp logfile=ACC.log PARALLEL=8
+impdp system/123456 table_exists_action=append directory=dump cluster=n dumpfile=DWH.dmp logfile=DWH.log PARALLEL=8
+
+
+impdp '"/ as sysdba"' remap_table=LD_SCHEDULE_DEFINE_TSD:LD_SCHEDULE_DEFINE_TSD2 remap_tablespace=G2FO_CURRENT_TBS:DWH2016_TBS directory=dump dumpfile=LD_SCHEDULE_DEFINE_TSD.dmp logfile=LD_SCHEDULE_DEFINE_TSD.log PARALLEL=8
+
+expdp '"/ as sysdba"' schemas=atomicinfo directory=dump content=METADATA_ONLY dumpfile=DWH.dmp logfile=expdp_DWH.log
+
+
+CREATE OR REPLACE DIRECTORY dump AS 'C:\app\oracle\dump';
+GRANT READ, WRITE ON DIRECTORY dump TO system;
+GRANT EXEMPT ACCESS POLICY to System;
+
+expdp '"/ as sysdba"' tables=DWH.ACCOUNT:SYS_P488545 directory=dump dumpfile=ACCOUNT.dmp logfile=ACCOUNT.log cluster=n exclude=statistics
+
+
+impdp system/123456 remap_schema=dwh:abc remap_tablespace=DWH2017_TBS:USERS directory=dump dumpfile=A.dmp transform=segment_attributes:n:table
+
+expdp '"/ as sysdba"' full=Y PARALLEL=4 directory=dump dumpfile=LOS%U.dmp logfile=LOS.log FILESIZE=20G cluster=n exclude=statistics
+ 
+ 
+expdp '"/ as sysdba"' PARFILE=dwh.par
+
+tables=dwh.LD_LOANS_AND_DEPOSITS_TSD,dwh.MM_MONEY_MARKET_TSD,dwh.AZ_ACCOUNT_TSD, KRM_RPT.KRM_SYN_PORT_FTP_ALL,dwh.PD_PAYMENT_DUE,dwh.ACCOUNT,DWH.CATEG_ENTRY
+Query=KRM_RPT.KRM_SYN_PORT_FTP_ALL:"where U_DATA_DATE = '31-JUL-2017'", dwh.PD_PAYMENT_DUE:"where PROCESS_DATE = '31-JUL-2017'", dwh.ACCOUNT:"where PROCESS_DATE = '31-JUL-2017' and PRODCAT <> '1006'",DWH.CATEG_ENTRY:"where BOOKING_DATE = '31-JUL-2017'"
+directory=dump 
+dumpfile=DWH%U.dmp 
+logfile=DWH.log 
+FILESIZE=20G 
+cluster=n 
+exclude=statistics
+
+
+expdp '"/ as sysdba"' full=Y directory=dump content=METADATA_ONLY dumpfile=G2FO_arc2.dmp logfile=G2FO_arc2.log PARALLEL=16 cluster=n exclude=statistics
+
+expdp '"/ as sysdba"' transport_tablespaces=DWH2013_TBS,DWH2013_TBS,2015_TBS directory=dump dumpfile=G2FO_meta.dmp logfile=G2FO_meta.log PARALLEL=16 cluster=n 
+
+impdp '"dbsnmp/PAssw0rd as sysdba"' transport_datafiles=DWH2013_TBS,DWH2013_TBS,2015_TBS directory=dump dumpfile=G2FO_meta.dmp logfile=G2FO_meta1.log cluster=n exclude=statistics  PARALLEL=16
+
+impdp '"/ as sysdba"' directory=dump dumpfile=G2FO_arc.dmp logfile=G2FO_arc1.log PARALLEL=16 cluster=n sqlfile=script.sql
+
+impdp scott/tiger directory=exp_dir dumpfile=scott.dmp sqlfile=script.sql
+ 
+expdp '"/ as sysdba"' transport_tablespaces=DWH2013_TBS,DWH2013_TBS,2015_TBS directory=dump dumpfile=G2FO_meta.dmp logfile=G2FO_meta.log PARALLEL=16 cluster=n 
+
+expdp system/password DIRECTORY=DATA_PUMP_DIR DUMPFILE=abc.dmp FULL=Y 
+EXCLUDE=TABLE:\"IN \(\'NAME\', \'ADDRESS\' , \'EMPLOYEE\' , \'DEPT\'\)\" 
+EXCLUDE=SCHEMA:\"IN \(\'WMSYS\', \'OUTLN\'\)\"
+
+
+export full database
+[oracle@dc-ora-db01 bin]$ more mig_export_script.sh 
+export ORACLE_SID=$1
+export EXP_BKP_DIR=/backup200/dump
+export PARALLEL_THREADS=5
+
+
+mkdir -p ${EXP_BKP_DIR}/${ORACLE_SID}
+export DT=`date +%d%b%y_%H%M`
+export CREATE_DIR_LOG=${EXP_BKP_DIR}/${ORACLE_SID}/expdp_${ORACLE_SID}_cr_dir.log
+
+sqlplus -s "/ as sysdba" <<EOF >> ${CREATE_DIR_LOG}
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+col WRL_PARAMETER for a80
+col Dir_Path for a120
+set lines 300 pages 50000
+select to_char(sysdate,'DD-MON-YY HH24:MI:SS') sdate from dual;
+create or replace directory ibmexpdir as '${EXP_BKP_DIR}/${ORACLE_SID}';
+select directory_name || ' => ' || directory_path Dir_Path from dba_directories where directory_name='IBMEXPDIR';
+select * from v\$encryption_wallet;
+exit;
+EOF
+
+expdp "'/ as sysdba'" DIRECTORY=ibmexpdir DUMPFILE=expdp_${ORACLE_SID}_%U.dmp \
+LOGFILE=expdp_${ORACLE_SID}.log PARALLEL=${PARALLEL_THREADS} CONTENT=ALL CLUSTER=N FULL=Y EXCLUDE=STATISTICS,INDEX_STATISTICS reuse_dumpfiles=true \
+EXCLUDE=SCHEMA:\"IN \(\'SYS\', \'SYSTEM\', \'SYSAUX\'\,\'ORDDATA\',\'SYSMAN\',\'APEX_030200\'\,\'OWBSYS_AUDIT\',\'OUTLN\',\'OWBSYS\',\'SCOTT\',\
+\'FLOWS_FILES\',\'OE\'\,\'OLAPSYS\',\'MDDATA\',\'SPATIAL_WFS_ADMIN_USR\',\'SPATIAL_CSW_ADMIN_USR\',\'MGMT_VIEW\',\'APEX_PUBLIC_USER\'\)\"
+
+echo "Script execution ended   at : `date`" >> ${CREATE_DIR_LOG}
+
+
+
+EXCLUDE
+Default: There is no default
+
+DATABASE_EXPORT_OBJECTS for full mode, 
+SCHEMA_EXPORT_OBJECTS for schema mode, and 
+TABLE_EXPORT_OBJECTS for table and tablespace mode.

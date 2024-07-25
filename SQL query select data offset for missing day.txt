@@ -1,0 +1,50 @@
+CREATE TABLE data_table (
+    ngay DATE,
+    gia_tri NUMBER
+);
+
+INSERT INTO data_table (ngay, gia_tri) VALUES (DATE '2024-06-01', 100);
+INSERT INTO data_table (ngay, gia_tri) VALUES (DATE '2024-06-02', 0);
+INSERT INTO data_table (ngay, gia_tri) VALUES (DATE '2024-06-03', 150);
+INSERT INTO data_table (ngay, gia_tri) VALUES (DATE '2024-06-04', 0);
+INSERT INTO data_table (ngay, gia_tri) VALUES (DATE '2024-06-05', 200);
+
+
+Sử dụng SQL để lấy dữ liệu
+Để lấy dữ liệu từ bảng và xử lý giá trị 0 trong cột gia_tri, bạn có thể sử dụng hàm phân tích LAG cùng với COALESCE. Dưới đây là câu truy vấn SQL:
+
+
+
+
+
+
+
+SELECT 
+    ngay,
+    COALESCE(gia_tri, LAG(gia_tri IGNORE NULLS) OVER (ORDER BY ngay)) AS gia_tri
+FROM 
+    data_table
+ORDER BY 
+    ngay;
+	
+	
+
+
+
+
+SELECT 
+    ngay,
+    CASE 
+        WHEN gia_tri = 0 THEN 
+            (SELECT MAX(gia_tri) KEEP (DENSE_RANK LAST ORDER BY ngay)
+             FROM data_table dt2
+             WHERE dt2.ngay < dt1.ngay AND dt2.gia_tri <> 0)
+        ELSE gia_tri
+    END AS gia_tri_moi
+FROM 
+    data_table dt1
+ORDER BY 
+    ngay;
+	
+	
+	

@@ -1,0 +1,16 @@
+SELECT
+  tab.owner schema_name, tab.table_name,
+  NVL(tab.num_rows, 0) total_records, COUNT(1) total_columns,
+  NVL(tab.avg_row_len, 0) avg_record_len, SUM(data_length) total_data_len
+FROM
+  dba_tables tab,
+  dba_tab_columns col
+WHERE
+  tab.table_name = col.table_name
+  AND tab.owner IN ('schema_name')
+GROUP BY
+  tab.owner, tab.table_name, 
+  NVL(tab.avg_row_len, 0), NVL(tab.num_rows, 0)
+ORDER BY
+  tab.owner, table_name, NVL(tab.num_rows, 0) DESC, 
+  COUNT(1) DESC, NVL(tab.avg_row_len, 0) DESC;

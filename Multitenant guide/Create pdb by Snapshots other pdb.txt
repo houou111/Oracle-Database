@@ -1,0 +1,4 @@
+3. PDB Snapshots
+-----------------------------------
+ALTER PLUGGABLE DATABASE SNAPSHOT pdb1_wed_4_1201;
+CREATE PLUGGABLE DATABASE pdb1_copy FROM pdb1 USING SNAPSHOT pdb1_wed_4_1201;

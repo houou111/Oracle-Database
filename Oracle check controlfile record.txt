@@ -1,0 +1,10 @@
+SELECT
+type,
+record_size,
+records_total,
+records_used,
+first_index,
+last_index,
+last_recid
+FROM
+v$controlfile_record_section;

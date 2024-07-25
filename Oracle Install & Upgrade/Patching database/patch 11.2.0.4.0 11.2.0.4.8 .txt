@@ -1,0 +1,75 @@
+QUY TRÌNH APPLY PSU 11.2.0.4.8 CHO GRID & DATABASE SOFTWARE	
+Ghi chú 	Với các hệ thống có data guard thì thực hiện bên hệ thống chính trước, sau đó mới thực hiên bên hệ thống dự phòng
+STT	Công việc 
+Bước 1 	Download Opatch mới nhất cho cả 2 node
+	Thuc hiên cập nhật Opatch mới nhất cho user grid trên cả 2 node
+	Thuc hiên cập nhật Opatch mới nhất cho user oracle trên cả 2 node
+Bước 2	Kiểm tra lại biến môi trường cho user grid và user oracle trên cả 2 node
+	Đảm bảo đã thiết lập đúng biến môi trường ORACLE_HOME cho user grid và user oracle trên cả 2 node
+Bước 3 	Tạo OCM file trên cả 2 node 
+	# Thực hiện với user grid 
+	$ORACLE_HOME/OPatch/ocm/bin/emocmrsp -no_banner -output /tmp/file.rsp
+	
+	Provide your email address to be informed of security issues, install and
+	initiate Oracle Configuration Manager. Easier for you if you use your My
+	Oracle Support Email address/User Name.
+	Visit http://www.oracle.com/support/policies.html for details.
+	Email address/User Name: 
+	
+	You have not provided an email address for notification of security issues.
+	Do you wish to remain uninformed of security issues ([Y]es, [N]o) [N]:  Y
+	The OCM configuration response file (/tmp/file.rsp) was successfully created.
+	
+Bước 4 	Kiểm tra tính tương thích trước khi apply PSU trên cả 2 node
+	# Thực hiện với user grid 
+	<ORACLE_HOME>/OPatch/opatch lsinventory -detail -oh <ORACLE_HOME>
+	
+	#Thực hiện với user oracle
+	<ORACLE_HOME>/OPatch/opatch lsinventory -detail -oh <ORACLE_HOME>
+	
+Bước 5	Giải nén file PSU 11.2.0.4.8 trên cả 2 node với user grid 
+	# Trong ví dụ này file PSU được đặt ở thư mục  /u01/orasoft/
+	grid@dbaix ~ 16:48:54> cd /u01/orasoft/
+	grid@dbaix orasoft > unzip  p21523375_112040_AIX64-5L.zip 
+	
+Bước 6	Tắt tất cả các agent của Enterprise Manager , Cloud control trên cả 2 node
+Bước 7	Thực hiện patch trên 2 node
+	#Thực hiện với user root 
+	#Trên node 1
+	<GRID_HOME>/opatch auto <duong_dan_chua_PSU>/21523375 -ocmrf /tmp/file.rsp 
+	Trong trường hợp đường dẫn chưa PSU đang nói ở đây là  /u01/orasoft/ thì câu lệnh như sau 
+	<GRID_HOME>/opatch auto /u01/orasoft/21523375 -ocmrf /tmp/file.rsp 
+	
+	Log file như sau 
+	This is the main log file: /u01/app/11.2.0/grid/cfgtoollogs/opatchauto2015-12-30_16-53-22.log
+	This file will show your detected configuration and all the steps that opatchauto attempted to do on your system:
+	/u01/app/11.2.0/grid/cfgtoollogs/opatchauto2015-12-30_16-53-22.report.log
+	2015-12-30 16:53:22: Starting Clusterware Patch Setup
+	Using configuration parameter file: /u01/app/11.2.0/grid/crs/install/crsconfig_params
+	Stopping RAC /u01/app/oracle/product/11.2.0/db_1 ...
+	Stopped RAC /u01/app/oracle/product/11.2.0/db_1 successfully
+	patch /u01/orasoft/21523375/21352635  apply successful for home  /u01/app/oracle/product/11.2.0/db_1 
+	patch /u01/orasoft/21523375/21352649/custom/server/21352649  apply successful for home  /u01/app/oracle/product/11.2.0/db_1 
+	Stopping CRS...
+	Stopped CRS successfully
+	patch /u01/orasoft/21523375/21352635  apply successful for home  /u01/app/11.2.0/grid 
+	patch /u01/orasoft/21523375/21352649  apply successful for home  /u01/app/11.2.0/grid 
+	patch /u01/orasoft/21523375/21352642  apply successful for home  /u01/app/11.2.0/grid 
+	Starting CRS...
+	Installing Trace File Analyzer
+	CRS-4123: Oracle High Availability Services has been started.
+	Starting RAC /u01/app/oracle/product/11.2.0/db_1 ...
+	Started RAC /u01/app/oracle/product/11.2.0/db_1 successfully
+	opatch auto succeeded.
+	
+	# Trên node 2
+	#Thực hiện với user root 
+	<GRID_HOME>/opatch auto <duong_dan_chua_PSU>/21523375 -ocmrf /tmp/file.rsp 
+	
+Bước 8 	Kiểm tra lại sau khi đã apply 
+	#Kiểm tra lại để đảm bảo PSU đã được apply trên cả 2 node
+	# Với user grid
+	$ORACLE_HOME/OPatch/opatch lsinventory
+	
+	#Với user oracle 
+	$ORACLE_HOME/OPatch/opatch lsinventory

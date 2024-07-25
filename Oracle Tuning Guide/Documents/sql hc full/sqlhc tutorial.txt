@@ -1,0 +1,9 @@
+cd sqlhc
+sqlplus / as sysdba
+@sqlhc.sql
+
+T
+
+<sql_id>
+
+

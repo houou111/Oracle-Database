@@ -1,0 +1,19 @@
+ls -l $ORACLE_HOME/log/diag/adrci_dir.mif
+
+
+
+
+
+mkdir -p $ORACLE_HOME/log/diag
+
+
+
+
+export ORACLE_BASE=/u02/app/oracle
+
+printf "%s" "$ORACLE_BASE" > $ORACLE_HOME/log/diag/adrci_dir.mif
+
+cat $ORACLE_HOME/log/diag/adrci_dir.mif
+
+
+adrci

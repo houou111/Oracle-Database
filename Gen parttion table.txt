@@ -1,0 +1,42 @@
+
+#REPBILL
+CDR_OWNER.RMQT_CALL
+CDR_OWNER.MF_INT_CALL
+CDR_OWNER.B4_SUB_USAGE_ITEM_RMQT
+CDR_OWNER.B4_SUB_USAGE_ITEM_VAS
+cdr_owner.b4_sub_usage
+cdr_owner.b4_sub_usage_item
+CDR_OWNER.PKG_USAGE_HISTORY;
+CDR_OWNER.B4_BILL_SEGMENT;
+THAMSOHOA.VNPT_DETAIL_CYCLE
+B5_TARIFF.POSTAL;
+
+select owner  || '.' || table_name from dba_tables where table_name in ('RMQT_CALL','MF_INT_CALL','B4_SUB_USAGE_ITEM_RMQT','B4_SUB_USAGE_ITEM_VAS',
+'B4_SUB_USAGE','B4_SUB_USAGE_ITEM','VNPT_DETAIL_CYCLE',
+'PKG_USAGE_HISTORY','POSTAL','B4_BILL_SEGMENT') and owner='B5_TARIFF' and partitioned='NO';
+
+select table_owner  || '.' || table_name || ':' || partition_name from dba_tab_partitions where table_name in ('RMQT_CALL','MF_INT_CALL','B4_SUB_USAGE_ITEM_RMQT','B4_SUB_USAGE_ITEM_VAS',
+'B4_SUB_USAGE','B4_SUB_USAGE_ITEM','VNPT_DETAIL_CYCLE',
+'PKG_USAGE_HISTORY','POSTAL','B4_BILL_SEGMENT') and table_owner='CDR_OWNER' and partition_name like 'DATA2014%';
+
+
+#REPCARD
+MC_OWNER.MC_SUBSCRIBER;
+MC_OWNER.MC_REG_SERVICE;
+MC_OWNER.MC_SUB_TYPE;
+MC_OWNER.MC_REASON;
+MC_OWNER.MC_AP_DOMAIN;
+MC_OWNER.MC_ACTION_AUDIT,
+MC_OWNER.MC_ACTION_DETAIL
+
+
+select owner  || '.' || table_name from dba_tables where table_name in ('MC_SUBSCRIBER','MC_REG_SERVICE','MC_SUB_TYPE','MC_REASON',
+'MC_AP_DOMAIN','MC_ACTION_AUDIT','MC_ACTION_DETAIL') and owner='MC_OWNER' and partitioned='NO';
+
+select table_owner  || '.' || table_name || ':' || partition_name from dba_tab_partitions where table_name in ('MC_SUBSCRIBER','MC_REG_SERVICE','MC_SUB_TYPE','MC_REASON',
+'MC_AP_DOMAIN','MC_ACTION_AUDIT','MC_ACTION_DETAIL') and table_owner='MC_OWNER' and partition_name like 'DATA2014%';
+
+
+
+
+

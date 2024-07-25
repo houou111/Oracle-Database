@@ -1,0 +1,9 @@
+SET SERVEROUT ON SIZE 1000000
+SET ECHO ON
+UPDATE t SET name = 'A->Session2' WHERE id = 1;
+PAUSE
+
+CLEAR SCREEN
+UPDATE t SET name = 'B->Session2' WHERE id = 2;
+
+PAUSE

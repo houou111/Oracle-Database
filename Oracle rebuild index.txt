@@ -1,0 +1,106 @@
+ALTER INDEX CTEST_PK COALESCE;
+
+
+
+SELECT 'alter index "'||OWNER||'"."'||index_name ||'" rebuild  TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 2;'
+FROM   dba_indexes a left join dba_users b 
+ON  a.OWNER=b.USERNAME
+WHERE status = 'UNUSABLE'
+order by 1;
+
+SELECT 'alter index "'||INDEX_OWNER||'"."'||index_name ||'" rebuild partition '||PARTITION_NAME||' TABLESPACE '||DEFAULT_TABLESPACE||'  PARALLEL 4;' 
+FROM   dba_ind_partitions a left join dba_users b
+ON	a.INDEX_OWNER=b.USERNAME
+WHERE  status = 'UNUSABLE'
+order by 1;
+
+
+SELECT 'alter index "'||OWNER||'"."'||index_name ||'" rebuild  TABLESPACE INDX  PARALLEL 2;'
+FROM   dba_indexes a left join dba_users b 
+ON  a.OWNER=b.USERNAME
+WHERE status = 'UNUSABLE'
+order by 1;
+
+SELECT 'alter index "'||INDEX_OWNER||'"."'||index_name ||'" rebuild partition '||PARTITION_NAME||' TABLESPACE INDX  PARALLEL 4;' 
+FROM   dba_ind_partitions a left join dba_users b
+ON	a.INDEX_OWNER=b.USERNAME
+WHERE  status = 'UNUSABLE'
+order by 1;
+
+
+
+
+
+---- rebuild index VNPT-------------------------------
+set lines 200
+set pages 200
+SELECT 'alter index '||OWNER||'.'||index_name ||' rebuild  TABLESPACE INDX  PARALLEL 2 online;' 
+FROM   dba_indexes a join  dba_users b
+ON  a.OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> 'INDX'
+AND a.OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB','WMSYS','CTXSYS','DVSYS')
+order by OWNER;
+
+
+SELECT 'alter index '||INDEX_OWNER||'.'||index_name ||' rebuild partition '||PARTITION_NAME||' TABLESPACE INDX  PARALLEL 2 online;' 
+FROM   dba_ind_partitions a join dba_users b
+ON  a.INDEX_OWNER=b.USERNAME
+AND a.TABLESPACE_NAME <> b.DEFAULT_TABLESPACE
+AND a.INDEX_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB','WMSYS','CTXSYS','DVSYS')
+order by INDEX_OWNER;
+
+
+
+
+BEGIN 
+  FOR r IN (select OWNER,index_name FROM   dba_indexes a join  dba_users b
+          ON  a.OWNER=b.USERNAME
+		AND a.TABLESPACE_NAME <> 'INDX'
+		AND b.ORACLE_MAINTAINED='N'
+		order by OWNER ) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'alter index '||r.OWNER||'.'||r.index_name ||' rebuild  TABLESPACE INDX  PARALLEL 2 online'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/
+
+
+BEGIN 
+  FOR r IN (select INDEX_OWNER,index_name,PARTITION_NAME FROM   dba_ind_partitions a join dba_users b
+ON  a.INDEX_OWNER=b.USERNAME
+AND a.status = 'UNUSABLE'
+AND a.INDEX_OWNER not in ('SYS','SYSTEM','MDSYS','OLAPSYS','ORDDATA','XDB','WMSYS','CTXSYS','DVSYS')
+order by INDEX_OWNER ) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'alter index '||r.INDEX_OWNER||'.'||r.index_name ||' rebuild partition '||r.PARTITION_NAME||' TABLESPACE INDX  PARALLEL 2 online';  
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/
+
+
+
+BEGIN 
+  FOR r IN (select OWNER,index_name FROM   dba_indexes) 
+  LOOP 
+  BEGIN 
+  EXECUTE IMMEDIATE 'alter index '||r.OWNER||'.'||r.index_name ||' NOPARALLEL'; 
+  EXCEPTION 
+     WHEN OTHERS THEN 
+        /* Your exception handing here. */ 
+        NULL; 
+     END; 
+  END LOOP; 
+END; 
+/

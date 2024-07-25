@@ -1,0 +1,41 @@
+export PATH=$PATH:/usr/lpp/mmfs/bin
+cd /var/adm/ras
+less mmfs.log.latest
+mmlsconfig
+		Configuration data for cluster GoldenGate.dr-core-db-test01:
+		------------------------------------------------------------
+		clusterName GoldenGate.dr-core-db-test01
+		clusterId 6519250969432220987
+		autoload yes
+		dmapiFileHandleSize 32
+		minReleaseLevel 5.0.0.0
+		ccrEnabled yes
+		cipherList AUTHONLY
+		usePersistentReserve yes
+		tiebreakerDisks nsd1
+		pagepool 4G
+		adminMode central
+		
+		File systems in cluster GoldenGate.dr-core-db-test01:
+		-----------------------------------------------------
+		/dev/goldengate01
+mmshutdown -a
+mmchconfig usePersistentReserve=""
+mmlsconfig
+		Configuration data for cluster GoldenGate.dr-core-db-test01:
+		------------------------------------------------------------
+		clusterName GoldenGate.dr-core-db-test01
+		clusterId 6519250969432220987
+		autoload yes
+		dmapiFileHandleSize 32
+		minReleaseLevel 5.0.0.0
+		ccrEnabled yes
+		cipherList AUTHONLY
+		tiebreakerDisks nsd1
+		pagepool 4G
+		adminMode central
+		
+		File systems in cluster GoldenGate.dr-core-db-test01:
+		-----------------------------------------------------
+		/dev/goldengate01
+mmstartup -a

@@ -1,0 +1,2052 @@
+Wed Jan  9 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Wed Jan 9 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711161 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711161',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:23.19
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Thu Jan 10 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 10 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711498 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711498',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718178 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718178',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:33.91
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Fri Jan 11 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Fri Jan 11 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.81
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 12 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 12 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.84
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan 13 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 13 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.54
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Mon Jan 14 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Mon Jan 14 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.61
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Tue Jan 15 22:00:02 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Tue Jan 15 22:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.63
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 19 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 19 22:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711498 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711498',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711161 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711161',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P710898 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P710898',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P720895 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P720895',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P720634 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P720634',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:13.05
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jan 26 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jan 26 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P724101 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P724101',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718774 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718774',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718558 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718558',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718186 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718186',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718178 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718178',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:01:13.34
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jan 27 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jan 27 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.06
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb  2 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 2 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.41
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb  3 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 3 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.99
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb  9 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 9 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.58
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 10 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 10 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.49
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb 16 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 16 22:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728358 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728358',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:21.28
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 17 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 17 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.09
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Feb 23 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Feb 23 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:04.63
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Feb 24 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 24 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.55
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar  2 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 2 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P724979 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P724979',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P724894 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P724894',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P724715 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P724715',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P724101 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P724101',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P723663 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P723663',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P723542 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P723542',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P723281 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P723281',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P723189 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P723189',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P723130 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P723130',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P722917 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P722917',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P722709 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P722709',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P721658 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P721658',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P721110 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P721110',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P720895 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P720895',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P720634 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P720634',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P719404 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P719404',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P719261 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P719261',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P719138 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P719138',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718898 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718898',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718774 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718774',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718558 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718558',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718186 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718186',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P718178 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P718178',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711498 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711498',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P711161 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P711161',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P710898 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P710898',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P710218 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P710218',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P709096 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P709096',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708658 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708658',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708538 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708538',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P708198 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P708198',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:04:02.39
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar  3 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 3 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.00
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar  9 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 9 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.66
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 10 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 10 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P744067 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P744067',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:22.25
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 16 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 16 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.62
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 17 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 17 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:03.69
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 23 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 23 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.35
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 24 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 24 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P748410 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P748410',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:28.63
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Mar 30 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Mar 30 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:05.85
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Mar 31 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Mar 31 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.62
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr  6 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 6 22:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.65
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr  7 22:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 7 22:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 13 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 13 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P749950 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P749950',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P749670 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P749670',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P749351 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P749351',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P748872 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P748872',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P748750 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P748750',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P748410 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P748410',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P748135 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P748135',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P747810 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P747810',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P747474 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P747474',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P747110 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P747110',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P746615 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P746615',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P746470 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P746470',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P746375 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P746375',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P746152 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P746152',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P745567 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P745567',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P745415 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P745415',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P745071 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P745071',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P744859 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P744859',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P744330 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P744330',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P744067 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P744067',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P743847 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P743847',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P742694 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P742694',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P735822 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P735822',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P735708 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P735708',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P735410 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P735410',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P735336 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P735336',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P735055 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P735055',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P734010 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P734010',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P733641 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P733641',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P733275 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P733275',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P732978 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P732978',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P732491 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P732491',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P732418 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P732418',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P732321 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P732321',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P732132 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P732132',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P731865 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P731865',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P731663 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P731663',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P731484 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P731484',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P730581 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P730581',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P730438 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P730438',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P730187 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P730187',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P729981 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P729981',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P729742 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P729742',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P729160 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P729160',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728938 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728938',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728394 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728394',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728358 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728358',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728328 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728328',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728239 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728239',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728221 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728221',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728220 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728220',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P728218 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P728218',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P727315 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P727315',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P727238 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P727238',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P726838 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P726838',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P726358 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P726358',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P726038 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P726038',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P725740 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P725740',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P725398 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P725398',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P707798 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P707798',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P707378 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P707378',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P707084 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P707084',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P706827 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P706827',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P706393 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P706393',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P706258 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P706258',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P705958 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P705958',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P705778 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P705778',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P705517 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P705517',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P704958 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P704958',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P704618 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P704618',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P704146 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P704146',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P703994 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P703994',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P703762 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P703762',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P703398 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P703398',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P703118 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P703118',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P702788 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P702788',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P702509 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P702509',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P702004 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P702004',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P701878 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P701878',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P701668 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P701668',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P701398 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P701398',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P701276 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P701276',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P701041 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P701041',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P700738 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P700738',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P700409 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P700409',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P700078 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P700078',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P699692 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P699692',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P698126 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P698126',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P697238 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P697238',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P696891 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P696891',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:09:03.83
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 14 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 14 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P753510 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P753510',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:19.33
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 20 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 20 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P756841 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P756841',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:26.03
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 21 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 21 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.82
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Apr 27 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Apr 27 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.40
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Apr 28 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Apr 28 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.82
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May  4 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 4 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.48
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May  5 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 5 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.13
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 11 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 11 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.25
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 12 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 12 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.74
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 18 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 18 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.04
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 19 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 19 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.87
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat May 25 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat May 25 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.96
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun May 26 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun May 26 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.03
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun  1 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 1 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P760752 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P760752',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P760490 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P760490',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P760191 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P760191',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P759890 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P759890',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P759590 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P759590',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P759154 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P759154',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P759030 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P759030',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P758771 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P758771',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P758533 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P758533',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P758230 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P758230',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P757973 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P757973',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P757583 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P757583',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P757352 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P757352',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P757330 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P757330',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P756841 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P756841',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P756490 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P756490',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P755072 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P755072',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P754690 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P754690',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P754330 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P754330',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P753653 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P753653',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P753510 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P753510',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P753130 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P753130',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P752750 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P752750',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P752430 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P752430',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P752108 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P752108',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P751807 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P751807',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P751638 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P751638',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P751110 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P751110',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P750590 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P750590',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P750275 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P750275',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:03:12.05
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun  2 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 2 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.74
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun  8 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 8 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.23
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun  9 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 9 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.81
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 15 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 15 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.87
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 16 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 16 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.87
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 22 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 22 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.21
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 23 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 23 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.06
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jun 29 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jun 29 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P765977 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P765977',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P761479 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P761479',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P762830 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P762830',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P761276 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P761276',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P761030 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P761030',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P765270 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P765270',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P763290 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P763290',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P764070 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P764070',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P767332 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P767332',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P769757 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P769757',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P767050 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P767050',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P768650 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P768650',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P766470 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P766470',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P768131 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P768131',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P765530 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P765530',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P766190 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P766190',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P761150 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P761150',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P764430 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P764430',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P768390 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P768390',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P769198 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P769198',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P766770 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P766770',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P761714 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P761714',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P764710 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P764710',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P763751 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P763751',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P767458 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P767458',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P769304 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P769304',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P763130 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P763130',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P767865 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P767865',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P764990 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P764990',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P762513 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P762513',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+ALTER TABLE KRM_APP.FTP_OUT MOVE PARTITION SYS_P768937 TABLESPACE DWH_KRM_TBS COMPRESS FOR QUERY HIGH PARALLEL 4
+-------------------------------------------------------------------
+BEGIN DBMS_STATS.gather_table_stats(OwnName =>'KRM_APP',TabName =>'FTP_OUT',PartName =>'SYS_P768937',GRANULARITY => 'AUTO',degree =>4,estimate_percent=> DBMS_STATS.AUTO_SAMPLE_SIZE,CASCADE => TRUE );
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:03:29.59
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jun 30 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jun 30 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.89
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jul  6 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jul 6 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.99
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jul  7 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jul 7 21:00:02 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:02.14
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sat Jul 13 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sat Jul 13 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:01.76
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+Sun Jul 14 21:00:01 +07 2019
+
+SQL*Plus: Release 11.2.0.4.0 Production on Sun Jul 14 21:00:01 2019
+
+Copyright (c) 1982, 2013, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options
+
+old  10:       WHERE owner IN ('&1') AND partitioned = 'YES';
+new  10:       WHERE owner IN ('KRM_APP') AND partitioned = 'YES';
+      FROM dba_tables
+           *
+ERROR at line 9:
+ORA-06550: line 9, column 12:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 8, column 7:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 19, column 81:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 15, column 14:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 41, column 33:
+PLS-00364: loop index variable 'V_TAB' use is invalid
+ORA-06550: line 41, column 10:
+PL/SQL: Statement ignored
+ORA-06550: line 47, column 60:
+PLS-00364: loop index variable 'V_TAB' use is invalid
+ORA-06550: line 47, column 2:
+PL/SQL: Statement ignored
+ORA-06550: line 56, column 24:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 55, column 17:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 64, column 38:
+PLS-00364: loop index variable 'C_INDEX' use is invalid
+ORA-06550: line 64, column 13:
+PL/SQL: Statement ignored
+ORA-06550: line 73, column 24:
+PL/SQL: ORA-01219: database not open: queries allowed on fixed tables/views only
+ORA-06550: line 72, column 17:
+PL/SQL: SQL Statement ignored
+ORA-06550: line 81, column 38:
+PLS-00364: loop index variable 'C_INDEX' use is invalid
+ORA-06550: line 81, column 13:
+PL/SQL: Statement ignored
+
+
+Elapsed: 00:00:00.01
+Disconnected from Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production
+With the Partitioning, Real Application Clusters, Automatic Storage Management, OLAP,
+Data Mining and Real Application Testing options

@@ -1,0 +1,18 @@
+PLS-00201: identifier 'SYS.DBMS_CUBE_EXP' must be declared (Doc ID 1328829.1)
+
+
+SOLUTION
+Perform the following:
+
+sqlplus / as sysdba
+
+-- backup the table SYS.EXPPKGACT$ before deleting the row
+
+SQL> CREATE TABLE SYS.EXPPKGACT$_BACKUP AS SELECT * FROM SYS.EXPPKGACT$;
+
+-- delete the DBMS_CUBE_EXP from the SYS.EXPPKGACT$
+
+SQL> DELETE FROM SYS.EXPPKGACT$ WHERE PACKAGE = 'DBMS_CUBE_EXP' AND SCHEMA= 'SYS';
+SQL> COMMIT;
+
+Run the EXPDP command again.

@@ -1,0 +1,103 @@
+--to SNAPSHOT
+recover managed standby database cancel;
+alter database convert to snapshot standby;
+alter database open;
+create or replace directory UPGR_PUMP as '/stage/dump';
+
+--to standby
+select open_mode,database_role from v$database;
+shutdown immediate;
+startup mount;
+alter database convert to physical standby;
+shu immediate 
+startup mount
+alter database recover managed standby database using current logfile disconnect;
+
+
+
+--mount mountpoint
+ umount /stage/
+ 
+ mount /dev/vg_stage/lv_stage /stage
+ chown -R oracle:oinstall /stage
+
+--create new database
+dbca -silent \
+-createDatabase \
+-templateName General_Purpose.dbc \
+-gdbName bancadr \
+-databaseType OLTP \
+-createAsContainerDatabase false \
+-databaseConfType RACONENODE \
+-RACOneNodeServiceName banca_dr \
+-sid bancadr \
+-SysPassword db#Chivas#123 \
+-SystemPassword db#Chivas#123 \
+-emConfiguration NONE \
+-datafileDestination +DATA01 \
+-redoLogFileSize 50 \
+-recoveryAreaDestination +FRA \
+-recoveryAreaSize 102400 \
+-enableArchive true \
+-archiveLogDest +FRA \
+-storageType ASM \
+-nodelist dr-oradb2-01,dr-oradb2-02 \
+-diskGroupName DATA01 \
+-characterSet AL32UTF8 \
+-nationalCharacterSet AL16UTF16 \
+-totalMemory 5120 
+ 
+--create role 
+CREATE ROLE VHCN_DEV_BANCA NOT IDENTIFIED;
+CREATE ROLE VHCN_ITBA NOT IDENTIFIED;
+CREATE ROLE OT_DEV_BANCA NOT IDENTIFIED;
+CREATE ROLE OT_ITO_APO NOT IDENTIFIED;
+
+
+CREATE TABLESPACE BC_DATA DATAFILE '+DATA01' SIZE 10G AUTOEXTEND OFF;
+CREATE TABLESPACE BC_INDEXES DATAFILE '+DATA01' SIZE 5G AUTOEXTEND OFF;
+
+ 
+ 
+-- create directories
+--on old DB
+create or replace directory UPGR_PUMP as '/stage/dump';
+--on new DB
+create or replace directory UPGR_PUMP_12C as '/stage/dump';
+
+ 
+--12min 
+ expdp \"/ as sysdba\" DIRECTORY=UPGR_PUMP schemas= HIEPTX2, CHINHLK, HUYLV2, HAITC2, HANGHTT6, LYDH, BANCA dumpfile=BANCA%u.dmp logfile=exp_BANCA.log exclude=statistics cluster=N parallel=4 
+
+ impdp \"/ as sysdba\" DIRECTORY=UPGR_PUMP_12C schemas=BANCA dumpfile=BANCA%u.dmp logfile=imp_BANCA.log remap_tablespace=BC_DATA:BC_DATA,USERS:BC_DATA,BC_INDEXES:BC_INDEXES
+ 
+ 
+  impdp \"/ as sysdba\" DIRECTORY=UPGR_PUMP_12C schemas=HIEPTX2, CHINHLK, HUYLV2, HAITC2, HANGHTT6, LYDH, BANCA  dumpfile=BANCA%u.dmp logfile=imp_remain_BANCA.log
+ 
+ 
+ 
+ ORA-39346: data loss in character set conversion for object PACKAGE_BODY:"BANCA"."PKG_BANCA_CUSTOMER"
+ 
+--grant user BANCA
+    GRANT EXECUTE ON CTXSYS.DRITHSX TO BANCA;
+    GRANT EXECUTE ON ORDSYS.ORD_DICOM TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_ADVISOR TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_AW_XML TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_JAVA TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_JOB TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_LDAP TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_OBFUSCATION_TOOLKIT TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_RANDOM TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_SCHEDULER TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_SQL TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_XMLGEN TO BANCA;
+    GRANT EXECUTE ON SYS.DBMS_XMLQUERY TO BANCA;
+    GRANT EXECUTE ON SYS.HTTPURITYPE TO BANCA;
+    GRANT EXECUTE ON SYS.UTL_FILE TO BANCA;
+    GRANT EXECUTE ON SYS.UTL_HTTP TO BANCA;
+    GRANT EXECUTE ON SYS.UTL_INADDR TO BANCA;
+    GRANT EXECUTE ON SYS.UTL_SMTP TO BANCA;
+    GRANT EXECUTE ON SYS.UTL_TCP TO BANCA; 
+ALTER USER BANCA QUOTA UNLIMITED ON BC_DATA;
+ALTER USER BANCA QUOTA UNLIMITED ON BC_INDEXES;
+ALTER USER BANCA QUOTA UNLIMITED ON USERS;

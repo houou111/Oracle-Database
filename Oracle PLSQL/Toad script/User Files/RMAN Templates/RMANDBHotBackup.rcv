@@ -1,0 +1,31 @@
+###############################################################################
+# Name: RMANDBHotBackup.rcv
+#
+# Description:
+# Hot Backup of the Database to Disk or Tape
+# Defaults used from Controlfile (see RMANSetup.rcv)
+# Optional backup to tape - please remove comment CONFIGURE DEFAULT DEVICE TYPE sbt
+#
+# Note: To avoid known issues, RMAN client should be the same version as server.
+#       The easiest way to avoid client/server mismatches is run the script on the server.
+#
+# The archivelogs will be backed up twice
+# Archives older than three days will be removed
+#
+# Variables:
+# USER               : Username with SYSDBA Privilegue (AS SYSDBA is implied)
+# PWD                : Password (encrypted)
+# DB                 : Database-Connection
+# RMAN_LOG_LOCATION  : Destination directory for script output
+#
+###############################################################################
+
+SPOOL LOG TO *RMAN_LOG_LOCATION*RMANDBHotBackup_*DB*.log;
+CONNECT TARGET *USER*/*PWD*@*DB*;
+# CONFIGURE DEFAULT DEVICE TYPE TO sbt;
+CROSSCHECK ARCHIVELOG ALL;                            # Checks for existing archivelogs (in case somebody had deleted them without using RMAN)
+BACKUP DATABASE;                                      # Database backup (including controlfile and spfile if specified in RMANSetup.rcv)
+BACKUP ARCHIVELOG ALL NOT BACKED UP 2 TIMES;          # Backup all existing archivelogs not backed up twice
+DELETE ARCHIVELOG ALL COMPLETED BEFORE 'SYSDATE - 3'; # Delete all archivelogs older than three days
+                                                      # (you hopefully made two successful backups in the meantime)
+EXIT;

@@ -1,0 +1,16 @@
+1. Oracle Container Database (CDB- PDB)
+2. Standard Cluster - Flex cluster
+
+oracle cluster verification Utility
+3. using log miner
+4. using MTTR Advisor: Tuning for time recover ( apply log )
+FAST_START_MTTR_TARGET set to 1-3600 ( i think as 500)
+
+5. Data Recovery Advisor (only in single instance)
+6. make a scheduler
+7. ADDM
+8. doc excecution plan
+
+tuning sql plan
+partitionning
+index

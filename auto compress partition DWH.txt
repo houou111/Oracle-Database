@@ -1,0 +1,49 @@
+CREATE OR REPLACE procedure DBA01.DBA_COMPRESS_PARTITION as
+
+DECLARE
+   cmd           VARCHAR2 (4000);
+   cmd1          VARCHAR2 (4000);
+   dem           number;
+   CURSOR c_partitions
+   IS
+      SELECT *
+        FROM (  SELECT table_owner,
+                       table_name,
+                       partition_name,
+                       default_tablespace
+                 FROM dba_tab_partitions a, dba_users b
+                 WHERE     tablespace_name in ('EDW_DMT_TBS')
+                       AND compression = 'DISABLED'
+                       AND a.TABLE_OWNER = b.USERNAME
+					   AND a.table_name = ''
+					   AND partition_name like 'SYS_%'
+              ORDER BY table_owner, table_name, partition_name)
+       WHERE ROWNUM <= 15;
+BEGIN
+   FOR cc IN c_partitions
+   LOOP
+      SELECT count(*) into dem
+                  FROM dba_tab_partitions 
+                 WHERE     compression = 'DISABLED'
+                       AND table_name = cc.table_name 
+					   AND table_owner = cc.table_owner;
+      cmd :='ALTER TABLE '|| cc.TABLE_OWNER|| '.'|| cc.table_name|| ' MOVE PARTITION '|| cc.PARTITION_NAME|| ' TABLESPACE '|| cc.DEFAULT_TABLESPACE|| ' COMPRESS FOR QUERY HIGH PARALLEL 4';
+      DBMS_OUTPUT.put_line (cmd);
+      execute immediate cmd;
+      
+      FOR c_index IN (SELECT INDEX_OWNER, index_name, PARTITION_NAME
+                        FROM dba_ind_partitions
+                       WHERE  index_owner||'.'||index_name in (select distinct owner||'.'||index_name from dba_indexes where table_owner=cc.table_owner and table_name=cc.table_name)
+                       AND status = 'UNUSABLE')
+      LOOP
+      cmd1 :='alter index '||c_index.INDEX_OWNER||'.'||c_index.index_name ||' rebuild partition '||c_index.PARTITION_NAME||' TABLESPACE '||cc.DEFAULT_TABLESPACE||' online PARALLEL 4';
+      DBMS_OUTPUT.put_line (cmd1);
+      execute immediate cmd1;
+      end loop;
+      exit when  dem = 2;
+   END LOOP;
+END;
+
+/
+
+

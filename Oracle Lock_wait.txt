@@ -1,0 +1,187 @@
+﻿1. Find lock 
+------------------------------------------------
+set lines 200
+set pages 200
+col blocking_sessions for a30
+col USERNAME for a25
+col OSUSER for a25
+col machine for a40
+SELECT l1.sid || ' is blocking ' || l2.sid blocking_sessions, USERNAME,OSUSER,machine,a.sql_id
+FROM gv$lock l1, gv$lock l2, gv$session a
+WHERE l1.block = 1
+AND a.sid=l1.sid
+AND l2.request > 0 
+AND l1.id1 = l2.id1 
+AND l1.id2 = l2.id2   
+AND l1.inst_id=l2.inst_id;  
+
+
+col owner for a15 
+col machine for a30 
+set lines 200 
+set pages 200 
+col ORACLE_USERNAME for a15 
+col OS_USER_NAME for a15 
+col OBJECT_NAME for a20 
+SELECT distinct A.session_id,C.serial#,B.Owner, B.Object_Name, A.Oracle_Username, A.OS_User_Name,A.LOCKED_MODE,machine 
+FROM gV$Locked_Object A, All_Objects B ,gv$session C
+WHERE A.Object_ID = B.Object_ID 
+AND A.session_id=C.sid
+AND C.username=A.Oracle_Username
+and  a.inst_id=c.inst_id 
+AND C.osuser=A.OS_User_Name
+order by 1,2,3; 
+
+
+SELECT L.session_id||','||V.serial#||',@'||V.inst_id sid_serial_inst,
+      decode(V.blocking_session,null,'Blocking...',
+                               'Blocked by SID= '||V.blocking_session) Block_status,
+      L.ORACLE_USERNAME user_name, V.program, O.owner,O.object_name,
+      DECODE(l.locked_mode, 0, 'None',
+                            1, 'Null',
+                            2, 'Row-S (SS)',
+                            3, 'Row-X (SX)',
+                            4, 'Share',
+                            5, 'S/Row-X (SSX)',
+                            6, 'Exclusive', 
+                            TO_CHAR(l.locked_mode)) lock_mode,
+      decode(V.blocking_session,null,'alter system kill session '''||L.session_id||','||V.serial#||',@'||V.inst_id||''' immediate;','') SQL_Kill,
+      O.status,to_char(V.logon_time,'dd/mm/yy hh24:mi'),V.terminal, V.osuser, V.sql_hash_value
+FROM gv$locked_object L, gv$session V, dba_objects O 
+WHERE L.session_id=V.sid and L.INST_ID=V.INST_ID
+      and O.object_id = L.object_id
+
+
+
+2. Kill sid
+------------------------------------------------
+
+select 'alter system kill session '''||sid||','||SERIAL#||',@'||INST_ID||''' immediate;'
+from gv$session
+where sid=&sid;
+
+
+
+
+3. Others
+------------------------------------------------
+#Xem block seesion ( khi có seesion bị treo)
+SQL> Select SID, SERIAL#, USERNAME
+	 from V$SESSION where SID in
+	 (select BLOCKING_SESSION from V$SESSION);
+
+
+# Xem lock của session (insert, update chưa commit)
+SQL> SELECT l.session_id||','||v.serial# sid_serial, v.osuser,v.MACHINE,v.PROGRAM,v.LOGON_TIME,
+       l.ORACLE_USERNAME ora_user,
+       o.object_name, 
+       o.object_type, 
+       DECODE(l.locked_mode,
+          0, 'None',
+          1, 'Null',
+          2, 'Row-S (SS)',
+          3, 'Row-X (SX)',
+          4, 'Share',
+          5, 'S/Row-X (SSX)',
+          6, 'Exclusive', 
+          TO_CHAR(l.locked_mode)
+       ) lock_mode,
+       o.status, 
+       to_char(o.last_ddl_time,'dd.mm.yy') last_ddl
+FROM dba_objects o,v$locked_object l, v$session v
+WHERE o.object_id = l.object_id
+      and l.SESSION_ID=v.sid 
+order by 2,3;
+
+
+#Xem DML của câu lệnh khi thực hiện quá lâu
+SQL> set lines 200
+col username for a15
+col sql_id for a20
+col sql_text for a70
+col machine for a20
+select se.sid,se.serial#,se.username ,se.sql_id , se.machine,sq.sql_text from v$sqlarea sq ,v$session se where  se.sql_hash_value = sq.hash_value\n
+and se.sql_address= sq.address and se.username is not null;
+
+
+
+# Kiểm tra lock 
+SQL> set linesize 300 
+SQL> SELECT INST_ID,DECODE(request,0,'Holder: ','Waiter: ') ||sid sess, id1, id2, lmode, request, type 
+FROM GV$LOCK WHERE (id1, id2, type) IN (SELECT id1, id2, type FROM GV$LOCK WHERE request > 0) 
+ORDER BY id1, request; 
+
+INST_ID  SESS        ID1        ID2        LMODE      REQUEST    TY 
+------- ------------ ---------  ---------- ---------  --------   --    
+1  Holder: 46  131086     700         6          0         TX 
+1  Waiter: 51  131086     700         0          6         TX 
+ 
+
+#Kiểm tra user và ứng dụng gây ra lock
+SQL> Select username,terminal,program from v$session where sid=46; 
+USERNAME     TERMINAL PROGRAM 
+------------ -------- ------------------------------ 
+TATC_APP     pts/1    sqlplus@oraserver (TNS V1-V3) 
+ 
+SQL> SELECT sid,serial# from v$session where sid=46; 
+SID    SERIAL# 
+---    -------- 
+46     18819 
+
+#Thực hiện kill session Holder 
+SQL> ALTER SYSTEM KILL SESSION 'sid, serial#' IMMEDIATE; ;
+
+
+
+
+
+
+
+
+
+
+1) check v$session
+select sid, serial#, username, command, lockwait, osuser from v$session where lockwait is not null
+select sid, serial#, username, command, lockwait, osuser,machine from v$session where username='EDW_SOR';
+
+set linesize 300
+SELECT INST_ID,DECODE(request,0,'Holder: ','Waiter: ') ||sid ,
+id1, id2, lmode, request, type
+FROM GV$LOCK WHERE (id1, id2, type) IN (SELECT id1, id2, type FROM
+GV$LOCK WHERE request > 0) ORDER BY id1, request;
+
+-----------------------------------------------------------------------------------------------------------
+col owner for a15 
+col machine for a30 
+ set lines 200 
+ set pages 200 
+ col ORACLE_USERNAME for a15 
+ col OS_USER_NAME for a15 
+  SELECT distinct C.inst_id, A.session_id,C.serial#,B.Owner, B.Object_Name, A.Oracle_Username, A.OS_User_Name,A.LOCKED_MODE,machine
+  FROM gV$Locked_Object A, All_Objects B ,gv$session C
+WHERE A.Object_ID = B.Object_ID 
+AND A.session_id=C.sid
+AND C.username=A.Oracle_Username
+and  a.inst_id=c.inst_id 
+AND C.osuser=A.OS_User_Name
+ order by 1,2; 
+------------------------------------------------------------------------------------------------------------
+
+
+2) To kill a locked session, first need to find sid, serial and use
+sqlplus>alter system kill session 'sid, serial#, @1';
+sqlplus>alter system kill session 'sid, serial#, @2';
+*** you need have dba priviledge to kill sessions
+
+
+alter system kill session '1258, 4573';
+
+
+alter system kill session 'sid,serial#';
+3. To find which SQL has lock wait
+
+select sql_text from v$sqltext where (address,hash_value) in (select sql_address,sql_hash_value from v$session where lockwait is not null) order by address, hash_value, piece;
+
+
+select sql_text from v$sqltext where (address,hash_value) in (select sql_address,sql_hash_value from v$session where sid=1258) order by address, hash_value, piece
+	 

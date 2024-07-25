@@ -1,0 +1,17 @@
+ set lines 200
+ set pages 200
+ col Device for a55
+ select * from
+ (
+ select a.DBNAME as "DB Name",
+ b.PATH as "Device",
+ a.READS as "Read Request",
+ a.WRITES as "Write Requests",
+ a.BYTES_READ/1024/1024 as "Total Read MB",
+ a.BYTES_WRITTEN/1024/1024 "Total Write MB"
+ from v$asm_disk_iostat a, v$asm_disk b
+where  a.GROUP_NUMBER=b.GROUP_NUMBER 
+ and a.DISK_NUMBER=b.DISK_NUMBER 
+ order by 3 desc
+)
+where rownum <=100;

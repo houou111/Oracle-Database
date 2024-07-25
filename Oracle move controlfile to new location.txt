@@ -1,0 +1,14 @@
+4. Move controlfile ( backup spfile- pfile first) and restart DB
+---------------------------------------------------------------------
+alter system set controlfile='','';
+alter system set control_files='<new_mount_point>/control01.ctl','<new_mount_point>/control02.ctl' scope=spfile;
+
+
+shutdown immediate
+
+
+startup nommount
+
+restore controlfile from '/u01/app/oracle/fast_recovery_area/FLEXDG/controlfile/control02.ctl';
+
+alter database mount;

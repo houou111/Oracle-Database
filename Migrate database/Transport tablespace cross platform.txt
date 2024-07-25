@@ -1,0 +1,48 @@
+1. Create  database ( dataguard with primary database )
+--------------------------------------------------------------
+
+
+2. Trên  database
+-----------------------
+- Xác định vị trí và dung lượng lưu trữ backup trên CSDL đích và staging
+- Cấu hình tham số RMAN
+- Bật change tracking cho CSDL
+
+
+3. Database target 	
+-----------------------
+- Khởi tạo database đích
+- Khởi tạo user trên database đích
+- Xác định tablespace cần chuyển
+- Khởi tạo db link giữa database staging và database đích
+- Khởi tạo script xttconvert trên database staging
+
+
+4. Chuẩn bị dữ liệu		
+----------------------
+Convert and copy data file  từ môi trường  lên môi trường đích
+Đồng bộ dữ liệu hàng ngày		
+- Chạy incremental backup trên môi trường staging
+- Copy backup từ môi trường staging lên môi trường đích
+- Convert backup và apply vào datafile đã copy ở mục C.1
+- Xác định số SCN cho lần backup tiếp theo
+	
+	
+5. Giai đoạn chuyển đổi
+-----------------------
+- Offline các tablespace đã xác định ở mục B.3
+- Tạo bản final incremental backup
+- Copy backup từ môi trường staging lên môi trường đích
+- Convert backup và apply vào datafile đã copy ở mục C.1
+- Export metadata của database staging
+- Import metadata vào database đích
+
+
+6. Giai đoạn sau chuyển đổi
+-----------------------		
+- Rebuild lại các object
+- Tạo lại database link
+- Enable lại các queue
+		
+Tham khảo		
+11G - Reduce Transportable Tablespace Downtime using Cross Platform Incremental Backup (Doc ID 1389592.1)		

@@ -1,0 +1,3 @@
+5. Bug 28199085  ORA-600 [Cursor not typechecked] Occurs In ADG Standby Sites
+--------------------------------------------------------------------------------------
+Patch 12.2.0.1.190416 (Apr 2019) Database Release Update (DBRU)

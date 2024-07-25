@@ -1,0 +1,9 @@
+create report quickcheck
+
+1. copy from dba quickcheck
+2. copy file from 3 file AM and reconfig with 
+=RIGHT(D2,LEN(D2)-FIND(": ",D2))
+=RIGHT(C2,LEN(C2)-FIND(": ",C2))
+3. check netbackup file
+
+

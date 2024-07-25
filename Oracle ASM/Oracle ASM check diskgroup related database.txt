@@ -1,0 +1,28 @@
+
+SELECT dg.name AS diskgroup, SUBSTR(c.instance_name,1,12) AS instance,
+    SUBSTR(c.db_name,1,12) AS dbname, SUBSTR(c.SOFTWARE_VERSION,1,12) AS software,
+    SUBSTR(c.COMPATIBLE_VERSION,1,12) AS compatible 
+    FROM V$ASM_DISKGROUP dg, V$ASM_CLIENT c  
+    WHERE dg.group_number = c.group_number;
+	
+	
+	
+	srvctl start diskgroup -diskgroup DATA
+
+srvctl stop diskgroup -diskgroup DATA
+
+srvctl stop diskgroup -diskgroup REDO1 -n dc-oradb-02
+srvctl stop diskgroup -diskgroup REDO2 -n dc-oradb-02
+
+
+srvctl remove diskgroup -diskgroup DATA
+srvctl remove diskgroup -diskgroup REDO1
+srvctl remove diskgroup -diskgroup REDO2
+
+
+srvctl remove database -d g2fo
+
+
+crsctl modify resource ora.g2foha.db -attr "START_DEPENDENCIES='hard(global:uniform:ora.DATA19C.dg, global:uniform:ora.FRA.dg) pullup(global:ora.DATA19C.dg, global:ora.FRA.dg) weak(type:ora.listener.type,global:type:ora.scan_listener.type,uniform:ora.ons,global:ora.gns)'" -unsupported
+
+crsctl modify resource ora.g2foha.db -attr "STOP_DEPENDENCIES='hard(global:intermediate:ora.asm,global:shutdown:ora.DATA19C.dg,global:shutdown:ora.FRA.dg)'" -unsupported

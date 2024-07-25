@@ -1,0 +1,668 @@
+RMAN> run {
+2> allocate channel ch1 device type disk;
+3> allocate channel ch2 device type disk;
+4> allocate channel ch3 device type disk;
+5> allocate channel ch4 device type disk;
+6> allocate channel ch11 device type disk;
+7> allocate channel ch12 device type disk;
+8> allocate channel ch13 device type disk;
+9> allocate channel ch14 device type disk;
+10> allocate channel ch21 device type disk;
+11> allocate channel ch22 device type disk;
+12> backup as compressed backupset database FORMAT '/backupdata/backup/cobr14dr_%U' tag data_lv0;
+13> BACKUP AS COMPRESSED BACKUPSET NOT BACKED UP FORMAT '/backupdata/backup/cobr14dr_arch_%d_%Y%M%D_%U' ARCHIVELOG ALL FILESPERSET 20 TAG ARCH;
+14> BACKUP AS COMPRESSED BACKUPSET FORMAT '/backupdata/backup/ctl_%d_%Y%M%D_%U' CURRENT CONTROLFILE TAG CTRL;
+15> release channel ch1;
+16> release channel ch2;
+17> release channel ch3;
+18> release channel ch4;
+19> release channel ch11;
+20> release channel ch12;
+21> release channel ch13;
+22> release channel ch14;
+23> release channel ch21;
+24> release channel ch22;
+25> }
+
+allocated channel: ch1
+channel ch1: SID=7489 device type=DISK
+
+allocated channel: ch2
+channel ch2: SID=2655 device type=DISK
+
+allocated channel: ch3
+channel ch3: SID=2889 device type=DISK
+
+allocated channel: ch4
+channel ch4: SID=3357 device type=DISK
+
+allocated channel: ch11
+channel ch11: SID=3434 device type=DISK
+
+allocated channel: ch12
+channel ch12: SID=3590 device type=DISK
+
+allocated channel: ch13
+channel ch13: SID=3903 device type=DISK
+
+allocated channel: ch14
+channel ch14: SID=3981 device type=DISK
+
+allocated channel: ch21
+channel ch21: SID=5150 device type=DISK
+
+allocated channel: ch22
+channel ch22: SID=5462 device type=DISK
+
+Starting backup at 21-NOV-17
+channel ch1: starting compressed full datafile backup set
+channel ch1: specifying datafile(s) in backup set
+input datafile file number=00008 name=+COBR14_DR/cobr14dr/datafile/datat24live.325.954112193
+input datafile file number=00018 name=+COBR14_DR/cobr14dr/datafile/datat24live.319.954112193
+input datafile file number=00028 name=+COBR14_DR/cobr14dr/datafile/datat24live.358.954112193
+input datafile file number=00038 name=+COBR14_DR/cobr14dr/datafile/datat24live.278.954112277
+input datafile file number=00048 name=+COBR14_DR/cobr14dr/datafile/datat24live.496.954114755
+input datafile file number=00058 name=+COBR14_DR/cobr14dr/datafile/datat24live.490.954114835
+input datafile file number=00068 name=+COBR14_DR/cobr14dr/datafile/datat24live.480.954114897
+input datafile file number=00078 name=+COBR14_DR/cobr14dr/datafile/indext24live.470.954115019
+input datafile file number=00091 name=+COBR14_DR/cobr14dr/datafile/datat24live.448.954115907
+input datafile file number=00101 name=+COBR14_DR/cobr14dr/datafile/datat24live.461.954117409
+input datafile file number=00111 name=+COBR14_DR/cobr14dr/datafile/datat24live.431.954117775
+input datafile file number=00130 name=+COBR14_DR/cobr14dr/datafile/datat24live.409.954117973
+input datafile file number=00129 name=+COBR14_DR/cobr14dr/datafile/datat24live.413.954117935
+input datafile file number=00135 name=+COBR14_DR/cobr14dr/datafile/datat24live.372.954118293
+input datafile file number=00155 name=+COBR14_DR/cobr14dr/datafile/undotbs2.298.954119293
+input datafile file number=00144 name=+COBR14_DR/cobr14dr/datafile/datat24live.258.954118899
+channel ch1: starting piece 1 at 21-NOV-17
+channel ch2: starting compressed full datafile backup set
+channel ch2: specifying datafile(s) in backup set
+input datafile file number=00012 name=+COBR14_DR/cobr14dr/datafile/datat24live.412.954112193
+input datafile file number=00022 name=+COBR14_DR/cobr14dr/datafile/datat24live.484.954112193
+input datafile file number=00032 name=+COBR14_DR/cobr14dr/datafile/datat24live.458.954112193
+input datafile file number=00042 name=+COBR14_DR/cobr14dr/datafile/datat24live.460.954112277
+input datafile file number=00052 name=+COBR14_DR/cobr14dr/datafile/datat24live.495.954114801
+input datafile file number=00062 name=+COBR14_DR/cobr14dr/datafile/datat24live.388.954114853
+input datafile file number=00072 name=+COBR14_DR/cobr14dr/datafile/datat24live.475.954114897
+input datafile file number=00082 name=+COBR14_DR/cobr14dr/datafile/indext24live.277.954115071
+input datafile file number=00095 name=+COBR14_DR/cobr14dr/datafile/datat24live.450.954117093
+input datafile file number=00105 name=+COBR14_DR/cobr14dr/datafile/datat24live.437.954117527
+input datafile file number=00115 name=+COBR14_DR/cobr14dr/datafile/datat24live.427.954117835
+input datafile file number=00134 name=+COBR14_DR/cobr14dr/datafile/datat24live.256.954118253
+input datafile file number=00117 name=+COBR14_DR/cobr14dr/datafile/datat24live.428.954117835
+input datafile file number=00136 name=+COBR14_DR/cobr14dr/datafile/datat24live.402.954118383
+input datafile file number=00142 name=+COBR14_DR/cobr14dr/datafile/datat24live.386.954118771
+input datafile file number=00140 name=+COBR14_DR/cobr14dr/datafile/datat24live.384.954118547
+channel ch2: starting piece 1 at 21-NOV-17
+channel ch3: starting compressed full datafile backup set
+channel ch3: specifying datafile(s) in backup set
+input datafile file number=00013 name=+COBR14_DR/cobr14dr/datafile/datat24live.279.954112193
+input datafile file number=00023 name=+COBR14_DR/cobr14dr/datafile/datat24live.442.954112193
+input datafile file number=00033 name=+COBR14_DR/cobr14dr/datafile/datat24live.452.954112193
+input datafile file number=00043 name=+COBR14_DR/cobr14dr/datafile/datat24live.453.954112263
+input datafile file number=00053 name=+COBR14_DR/cobr14dr/datafile/datat24live.493.954114803
+input datafile file number=00063 name=+COBR14_DR/cobr14dr/datafile/datat24live.481.954114871
+input datafile file number=00073 name=+COBR14_DR/cobr14dr/datafile/datat24live.476.954114897
+input datafile file number=00083 name=+COBR14_DR/cobr14dr/datafile/indext24live.312.954115079
+input datafile file number=00096 name=+COBR14_DR/cobr14dr/datafile/datat24live.280.954117139
+input datafile file number=00106 name=+COBR14_DR/cobr14dr/datafile/datat24live.436.954117527
+input datafile file number=00120 name=+COBR14_DR/cobr14dr/datafile/datat24live.422.954117849
+input datafile file number=00137 name=+COBR14_DR/cobr14dr/datafile/datat24live.403.954118383
+input datafile file number=00118 name=+COBR14_DR/cobr14dr/datafile/datat24live.425.954117835
+input datafile file number=00002 name=+COBR14_DR/cobr14dr/datafile/sysaux.332.954112193
+input datafile file number=00125 name=+COBR14_DR/cobr14dr/datafile/datat24live.418.954117891
+input datafile file number=00138 name=+COBR14_DR/cobr14dr/datafile/datat24live.401.954118421
+channel ch3: starting piece 1 at 21-NOV-17
+channel ch4: starting compressed full datafile backup set
+channel ch4: specifying datafile(s) in backup set
+input datafile file number=00014 name=+COBR14_DR/cobr14dr/datafile/datat24live.283.954112193
+input datafile file number=00024 name=+COBR14_DR/cobr14dr/datafile/datat24live.352.954112193
+input datafile file number=00034 name=+COBR14_DR/cobr14dr/datafile/datat24live.502.954112277
+input datafile file number=00044 name=+COBR14_DR/cobr14dr/datafile/datat24live.447.954112277
+input datafile file number=00054 name=+COBR14_DR/cobr14dr/datafile/datat24live.489.954114835
+input datafile file number=00064 name=+COBR14_DR/cobr14dr/datafile/datat24live.272.954114869
+input datafile file number=00074 name=+COBR14_DR/cobr14dr/datafile/datat24live.472.954114917
+input datafile file number=00084 name=+COBR14_DR/cobr14dr/datafile/indext24live.275.954115109
+input datafile file number=00097 name=+COBR14_DR/cobr14dr/datafile/datat24live.451.954117327
+input datafile file number=00107 name=+COBR14_DR/cobr14dr/datafile/datat24live.435.954117593
+input datafile file number=00121 name=+COBR14_DR/cobr14dr/datafile/datat24live.421.954117867
+input datafile file number=00150 name=+COBR14_DR/cobr14dr/datafile/datat24live.293.954119161
+input datafile file number=00116 name=+COBR14_DR/cobr14dr/datafile/datat24live.423.954117837
+input datafile file number=00004 name=+COBR14_DR/cobr14dr/datafile/users.328.954112193
+input datafile file number=00126 name=+COBR14_DR/cobr14dr/datafile/datat24live.416.954117899
+channel ch4: starting piece 1 at 21-NOV-17
+channel ch11: starting compressed full datafile backup set
+channel ch11: specifying datafile(s) in backup set
+input datafile file number=00010 name=+COBR14_DR/cobr14dr/datafile/datat24live.326.954112193
+input datafile file number=00020 name=+COBR14_DR/cobr14dr/datafile/datat24live.485.954112193
+input datafile file number=00030 name=+COBR14_DR/cobr14dr/datafile/datat24live.351.954112193
+input datafile file number=00040 name=+COBR14_DR/cobr14dr/datafile/datat24live.282.954112277
+input datafile file number=00050 name=+COBR14_DR/cobr14dr/datafile/datat24live.494.954114803
+input datafile file number=00060 name=+COBR14_DR/cobr14dr/datafile/datat24live.274.954114851
+input datafile file number=00070 name=+COBR14_DR/cobr14dr/datafile/datat24live.404.954114897
+input datafile file number=00080 name=+COBR14_DR/cobr14dr/datafile/indext24live.463.954115039
+input datafile file number=00093 name=+COBR14_DR/cobr14dr/datafile/datat24live.456.954116029
+input datafile file number=00103 name=+COBR14_DR/cobr14dr/datafile/datat24live.439.954117457
+input datafile file number=00113 name=+COBR14_DR/cobr14dr/datafile/datat24live.429.954117835
+input datafile file number=00132 name=+COBR14_DR/cobr14dr/datafile/datat24live.407.954118197
+input datafile file number=00119 name=+COBR14_DR/cobr14dr/datafile/datat24live.424.954117835
+input datafile file number=00139 name=+COBR14_DR/cobr14dr/datafile/indext24live.383.954118453
+input datafile file number=00141 name=+COBR14_DR/cobr14dr/datafile/datat24live.385.954118619
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch12: starting compressed full datafile backup set
+channel ch12: specifying datafile(s) in backup set
+input datafile file number=00015 name=+COBR14_DR/cobr14dr/datafile/datat24live.457.954112193
+input datafile file number=00025 name=+COBR14_DR/cobr14dr/datafile/datat24live.357.954112193
+input datafile file number=00035 name=+COBR14_DR/cobr14dr/datafile/datat24live.284.954112193
+input datafile file number=00045 name=+COBR14_DR/cobr14dr/datafile/datat24live.500.954113827
+input datafile file number=00055 name=+COBR14_DR/cobr14dr/datafile/datat24live.491.954114835
+input datafile file number=00065 name=+COBR14_DR/cobr14dr/datafile/datat24live.273.954114869
+input datafile file number=00075 name=+COBR14_DR/cobr14dr/datafile/indext24live.471.954114945
+input datafile file number=00087 name=+COBR14_DR/cobr14dr/datafile/undotbs1.379.954115109
+input datafile file number=00098 name=+COBR14_DR/cobr14dr/datafile/datat24live.464.954117345
+input datafile file number=00108 name=+COBR14_DR/cobr14dr/datafile/datat24live.434.954117705
+input datafile file number=00122 name=+COBR14_DR/cobr14dr/datafile/datat24live.417.954117891
+input datafile file number=00151 name=+COBR14_DR/cobr14dr/datafile/datat24live.294.954119175
+input datafile file number=00149 name=+COBR14_DR/cobr14dr/datafile/datat24live.292.954119145
+input datafile file number=00001 name=+COBR14_DR/cobr14dr/datafile/system.331.954112193
+input datafile file number=00085 name=+COBR14_DR/cobr14dr/datafile/homebanking_tbs.276.954115109
+channel ch12: starting piece 1 at 21-NOV-17
+channel ch13: starting compressed full datafile backup set
+channel ch13: specifying datafile(s) in backup set
+input datafile file number=00006 name=+COBR14_DR/cobr14dr/datafile/datat24live.327.954112193
+input datafile file number=00016 name=+COBR14_DR/cobr14dr/datafile/datat24live.462.954112193
+input datafile file number=00026 name=+COBR14_DR/cobr14dr/datafile/datat24live.454.954112273
+input datafile file number=00036 name=+COBR14_DR/cobr14dr/datafile/datat24live.455.954112275
+input datafile file number=00046 name=+COBR14_DR/cobr14dr/datafile/datat24live.499.954113869
+input datafile file number=00056 name=+COBR14_DR/cobr14dr/datafile/datat24live.488.954114837
+input datafile file number=00066 name=+COBR14_DR/cobr14dr/datafile/datat24live.467.954114871
+input datafile file number=00076 name=+COBR14_DR/cobr14dr/datafile/indext24live.469.954115019
+input datafile file number=00088 name=+COBR14_DR/cobr14dr/datafile/undotbs2.380.954115113
+input datafile file number=00099 name=+COBR14_DR/cobr14dr/datafile/datat24live.281.954117349
+input datafile file number=00109 name=+COBR14_DR/cobr14dr/datafile/datat24live.433.954117713
+input datafile file number=00123 name=+COBR14_DR/cobr14dr/datafile/datat24live.419.954117891
+input datafile file number=00152 name=+COBR14_DR/cobr14dr/datafile/datat24live.295.954119175
+input datafile file number=00154 name=+COBR14_DR/cobr14dr/datafile/undotbs1.297.954119275
+input datafile file number=00145 name=+COBR14_DR/cobr14dr/datafile/datat24live.288.954118927
+input datafile file number=00156 name=+COBR14_DR/cobr14dr/datafile/indext24live.367.960586039
+channel ch13: starting piece 1 at 21-NOV-17
+channel ch14: starting compressed full datafile backup set
+channel ch14: specifying datafile(s) in backup set
+input datafile file number=00011 name=+COBR14_DR/cobr14dr/datafile/datat24live.473.954112193
+input datafile file number=00021 name=+COBR14_DR/cobr14dr/datafile/datat24live.339.954112193
+input datafile file number=00031 name=+COBR14_DR/cobr14dr/datafile/datat24live.501.954112277
+input datafile file number=00041 name=+COBR14_DR/cobr14dr/datafile/datat24live.446.954112277
+input datafile file number=00051 name=+COBR14_DR/cobr14dr/datafile/datat24live.492.954114803
+input datafile file number=00061 name=+COBR14_DR/cobr14dr/datafile/datat24live.389.954114853
+input datafile file number=00071 name=+COBR14_DR/cobr14dr/datafile/datat24live.479.954114897
+input datafile file number=00081 name=+COBR14_DR/cobr14dr/datafile/indext24live.465.954115041
+input datafile file number=00094 name=+COBR14_DR/cobr14dr/datafile/datat24live.449.954116105
+input datafile file number=00104 name=+COBR14_DR/cobr14dr/datafile/users.438.954117471
+input datafile file number=00114 name=+COBR14_DR/cobr14dr/datafile/datat24live.426.954117835
+input datafile file number=00133 name=+COBR14_DR/cobr14dr/datafile/datat24live.406.954118211
+input datafile file number=00003 name=+COBR14_DR/cobr14dr/datafile/undotbs1.329.954112193
+input datafile file number=00128 name=+COBR14_DR/cobr14dr/datafile/datat24live.414.954117929
+input datafile file number=00143 name=+COBR14_DR/cobr14dr/datafile/datat24live.259.954118795
+channel ch14: starting piece 1 at 21-NOV-17
+channel ch21: starting compressed full datafile backup set
+channel ch21: specifying datafile(s) in backup set
+input datafile file number=00009 name=+COBR14_DR/cobr14dr/datafile/datat24live.330.954112193
+input datafile file number=00019 name=+COBR14_DR/cobr14dr/datafile/datat24live.350.954112193
+input datafile file number=00029 name=+COBR14_DR/cobr14dr/datafile/datat24live.360.954112193
+input datafile file number=00039 name=+COBR14_DR/cobr14dr/datafile/datat24live.387.954112275
+input datafile file number=00049 name=+COBR14_DR/cobr14dr/datafile/datat24live.497.954114753
+input datafile file number=00059 name=+COBR14_DR/cobr14dr/datafile/datat24live.486.954114837
+input datafile file number=00069 name=+COBR14_DR/cobr14dr/datafile/datat24live.477.954114897
+input datafile file number=00079 name=+COBR14_DR/cobr14dr/datafile/indext24live.405.954115035
+input datafile file number=00092 name=+COBR14_DR/cobr14dr/datafile/datat24live.286.954116029
+input datafile file number=00102 name=+COBR14_DR/cobr14dr/datafile/datat24live.257.954117457
+input datafile file number=00112 name=+COBR14_DR/cobr14dr/datafile/datat24live.430.954117789
+input datafile file number=00131 name=+COBR14_DR/cobr14dr/datafile/datat24live.408.954118137
+input datafile file number=00005 name=+COBR14_DR/cobr14dr/datafile/undotbs2.285.954112265
+input datafile file number=00148 name=+COBR14_DR/cobr14dr/datafile/datat24live.291.954119097
+input datafile file number=00146 name=+COBR14_DR/cobr14dr/datafile/datat24live.289.954118975
+input datafile file number=00089 name=+COBR14_DR/cobr14dr/datafile/system.392.954115131
+channel ch21: starting piece 1 at 21-NOV-17
+channel ch22: starting compressed full datafile backup set
+channel ch22: specifying datafile(s) in backup set
+input datafile file number=00007 name=+COBR14_DR/cobr14dr/datafile/datat24live.459.954112263
+input datafile file number=00017 name=+COBR14_DR/cobr14dr/datafile/datat24live.338.954112193
+input datafile file number=00027 name=+COBR14_DR/cobr14dr/datafile/datat24live.355.954112193
+input datafile file number=00037 name=+COBR14_DR/cobr14dr/datafile/datat24live.411.954112277
+input datafile file number=00047 name=+COBR14_DR/cobr14dr/datafile/datat24live.498.954113939
+input datafile file number=00057 name=+COBR14_DR/cobr14dr/datafile/datat24live.487.954114837
+input datafile file number=00067 name=+COBR14_DR/cobr14dr/datafile/datat24live.474.954114897
+input datafile file number=00077 name=+COBR14_DR/cobr14dr/datafile/indext24live.468.954115021
+input datafile file number=00090 name=+COBR14_DR/cobr14dr/datafile/datat24live.287.954115215
+input datafile file number=00100 name=+COBR14_DR/cobr14dr/datafile/datat24live.445.954117409
+input datafile file number=00110 name=+COBR14_DR/cobr14dr/datafile/datat24live.432.954117759
+input datafile file number=00124 name=+COBR14_DR/cobr14dr/datafile/datat24live.420.954117891
+input datafile file number=00153 name=+COBR14_DR/cobr14dr/datafile/datat24live.296.954119225
+input datafile file number=00127 name=+COBR14_DR/cobr14dr/datafile/datat24live.415.954117911
+input datafile file number=00147 name=+COBR14_DR/cobr14dr/datafile/datat24live.290.954118975
+input datafile file number=00086 name=+COBR14_DR/cobr14dr/datafile/users2.410.954115109
+channel ch22: starting piece 1 at 21-NOV-17
+                                     channel ch4: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m1sk4rss_1_1 tag=DATA_LV0 comment=NONE
+channel ch4: backup set complete, elapsed time: 01:35:10
+channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m2sk4rss_1_1 tag=DATA_LV0 comment=NONE
+channel ch11: backup set complete, elapsed time: 01:35:40
+channel ch12: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m3sk4rss_1_1 tag=DATA_LV0 comment=NONE
+channel ch12: backup set complete, elapsed time: 01:35:59
+ channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m5sk4rst_1_1 tag=DATA_LV0 comment=NONE
+channel ch14: backup set complete, elapsed time: 01:37:39
+channel ch3: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m0sk4rsr_1_1 tag=DATA_LV0 comment=NONE
+channel ch3: backup set complete, elapsed time: 01:38:00
+channel ch2: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_lvsk4rsr_1_1 tag=DATA_LV0 comment=NONE
+channel ch2: backup set complete, elapsed time: 01:38:21
+channel ch22: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m7sk4rsu_1_1 tag=DATA_LV0 comment=NONE
+channel ch22: backup set complete, elapsed time: 01:38:18
+channel ch13: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m4sk4rst_1_1 tag=DATA_LV0 comment=NONE
+channel ch13: backup set complete, elapsed time: 01:38:39
+channel ch1: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_lusk4rsr_1_1 tag=DATA_LV0 comment=NONE
+channel ch1: backup set complete, elapsed time: 01:39:01
+channel ch21: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_m6sk4rst_1_1 tag=DATA_LV0 comment=NONE
+channel ch21: backup set complete, elapsed time: 01:39:18
+Finished backup at 21-NOV-17
+ 
+Starting backup at 21-NOV-17
+current log archived
+channel ch1: starting compressed archived log backup set
+channel ch1: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39509 RECID=11309 STAMP=960574194
+input archived log thread=1 sequence=45773 RECID=11310 STAMP=960574529
+input archived log thread=2 sequence=39510 RECID=11311 STAMP=960575041
+input archived log thread=1 sequence=45774 RECID=11312 STAMP=960575759
+input archived log thread=2 sequence=39511 RECID=11313 STAMP=960576316
+input archived log thread=1 sequence=45775 RECID=11314 STAMP=960577239
+input archived log thread=2 sequence=39512 RECID=11315 STAMP=960577614
+input archived log thread=1 sequence=45776 RECID=11316 STAMP=960578380
+input archived log thread=2 sequence=39513 RECID=11317 STAMP=960578818
+input archived log thread=1 sequence=45777 RECID=11318 STAMP=960579907
+input archived log thread=2 sequence=39514 RECID=11319 STAMP=960580612
+input archived log thread=1 sequence=45778 RECID=11320 STAMP=960581518
+input archived log thread=2 sequence=39515 RECID=11321 STAMP=960582558
+input archived log thread=1 sequence=45779 RECID=11322 STAMP=960583315
+input archived log thread=2 sequence=39516 RECID=11326 STAMP=960583944
+input archived log thread=1 sequence=45780 RECID=11325 STAMP=960583909
+input archived log thread=2 sequence=39517 RECID=11324 STAMP=960583901
+input archived log thread=1 sequence=45781 RECID=11323 STAMP=960583900
+channel ch1: starting piece 1 at 21-NOV-17
+channel ch2: starting compressed archived log backup set
+channel ch2: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39518 RECID=11328 STAMP=960584043
+input archived log thread=1 sequence=45782 RECID=11327 STAMP=960584043
+input archived log thread=2 sequence=39519 RECID=11330 STAMP=960584683
+input archived log thread=1 sequence=45783 RECID=11329 STAMP=960584612
+input archived log thread=1 sequence=45784 RECID=11331 STAMP=960584876
+input archived log thread=2 sequence=39520 RECID=11332 STAMP=960584982
+input archived log thread=1 sequence=45785 RECID=11333 STAMP=960585327
+input archived log thread=2 sequence=39521 RECID=11334 STAMP=960585341
+input archived log thread=1 sequence=45786 RECID=11335 STAMP=960585736
+input archived log thread=2 sequence=39522 RECID=11336 STAMP=960585746
+input archived log thread=1 sequence=45787 RECID=11338 STAMP=960585938
+input archived log thread=2 sequence=39523 RECID=11337 STAMP=960585936
+input archived log thread=2 sequence=39524 RECID=11339 STAMP=960586974
+input archived log thread=1 sequence=45788 RECID=11340 STAMP=960586974
+input archived log thread=2 sequence=39525 RECID=11341 STAMP=960587080
+input archived log thread=1 sequence=45789 RECID=11342 STAMP=960587140
+input archived log thread=2 sequence=39526 RECID=11343 STAMP=960587739
+input archived log thread=1 sequence=45790 RECID=11344 STAMP=960588018
+channel ch2: starting piece 1 at 21-NOV-17
+channel ch3: starting compressed archived log backup set
+channel ch3: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39527 RECID=11345 STAMP=960588314
+input archived log thread=1 sequence=45791 RECID=11346 STAMP=960588523
+input archived log thread=2 sequence=39528 RECID=11347 STAMP=960588543
+input archived log thread=1 sequence=45792 RECID=11349 STAMP=960588941
+input archived log thread=2 sequence=39529 RECID=11348 STAMP=960588869
+input archived log thread=2 sequence=39530 RECID=11350 STAMP=960590211
+input archived log thread=1 sequence=45793 RECID=11351 STAMP=960590425
+input archived log thread=2 sequence=39531 RECID=11352 STAMP=960591171
+input archived log thread=1 sequence=45794 RECID=11353 STAMP=960591552
+input archived log thread=2 sequence=39532 RECID=11354 STAMP=960592207
+input archived log thread=1 sequence=45795 RECID=11355 STAMP=960592609
+input archived log thread=2 sequence=39533 RECID=11356 STAMP=960593433
+input archived log thread=1 sequence=45796 RECID=11357 STAMP=960593506
+input archived log thread=2 sequence=39534 RECID=11358 STAMP=960594668
+input archived log thread=1 sequence=45797 RECID=11359 STAMP=960594892
+input archived log thread=2 sequence=39535 RECID=11361 STAMP=960596146
+input archived log thread=1 sequence=45798 RECID=11360 STAMP=960596143
+input archived log thread=1 sequence=45799 RECID=11362 STAMP=960596396
+channel ch3: starting piece 1 at 21-NOV-17
+channel ch4: starting compressed archived log backup set
+channel ch4: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39536 RECID=11364 STAMP=960596810
+input archived log thread=1 sequence=45800 RECID=11363 STAMP=960596740
+input archived log thread=1 sequence=45801 RECID=11365 STAMP=960596874
+input archived log thread=2 sequence=39537 RECID=11367 STAMP=960597106
+input archived log thread=1 sequence=45802 RECID=11366 STAMP=960597022
+input archived log thread=1 sequence=45803 RECID=11368 STAMP=960597142
+input archived log thread=2 sequence=39538 RECID=11369 STAMP=960597405
+input archived log thread=1 sequence=45804 RECID=11370 STAMP=960597479
+input archived log thread=2 sequence=39539 RECID=11371 STAMP=960597685
+input archived log thread=1 sequence=45805 RECID=11372 STAMP=960597954
+input archived log thread=2 sequence=39540 RECID=11373 STAMP=960598480
+input archived log thread=1 sequence=45806 RECID=11374 STAMP=960599048
+input archived log thread=2 sequence=39541 RECID=11375 STAMP=960599397
+input archived log thread=1 sequence=45807 RECID=11376 STAMP=960600189
+input archived log thread=2 sequence=39542 RECID=11377 STAMP=960600395
+input archived log thread=1 sequence=45808 RECID=11382 STAMP=960601478
+input archived log thread=2 sequence=39543 RECID=11381 STAMP=960601406
+channel ch4: starting piece 1 at 21-NOV-17
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=1 sequence=1 RECID=11383 STAMP=960601838
+input archived log thread=2 sequence=1 RECID=11378 STAMP=960601086
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch12: starting compressed archived log backup set
+channel ch12: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39544 RECID=11380 STAMP=960601381
+input archived log thread=1 sequence=45809 RECID=11379 STAMP=960601374
+input archived log thread=1 sequence=45810 RECID=11386 STAMP=960602824
+input archived log thread=2 sequence=39545 RECID=11385 STAMP=960602724
+channel ch12: starting piece 1 at 21-NOV-17
+channel ch13: starting compressed archived log backup set
+channel ch13: specifying archived log(s) in backup set
+input archived log thread=1 sequence=2 RECID=11384 STAMP=960602167
+input archived log thread=1 sequence=3 RECID=11387 STAMP=960602857
+channel ch13: starting piece 1 at 21-NOV-17
+channel ch14: starting compressed archived log backup set
+channel ch14: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39546 RECID=11388 STAMP=960603211
+input archived log thread=1 sequence=45811 RECID=11389 STAMP=960603260
+channel ch14: starting piece 1 at 21-NOV-17
+channel ch21: starting compressed archived log backup set
+channel ch21: specifying archived log(s) in backup set
+input archived log thread=1 sequence=4 RECID=11392 STAMP=960603809
+channel ch21: starting piece 1 at 21-NOV-17
+channel ch22: starting compressed archived log backup set
+channel ch22: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39547 RECID=11391 STAMP=960603685
+input archived log thread=1 sequence=45812 RECID=11390 STAMP=960603660
+input archived log thread=1 sequence=45813 RECID=11393 STAMP=960604035
+input archived log thread=2 sequence=39548 RECID=11394 STAMP=960604334
+channel ch22: starting piece 1 at 21-NOV-17
+channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mcsk51nt_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:55
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=1 sequence=5 RECID=11397 STAMP=960607807
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch21: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mgsk51nt_1_1 tag=ARCH comment=NONE
+channel ch21: backup set complete, elapsed time: 00:02:02
+channel ch21: starting compressed archived log backup set
+channel ch21: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45814 RECID=11395 STAMP=960604916
+input archived log thread=2 sequence=39549 RECID=11396 STAMP=960605296
+input archived log thread=1 sequence=45815 RECID=11398 STAMP=960608933
+input archived log thread=2 sequence=39550 RECID=11399 STAMP=960609825
+channel ch21: starting piece 1 at 21-NOV-17
+ channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mfsk51nt_1_1 tag=ARCH comment=NONE
+channel ch14: backup set complete, elapsed time: 00:03:07
+channel ch14: starting compressed archived log backup set
+channel ch14: specifying archived log(s) in backup set
+input archived log thread=1 sequence=6 RECID=11401 STAMP=960613843
+channel ch14: starting piece 1 at 21-NOV-17
+channel ch13: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mesk51nt_1_1 tag=ARCH comment=NONE
+channel ch13: backup set complete, elapsed time: 00:03:32
+channel ch13: starting compressed archived log backup set
+channel ch13: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45816 RECID=11400 STAMP=960613568
+input archived log thread=2 sequence=39551 RECID=11402 STAMP=960613930
+input archived log thread=1 sequence=45817 RECID=11403 STAMP=960614563
+input archived log thread=2 sequence=39552 RECID=11404 STAMP=960614837
+channel ch13: starting piece 1 at 21-NOV-17
+channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_misk51rg_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:39
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=1 sequence=7 RECID=11405 STAMP=960614896
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch12: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mdsk51nt_1_1 tag=ARCH comment=NONE
+channel ch12: backup set complete, elapsed time: 00:03:49
+channel ch12: starting compressed archived log backup set
+channel ch12: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45818 RECID=11407 STAMP=960619875
+channel ch12: starting piece 1 at 21-NOV-17
+channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mksk51to_1_1 tag=ARCH comment=NONE
+channel ch14: backup set complete, elapsed time: 00:01:37
+channel ch14: starting compressed archived log backup set
+channel ch14: specifying archived log(s) in backup set
+input archived log thread=1 sequence=8 RECID=11406 STAMP=960618073
+channel ch14: starting piece 1 at 21-NOV-17
+ channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mmsk51uj_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:35
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39553 RECID=11408 STAMP=960620677
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch12: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mnsk51v2_1_1 tag=ARCH comment=NONE
+channel ch12: backup set complete, elapsed time: 00:01:35
+channel ch12: starting compressed archived log backup set
+channel ch12: specifying archived log(s) in backup set
+input archived log thread=1 sequence=9 RECID=11448 STAMP=960643778
+channel ch12: starting piece 1 at 21-NOV-17
+channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mosk520p_1_1 tag=ARCH comment=NONE
+channel ch14: backup set complete, elapsed time: 00:01:25
+channel ch14: starting compressed archived log backup set
+channel ch14: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45819 RECID=11409 STAMP=960622619
+input archived log thread=2 sequence=39554 RECID=11410 STAMP=960622781
+channel ch14: starting piece 1 at 21-NOV-17
+channel ch12: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mqsk5221_1_1 tag=ARCH comment=NONE
+channel ch12: backup set complete, elapsed time: 00:01:01
+channel ch12: starting compressed archived log backup set
+channel ch12: specifying archived log(s) in backup set
+input archived log thread=1 sequence=10 RECID=11449 STAMP=960643781
+input archived log thread=1 sequence=11 RECID=11459 STAMP=960648559
+input archived log thread=1 sequence=12 RECID=11462 STAMP=960649733
+channel ch12: starting piece 1 at 21-NOV-17
+channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mpsk521i_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:31
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45820 RECID=11411 STAMP=960623638
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch22: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mhsk51nt_1_1 tag=ARCH comment=NONE
+channel ch22: backup set complete, elapsed time: 00:06:41
+channel ch22: starting compressed archived log backup set
+channel ch22: specifying archived log(s) in backup set
+input archived log thread=1 sequence=13 RECID=11466 STAMP=960650945
+channel ch22: starting piece 1 at 21-NOV-17
+ channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mtsk524e_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:35
+channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39555 RECID=11412 STAMP=960623726
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch22: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_musk524e_1_1 tag=ARCH comment=NONE
+channel ch22: backup set complete, elapsed time: 00:01:42
+channel ch22: starting compressed archived log backup set
+channel ch22: specifying archived log(s) in backup set
+input archived log thread=1 sequence=14 RECID=11488 STAMP=960661238
+channel ch22: starting piece 1 at 21-NOV-17
+channel ch21: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mjsk51rn_1_1 tag=ARCH comment=NONE
+channel ch21: backup set complete, elapsed time: 00:06:37
+channel ch21: starting compressed archived log backup set
+channel ch21: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45821 RECID=11413 STAMP=960624484
+input archived log thread=2 sequence=39556 RECID=11414 STAMP=960624605
+input archived log thread=1 sequence=45822 RECID=11415 STAMP=960625354
+input archived log thread=2 sequence=39557 RECID=11416 STAMP=960625934
+input archived log thread=1 sequence=45823 RECID=11417 STAMP=960626256
+input archived log thread=2 sequence=39558 RECID=11419 STAMP=960627185
+input archived log thread=1 sequence=45824 RECID=11418 STAMP=960627152
+input archived log thread=1 sequence=45825 RECID=11421 STAMP=960628205
+input archived log thread=2 sequence=39559 RECID=11420 STAMP=960628132
+input archived log thread=2 sequence=39560 RECID=11422 STAMP=960629026
+input archived log thread=1 sequence=45826 RECID=11423 STAMP=960629150
+input archived log thread=2 sequence=39561 RECID=11424 STAMP=960630002
+input archived log thread=1 sequence=45827 RECID=11425 STAMP=960630042
+input archived log thread=2 sequence=39562 RECID=11427 STAMP=960631079
+input archived log thread=1 sequence=45828 RECID=11426 STAMP=960630901
+input archived log thread=1 sequence=45829 RECID=11428 STAMP=960631904
+input archived log thread=2 sequence=39563 RECID=11429 STAMP=960632254
+input archived log thread=1 sequence=45830 RECID=11430 STAMP=960632686
+channel ch21: starting piece 1 at 21-NOV-17
+channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mrsk523e_1_1 tag=ARCH comment=NONE
+channel ch14: backup set complete, elapsed time: 00:03:07
+channel ch14: starting compressed archived log backup set
+channel ch14: specifying archived log(s) in backup set
+input archived log thread=2 sequence=39564 RECID=11431 STAMP=960633097
+input archived log thread=1 sequence=45831 RECID=11432 STAMP=960633584
+input archived log thread=2 sequence=39565 RECID=11433 STAMP=960634219
+input archived log thread=1 sequence=45832 RECID=11434 STAMP=960634490
+input archived log thread=2 sequence=39566 RECID=11435 STAMP=960635208
+input archived log thread=1 sequence=45833 RECID=11436 STAMP=960635322
+input archived log thread=2 sequence=39567 RECID=11438 STAMP=960636269
+input archived log thread=1 sequence=45834 RECID=11437 STAMP=960636170
+input archived log thread=1 sequence=45835 RECID=11439 STAMP=960636989
+input archived log thread=2 sequence=39568 RECID=11440 STAMP=960637393
+input archived log thread=1 sequence=45836 RECID=11441 STAMP=960638010
+input archived log thread=2 sequence=39569 RECID=11442 STAMP=960638789
+input archived log thread=1 sequence=45837 RECID=11443 STAMP=960639145
+input archived log thread=2 sequence=39570 RECID=11444 STAMP=960640672
+input archived log thread=1 sequence=45838 RECID=11445 STAMP=960641149
+input archived log thread=2 sequence=39571 RECID=11446 STAMP=960643561
+input archived log thread=1 sequence=45839 RECID=11447 STAMP=960643606
+input archived log thread=2 sequence=39572 RECID=11450 STAMP=960644729
+channel ch14: starting piece 1 at 21-NOV-17
+channel ch13: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mlsk51ui_1_1 tag=ARCH comment=NONE
+channel ch13: backup set complete, elapsed time: 00:06:11
+channel ch13: starting compressed archived log backup set
+channel ch13: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45840 RECID=11451 STAMP=960644872
+input archived log thread=2 sequence=39573 RECID=11452 STAMP=960645666
+input archived log thread=1 sequence=45841 RECID=11453 STAMP=960645881
+input archived log thread=2 sequence=39574 RECID=11455 STAMP=960646740
+input archived log thread=1 sequence=45842 RECID=11454 STAMP=960646638
+input archived log thread=1 sequence=45843 RECID=11456 STAMP=960647558
+input archived log thread=2 sequence=39575 RECID=11457 STAMP=960647866
+input archived log thread=1 sequence=45844 RECID=11458 STAMP=960648461
+input archived log thread=2 sequence=39576 RECID=11460 STAMP=960648969
+input archived log thread=1 sequence=45845 RECID=11461 STAMP=960649296
+input archived log thread=2 sequence=39577 RECID=11463 STAMP=960650053
+input archived log thread=1 sequence=45846 RECID=11464 STAMP=960650136
+input archived log thread=2 sequence=39578 RECID=11467 STAMP=960651111
+input archived log thread=1 sequence=45847 RECID=11465 STAMP=960650914
+input archived log thread=1 sequence=45848 RECID=11468 STAMP=960651713
+input archived log thread=2 sequence=39579 RECID=11469 STAMP=960652211
+input archived log thread=1 sequence=45849 RECID=11470 STAMP=960652520
+input archived log thread=2 sequence=39580 RECID=11471 STAMP=960653201
+channel ch13: starting piece 1 at 21-NOV-17
+channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mvsk527d_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:01:37
+ channel ch11: starting compressed archived log backup set
+channel ch11: specifying archived log(s) in backup set
+input archived log thread=1 sequence=45850 RECID=11472 STAMP=960653326
+input archived log thread=2 sequence=39581 RECID=11474 STAMP=960654172
+input archived log thread=1 sequence=45851 RECID=11473 STAMP=960654032
+input archived log thread=1 sequence=45852 RECID=11475 STAMP=960654785
+input archived log thread=2 sequence=39582 RECID=11476 STAMP=960655141
+input archived log thread=1 sequence=45853 RECID=11477 STAMP=960655593
+input archived log thread=2 sequence=39583 RECID=11478 STAMP=960656331
+input archived log thread=1 sequence=45854 RECID=11479 STAMP=960656410
+input archived log thread=2 sequence=39584 RECID=11481 STAMP=960657809
+input archived log thread=1 sequence=45855 RECID=11480 STAMP=960657300
+input archived log thread=1 sequence=45856 RECID=11482 STAMP=960658288
+input archived log thread=2 sequence=39585 RECID=11484 STAMP=960659429
+input archived log thread=1 sequence=45857 RECID=11483 STAMP=960659310
+input archived log thread=1 sequence=45858 RECID=11485 STAMP=960659894
+input archived log thread=2 sequence=39586 RECID=11487 STAMP=960660684
+input archived log thread=1 sequence=45859 RECID=11486 STAMP=960660442
+channel ch11: starting piece 1 at 21-NOV-17
+channel ch12: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mssk523u_1_1 tag=ARCH comment=NONE
+channel ch12: backup set complete, elapsed time: 00:03:30
+channel ch22: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_n0sk527k_1_1 tag=ARCH comment=NONE
+channel ch22: backup set complete, elapsed time: 00:01:32
+   channel ch4: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mbsk51ns_1_1 tag=ARCH comment=NONE
+channel ch4: backup set complete, elapsed time: 00:20:01
+ channel ch1: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_m8sk51ns_1_1 tag=ARCH comment=NONE
+channel ch1: backup set complete, elapsed time: 00:21:22
+ channel ch2: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_m9sk51ns_1_1 tag=ARCH comment=NONE
+channel ch2: backup set complete, elapsed time: 00:23:12
+channel ch3: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_mask51ns_1_1 tag=ARCH comment=NONE
+channel ch3: backup set complete, elapsed time: 00:25:12
+  channel ch11: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_n4sk52ae_1_1 tag=ARCH comment=NONE
+channel ch11: backup set complete, elapsed time: 00:17:56
+channel ch14: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_n2sk5299_1_1 tag=ARCH comment=NONE
+channel ch14: backup set complete, elapsed time: 00:19:02
+channel ch21: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_n1sk5284_1_1 tag=ARCH comment=NONE
+channel ch21: backup set complete, elapsed time: 00:19:40
+channel ch13: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/cobr14dr_arch_T24LIVE_20171121_n3sk52a5_1_1 tag=ARCH comment=NONE
+channel ch13: backup set complete, elapsed time: 00:19:05
+Finished backup at 21-NOV-17
+
+Starting backup at 21-NOV-17
+channel ch1: starting compressed full datafile backup set
+channel ch1: specifying datafile(s) in backup set
+including current control file in backup set
+channel ch1: starting piece 1 at 21-NOV-17
+channel ch1: finished piece 1 at 21-NOV-17
+piece handle=/backupdata/backup/ctl_T24LIVE_20171121_n5sk53e6_1_1 tag=CTRL comment=NONE
+channel ch1: backup set complete, elapsed time: 00:00:01
+Finished backup at 21-NOV-17
+
+Starting Control File and SPFILE Autobackup at 21-NOV-17
+piece handle=+FRACOBR14_DR/cobr14dr/autobackup/2017_11_21/s_960662984.645.960662985 comment=NONE
+Finished Control File and SPFILE Autobackup at 21-NOV-17
+
+released channel: ch1
+
+released channel: ch2
+
+released channel: ch3
+
+released channel: ch4
+
+released channel: ch11
+
+released channel: ch12
+
+released channel: ch13
+
+released channel: ch14
+
+released channel: ch21
+
+released channel: ch22
+
+RMAN>                            

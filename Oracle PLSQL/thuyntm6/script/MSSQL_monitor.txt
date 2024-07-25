@@ -1,0 +1,113 @@
+--Statistic
+  SELECT count(*)
+  , substring(resourcename,0,CHARINDEX( '_',resourcename))
+  FROM [AMDB01].[dbo].[AM_ManagedObject]
+  where [RESOURCEID] in (SELECT distinct [RESOURCEID]
+  FROM [AMDB01].[dbo].[AM_MSSQL_DATABASEDETAILS])
+  --and resourcename like '%sql2016%'
+  group by substring(resourcename,0,CHARINDEX( '_',resourcename))
+  
+  
+    SELECT TOP 1000 [RESID]
+      ,[ATTRIBUTEID]
+      , DATEADD(hh,-5,dateadd(s, convert(bigint,[DOWNTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) 
+      , DATEADD(hh,-5,dateadd(s, convert(bigint,[UPTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) 
+      ,[SEVERITY]
+      ,[MESSAGE]
+  FROM [AMDB01].[dbo].[AM_HEALTH_ALERTDATA]
+  where --resid like '1000008%'and
+   DATEADD(hh,-5,dateadd(s, convert(bigint,[DOWNTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) > CURRENT_TIMESTAMP-1
+
+   
+      SELECT *
+  FROM [AMDB01].[dbo].[AM_ATTRIBUTES]
+where RESOURCETYPE ='MSSQL-DB-server'
+
+--event log
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT *
+  FROM [AMDB01].[dbo].[Event]
+
+--host down
+SELECT TOP 1000 [RESOURCENAME]
+      ,[COMPONENTNAME]
+      ,[USERNAME]
+      ,[PASSWORD]
+      ,[PROMPT]
+      ,[CATEGORY]
+      ,[ERRORMSG]
+      ,[LOGINPROMPT]
+      ,[PASSWORDPROMPT]
+  FROM [AMDB01].[dbo].[HostDetails]
+
+--version 
+SELECT TOP 1000 [RESOURCEID]
+      ,[VERSION]
+      ,[ODBCDRIVERVERSION]
+  FROM [AMDB01].[dbo].[AM_MSSQLDETAILS]
+  
+--os version  
+SELECT *
+  FROM [AMDB01].[dbo].[ManagedObject]
+  where type like 'Windows%'  
+  
+--site  
+--avaiable
+--backup status
+
+--dbsize
+select *-- sum ([MINVALUE])/1024/1024, sum (maxvalue)/1024/1024, sum([TOTAL])/1024/1024
+  FROM [AMDB01].[dbo].[AM_MSSQL_DATAFILESSIZE_MinMaxAvgData]  a, [AMDB01].[dbo].[AM_ManagedObject] b
+  where --resid like '1000008%'and
+   a.resid=b.RESOURCEID 
+   and RESOURCENAME like '%sql2016%'
+   and RESOURCENAME='IF-dc-sql2016-db01.headquarter.techcombank.com.vn_MSSQL-DB-server_1433#TT11_TCB'
+   and
+   DATEADD(hh,-5,dateadd(s, convert(bigint,ARCHIVEDTIME) / 1000, convert(datetime, '1-1-1970 00:00:00'))) > CURRENT_TIMESTAMP-1
+   
+   
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP 1000 [ARCHIVEDTIME]
+      ,[RESID]
+      ,[DURATION]
+      ,[ATTRIBUTEID]
+      ,[MINVALUE]
+      ,[MAXVALUE]
+      ,[TOTAL]
+      ,[TOTALCOUNT]
+      ,[FIFTHMINUTE]
+      ,[TENTHMINUTE]
+      ,[FIFTEENTHMINUTE]
+      ,[TWENTYTHMINUTE]
+      ,[TWENTYFIFTHMINUTE]
+      ,[THIRTYTHMINUTE]
+      ,[THIRTYFIFTHMINUTE]
+      ,[FORTYTHMINUTE]
+      ,[FORTYFIFTHMINUTE]
+      ,[FIFTYTHMINUTE]
+      ,[FIFTYFIFTHMINUTE]
+      ,[SIXTYTHMINUTE]
+  FROM [AMDB01].[dbo].[AM_MSSQL_LOGFILESIZE_MinMaxAvgData]
+  WHERE RESID=10811664
+  AND  DATEADD(hh,-5,dateadd(s, convert(bigint,ARCHIVEDTIME) / 1000, convert(datetime, '1-1-1970 00:00:00'))) > CURRENT_TIMESTAMP-1   
+--used size trend
+--IOPS??
+
+
+---alert 
+
+ SELECT [RESOURCENAME]
+      ,[ATTRIBUTEID]
+      , DATEADD(hh,-5,dateadd(s, convert(bigint,[DOWNTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) 
+      , DATEADD(hh,-5,dateadd(s, convert(bigint,[UPTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) 
+      ,[SEVERITY]
+      ,[MESSAGE]
+  FROM [AMDB01].[dbo].[AM_HEALTH_ALERTDATA] a, [AMDB01].[dbo].[AM_ManagedObject] b
+  where --resid like '1000008%'and
+   a.resid=b.RESOURCEID and
+   DATEADD(hh,-5,dateadd(s, convert(bigint,[DOWNTIME]) / 1000, convert(datetime, '1-1-1970 00:00:00'))) > CURRENT_TIMESTAMP-1
+   and RESOURCENAME like '%SQL%'
+
+--swich error log
+EXEC sp_cycle_errorlog ;  
+GO     

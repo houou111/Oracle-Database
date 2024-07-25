@@ -1,0 +1,7 @@
+#!/bin/bash
+
+count=0
+for i in $(ps -ef | grep ora_smon_ | grep -v grep | cut -b58-70); do
+    count=$((count + 1))
+    echo "Word $count ($i) contains $(echo -n $i | wc -c) characters"
+done

@@ -1,0 +1,96 @@
+COLUMN TABLE_NAME FORMAT A32
+COLUMN OBJECT_NAME FORMAT A32
+COLUMN OWNER FORMAT A10
+
+SELECT
+   owner, 
+   table_name, 
+   sum(bytes)/1024/1024 Meg
+FROM
+(SELECT segment_name table_name, owner, bytes
+ FROM dba_segments
+ WHERE segment_type IN ('TABLE', 'TABLE PARTITION', 'TABLE SUBPARTITION')
+ UNION ALL
+ SELECT i.table_name, i.owner, s.bytes
+ FROM dba_indexes i, dba_segments s
+ WHERE s.segment_name = i.index_name
+ AND   s.owner = i.owner
+ AND   s.segment_type IN ('INDEX', 'INDEX PARTITION', 'INDEX SUBPARTITION')
+ UNION ALL
+ SELECT l.table_name, l.owner, s.bytes
+ FROM dba_lobs l, dba_segments s
+ WHERE s.segment_name = l.segment_name
+ AND   s.owner = l.owner
+ AND   s.segment_type IN ('LOBSEGMENT', 'LOB PARTITION')
+ UNION ALL
+ SELECT l.table_name, l.owner, s.bytes
+ FROM dba_lobs l, dba_segments s
+ WHERE s.segment_name = l.index_name
+ AND   s.owner = l.owner
+ AND   s.segment_type = 'LOBINDEX')
+WHERE owner in UPPER('&owner')
+GROUP BY table_name, owner
+--HAVING SUM(bytes)/1024/1024 > 10  /* Ignore really small tables */
+ORDER BY SUM(bytes) desc
+;
+
+OWNER      TABLE_NAME                              MEG 
+---------- -------------------------------- ---------- 
+DWH        ACCOUNT                              233332 
+DWH        EB_CONTRACT_BALANCES_TSD             162652 
+DWH        CMS_TRANSACTION                       88644 
+DWH        CMS_COLLECTIONCENTRALBANK             48546 
+DWH        CNTD_HOPDONG                          47714 
+DWH        EB_CONTRACT_BALANCES                  45529 
+DWH        TBL_BACKUP_METADATA                   29763 
+DWH        CMS_ILG                               27286 
+DWH        PD_BALANCES                           22046 
+DWH        RE_CRF_SBVGL                          20834 
+DWH        STMT_ENTRY                            16843 
+DWH        LMM_ACCOUNT_BALANCES                  16181 
+DWH        CMS_CONTRACTINTEREST                  15911 
+DWH        INFO_CARD                             12852 
+DWH        CMS_CREDITTRXN                         8855 
+DWH        EB_CONTRACT_BALANCES_TSD_BK            8162 
+DWH        EB_CONTRACT_BALANCES_BK                8055 
+DWH        LD_SCHEDULE_DEFINE_TSD                 7470 
+DWH        DEPO_WITHDRA                           6164 
+DWH        LD_SCHEDULE_DEFINE                     5710 
+DWH        PROTOCOL                               5525 
+DWH        CATEG_ENTRY                            5336 
+DWH        KDR_CURVESRATESHIST                    4829 
+DWH        CUSTOMER_TSD                           4812 
+DWH        RE_CONSOL_SPEC_ENTRY                   4728 
+DWH        GROUP_ACCOUNT                          4120 
+DWH        MM_MONEY_MARKET_TSD                    3802 
+DWH        PD_PAYMENT_DUE                         3612 
+DWH        LD_LOANS_AND_DEPOSITS_TSD              3535 
+DWH        FUNDS_TRANSFER                         3526 
+DWH        IC_HOME_BANKING_TCB                    3167 
+DWH        RE_CONSOL_CONTRACT                     3153 
+DWH        SUM_DENO_TCB                           3104 
+DWH        CONSOLIDATE_ASST_LIAB                  3090 
+DWH        ACCT_ACTIVITY                          3051 
+DWH        RE_STAT_LINE_CONT                      2471 
+DWH        QUANLYTHE_TSD                          2208 
+DWH        QUANLYTHE                              2096 
+DWH        QUANLY_INFO_UPDATE_LKGD                2043 
+DWH        TBL_MV_LMM_SCHE_DSTA                   1937 
+DWH        INFO_CARD_TSD                          1867 
+DWH        LMM_SCHEDULES_PAST                     1861 
+DWH        ACCOUNT_IPL                            1706 
+DWH        VISA_OFFUS_TCB                         1614 
+DWH        LOS_DARESULTS_BUREAU                   1491 
+DWH        DC_NEW_COLLECTION_ITEM                 1447 
+DWH        USERTBL_TSD                            1421 
+DWH        BNK_PD_BALANCES                        1412 
+DWH        CMS_CARD_IPL                           1334 
+DWH        LIMIT_TSD                              1212 
+DWH        PD_BALANCES_HIST                       1160 
+DWH        CMS_CRD_CARD_IPL                       1116 
+DWH        LETTER_OF_CREDIT_TSD                   1104 
+DWH        AZ_ACCOUNT_TSD                         1044 
+DWH        LMM_SCHEDULE_DATES_TSD                 1039 
+
+
+SUM = 962663.6255

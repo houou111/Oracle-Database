@@ -1,0 +1,116 @@
+﻿
+I. Add node
+--------------------------------------------------------------------------------------------------------------
+1. incre java
+vi $ORACLE_HOME/oui/oraparam.ini
+JRE_MEMORY_OPTIONS to " -mx2048m"
+
+2. setup ssh
+./sshUserSetup.sh -user oracle -hosts "dr-core-db-test01 dr-core-db-test02" -noPromptPassphrase
+
+3.	Verify add new node
+cluvfy stage -pre nodeadd -n dr-core-db-test02
+rm -rf $ORACLE_HOME/rdbms/audit
+mkdir -p $ORACLE_HOME/rdbms/audit
+
+4.	Addnode grid
+export IGNORE_PREADDNODE_CHECKS=Y
+cd $ORACLE_HOME/oui/bin/
+./addNode.sh -silent "CLUSTER_NEW_NODES={dr-core-db-test02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dr-core-db-test02-vip}"
+
+cd /u01/app/12.2.0.1/grid/addnode
+./addnode.sh -silent "CLUSTER_NEW_NODES={dw01db02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dw0302-vip}" "CLUSTER_NEW_NODE_ROLES={hub}"
+
+5.	/u01/app/12.1.0/grid/root.sh #On nodes dr-core-db-test02
+To execute the configuration scripts:
+    1. Open a terminal window
+    2. Log in as "root"
+    3. Run the scripts in each cluster node
+
+6.	Verify 
+$ cluvfy stage -post nodeadd -n dr-core-db-test02 [-verbose]
+
+7. Clear tmp
+rm -rf /tmp
+rm -rf /tmp
+
+8. Addnode oracsle
+oracle$ cd $ORACLE_HOME/oui/bin
+oracle$ ./addNode.sh -silent "CLUSTER_NEW_NODES={dr-core-db-test02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dr-core-db-test02-vip}" 
+
+
+srvctl add instance -d twa -i twa2 -n dr-core-db-test02
+srvctl add instance -d two -i two2 -n dr-core-db-test02
+srvctl add instance -d twcms -i twcms2 -n dr-core-db-test02
+
+srvctl remove instance -d twrdr -i twrdr2 
+srvctl remove instance -d twodr -i twodr2 
+srvctl remove instance -d twadr -i twadr2 
+
+User equivalence is not set for nodes:
+alter system set instance_number=2 scope=spfile sid='twcms2';
+alter system set local_listener='dr-core-db-test02-vip:1521' scope=spfile sid='twcms2';
+alter system set thread=2 scope=spfile sid='twcms2';
+alter system set undo_tablespace='UNDOTBS2' scope=spfile sid='twcms2';
+
+srvctl add instance -d twa -i twa2 -n dr-core-db-test02
+srvctl add instance -d two -i two2 -n dr-core-db-test02
+srvctl add instance -d twcms -i twcms2 -n dr-core-db-test02
+
+scp -r /u01/app/11.2.0.4/grid/log/dr-cardlinux-db01/agent/crsd/oraagent_root dr-core-db-test02:/u01/app/11.2.0.4/grid/log/dr-core-db-test02/agent/crsd
+scp -r /u01/app/oracle/product/11.2.0/dbhome_1/bin/nmhs dr-core-db-test02:/u01/app/oracle/product/11.2.0/dbhome_1/bin/
+
+
+CRS-5828:Could not start agent '/u01/app/11.2.0.4/grid/bin/oraagent
+/u01/app/11.2.0.4/grid/bin/oraagent
+chown -R root:oinstall /u01/app/oracle/product/11.2.0/dbhome_1/bin/nmhs
+chmod 755 /u01/app/product/11.2.0/gi/lib/lib*
+chmod -R 1777 /u01/app/11.2.0.4/grid/log/dr-core-db-test02/agent/crsd/oraagent_oracle
+chmod 755 /u01/app/11.2.0.4/grid/bin/oraagent
+
+copy tnsname
+copy passwod
+copy wallet
+
+
+
+II. Delete Node
+--------------------------------------------------------------------------------------------------------------
+1.	 crsctl remove instance
+srvctl remove instance -d t24r14dc -i t24r14dc1
+crsctl stop resource ora.dr-core-db-test02.vip
+
+2.	su - root
+/u01/app/11.2.0/grid/bin/crsctl delete resource ora.dr-core-db-test02.vip
+or
+/u01/app/11.2.0/grid/bin/srvctl remove vip -vip dr-core-db-test02 -f
+
+3.	Update the installer repository ( remove dr-core-db-test02 node )
+chmod -R 774 /u01/app/oraInventory/
+cd $ORACLE_HOME/oui/bin
+./runInstaller -updateNodeList ORACLE_HOME=/u01/app/12.1.0/grid "CLUSTER_NODES={dr-core-db-test01}" CRS=TRUE
+
+4.	Verify current cluster nodes and delete the related cluster node
+$ olsnodes
+
+5.	Drop dr-core-db-test02 from the cluster 
+$GRID_HOME/bin/crsctl delete node -n dr-core-db-test02
+
+6.	Verify:
+$GRID_HOME/bin/olsnodes -t –s
+cluvfy stage -post nodedel -n dr-core-db-test02
+
+
+
+7.  Delete software in removed node
+export ORACLE_HOME=/u01/app/12.1.0/grid
+## detach ORACLE_HOME
+$ORACLE_HOME/oui/bin/runInstaller -detachHome -silent ORACLE_HOME=$ORACLE_HOME
+
+## confirm $ORACLE_HOME is removed from central inventory:
+$ORACLE_HOME/OPatch/opatch lsinventory -all   
+
+## remove files in ORACLE_HOME manually on all nodes
+/bin/rm -rf $ORACLE_HOME               
+unset ORACLE_HOME
+

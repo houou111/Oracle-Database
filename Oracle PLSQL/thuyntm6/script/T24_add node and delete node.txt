@@ -1,0 +1,316 @@
+https://docs.oracle.com/database/121/CWADD/GUID-8ADA9667-EC27-4EF9-9F34-C8F65A757F2A.htm#CWADD90992
+https://docs.oracle.com/database/121/TDPRC/addnodes.htm#TDPRC094
+
+[root@dc-core-db-01 gg_data]# olsnodes -s -t
+dc-core-db-01   Active  Unpinned
+dc-core-db-02   Inactive        Unpinned
+
+
+./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-02" CRS=TRUE -silent -local
+
+[grid@dc-core-db-02 bin]$ ./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-02" CRS=TRUE -silent -local
+Starting Oracle Universal Installer...
+
+Checking swap space: must be greater than 500 MB.   Actual 32767 MB    Passed
+The inventory pointer is located at /var/opt/oracle/oraInst.loc
+'UpdateNodeList' was successful.
+[grid@dc-core-db-02 bin]$
+
+
+Run the following command as the root user or the administrator on node "dc-core-db-02".
+
+/tmp/deinstall2018-09-16_02-24-32AM/perl/bin/perl -I/tmp/deinstall2018-09-16_02-24-32AM/perl/lib -I/tmp/deinstall2018-09-16_02-24-32AM/crs/install /tmp/deinstall2018-09-16_02-24-32AM/crs/install/rootcrs.pl -force  -deconfig -paramfile "/tmp/deinstall2018-09-16_02-24-32AM/response/deinstall_OraGI12Home1.rsp"
+
+
+
+[grid@dc-core-db-02 deinstall]$ ./deinstall -local
+Checking for required files and bootstrapping ...
+Please wait ...
+Location of logs /u01/oraInventory/logs/
+
+############ ORACLE DECONFIG TOOL START ############
+
+
+######################### DECONFIG CHECK OPERATION START #########################
+## [START] Install check configuration ##
+
+
+Checking for existence of the Oracle home location /u01/app/grid/product/12.1.0/grid
+Oracle Home type selected for deinstall is: Oracle Grid Infrastructure for a Cluster
+Oracle Base selected for deinstall is: /u01/base
+Checking for existence of central inventory location /u01/oraInventory
+Checking for existence of the Oracle Grid Infrastructure home /u01/app/grid/product/12.1.0/grid
+The following nodes are part of this cluster: dc-core-db-02
+Checking for sufficient temp space availability on node(s) : 'dc-core-db-02'
+
+## [END] Install check configuration ##
+
+Traces log file: /u01/oraInventory/logs//crsdc_2018-09-16_02-24-43AM.log
+
+Network Configuration check config START
+
+Network de-configuration trace file location: /u01/oraInventory/logs/netdc_check2018-09-16_02-24-43-AM.log
+
+Network Configuration check config END
+
+Asm Check Configuration START
+
+ASM de-configuration trace file location: /u01/oraInventory/logs/asmcadc_check2018-09-16_02-24-44-AM.log
+
+Database Check Configuration START
+
+Database de-configuration trace file location: /u01/oraInventory/logs/databasedc_check2018-09-16_02-24-44-AM.log
+
+Database Check Configuration END
+
+######################### DECONFIG CHECK OPERATION END #########################
+
+
+####################### DECONFIG CHECK OPERATION SUMMARY #######################
+Oracle Grid Infrastructure Home is: /u01/app/grid/product/12.1.0/grid
+The following nodes are part of this cluster: dc-core-db-02
+The cluster node(s) on which the Oracle home deinstallation will be performed are:dc-core-db-02
+Oracle Home selected for deinstall is: /u01/app/grid/product/12.1.0/grid
+Inventory Location where the Oracle home registered is: /u01/oraInventory
+Option -local will not modify any ASM configuration.
+Do you want to continue (y - yes, n - no)? [n]: y
+A log of this session will be written to: '/u01/oraInventory/logs/deinstall_deconfig2018-09-16_02-24-42-AM.out'
+Any error messages from this session will be written to: '/u01/oraInventory/logs/deinstall_deconfig2018-09-16_02-24-42-AM.err'
+
+######################## DECONFIG CLEAN OPERATION START ########################
+Database de-configuration trace file location: /u01/oraInventory/logs/databasedc_clean2018-09-16_02-25-44-AM.log
+ASM de-configuration trace file location: /u01/oraInventory/logs/asmcadc_clean2018-09-16_02-25-44-AM.log
+ASM Clean Configuration END
+
+Network Configuration clean config START
+
+Network de-configuration trace file location: /u01/oraInventory/logs/netdc_clean2018-09-16_02-25-44-AM.log
+
+Network Configuration clean config END
+
+
+Run the following command as the root user or the administrator on node "dc-core-db-02".
+
+/tmp/deinstall2018-09-16_02-24-32AM/perl/bin/perl -I/tmp/deinstall2018-09-16_02-24-32AM/perl/lib -I/tmp/deinstall2018-09-16_02-24-32AM/crs/install /tmp/deinstall2018-09-16_02-24-32AM/crs/install/rootcrs.pl -force  -deconfig -paramfile "/tmp/deinstall2018-09-16_02-24-32AM/response/deinstall_OraGI12Home1.rsp"
+
+Press Enter after you finish running the above commands
+
+<----------------------------------------
+
+
+######################### DECONFIG CLEAN OPERATION END #########################
+
+
+####################### DECONFIG CLEAN OPERATION SUMMARY #######################
+Oracle Clusterware is stopped and successfully de-configured on node "dc-core-db-02"
+Oracle Clusterware is stopped and de-configured successfully.
+#######################################################################
+
+
+############# ORACLE DECONFIG TOOL END #############
+
+Using properties file /tmp/deinstall2018-09-16_02-24-32AM/response/deinstall_2018-09-16_02-24-42-AM.rsp
+Location of logs /u01/oraInventory/logs/
+
+############ ORACLE DEINSTALL TOOL START ############
+
+
+
+
+
+####################### DEINSTALL CHECK OPERATION SUMMARY #######################
+A log of this session will be written to: '/u01/oraInventory/logs/deinstall_deconfig2018-09-16_02-24-42-AM.out'
+Any error messages from this session will be written to: '/u01/oraInventory/logs/deinstall_deconfig2018-09-16_02-24-42-AM.err'
+
+######################## DEINSTALL CLEAN OPERATION START ########################
+## [START] Preparing for Deinstall ##
+Setting LOCAL_NODE to dc-core-db-02
+Setting CLUSTER_NODES to dc-core-db-02
+Setting CRS_HOME to true
+Setting oracle.installer.invPtrLoc to /tmp/deinstall2018-09-16_02-24-32AM/oraInst.loc
+Setting oracle.installer.local to true
+
+## [END] Preparing for Deinstall ##
+
+Setting the force flag to false
+Setting the force flag to cleanup the Oracle Base
+Oracle Universal Installer clean START
+
+Detach Oracle home '/u01/app/grid/product/12.1.0/grid' from the central inventory on the local node : Done
+
+Failed to delete the directory '/u01/app/grid/product/12.1.0/grid/log/procwatcher'. The directory is in use.
+Failed to delete the directory '/u01/app/grid/product/12.1.0/grid/log'. The directory is not empty.
+Failed to delete the directory '/u01/app/grid/product/12.1.0/grid'. The directory is not empty.
+Delete directory '/u01/app/grid/product/12.1.0/grid' on the local node : Failed <<<<
+
+The Oracle Base directory '/u01/base' will not be removed on local node. The directory is not empty.
+
+Oracle Universal Installer cleanup was successful.
+
+Oracle Universal Installer clean END
+
+
+## [START] Oracle install clean ##
+
+Clean install operation removing temporary directory '/tmp/deinstall2018-09-16_02-24-32AM' on node 'dc-core-db-02'
+
+## [END] Oracle install clean ##
+
+
+######################### DEINSTALL CLEAN OPERATION END #########################
+
+
+####################### DEINSTALL CLEAN OPERATION SUMMARY #######################
+Successfully detached Oracle home '/u01/app/grid/product/12.1.0/grid' from the central inventory on the local node.
+Failed to delete directory '/u01/app/grid/product/12.1.0/grid' on the local node.
+Oracle Universal Installer cleanup was successful.
+
+Oracle deinstall tool successfully cleaned up temporary directories.
+#######################################################################
+
+
+############# ORACLE DEINSTALL TOOL END #############
+
+[grid@dc-core-db-02 deinstall]$
+
+============================
+
+
+
+./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-01" CRS=TRUE -silent
+[grid@dc-core-db-01 bin]$ ./runInstaller -updateNodeList ORACLE_HOME=/u01/app/grid/product/12.1.0/grid "CLUSTER_NODES=dc-core-db-01" CRS=TRUE -silent
+Starting Oracle Universal Installer...
+
+Checking swap space: must be greater than 500 MB.   Actual 32767 MB    Passed
+The inventory pointer is located at /var/opt/oracle/oraInst.loc
+'UpdateNodeList' was successful.
+
+
+Grid_home/perl/bin/perl Grid_home/crs/install/rootcrs.pl -deconfig -force
+
+
+From any node that you are not deleting, run the following command from the Grid_home/bin directory as root to delete the node from the cluster:
+
+[root@dc-core-db-01 gg_data]# crsctl delete node -n dc-core-db-02
+CRS-4661: Node dc-core-db-02 successfully deleted.
+
+
+
+[grid@dc-core-db-01 ~]$ cd /u01/app/grid/product/12.1.0/grid/bin/
+[grid@dc-core-db-01 bin]$ ./cluvfy stage -post nodedel -n dc-core-db-02
+
+Performing post-checks for node removal
+
+Checking CRS integrity...
+
+CRS integrity check passed
+
+Clusterware version consistency passed.
+
+Node removal check passed
+
+Post-check for node removal was successful.
+
+
+============================add node
+
+cluvfy stage -pre nodeadd -n dc-core-db-02 -verbose
+
+
+
+srvctl config vip -node dc-core-db-02
+
+If the VIP still exists, then delete it, as follows:
+
+srvctl stop vip -node dc-core-db-02
+srvctl remove vip -node dc-core-db-02
+
+ srvctl stop vip -vip dc-core-db-02-vip -force
+root $ srvctl remove vip -vip dc-core-db-02-vip
+
+
+[grid@dc-core-db-01 addnode]$ ./addnode.sh -silent "CLUSTER_NEW_NODES={dc-core-db-02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dc-core-db-02-vip}" -ignorePrereq
+Starting Oracle Universal Installer...
+
+Checking Temp space: must be greater than 120 MB.   Actual 84433 MB    Passed
+Checking swap space: must be greater than 150 MB.   Actual 32767 MB    Passed
+
+Prepare Configuration in progress.
+
+Prepare Configuration successful.
+..................................................   8% Done.
+You can find the log of this install session at:
+ /u01/oraInventory/logs/addNodeActions2018-09-16_03-05-38AM.log
+
+Instantiate files in progress.
+
+Instantiate files successful.
+..................................................   14% Done.
+
+Copying files to node in progress.
+JVMDUMP039I Processing dump event "systhrow", detail "java/lang/OutOfMemoryError" at 2018/09/16 03:06:49 - please wait.
+JVMDUMP032I JVM requested Heap dump using '/u01/app/grid/product/12.1.0/grid/oui/bin/heapdump.20180916.030649.9487.0001.phd' in response to an event
+JVMDUMP010I Heap dump written to /u01/app/grid/product/12.1.0/grid/oui/bin/heapdump.20180916.030649.9487.0001.phd
+JVMDUMP032I JVM requested Java dump using '/u01/app/grid/product/12.1.0/grid/oui/bin/javacore.20180916.030649.9487.0002.txt' in response to an event
+JVMDUMP010I Java dump written to /u01/app/grid/product/12.1.0/grid/oui/bin/javacore.20180916.030649.9487.0002.txt
+JVMDUMP032I JVM requested Snap dump using '/u01/app/grid/product/12.1.0/grid/oui/bin/Snap.20180916.030649.9487.0003.trc' in response to an event
+JVMDUMP010I Snap dump written to /u01/app/grid/product/12.1.0/grid/oui/bin/Snap.20180916.030649.9487.0003.trc
+JVMDUMP013I Processed dump event "systhrow", detail "java/lang/OutOfMemoryError".
+       ^C
+[grid@dc-core-db-01 addnode]$
+[grid@dc-core-db-01 addnode]$ ./addnode.sh -silent "CLUSTER_NEW_NODES={dc-core-db-02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dc-core-db-02-vip}" -ignorePrereq
+Starting Oracle Universal Installer...
+
+Checking Temp space: must be greater than 120 MB.   Actual 84428 MB    Passed
+Checking swap space: must be greater than 150 MB.   Actual 32767 MB    Passed
+
+Prepare Configuration in progress.
+
+Prepare Configuration successful.
+..................................................   8% Done.
+You can find the log of this install session at:
+ /u01/oraInventory/logs/addNodeActions2018-09-16_03-17-35AM.log
+
+Instantiate files in progress.
+
+Instantiate files successful.
+..................................................   14% Done.
+
+Copying files to node in progress.
+
+Copying files to node successful.
+..................................................   73% Done.
+
+Saving cluster inventory in progress.
+ ..................................................   80% Done.
+
+Saving cluster inventory successful.
+The Cluster Node Addition of /u01/app/grid/product/12.1.0/grid was successful.
+Please check '/tmp/silentInstall.log' for more details.
+
+Setup Oracle Base in progress.
+
+Setup Oracle Base successful.
+..................................................   88% Done.
+
+Update Inventory in progress.
+
+Update Inventory successful.
+..................................................   96% Done.
+
+As a root user, execute the following script(s):
+        1. /u01/app/grid/product/12.1.0/grid/root.sh
+
+Execute /u01/app/grid/product/12.1.0/grid/root.sh on the following nodes:
+[dc-core-db-02]
+
+The scripts can be executed in parallel on all the nodes.
+
+..................................................   100% Done.
+Successfully Setup Software.
+[grid@dc-core-db-01 addnode]$
+
+
+./addNode.sh -silent "CLUSTER_NEW_NODES={racnode3}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={racnode3-vip}"
+
+

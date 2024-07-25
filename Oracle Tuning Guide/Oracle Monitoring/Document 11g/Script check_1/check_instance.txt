@@ -1,0 +1,26 @@
+#!/bin/bash
+ORACLE_SID=bhttdg1 ; export ORACLE_SID
+ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1     ; export ORACLE_HOME
+LOG_DIR=/export/home/oracle/tools/out/log; export LOG_DIR
+EMAIL=/export/home/oracle/tools/email.ora; export EMAIL
+time=`/bin/date +%d-%b-%y-%Hh-%Mm`
+cat /dev/null > $EMAIL
+result=`$ORACLE_HOME/bin/sqlplus / as sysdba<<EOF
+        exit
+        EOF`
+check_instance ()
+{
+        alert=`echo "$result"|grep "idle instance"` 
+        if [ "$alert" != "" ];
+        then
+                echo "Can't connect to database...Please check NOW!" > $EMAIL   
+        fi
+        if [ -s $EMAIL ] 
+        then 
+                /u01/app/oracle/product/11.2.0/dbhome_1/send_mail.pl
+        else
+                echo "File $EMAIL is empty"
+        fi
+
+}
+check_instance "BHTDG2"

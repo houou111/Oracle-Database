@@ -1,0 +1,29 @@
+set lines 200
+set pages 200
+set long 999999
+select sql_text,sql_id
+from dba_hist_sqltext
+where sql_id='0xb68c2nvvq6u';
+
+
+
+
+select SQL_TEXT fulltext
+from v$sqltext
+where sql_id='&sql_id'
+order by PIECE;
+
+
+select sql_text 
+from v$sqlarea 
+where sql_id='&sql_id'; 
+
+
+select sql_text 
+from v$sqlarea 
+where sql_id='7m0njck7uam33'; 
+
+
+select sql_id, sql_text 
+from v$sql
+where  sql_id='&1'

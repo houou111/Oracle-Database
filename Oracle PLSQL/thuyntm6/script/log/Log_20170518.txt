@@ -1,0 +1,86 @@
+[t24db02@oracle /u01/t24data/gg12>]$./ggsci
+
+Oracle GoldenGate Command Interpreter for Oracle
+Version 12.1.2.0.0 17185003 OGGCORE_12.1.2.0.0T1_PLATFORMS_131207.0135
+AIX 5L, ppc, 64bit (optimized), Oracle 11g on Dec  7 2013 05:21:15
+Operating system character set identified as ISO-8859-1.
+
+Copyright (C) 1995, 2013, Oracle and/or its affiliates. All rights reserved.
+
+
+
+GGSCI (t24db02) 1> info all
+
+Program     Status      Group       Lag at Chkpt  Time Since Chkpt
+
+MANAGER     RUNNING                                           
+JAGENT      STOPPED                                           
+EXTRACT     RUNNING     ET24DC      00:00:03      00:00:08    
+EXTRACT     RUNNING     PDWDC       00:00:03      00:00:02    
+
+
+GGSCI (t24db02) 2> edit params mgr
+
+"/u01/t24data/gg12/dirprm/mgr.prm" 4 lines, 175 characters 
+port 7800
+DYNAMICPORTLIST 7810-7849
+PURGEOLDEXTRACTS /export_oracle/gg_folder/dirdat/*, USECHECKPOINTS, MINKEEPFILES 300
+AUTORESTART EXTRACT PDWDC ,RETRIES 20 ,WAITMINUTES 2
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+:wq!
+
+
+GGSCI (t24db02) 3> view params mgr
+
+port 7800
+DYNAMICPORTLIST 7810-7849
+PURGEOLDEXTRACTS /export_oracle/gg_folder/dirdat/*, USECHECKPOINTS, MINKEEPFILES 300 
+AUTORESTART EXTRACT PDWDC ,RETRIES 20 ,WAITMINUTES 2
+
+
+GGSCI (t24db02) 4> info all
+
+Program     Status      Group       Lag at Chkpt  Time Since Chkpt
+
+MANAGER     RUNNING                                           
+JAGENT      STOPPED                                           
+EXTRACT     RUNNING     ET24DC      00:00:03      00:00:08    
+EXTRACT     RUNNING     PDWDC       00:00:04      00:00:03    
+
+
+GGSCI (t24db02) 5>  exit
+[t24db02@oracle /u01/t24data/gg12>]$cd /export_oracle/gg_folder/dirdat/
+[t24db02@oracle /export_oracle/gg_folder/dirdat>]$ls |wc -l
+     300

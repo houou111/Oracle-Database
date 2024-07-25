@@ -1,0 +1,8 @@
+cluvfy stage -post hwos -n dc-oradb-01,dc-oradb-02,dc-oradb-03,dc-oradb-04 -verbose
+
+
+
+
+
+oifcfg getif
+oifcfg iflist -p -n

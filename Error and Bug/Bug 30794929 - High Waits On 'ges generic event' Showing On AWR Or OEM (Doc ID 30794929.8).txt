@@ -1,0 +1,1 @@
+Bug 30794929 - High Waits On 'ges generic event' Showing On AWR Or OEM (Doc ID 30794929.8)

@@ -1,0 +1,55 @@
+ls -la $ORACLE_HOME/bin/dg4odbc
+
+file $ORACLE_HOME/bin/dg4odbc
+
+mkdir -p /u01/app/tibero
+unzip client.zip -d /u01/app/tibero
+
+echo "
+export TB_HOME=/u01/app/tibero
+export LD_LIBRARY_PATH=\$TB_HOME/client/lib:\$LD_LIBRARY_PATH
+export PATH=\$TB_HOME/client/bin:\$PATH
+alias nadm='cd \$ORACLE_HOME/network/admin'
+" >> ~/.bash_profile
+
+echo "
+coredb=(
+(INSTANCE=(HOST=192.168.150.11)
+(PORT=8629)
+(DB_NAME=coredb)
+)
+)
+" >> $TB_HOME/client/config/tbdsn.tbr
+
+
+echo "
+GWUAT =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.150.11)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = gwuat)
+    )
+  )
+">> $ORACLE_HOME/network/admin/tnsnames.ora
+
+
+echo "
+LISTENER_TIBERO =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.150.11)(PORT = 1522))
+    )
+  )
+
+SID_LIST_LISTENER_TIBERO =
+(SID_LIST =
+  (SID_DESC =
+   (PROGRAM=dg4odbc)
+   (ORACLE_HOME = /u01/app/oracle/product/19c/dbhome_1)
+   (SID_NAME = tibero)
+  )
+)
+" >> $ORACLE_HOME/network/admin/listener.ora
+
+

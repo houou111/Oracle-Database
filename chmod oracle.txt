@@ -1,0 +1,5 @@
+cd $ORACLE_HOME/bin
+chown oracle:oinstall oracle
+chown oracle:oinstall oracleO
+chmod 6751 oracle
+chmod 6751 oracleO

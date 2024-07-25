@@ -1,0 +1,1 @@
+Select DF.TOTAL/1073741824 "DataFile Size GB", LOG.TOTAL/1073741824 "Redo Log Size GB", CONTROL.TOTAL/1073741824 "Control File Size GB", (DF.TOTAL + LOG.TOTAL + CONTROL.TOTAL)/ 1073741824 "Total Size GB" from dual, (select sum(a.bytes) TOTAL from dba_data_files a) DF, (select sum(b.bytes) TOTAL from v$log b) LOG, (select sum((cffsz+1)*cfbsz) TOTAL from x$kcccf c) CONTROL;

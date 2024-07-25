@@ -1,0 +1,13 @@
+Trong Oracle Database, các cấp độ khóa hàng (row lock levels) được sử dụng để xác định mức độ của khóa đối với các hàng dữ liệu trong quá trình thực thi các giao dịch. Dưới đây là các cấp độ khóa hàng phổ biến cùng với viết tắt của chúng:
+
+Row Share (RS): Được sử dụng khi một giao dịch muốn đọc dữ liệu từ một hàng, nhưng không cần thay đổi dữ liệu đó. Cho phép nhiều giao dịch cùng đọc (shared read).
+
+Row Exclusive (RX): Được sử dụng khi một giao dịch muốn thay đổi dữ liệu của một hàng. Khóa độc quyền cho ghi (exclusive write).
+
+Share Table Level (S): Khóa cấp bảng, không phải hàng. Cho phép nhiều giao dịch cùng đọc cả bảng (shared read table level).
+
+Share Row Exclusive (SRX): Kết hợp của Row Share và Row Exclusive. Cho phép nhiều giao dịch cùng đọc, nhưng chỉ một giao dịch có thể cập nhật (shared row exclusive).
+
+Exclusive (X): Được sử dụng khi một giao dịch muốn thực hiện cả đọc và ghi độc quyền cho bảng hoặc hàng dữ liệu (exclusive).
+
+Các cấp độ này giúp Oracle quản lý việc truy cập đến và thay đổi dữ liệu một cách an toàn và hiệu quả, đồng thời đảm bảo tính nhất quán của cơ sở dữ liệu trong môi trường đa người dùng.

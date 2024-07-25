@@ -1,0 +1,62 @@
+# mkdir /u01/db_replay_capture
+
+
+SQL> CREATE OR REPLACE DIRECTORY db_replay_capture_dir AS '/u01/db_replay_capture/';
+
+SQL> CREATE OR REPLACE DIRECTORY db_replay_capture_dir AS '/Backup/db_replay_capture/';
+
+
+
+216000
+
+
+BEGIN
+  DBMS_WORKLOAD_CAPTURE.start_capture (name     => 'G2F027122021', 
+                                       dir      => 'DB_REPLAY_CAPTURE_DIR',
+                                       duration => 3600);
+END;
+/
+
+
+
+update G2FO.CLIENT_INFO set
+TEL_NO_MOBIL = '0988888888',
+ADDR1 = '72 nguyen hue',
+EMAIL = 'xxxxxx@ssi.com.vn',
+TEL_NO_SMS = '0988888888';
+
+
+
+CREATE OR REPLACE DIRECTORY dump AS '/home/oracle/dump/';
+expdp '"/ as sysdba"' full=Y 	dumpfile=DWH_%U.dmp logfile=DWH_expdp.log parallel=8 DIRECTORY=dump FILESIZE=20G cluster=n exclude=statistics	compression=all
+
+
+DECLARE
+  l_report  CLOB;
+BEGIN
+  l_report := DBMS_WORKLOAD_CAPTURE.report(capture_id => 26,
+                                           format     => DBMS_WORKLOAD_CAPTURE.TYPE_HTML);
+END;
+/
+
+
+The capture ID can be used to export the AWR snapshots associated with the specific capture run.
+
+BEGIN
+  DBMS_WORKLOAD_CAPTURE.export_awr (capture_id => 26);
+END;
+/
+
+
+
+set linesize 170 
+set pagesize 999 
+set long 30000000 
+longchunksize 1000 
+serverout on 
+variable cap_rpt clob; 
+exec :cap_rpt := dbms_workload_capture.report(capture_id=>26, format=> dbms_workload_capture.type_html);
+ select :cap_rpt from dual; 
+ spool /tmp/capture_n1.html 
+ print :cap_rpt 
+ spool off

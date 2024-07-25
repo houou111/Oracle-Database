@@ -1,0 +1,104 @@
+CUQ!@FjUpTetxCq#lR
+
+rpm -Uvh VeeamPluginforOracleRMAN-11.0.100.1261-1.x86_64.rpm
+
+
+
+[oracle@ha-veam-testbackup ~]$ OracleRMANConfigTool --wizard
+Enter backup server name or IP address: 10.253.132.44
+Enter backup server port number [10006]:
+Enter username: oracle
+Enter password for oracle:
+Available backup repositories:
+1. StoreOnce Backup Repository
+Specify up to 4 Veeam repositories to use as target using whitespace as a separator: 1
+Enter the number of data streams (From 1 to 254) to run in parallel for each repository (RMAN DEVICE PARALLELISM value). Channel count per device [1]: 4
+Do you want to use Veeam compression? (Y/n): Y
+
+Cannot find any Oracle instances.
+
+Please apply the following RMAN settings manually:
+CONFIGURE DEFAULT DEVICE TYPE TO SBT_TAPE;
+CONFIGURE CHANNEL DEVICE TYPE SBT_TAPE
+PARMS 'SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so'
+FORMAT '107b1007-c471-42f9-8357-d30d6d1289e3/RMAN_%I_%d_%T_%U.vab';
+CONFIGURE ARCHIVELOG BACKUP COPIES FOR DEVICE TYPE SBT_TAPE TO 1;
+CONFIGURE DATAFILE BACKUP COPIES FOR DEVICE TYPE SBT_TAPE TO 1;
+CONFIGURE DEVICE TYPE SBT_TAPE PARALLELISM 4;
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE SBT_TAPE TO '%F_RMAN_AUTOBACKUP.vab';
+
+Channel definition for RMAN scripts:
+ALLOCATE CHANNEL VeeamAgentChannel1 DEVICE TYPE SBT_TAPE
+PARMS 'SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so'
+FORMAT '107b1007-c471-42f9-8357-d30d6d1289e3/RMAN_%I_%d_%T_%U.vab';
+
+Save configuration?
+1. Apply configuration to the Oracle environment
+2. Export configuration into a file for manual setup
+3. Cancel without saving
+Enter: 1
+
+*** No Oracle database instances were configured ***[oracle@ha-veam-testbackup ~]$
+
+
+
+
+
+rman TARGET /
+
+RUN {
+ALLOCATE CHANNEL a1 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a2 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a3 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a4 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+restore controlfile from 'c-1958504179-20211222-03_RMAN_AUTOBACKUP.vab';
+}
+
+RUN {
+ALLOCATE CHANNEL a1 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a2 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a3 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+ALLOCATE CHANNEL a4 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-tse-db-scan";
+recover database;
+}
+
+
+107b1007-c471-42f9-8357-d30d6d1289e3
+
+
+c-1077018042-20220118-02_RMAN_AUTOBACKUP.vab
+
+
+RUN {
+ALLOCATE CHANNEL a1 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a2 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a3 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a4 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+restore spfile from 'c-1077018042-20220118-02_RMAN_AUTOBACKUP.vab';
+}
+
+
+RUN {
+ALLOCATE CHANNEL a1 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a2 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a3 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a4 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+restore controlfile from 'c-1077018042-20220118-02_RMAN_AUTOBACKUP.vab';
+}
+
+
+RUN {
+ALLOCATE CHANNEL a1 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a2 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a3 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+ALLOCATE CHANNEL a4 TYPE sbt_tape PARMS "SBT_LIBRARY=/opt/veeam/VeeamPluginforOracleRMAN/libOracleRMANPlugin.so" SEND "srcSrv=ha-otp-scan";
+SET NEWNAME FOR DATABASE   TO  '/u01/app/oracle/oradata/opttest/DATAFILE/OTP/datafile/%b';
+restore database;
+}
+
+
+RUN {
+SET NEWNAME FOR DATABASE   TO  '+DATA';
+restore database;
+}

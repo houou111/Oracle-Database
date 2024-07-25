@@ -1,0 +1,11 @@
+select
+     name,
+     trunc(bytes_sent/1024/1024) as mb_sent,
+     trunc(bytes_rcv/1024/1024) as mb_recv,
+     trunc((bytes_sent+bytes_rcv)/1024/1024) as mb_total,
+     to_char(round(100*(((bytes_sent+bytes_rcv)/1024/1024)/
+        sum((bytes_sent+bytes_rcv)/1024/1024) over ()),2),'990.00') as total_perc
+  from
+     sys.x$ksxpclient
+  order by
+     total_perc desc;

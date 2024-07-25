@@ -1,0 +1,15 @@
+Oracle Database AWR error: ORA-06502 [How to Solve]
+Oracle database AWR report is an important tool for DBA to analyze database performance!
+
+Recently encountered a problem and reported an error:
+
+ERROR:
+ORA-06502: PL/SQL: numeric or value error: character string buffer too small
+ORA-06512: at "SYS.DBMS_WORKLOAD_REPOSITORY", line 919
+ORA-06512: at line 1
+So, how to solve this problem?
+
+Solution:
+
+update WRH$_SQLTEXT set sql_text = SUBSTR(sql_text, 1, 1000);
+commit;

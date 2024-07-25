@@ -1,0 +1,11 @@
+
+- Dbtime: sum of all Elapsed time of all process in dbtime
+- Clock Time : realtime
+- AAS: Dbtime/Clock Time
+
+
+If AAS ~ 0 then the database is idle.
+If AAS < 1 the database is fine
+If AAS << # of CPUs the database is fine
+If AAS ~ # of CPUs there might be performance problems
+If AAS > # of CPUs there is definitely a performance problem.

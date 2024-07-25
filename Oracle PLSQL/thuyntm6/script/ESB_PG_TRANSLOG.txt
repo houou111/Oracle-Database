@@ -1,0 +1,36 @@
+20:00:12 SQL> create table ESBDATA.PG_TRANSLOG_09JAN2018 as 
+20:00:22   2  select a.* from ESBDATA.PG_TRANSLOG a
+20:00:22   3  where a.LOGTIME < to_date ('01/01/2018','dd/mm/yyyy');
+
+Table created.
+
+Elapsed: 00:00:52.23
+20:13:41 SQL> ALTER INDEX ESBDATA.SYS_C0012399 REBUILD ONLINE PARALLEL 4;
+
+Index altered.
+
+Elapsed: 00:00:16.55
+20:16:04 SQL> 
+20:16:06 SQL> 
+20:16:06 SQL> ALTER INDEX ESBDATA.SYS_C0012399 noparallel;
+
+Index altered.
+
+Elapsed: 00:00:00.00
+20:16:13 SQL> select bytes/1024/1024/1024 from dba_segments where segment_name='SYS_C0012399';
+
+BYTES/1024/1024/1024
+--------------------
+           .07043457
+
+Elapsed: 00:00:00.02
+20:16:17 SQL> CREATE INDEX ESBDATA.PG_TRANSLOG_IDX ON ESBDATA.PG_TRANSLOG (functype,transid) LOGGING TABLESPACE USERS online PARALLEL 4;
+
+Index created.
+
+Elapsed: 00:00:14.71
+20:16:48 SQL> ALTER INDEX ESBDATA.PG_TRANSLOG_IDX noparallel;
+
+Index altered.
+
+Elapsed: 00:00:00.01

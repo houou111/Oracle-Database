@@ -1,0 +1,8 @@
+- bat sftp tab
+
+# Toi khu vuc dich
+lcd C:\abd\asdasd
+
+# Toi khu vuc nguon
+cd /backup_oracle/oracle/
+get ...

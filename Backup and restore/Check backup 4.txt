@@ -1,0 +1,86 @@
+
+
+
+DECLARE
+/* Phần khai báo - các biến, kiểu, cursor và chương trình con */
+BEGIN
+/* Phần thực hiện - các thủ tục và câu lệnh SQL.Đây là phần chính và bắc buộc phải có. */
+EXCEPTION
+/* Phần kiểm soát lỗi. */
+END;
+
+
+DECLARE 
+ var_name number(6); 
+ var_id number(6) = 11; 
+BEGIN
+ SELECT name 
+ INTO var_name 
+ FROM duong.test2 
+ WHERE id = var_id; 
+ dbms_output.put_line(var_name); 
+ dbms_output.put_line('id' || var_id ||'has  name'|| var_name); 
+END; 
+/
+
+DECLARE 
+	db_name varchar2(20);
+	date varchar2(20);
+	db_size_GB number(20);
+	arch_size_GB number(20);
+	db_status varchar2(20);
+	size_backup_GB varchar2(20);
+BEGIN
+	/* Database name */
+	select sys_context('userenv','db_name')
+	INTO db_name 
+	from dual; 
+	
+	/* Time */
+	select (sysdate-1)
+	INTO date
+	from dual;
+	
+	/* Database Size */
+	Select sum(bytes/1024/1024/1024)from dba_segments
+	INTO db_size_GB
+	from dba_segments;
+	
+	/* archivelog Size */
+	select (count(1)*(Select bytes/1024/1024/1024 from v$log where rownum=1))
+	INTO arch_size_GB
+	from v$log_history 
+	where to_char(trunc(first_time))=(select to_char(sysdate-1) from dual)
+	group by trunc(first_time);
+	
+	/* Backup size */
+	select sum(BLOCKS*BLOCK_SIZE)/1024/1024/1024 Backup_GB
+	INTO size_backup_GB
+	from V$BACKUP_DATAFILE
+	where to_char(trunc(completion_time))=(select to_char(sysdate-1) from dual)
+	group by trunc(completion_time);
+
+	/* status db */
+	IF arch_size_GB <= 5*db_size_GB THEN
+      db_status := 'normal';
+	ELSIF arch_size_GB > 5*db_size_GB and arch_size_GB <= 7*db_size_GB THEN
+      db_status := 'warning';
+	ELSE
+      db_status := 'critical';
+	END IF;
+	  
+EXCEPTION
+	/* Bắt đầu phần kiểm soát lỗi */
+	WHEN NO_DATA_FOUND THEN
+dbms_output.put_line('Khong tim thay du lieu'); 
+END;
+/
+ 
+ dbms_output.put_line(var_name); 
+ dbms_output.put_line('id' || var_id ||'has  name'|| var_name); 
+END; 
+/
+
+
+
+Select sum(bytes/1024/1024) Used_MB from dba_segments;

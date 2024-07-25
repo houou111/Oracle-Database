@@ -1,0 +1,358 @@
+In this Document
+Goal
+Solution
+ 	Case I. Changing private hostname
+ 	Case II. Changing private IP only without changing network interface, subnet and netmask
+ 	Case III. Changing private network MTU only
+ 	Case IV. Changing private network interface name, subnet or netmask
+ 	A. For pre-11gR2 Oracle Clusterware
+ 	B. For 11gR2 Oracle Clusterware and 12c Cluster without Flex ASM
+ 	C. For 12c Oracle Clusterware with Flex ASM
+ 	Something to note for 11gR2+
+ 	Notes for Windows Systems
+ 	Ramifications of Changing Interface Names Using oifcfg
+ 	Oifcfg Usage
+ 	Case V. Add or remove cluster_interconnect for 11gR2 and above with HAIP
+ 
+
+SOLUTION
+
+Network information(interface, subnet and role of each interface) for Oracle Clusterware is managed by 'oifcfg', but actual IP address for each interfaces are not, 'oifcfg' can not update IP address information. 'oifcfg getif' can be used to find out currently configured interfaces in OCR:
+
+% $CRS_HOME/bin/oifcfg getif 
+eth0 10.2.156.0 global public 
+eth1 192.168.0.0 global cluster_interconnect
+
+
+Case I. Changing private hostname
+
+In pre-11.2 Oracle Clusterware, private hostname is recorded in OCR, it can not be updated. Generally private hostname is not required to change. Its associated IP can be changed. The only way to change private hostname is by deleting/adding nodes, or reinstall Oracle Clusterware.
+
+In 11.2 Grid Infrastructure, private hostname is no longer recorded in OCR and there is no dependency on the private hostname. It can be changed freely in /etc/hosts.
+
+
+Case II. Changing private IP only without changing network interface, subnet and netmask
+
+For example, private IP is changed from 192.168.1.10 to 192.168.1.21, network interface name and subnet remain the same,.
+
+Simply shutdown Oracle Clusterware stack on the node where change required, make IP modification at OS layer (eg: /etc/hosts, OS network config etc) for private network, restart Oracle Clusterware stack will complete the task.
+
+
+Case III. Changing private network MTU only
+
+For example, private network MTU is changed from 1500 to 9000 (enable jumbo frame), network interface name and subnet remain the same.
+
+1. Shutdown Oracle Clusterware stack on all nodes
+2. Make the required network change of MTU size at OS network layer, ensure private network is available with the desired MTU size, ping with the desired MTU size works on all cluster nodes
+3. Restart Oracle Clusterware stack on all nodes
+
+
+Case IV. Changing private network interface name, subnet or netmask
+
+Note: When the netmask is changed but the subnet ID doesn't change, for example:
+The netmask is changed from 255.255.0.0 to 255.255.255.0 with private IP like 192.168.0.x, the subnet ID remains the same as 192.168.0.0, the network interface name is not changed.
+Shutdown Oracle Clusterware stack on all cluster nodes where change required, make IP modification at OS layer (eg: OS network config etc) for private network, restart Oracle Clusterware stack on all nodes will complete the task. Please note, this change can not be done in rolling manner.
+When the netmask is changed, the associated subnet ID is often changed. Oracle only store network interface name and subnet ID in OCR, not the netmask. Oifcfg command can be used for such change, oifcfg commands only require to run on 1 of the cluster node, not all.
+
+A. For pre-11gR2 Oracle Clusterware
+
+1. Use oifcfg to add the new private network information, delete the old private network information:
+
+% $ORA_CRS_HOME/bin/oifcfg/oifcfg setif -global <if_name>/<subnet>:cluster_interconnect
+% $ORA_CRS_HOME/bin/oifcfg/oifcfg delif -global <if_name>[/<subnet>]]
+
+For example:
+% $ORA_CRS_HOME/bin/oifcfg setif -global eth3/192.168.2.0:cluster_interconnect
+% $ORA_CRS_HOME/bin/oifcfg delif -global eth1/192.168.1.0
+
+To verify the change
+% $ORA_CRS_HOME/bin/oifcfg getif   
+eth0 10.2.166.0 global public 
+eth3 192.168.2.0 global cluster_interconnect
+2. Shutdown Oracle Clusterware stack
+
+As root user: # crsctl stop crs
+
+3. Make required network change at OS level, /etc/hosts file should be modified on all nodes to reflect the change.
+Ensure the new network is available on all cluster nodes:
+
+% ping <private hostname/IP>
+% ifconfig -a  on Unix/Linux 
+or 
+% ipconfig /all on windows
+4. restart the Oracle Clusterware stack
+
+As root user: # crsctl start crs
+
+Note:  If running OCFS2 on Linux, one  may also need to change the private IP address that OCFS2 is using to communicate with other nodes.   For more information, please refer to Note 604958.1
+ 
+
+B. For 11gR2 Oracle Clusterware and 12c Cluster without Flex ASM
+
+As of 11.2 Grid Infrastructure, the private network configuration is not only stored in OCR but also in the gpnp profile.  If the private network is not available or its definition is incorrect, the CRSD process will not start and any subsequent changes to the OCR will be impossible. Therefore care needs to be taken when making modifications to the configuration of the private network. It is important to perform the changes in the correct order. Please also note that manual modification of gpnp profile is not supported.
+
+Please take a backup of profile.xml on all cluster nodes before proceeding, as grid user:
+$ cd $GRID_HOME/gpnp/<hostname>/profiles/peer/
+$ cp -p profile.xml profile.xml.bk
+
+1. Ensure Oracle Clusterware is running on ALL cluster nodes in the cluster
+
+2. As grid user:
+
+Get the existing information. For example:
+
+$ oifcfg getif
+eth1 100.17.10.0 global public
+eth0 192.168.0.0 global cluster_interconnect
+
+Add the new cluster_interconnect information:
+
+$ oifcfg setif -global <interface>/<subnet>:cluster_interconnect
+
+For example:
+a. add a new interface bond0 with the same subnet
+$ oifcfg setif -global bond0/192.168.0.0:cluster_interconnect
+
+b. add a new subnet with the same interface name but different subnet or new interface name
+$ oifcfg setif -global eth0/192.65.0.0:cluster_interconnect
+or
+$ oifcfg setif -global eth3/192.168.1.96:cluster_interconnect
+ 
+
+1. This can be done with -global option even if the interface is not available yet, but this can not be done with -node option if the interface is not available, it will lead to node eviction.
+
+2. If the interface is available on the server, subnet address can be identified by command:
+$ oifcfg iflist
+
+It lists the network interface and its subnet address. This command can be run even if Oracle Clusterware is not running. Please note, subnet address might not be in the format of x.y.z.0, it can be x.y.z.24, x.y.z.64 or x.y.z.128 etc. For example,
+$ oifcfg iflist 
+lan1 18.1.2.0
+lan2 10.2.3.64        << this is the private network subnet address associated with private network IP: 10.2.3.86
+
+3. If it is for adding a 2nd private network, not replacing the existing private network, please ensure MTU size of both interfaces are the same, otherwise instance startup will report error:
+ORA-27504: IPC error creating OSD context
+ORA-27300: OS system dependent operation:if MTU failed with status: 0
+ORA-27301: OS failure message: Error 0
+ORA-27302: failure occurred at: skgxpcini2
+ORA-27303: additional information: requested interface lan1:801 has a different MTU (1500) than lan3:801 (9000), which is not supported. Check output from ifconfig command
+
+4. For 11gR2 and higher, it is not recommended to set cluster_interconnects in ASM or Database spfile or pfile. If this parameter is set for any reason, it needs to be changed to the new private IP in spfile or pfile prior to clusterware shutdown, otherwise it will result a failure during restart due to the interconnect mismatch.
+
+Verify the change:
+
+$ oifcfg getif
+
+3. Shutdown Oracle Clusterware on all nodes and disable the Oracle Clusterware as root user:
+
+# crsctl stop crs
+# crsctl disable crs
+
+4. Make the network configuration change at OS level as required, ensure the new interface is available on all nodes after the change.
+
+$ ifconfig -a
+$ ping <private hostname>
+
+5. Enable Oracle Clusterware and restart Oracle Clusterware on all nodes as root user:
+
+# crsctl enable crs
+# crsctl start crs
+
+6. Remove the old interface if required:
+
+$ oifcfg delif -global <if_name>[/<subnet>]
+eg:
+$ oifcfg delif -global eth0/192.168.0.0
+ 
+
+C. For 12c Oracle Clusterware with Flex ASM
+
+Please review above section B and pay attention to the Note section, take a backup as follows:
+
+Please take a backup of profile.xml on all cluster nodes before proceeding, as grid user:
+$ cd $GRID_HOME/gpnp/<hostname>/profiles/peer/
+$ cp -p profile.xml profile.xml.bk
+1. Ensure Oracle Clusterware is running on ALL cluster nodes in the cluster
+
+2. As grid user:
+
+Get the existing information. For example:
+
+$ oifcfg getif
+eth1 100.17.10.0 global public
+eth0 192.168.0.0 global cluster_interconnect,asm
+Above example shows network eth0 is used for both cluster_interconnect and ASM network.
+
+Add the new cluster_interconnect information:
+
+$ oifcfg setif -global <interface>/<subnet>:cluster_interconnect[,asm]
+
+For example:
+a. add a new interface bond0 with the same subnet
+$ oifcfg setif -global bond0/192.168.0.0:cluster_interconnect,asm
+
+b. add a new subnet with the same interface name but different subnet or new interface name
+$ oifcfg setif -global eth0/192.68.10.0:cluster_interconnect,asm
+or
+$ oifcfg setif -global eth3/192.168.1.96:cluster_interconnect,asm
+
+ If different network is used for private network and ASM network, then modify them accordingly.
+
+3. As ASMLISTENER is using the private network, modifying the private network will affect ASMLISTENER. It is required to add a new ASMLISTENER with the new network configuration. Skip this step if the subnet for the ASM network is not changed.
+
+3.1. Add a new ASMLISTENER (for example: ASMNEWLSNR_ASM) with the new subnet, as grid user:
+
+$ srvctl add  listener -asmlistener -l <new ASM LISTENER NAME> -subnet <new subnet>
+
+eg:
+$ srvctl add listener -asmlistener -l ASMNEWLSNR_ASM -subnet 192.168.10.0
+
+3.2. Drop the existing ASMLISTENER (ASMLSNR_ASM in this example) and remove the dependency, as grid user:
+
+$ srvctl update listener -listener ASMLSNR_ASM -asm -remove -force
+$ lsnrctl stop ASMLSNR_ASM
+ 
+
+Note. -force option is required, otherwise the following error will occur:
+
+$ srvctl update listener -listener ASMLSNR_ASM -asm -remove
+PRCR-1025 : Resource ora.ASMLSNR_ASM.lsnr is still running
+$ srvctl stop listener -l ASMLSNR_ASM
+PRCR-1065 : Failed to stop resource ora.ASMLSNR_ASM.lsnr
+CRS-2529: Unable to act on 'ora.ASMLSNR_ASM.lsnr' because that would require stopping or relocating 'ora.asm', but the force option was not specified
+
+
+3.3 Verify the configuration
+
+$ srvctl config listener -asmlistener
+$ srvctl config asm
+
+4. Shutdown Oracle Clusterware on ALL nodes and disable the Oracle Clusterware as root user:
+
+# crsctl stop crs
+# crsctl disable crs
+5. Make the network configuration change at OS level as required, ensure the new interface is available on all nodes after the change.
+
+$ ifconfig -a
+$ ping <private hostname>
+6. Enable Oracle Clusterware and restart Oracle Clusterware on all nodes as root user:
+
+# crsctl enable crs
+# crsctl start crs
+7. Remove the old interface if required:
+
+$ oifcfg delif -global <if_name>[/<subnet>]
+eg:
+$ oifcfg delif -global eth0/192.168.0.0
+ 
+
+Something to note for 11gR2+
+
+1. If underlying network configuration has been changed, but oifcfg has not been run to make the same change,  then upon Oracle Clusterware restart, the CRSD will not be able to start.
+
+The crsd.log will show:
+
+2010-01-30 09:22:47.234: [ default][2926461424] CRS Daemon Starting
+..
+2010-01-30 09:22:47.273: [ GPnP][2926461424]clsgpnp_Init: [at clsgpnp0.c:837] GPnP client pid=7153, tl=3, f=0
+2010-01-30 09:22:47.282: [ OCRAPI][2926461424]clsu_get_private_ip_addresses: no ip addresses found.
+2010-01-30 09:22:47.282: [GIPCXCPT][2926461424] gipcShutdownF: skipping shutdown, count 2, from [ clsinet.c : 1732], ret gipcretSuccess (0)
+2010-01-30 09:22:47.283: [GIPCXCPT][2926461424] gipcShutdownF: skipping shutdown, count 1, from [ clsgpnp0.c : 1021], ret gipcretSuccess (0)
+[ OCRAPI][2926461424]a_init_clsss: failed to call clsu_get_private_ip_addr (7)
+2010-01-30 09:22:47.285: [ OCRAPI][2926461424]a_init:13!: Clusterware init unsuccessful : [44]
+2010-01-30 09:22:47.285: [ CRSOCR][2926461424] OCR context init failure. Error: PROC-44: Error in network address and interface operations Network address and interface operations error [7]
+2010-01-30 09:22:47.285: [ CRSD][2926461424][PANIC] CRSD exiting: Could not init OCR, code: 44
+2010-01-30 09:22:47.285: [ CRSD][2926461424] Done.
+Above errors indicate a mismatch between OS setting (oifcfg iflist) and gpnp profile setting profile.xml.
+
+Workaround: restore the OS network configuration back to the original status, start Oracle Clusterware. Then follow above steps to make the changes again. 
+
+If the underlying network has not been changed, but oifcfg setif has been run with a wrong subnet address or interface name, same issue will happen.
+
+
+2. If any one node is down in the cluster, oifcfg command will fail with error:
+
+$ oifcfg setif -global bond0/192.168.0.0:cluster_interconnect
+PRIF-26: Error in update the profiles in the cluster
+Workaround: start Oracle Clusterware on the node where it is not running. Ensure Oracle Clusterware is up on all cluster nodes. If the node is down for any OS reason, please remove the node from the cluster before performing private network change.
+
+3. If a user other than Grid Infrastructure owner issues above command, it will fail with same error:
+
+$ oifcfg setif -global bond0/192.168.0.0:cluster_interconnect
+PRIF-26: Error in update the profiles in the cluster
+Workaround: ensure to login as Grid Infrastructure owner to perform such command.
+
+4. From 11.2.0.2 onwards, if attempt to delete the last private interface (cluster_interconnect) without adding a new one first, following error will occur:
+
+PRIF-31: Failed to delete the specified network interface because it is the last private interface
+Workaround: Add new private interface first before deleting the old private interface.
+
+5. If Oracle Clusterware is down on the node, the following error is expected:
+
+$ oifcfg getif
+PRIF-10: failed to initialize the cluster registry
+Workaround: Start the Oracle Clusterware on the node
+
+
+Notes for Windows Systems
+
+The syntax for changing the interfaces on Windows/RAC clusters is the same as on Unix/Linux, but the interface names will be slightly different. On Windows systems, the default names assigned to the interfaces are generally named such as:
+
+Local Area Connection
+Local Area Connection 1 
+Local Area Connection 2
+
+If using an interface name that has space in it, the name must be enclosed in quotes. Also, be aware that it is case sensitive.  For example, on Windows,  to set cluster_interconnect:
+
+C:\oracle\product\10.2.0\crs\bin\oifcfg setif -global "Local Area Connection 1"/192.168.1.0:cluster_interconnect
+However, it is best practice on Windows to rename the interfaces to be more meaningful, such as renaming them to 'ocwpublic' and 'ocwprivate'.   If interface names are renamed after Oracle Clusterware is installed, then you will need to run 'oifcfg'  to add the new interface and delete the old one, as described above.
+
+You can view the available interface names on each node by running the command:
+
+oifcfg iflist -p -n
+This command must be run on each node to verify the interface names are defined the same.
+
+Ramifications of Changing Interface Names Using oifcfg
+
+For the Private interface, the database will use the interface stored in the OCR and defined as a 'cluster_interconnect' for cache fusion traffic.  The cluster_interconnect information is available at startup in the alert log, after the parameter listing - for example:
+
+For pre 11.2.0.2:
+Cluster communication is configured to use the following interface(s) for this instance 
+192.168.1.1
+
+
+For 11.2.0.2+: (HAIP address will show in alert log instead of private IP)
+Cluster communication is configured to use the following interface(s) for this instance
+  169.254.86.97
+If this is incorrect, then instance is required to restart once the OCR entry is corrected. This applies to ASM instances and Database instances alike. On Windows systems, after shutting down the instance, it is also required to stop/restart the OracleService<SID> (or OracleASMService<ASMSID> before the OCR will be re-read.
+
+Oifcfg Usage
+
+To see the full options of oifcfg, simply type:
+
+$ <CRS_HOME>/bin/oifcfg
+
+ 
+
+Case V. Add or remove cluster_interconnect for 11gR2 and above with HAIP
+
+1. To add another private network into existing cluster using HAIP, as grid user:
+
+$ oifcfg setif -global <interface>/<subnet>:cluster_interconnect
+
+For example:
+
+$ oifcfg setif -global enp0s8/192.168.57.0:cluster_interconnect
+
+ Shutdown CRS on ALL nodes, then restart CRS on ALL nodes for HAIP to pick up the new interface. It is insufficient to restart CRS in rolling manner.
+
+2. To remove a private network from a cluster with HAIP, as grid user:
+
+$ oifcfg delif -global <if_name>
+
+For example:
+$ oifcfg delif -global enp0s8
+
+HAIP will failover to the remaining interface and clusterware/database continue to function after the interface removal.
+
+To remove the extra HAIP interface, it is required to shutdown CRS on ALL nodes, then restart CRS on ALL nodes. It is insufficient to restart CRS in rolling manner.
+

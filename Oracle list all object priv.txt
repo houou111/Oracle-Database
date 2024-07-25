@@ -1,0 +1,8 @@
+Table 4-5 Privileges for Object Tables
+
+Privilege	Enables you to...
+
+SELECT		Access an object and its attributes from the table
+UPDATE		Modify the attributes of the objects that make up the rows in the table
+INSERT		Create new objects in the table
+DELETE		Delete rows

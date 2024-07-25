@@ -1,0 +1,72 @@
+1. Summary all session
+---------------------------------------------------------------------------------------------------
+set pagesize 10000
+col i# for 99
+col STATUS for a10
+col USERNAME for a15
+col machine for a30
+col MODULE for a50
+col EVENT for a30
+SELECT /* Active sessions */ inst_id, username, machine, module, status, count(*) 
+From gv$session 
+where  TYPE != 'BACKGROUND' 
+group by inst_id, username, machine, module, status order by status, inst_id, username, module;
+
+
+
+
+2. Count all session group by
+---------------------------------------------------------------------------------------------------
+col USERNAME for a15
+select USERNAME,INST_ID,count(1) 
+from gv$session 
+HAVING count(1)>5
+group by USERNAME,INST_ID 
+order by 1;
+
+
+select USERNAME
+from gv$session 
+
+
+col USERNAME for a15
+select USERNAME,INST_ID,count(1) 
+from gv$session 
+group by USERNAME,INST_ID 
+order by 1;
+
+
+
+3. check session detail
+---------------------------------------------------------------------------------------------------
+ set line 1000
+ set pages 1000
+ column SESS_INFO format a15
+COLUMN SESS_INFO HEADING 'INST_|SID_SERIAL#'
+col OS_PID for a9
+column USER format a35
+COLUMN USER HEADING 'USER/|MACHINE/|MODULE'
+column event format a30
+column sql_id format a20
+column sql_text format a60
+select /* VIEW SESSION ACTIVE */  distinct s.inst_id|| '_' ||s.sid ||'_'||s.serial# "SESS_INFO",b.spid OS_PID,
+  s.username ||'/'||s.machine ||'/'||substr(s.module,1,15) "USER", s.event,c.sql_id,c.sql_text
+ from gv$session s, gv$sql c,gv$process b
+ where s.username is not null 
+ and s.status='ACTIVE' 
+ and s.sql_id=c.sql_id(+) 
+ and s.inst_id=c.inst_id(+) 
+ and (c.sql_text not like '%VIEW SESSION ACTIVE%' or c.sql_text is null) 
+ and addr=paddr(+) 
+ order by 1,5;
+ 
+ 
+ set lines 123
+col USERNAME for a15
+col OSUSER for a8
+col MACHINE for a15
+col PROGRAM for a20
+select b.spid, a.username, a.program , a.osuser ,a.machine, a.sid, a.serial#, a.status 
+from gv$session a, gv$process b
+where addr=paddr(+) 
+--and sid=&sid;

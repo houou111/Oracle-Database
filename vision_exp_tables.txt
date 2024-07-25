@@ -1,0 +1,104 @@
+USE [Visionfx_gold]
+GO
+
+/****** Object:  Table [dbo].[SettlementPriceInternal]    Script Date: 11/27/2015 10:56:30 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SettlementPriceInternal](
+	[ParentSessionId] [bigint] NOT NULL,
+	[BaseSymbolId] [bigint] NOT NULL,
+	[BusinessDate] [datetime] NULL,
+	[PriceBuy] [decimal](22, 6) NULL,
+	[PriceSell] [decimal](22, 6) NULL,
+	[ActorChanged] [bigint] NOT NULL,
+	[TimeChanged] [datetime] NOT NULL,
+	[CreateBy] [bigint] NULL,
+	[CreateDate] [datetime] NULL,
+	[ApprovalBy] [bigint] NULL,
+	[ApprovalDate] [datetime] NULL,
+ CONSTRAINT [PK_SettlementPriceInternal] PRIMARY KEY CLUSTERED 
+(
+	[ParentSessionId] ASC,
+	[BaseSymbolId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+USE [Visionfx_gold]
+GO
+
+/****** Object:  Table [dbo].[SettlementPrice]    Script Date: 11/27/2015 10:56:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SettlementPrice](
+	[ParentSessionId] [bigint] NOT NULL,
+	[BaseSymbolId] [bigint] NOT NULL,
+	[BusinessDate] [datetime] NULL,
+	[OpenBid] [decimal](22, 6) NULL,
+	[OpenAsk] [decimal](22, 6) NULL,
+	[BidPrice] [decimal](22, 6) NULL,
+	[AskPrice] [decimal](22, 6) NULL,
+	[CloseBid] [decimal](22, 6) NULL,
+	[CloseAsk] [decimal](22, 6) NULL,
+	[IsAutoMode] [bit] NULL,
+	[ActorChanged] [bigint] NOT NULL,
+	[TimeChanged] [datetime] NOT NULL,
+	[CreateBy] [bigint] NULL,
+	[CreateDate] [datetime] NULL,
+	[ApprovalBy] [bigint] NULL,
+	[ApprovalDate] [datetime] NULL,
+ CONSTRAINT [PK_SettlementPrice] PRIMARY KEY CLUSTERED 
+(
+	[ParentSessionId] ASC,
+	[BaseSymbolId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+USE [Visionfx_gold]
+GO
+
+/****** Object:  Table [dbo].[SessionHistory]    Script Date: 11/27/2015 10:56:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[SessionHistory](
+	[SessionId] [bigint] IDENTITY(1,1) NOT NULL,
+	[StartTime] [datetime] NULL,
+	[EndTime] [datetime] NULL,
+	[BusinessDate] [datetime] NULL,
+	[SessionParentId] [bigint] NULL,
+	[ActiveStatus] [int] NULL,
+	[IsSessionWorking] [bit] NULL,
+	[Description] [nvarchar](100) NULL,
+	[ActorChanged] [bigint] NOT NULL,
+	[TimeChanged] [datetime] NOT NULL,
+	[CurrentState] [nvarchar](100) NULL,
+	[LastState] [nvarchar](100) NULL,
+	[TaskStatus] [nvarchar](100) NULL,
+	[SessionType] [nvarchar](50) NULL,
+	[TaskNumber] [int] NULL,
+ CONSTRAINT [PK_SessionHistory] PRIMARY KEY CLUSTERED 
+(
+	[SessionId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+

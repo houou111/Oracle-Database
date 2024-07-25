@@ -1,0 +1,369 @@
+CREATE OR REPLACE TYPE SYS.lrs_array AS TABLE OF lrs_obj;
+CREATE OR REPLACE PUBLIC SYNONYM LRS_ARRAY FOR SYS.LRS_ARRAY;
+GRANT EXECUTE ON SYS.LRS_ARRAY TO DBSNMP;
+
+CREATE OR REPLACE TYPE SYS.lrs_obj as OBJECT
+(
+user_name VARCHAR2(256),
+error_message varchar(2000));
+CREATE OR REPLACE PUBLIC SYNONYM LRS_OBJ FOR SYS.LRS_OBJ;
+GRANT EXECUTE ON SYS.LRS_OBJ TO DBSNMP;
+
+
+
+CREATE OR REPLACE PACKAGE SYS.utl_mail AUTHID CURRENT_USER AS
+
+  -------------
+  --  CONSTANTS
+  --
+  invalid_argument EXCEPTION;
+  invalid_priority EXCEPTION;
+  invalid_argument_errcode CONSTANT PLS_INTEGER:= -29261;
+  PRAGMA EXCEPTION_INIT(invalid_argument, -29261);
+  PRAGMA EXCEPTION_INIT(INVALID_PRIORITY, -44101);
+  /*----------------------------------------------------------------
+  **
+  ** SEND - send an email message
+  **
+  ** This procedure packages and delivers an email message to the
+  ** SMTP server specified by the following configuration parameters:
+  **
+  **   SMTP_SERVER=my_server.my_company.com
+  **   SMTP_DOMAIN=my_company.com
+  **
+  ** SEND PROCEDURE
+  ** IN
+  **   sender       - sender address
+  **   recipients   - address(es) of 1 or more recipients, comma delimited
+  **   cc           - CC (carbon copy) recipient(s)), 1 or more addresses,
+  **                    comma delimited, default=NULL
+  **   bcc          - BCC (blind carbon copy) recipient(s), 1 or more
+  **                    addresses, comma delimited, default=NULL
+  **   subject      - subject string, default=NULL
+  **   message      - message text, default=NULL
+  **   mime_type    - mime type, default='text/plain'
+  **   priority     - message priority, default=3, valid values are [1..5]
+  **
+  ** SEND_ATTACH_VARCHAR2 PROCEDURE
+  ** IN
+  **   sender       - sender address
+  **   recipients   - address(es) of 1 or more recipients, comma delimited
+  **   cc           - CC (carbon copy) recipient(s)), 1 or more addresses,
+  **                    comma delimited, default=NULL
+  **   bcc          - BCC (blind carbon copy) recipient(s), 1 or more
+  **                    addresses, comma delimited, default=NULL
+  **   subject      - subject string, default=NULL
+  **   message      - message text, default=NULL
+  **   mime_type    - mime type, default='text/plain'
+  **   priority     - message priority, default=3, valid values are [1..5]
+  **   att_txt_inline - boolean specifying whether the attachment is viewable
+  **                    inline with the message body text, default=TRUE
+  **   attachment   - attachment text data
+  **   att_mime_type- attachment mime_type, default='text/plain'
+  **   att_filename - filename to be offered as a default upon saving the
+  **                    attachment to disk
+  **
+  ** SEND_ATTACH_RAW PROCEDURE
+  ** IN
+  **   sender       - sender address
+  **   recipients   - address(es) of 1 or more recipients, comma delimited
+  **   cc           - CC (carbon copy) recipient(s)), 1 or more addresses,
+  **                    comma delimited, default=NULL
+  **   bcc          - BCC (blind carbon copy) recipient(s), 1 or more
+  **                    addresses, comma delimited, default=NULL
+  **   subject      - subject string, default=NULL
+  **   message      - message text, default=NULL
+  **   mime_type    - mime type, default='text/plain'
+  **   priority     - message priority, default=3, valid values are [1..5]
+  **   att_raw_inline - boolean specifying whether the attachment is viewable
+  **                    inline with the message body text, default=TRUE
+  **   attachment   - attachment RAW data
+  **   att_mime_type- attachment mime_type, default='application/octet'
+  **   att_filename - filename to be offered as a default upon saving the
+  **                    attachment to disk
+  **
+  */
+
+  PROCEDURE send(sender         IN VARCHAR2 CHARACTER SET ANY_CS,
+                 recipients     IN VARCHAR2 CHARACTER SET ANY_CS,
+                 cc             IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 bcc            IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 subject        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 message        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 mime_type      IN VARCHAR2 CHARACTER SET ANY_CS
+                                   DEFAULT 'text/plain; charset=us-ascii',
+                 priority       IN PLS_INTEGER DEFAULT 3,
+                 replyto        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL);
+
+  PROCEDURE send_attach_varchar2(
+                 sender         IN VARCHAR2 CHARACTER SET ANY_CS,
+                 recipients     IN VARCHAR2 CHARACTER SET ANY_CS,
+                 cc             IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 bcc            IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 subject        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 message        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 mime_type      IN VARCHAR2 CHARACTER SET ANY_CS
+                                   DEFAULT 'text/plain; charset=us-ascii',
+                 priority       IN PLS_INTEGER DEFAULT 3,
+                 attachment     IN VARCHAR2 CHARACTER SET ANY_CS,
+                 att_inline     IN BOOLEAN  DEFAULT TRUE,
+                 att_mime_type  IN VARCHAR2 CHARACTER SET ANY_CS
+                                   DEFAULT 'text/plain; charset=us-ascii',
+                 att_filename   IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 replyto        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL);
+
+  PROCEDURE send_attach_raw(
+                 sender         IN VARCHAR2 CHARACTER SET ANY_CS,
+                 recipients     IN VARCHAR2 CHARACTER SET ANY_CS,
+                 cc             IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 bcc            IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 subject        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 message        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 mime_type      IN VARCHAR2 CHARACTER SET ANY_CS
+                                   DEFAULT 'text/plain; charset=us-ascii',
+                 priority       IN PLS_INTEGER DEFAULT 3,
+                 attachment     IN RAW,
+                 att_inline     IN BOOLEAN  DEFAULT TRUE,
+                 att_mime_type  IN VARCHAR2 CHARACTER SET ANY_CS
+                                   DEFAULT 'application/octet',
+                 att_filename   IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL,
+                 replyto        IN VARCHAR2 CHARACTER SET ANY_CS DEFAULT NULL);
+
+END;
+/
+
+CREATE OR REPLACE FUNCTION SYS.fnlrs(ln_seconds_active number) RETURN lrs_array IS
+long_running_data lrs_array := lrs_array();
+BEGIN
+SELECT lrs_obj(username||' Sec: '||sec_running, ' LONG_RUN_QUERY: Inst_id: '||inst_id||', SID: '||sid||', Serial: '|| serial||', Logon: '||session_logon_time||', sql_id: '||sql_id)
+BULK COLLECT
+INTO long_running_data
+FROM
+(SELECT
+/*+ FIRST_ROWS USE_NL(S,SQ,P) */
+s.inst_id inst_id,
+s.sid sid,
+s.serial# serial,
+s.last_call_et sec_running,
+NVL(s.username, '(oracle)') AS username,
+to_char(s.logon_time, 'DD-MM-YYYY HH24:MI:SS') session_logon_time,
+s.machine,
+NVL(s.osuser, 'n/a') AS osuser,
+NVL(s.program, 'n/a') AS program,
+s.event,
+s.seconds_in_wait,
+s.sql_id sql_id,
+sq.sql_text
+from gv$session s, gv$sqlarea sq
+where s.sql_id = sq.sql_id
+and s.inst_id = sq.inst_id
+and s.status = 'ACTIVE'
+and s.last_call_et > ln_seconds_active
+and s.paddr not in ( select paddr from gv$bgprocess where paddr != '00' )
+and s.type != 'BACKGROUND'
+and s.username not in ( 'SYSTEM', 'SYS' )
+AND s.event != 'SQL*Net break/reset to client'
+) CUSTOMER_QUERY;
+RETURN long_running_data;
+END fnlrs;
+/
+
+create PUBLIC   synonym  LRS_FNC  for  SYS.FNLRS;
+create PUBLIC   synonym  UTL_MAIL  for  SYS.UTL_MAIL;
+
+===================================
+BEGIN
+  SYS.DBMS_SCHEDULER.DROP_JOB
+    (job_name  => 'SYS.DBA_JOB_GATHER');
+END;
+/
+
+BEGIN
+  SYS.DBMS_SCHEDULER.CREATE_JOB
+    (
+       job_name        => 'SYS.DBA_JOB_GATHER'
+      ,start_date      => TO_TIMESTAMP_TZ('2017/06/06 23:00:00.000000 +07:00','yyyy/mm/dd hh24:mi:ss.ff tzr')
+      ,repeat_interval => 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SAT;'
+      ,end_date        => NULL
+      ,job_class       => 'DEFAULT_JOB_CLASS'
+      ,job_type        => 'PLSQL_BLOCK'
+      ,job_action      => 'begin sys.DBMS_STATS.GATHER_DATABASE_STATS (Estimate_Percent=>dbms_stats.auto_sample_size,Method_Opt=>''FOR ALL COLUMNS SIZE AUTO'',Degree=> 4);end;'
+      ,comments        => 'Job to gather database.'
+    );
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'RESTARTABLE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'LOGGING_LEVEL'
+     ,value     => SYS.DBMS_SCHEDULER.LOGGING_OFF);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'MAX_FAILURES');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'MAX_RUNS');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'STOP_ON_WINDOW_CLOSE'
+     ,value     => FALSE);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'JOB_PRIORITY'
+     ,value     => 3);
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE_NULL
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'SCHEDULE_LIMIT');
+  SYS.DBMS_SCHEDULER.SET_ATTRIBUTE
+    ( name      => 'SYS.DBA_JOB_GATHER'
+     ,attribute => 'AUTO_DROP'
+     ,value     => TRUE);
+
+  SYS.DBMS_SCHEDULER.ENABLE
+    (name                  => 'SYS.DBA_JOB_GATHER');
+END;
+/
+
+
+--------
+CREATE OR REPLACE FUNCTION SYS.VERIFYPASSWORD_FUNCTION
+(username varchar2,
+  password varchar2,
+  old_password varchar2)
+  RETURN boolean IS
+   n boolean;
+   m integer;
+   differ integer;
+
+   isdigit boolean;
+   ischar  boolean;
+   isupper  boolean;
+   ispunct boolean;
+
+   digitarray varchar2(10);
+   chararray varchar2(26);
+   upperchararray varchar2(26);
+   punctarray varchar2(30);
+
+BEGIN
+   digitarray:= '0123456789';
+   chararray:= 'abcdefghijklmnopqrstuvwxyz';
+   upperchararray := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+   punctarray:='!@"#$%&()`*+,-/:;<=>?_';
+
+   -- Check if the password is same as the username
+   IF NLS_LOWER(password) = NLS_LOWER(username) THEN
+     raise_application_error(-20001, 'Password can not same as or similar to user');
+   END IF;
+
+   -- Check for the minimum length of the password
+   IF length(password) < 8 THEN
+      raise_application_error(-20002, 'Password length must be greater than or equal to 8');
+   END IF;
+
+   -- Check if the password is too simple. A dictionary of words may be
+   -- maintained and a check may be made so as not to allow the words
+   -- that are too simple for the password.
+   IF NLS_LOWER(password) IN ('welcome', 'database', 'account', 'user', 'password', 'oracle', 'computer', 'abcd', 'techcombank') THEN
+      raise_application_error(-20003, 'Password is too simple');
+   END IF;
+
+   -- Check if the password contains at least one lowercase letter,one uppercase letter, one digit and one
+   -- punctuation mark.
+
+   m := length(password);
+
+   -- 1. Check for the digit
+   isdigit:=FALSE;
+   FOR i IN 1..length(digitarray) LOOP
+      FOR j IN 1..m LOOP
+         IF substr(password,j,1) = substr(digitarray,i,1) THEN
+            isdigit:=TRUE;
+             GOTO findchar;
+         END IF;
+      END LOOP;
+   END LOOP;
+   IF isdigit = FALSE THEN
+      raise_application_error(-20004, 'Password should contain at least one digit');
+   END IF;
+
+   -- 2. Check for the lowercase letter
+   <<findchar>>
+   ischar:=FALSE;
+   FOR i IN 1..length(chararray) LOOP
+      FOR j IN 1..m LOOP
+         IF substr(password,j,1) = substr(chararray,i,1) THEN
+            ischar:=TRUE;
+             GOTO findupper;
+         END IF;
+      END LOOP;
+   END LOOP;
+   IF ischar = FALSE THEN
+      raise_application_error(-20005, 'Password should contain at least one lower character');
+   END IF;
+
+   -- 3. Check for the uppercase letter
+   <<findupper>>
+   isupper:=FALSE;
+   FOR i IN 1..length(upperchararray) LOOP
+      FOR j IN 1..m LOOP
+         IF substr(password,j,1) = substr(upperchararray,i,1) THEN
+            isupper:=TRUE;
+            GOTO findpunct;
+         END IF;
+      END LOOP;
+   END LOOP;
+   IF isupper = FALSE THEN
+      raise_application_error(-20006, 'Password should contain at least one upper character');
+   END IF;
+
+   -- 4. Check for the special sign
+   <<findpunct>>
+   ispunct:=FALSE;
+   FOR i IN 1..length(punctarray) LOOP
+      FOR j IN 1..m LOOP
+         IF substr(password,j,1) = substr(punctarray,i,1) THEN
+            ispunct:=TRUE;
+
+         END IF;
+      END LOOP;
+   END LOOP;
+   IF ispunct = FALSE THEN
+      raise_application_error(-20007, 'Password should contain at least one special char ');
+   END IF;
+
+   <<endsearch>>
+   -- Check if the password differs from the previous password by at least
+   -- 3 letters
+   IF old_password IS NOT NULL THEN
+     differ := length(old_password) - length(password);
+
+     IF abs(differ) < 3 THEN
+       IF length(password) < length(old_password) THEN
+         m := length(password);
+       ELSE
+         m := length(old_password);
+       END IF;
+
+       differ := 0;
+       FOR i IN 1..m LOOP
+         IF substr(password,i,1) != substr(old_password,i,1) THEN
+           differ := differ + 1;
+         END IF;
+       END LOOP;
+
+       IF differ < 3 THEN
+         raise_application_error(-20008, 'Password should differ by at least 3 characters');
+       END IF;
+     END IF;
+   END IF;
+   -- Everything is fine; return TRUE ;
+   RETURN(TRUE);
+END;
+/
+
+--------
+SYS.utl_mail
+sys.UTL_MAIL_INTERNAL
+

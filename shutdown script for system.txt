@@ -1,0 +1,201 @@
+
+=======T24 system===============
+
+
+
+
+
+
+
+
+
+=============DWH system==============
+---Shutdown process------------------
+su - oracle
+. dwprd
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. dbfs
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. pcadb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. strategy
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+
+
+
+---Start process--------------------
+su - oracle
+. dwprd
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. dbfs                                     
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. pcadb                                    
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. strategy                                
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+
+
+
+
+============Card system=============
+---Shutdown process-----------------
+su - oracle
+. twa
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. two
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. twr
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+
+
+
+---Start process--------------------
+
+su - oracle
+. twa
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. two
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. twr
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+
+
+
+
+============ESB system=============
+
+
+
+
+
+
+
+
+
+
+============Farm system===========
+---Shutdown process-----------------
+su - oracle
+. bamdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. bpfdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. bpfrcdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. bpmdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. captudb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. cctdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. cedb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. custdc
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. ebpay
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. gcddb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. hrmdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. mbbdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. mbbdrc
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. mft
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. mobsms
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. obimeta
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. ocbdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. ocrdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. odmdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. oerepdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. osrdc
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. otac
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. pedb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. pmsdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. rptdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. scfdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. sordb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. tcbsdb
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+. wicl
+sqlplus / as sysdba @/home/oracle/dbscript/shutdown.sql
+
+
+
+---startup process-----------------
+su - oracle
+. bamdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. bpfdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. bpfrcdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. bpmdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. captudb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. cctdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. cedb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. custdc
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. ebpay
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. gcddb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. hrmdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. mbbdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. mbbdrc
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. mft
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. mobsms
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. obimeta
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. ocbdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. ocrdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. odmdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. oerepdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. osrdc
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. otac
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. pedb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. pmsdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. rptdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. scfdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. sordb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. tcbsdb
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+. wicl
+sqlplus / as sysdba @/home/oracle/dbscript/startup.sql
+
+

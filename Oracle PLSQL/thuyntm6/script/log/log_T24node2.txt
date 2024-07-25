@@ -1,0 +1,149 @@
+Thu Apr 13 17:24:24 2017
+LOGMINER: End   mining logfile for session 7 thread 1 sequence 28554, +T24R14_DC/t24r14dc/onlinelog/group_17.264.899392125
+LOGMINER: Begin mining logfile for session 7 thread 1 sequence 28555, +T24R14_DC/t24r14dc/onlinelog/group_18.261.899392151
+Thu Apr 13 17:29:00 2017
+LMS0 (ospid: 6553814) has not called a wait for 87 secs.
+Thu Apr 13 17:29:17 2017
+Errors in file /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/trace/t24r14dc2_lmhb_7996342.trc  (incident=265579):
+ORA-29770: global enqueue process LMS0 (OSID 6553814) is hung for more than 70 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/incident/incdir_265579/t24r14dc2_lmhb_7996342_i265579.trc
+Thu Apr 13 17:29:18 2017
+Sweep [inc][265579]: completed
+Sweep [inc2][265579]: completed
+Thu Apr 13 17:32:09 2017
+LMS2 (ospid: 7537492) has not called a wait for 1 secs.
+LMS4 (ospid: 38274030) has not called a wait for 88 secs.
+Thu Apr 13 17:32:24 2017
+Errors in file /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/trace/t24r14dc2_lmhb_7996342.trc  (incident=265580):
+ORA-29770: global enqueue process LMS4 (OSID 38274030) is hung for more than 70 seconds
+Incident details in: /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/incident/incdir_265580/t24r14dc2_lmhb_7996342_i265580.trc
+Thu Apr 13 17:32:38 2017
+ERROR: Some process(s) is not making progress.
+LMHB (ospid: 7996342) is terminating the instance.
+Please check LMHB trace file for more details.
+Please also check the CPU load, I/O load and other system properties for anomalous behavior
+ERROR: Some process(s) is not making progress.
+LMHB (ospid: 7996342): terminating the instance due to error 29770
+Thu Apr 13 17:32:38 2017
+opiodr aborting process unknown ospid (23265720) as a result of ORA-1092
+Thu Apr 13 17:32:38 2017
+opiodr aborting process unknown ospid (34668604) as a result of ORA-1092
+Thu Apr 13 17:32:38 2017
+opiodr aborting process unknown ospid (15597874) as a result of ORA-1092
+Thu Apr 13 17:32:38 2017
+opiodr aborting process unknown ospid (12124204) as a result of ORA-1092Thu Apr 13 17:32:38 2017
+Thu Apr 13 17:32:38 2017
+
+opiodr aborting process unknown ospid (8979238) as a result of ORA-1092opiodr aborting process unknown ospid (7798926) as a result of ORA-1092
+
+Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+ORA-1092 : opitsk aborting processThu Apr 13 17:32:39 2017
+opiodr aborting process unknown ospid (37094012) as a result of ORA-1092opiodr aborting process unknown ospid (8651670) as a result of ORA-1092Thu Apr 13 17:32:39 201
+7
+opiodr aborting process unknown ospid (16646808) as a result of ORA-1092
+
+Thu Apr 13 17:32:39 2017
+
+opiodr aborting process unknown ospid (18743670) as a result of ORA-1092
+ORA-1092 : opitsk aborting processopiodr aborting process unknown ospid (47645574) as a result of ORA-1092
+
+
+Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+opiodr aborting process unknown ospid (32768400) as a result of ORA-1092Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+ORA-1092 : opitsk aborting processThu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:39 2017
+
+opiodr aborting process unknown ospid (13763252) as a result of ORA-1092ORA-1092 : opitsk aborting process
+opiodr aborting process unknown ospid (6881796) as a result of ORA-1092opiodr aborting process unknown ospid (9175796) as a result of ORA-1092
+Thu Apr 13 17:32:39 2017
+
+
+
+opiodr aborting process unknown ospid (32965270) as a result of ORA-1092Thu Apr 13 17:32:39 2017
+Thu Apr 13 17:32:40 2017
+Thu Apr 13 17:32:40 2017
+
+Thu Apr 13 17:32:40 2017
+opiodr aborting process unknown ospid (32505890) as a result of ORA-1092opiodr aborting process unknown ospid (20448244) as a result of ORA-1092ORA-1092 : opitsk abor
+ting processopiodr aborting process unknown ospid (45547588) as a result of ORA-1092
+
+Thu Apr 13 17:32:40 2017
+
+
+ORA-1092 : opitsk aborting processThu Apr 13 17:32:40 2017
+Thu Apr 13 17:32:40 2017
+
+ORA-1092 : opitsk aborting processORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:40 2017
+
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:40 2017
+opiodr aborting process unknown ospid (23528110) as a result of ORA-1092
+Thu Apr 13 17:32:40 2017
+Thu Apr 13 17:32:40 2017
+ORA-1092 : opitsk aborting processopiodr aborting process unknown ospid (34145198) as a result of ORA-1092
+Thu Apr 13 17:32:40 2017
+
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:40 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:41 2017
+opiodr aborting process unknown ospid (27197708) as a result of ORA-1092
+Thu Apr 13 17:32:41 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:41 2017
+opiodr aborting process unknown ospid (44696192) as a result of ORA-1092
+Thu Apr 13 17:32:41 2017
+opiodr aborting process unknown ospid (47841936) as a result of ORA-1092
+Thu Apr 13 17:32:41 2017
+opiodr aborting process unknown ospid (33489526) as a result of ORA-1092
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+ORA-1092 : opitsk aborting process
+Thu Apr 13 17:32:42 2017
+System state dump requested by (instance=2, osid=7996342 (LMHB)), summary=[abnormal instance termination].
+System State dumped to trace file /u01/app/oracle/diag/rdbms/t24r14dc/t24r14dc2/trace/t24r14dc2_diag_5177844_20170413173242.trc
+Thu Apr 13 17:32:42 2017
+opiodr aborting process unknown ospid (21758856) as a result of ORA-1092
+Thu Apr 13 17:32:52 2017
+Termination issued to instance processes. Waiting for the processes to exit
+Instance termination failed to kill one or more processes
+Instance terminated by LMHB, pid = 7996342
+Thu Apr 13 17:57:02 2017
+Starting ORACLE instance (normal)
+LICENSE_MAX_SESSION = 0
+LICENSE_SESSIONS_WARNING = 0
+Initial number of CPU is 96
+Number of processor cores in the system is 24
+Private Interface 'en8' configured from GPnP for use as a private interconnect.
+  [name='en8', type=1, ip=169.254.1.249, mac=00-21-5e-e2-a4-d0, net=169.254.0.0/17, mask=255.255.128.0, use=haip:cluster_interconnect/62]
+Private Interface 'en18' configured from GPnP for use as a private interconnect.
+  [name='en18', type=1, ip=169.254.151.145, mac=00-21-5e-e2-a5-74, net=169.254.128.0/17, mask=255.255.128.0, use=haip:cluster_interconnect/62]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.40, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.110, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.111, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.112, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.44, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Public Interface 'en22' configured from GPnP for use as a public interface.
+  [name='en22', type=1, ip=192.168.11.45, mac=00-21-5e-e2-a4-d2, net=192.168.11.0/24, mask=255.255.255.0, use=public/1]
+Picked latch-free SCN scheme 3
+Autotune of undo retention is turned on. 

@@ -1,0 +1,72 @@
+set serveroutput on;
+DECLARE
+v_user VARCHAR2(30) := '';
+v_ddl VARCHAR2(2000);
+v_status VARCHAR2(32);
+BEGIN
+-- Need to add the following to get the lines to end with semi-colons
+
+dbms_metadata.set_transform_param(dbms_metadata.session_transform,'SQLTERMINATOR',true);
+
+select dbms_metadata.get_ddl('USER',v_user) INTO v_ddl from dual;
+dbms_output.put_line(v_ddl);
+
+-- Get the user's granted quotas
+DECLARE
+v_quota VARCHAR2(2000);
+BEGIN
+select dbms_metadata.get_granted_ddl('TABLESPACE_QUOTA',v_user)
+INTO v_quota from dual;
+dbms_output.put_line(v_quota);
+EXCEPTION
+WHEN OTHERS THEN
+dbms_output.put_line('-- No quotas granted');
+END;
+
+--Get the user's granted roles
+DECLARE
+v_role VARCHAR2(2000);
+BEGIN
+select dbms_metadata.get_granted_ddl('ROLE_GRANT',v_user) INTO
+v_role from dual;
+dbms_output.put_line(v_role);
+EXCEPTION
+WHEN OTHERS THEN
+dbms_output.put_line('-- No roles granted');
+END;
+
+-- Get the user's system grants
+DECLARE
+v_system VARCHAR2(2000);
+BEGIN
+select dbms_metadata.get_granted_ddl('SYSTEM_GRANT',v_user) INTO
+v_system from dual;
+dbms_output.put_line(v_system);
+EXCEPTION
+WHEN OTHERS THEN
+dbms_output.put_line('-- NO system grants');
+END;
+
+-- Get the user's object grants
+DECLARE
+v_object VARCHAR2(2000);
+BEGIN
+select dbms_metadata.get_granted_ddl('OBJECT_GRANT',v_user) INTO
+v_object from dual;
+dbms_output.put_line(v_object);
+EXCEPTION
+WHEN OTHERS THEN
+dbms_output.put_line('-- NO object grants');
+END;
+
+SELECT account_status INTO v_status FROM dba_users WHERE username =
+v_user;
+
+IF(v_status = 'OPEN') THEN
+dbms_output.put_line('ALTER USER '||v_user||' ACCOUNT UNLOCK');
+END IF;
+EXCEPTION
+WHEN OTHERS THEN
+dbms_output.put_line('-- User not found');
+END;
+/

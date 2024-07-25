@@ -1,0 +1,53 @@
+
+
+1.	Verify New Node (HWOS)
+------------------------------------------------------------------------
+[grid@racnode1 ~]$ $GRID_HOME/bin/cluvfy stage -post hwos -n dbnode2
+
+cluvfy stage -pre crsinst -n dbnode2 -verbose
+
+
+$GRID_HOME/bin/cluvfy stage -pre nodeadd -n dbnode2 -fixup -verbose
+
+
+
+2. Find all audit, adump and purge all
+------------------------------------------------------------------------
+mv adump adump.old
+mkdir -p adump
+
+
+
+3. Add node to cluster
+------------------------------------------------------------------------
+
+export IGNORE_PREADDNODE_CHECKS=Y
+./addnode.sh -silent "CLUSTER_NEW_NODES={dbnode2}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={dbnode2-vip}" 
+
+
+
+
+4. Run post script
+------------------------------------------------------------------------
+[root@dbnode2 ~]# /u01/app/oraInventory/orainstRoot.sh
+[root@dbnode2 ~]# /u01/app/11.2.0/grid/root.sh 
+
+
+[grid@racnode1 ~]$ $GRID_HOME/bin/cluvfy stage -post nodeadd -n dbnode2 -verbose 
+
+
+
+5. Copy Oracle_HOME
+------------------------------------------------------------------------
+[oracle@racnode1 ~]$ cd $ORACLE_HOME/oui/bin
+[oracle@racnode1 bin]$ ./addnode.sh -silent "CLUSTER_NEW_NODES={dbnode2}" 
+
+
+
+[root@dbnode2 ~]# /u01/app/oracle/product/11.2.0/dbhome_1/root.sh  
+
+
+
+6. Add new instance
+------------------------------------------------------------------------
+dbca

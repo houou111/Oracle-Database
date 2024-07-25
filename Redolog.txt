@@ -1,0 +1,52 @@
+
+#Add thêm 4 group redolog
+SQL> alter database add logfile group 5('/u09/oracle/oradata/ingw5/INGW5/redo5.log') size 1G;
+SQL> alter database add logfile group 6('/u09/oracle/oradata/ingw5/INGW5/redo6.log') size 1G;
+SQL> alter database add logfile group 7('/u09/oracle/oradata/ingw5/INGW5/redo7.log') size 1G;
+SQL> alter database add logfile group 8('/u09/oracle/oradata/ingw5/INGW5/redo8.log') size 1G;
+
+#Add thêm member vào group redolog
+SQL> ALTER DATABASE ADD LOGFILE MEMBER '/oracle/dbs/log2b.rdo' TO GROUP 2;
+
+#Di chuyển redolog
+SQL> SHUTDOWN
+
+$ mv /diska/logs/log1a.rdo /diskc/logs/log1c.rdo
+$ mv /diska/logs/log2a.rdo /diskc/logs/log2c.rdo
+
+$CONNECT / as SYSDBA
+
+SQL> STARTUP MOUNT
+SQL> ALTER DATABASE 
+  RENAME FILE '/diska/logs/log1a.rdo', '/diska/logs/log2a.rdo' 
+           TO '/diskc/logs/log1c.rdo', '/diskc/logs/log2c.rdo';
+SQL>ALTER DATABASE OPEN; 
+
+
+#Checkpoint 
+SQL> ALTER SYSTEM CHECKPOINT;
+
+#Switch logfile
+SQL> alter system switch logfile;
+
+#Xem trạng thái của redolog
+SQL> Select DISTINCT group#,THREAD#, status from gv$log ORDER BY group#;
+
+#Xóa logfile
+SQL> ALTER DATABASE DROP LOGFILE GROUP 1;
+SQL> ALTER DATABASE DROP LOGFILE GROUP 2;
+SQL> ALTER DATABASE DROP LOGFILE GROUP 3;
+SQL> ALTER DATABASE DROP LOGFILE GROUP 4;
+
+#Check lại
+
+SQL> col GROUP# for 99
+	 col MEMBER for a50
+	 SELECT DISTINCT a.group#, a.member, b.bytes/1024/1024 , b.THREAD# FROM gv$logfile a, gv$log b WHERE a.group# = b.group#;
+	 
+	 
+	 alter database add logfile thread 1 group 11('+REDO','+DATA') size 1G;
+alter database add logfile thread 1 group 12('+REDO','+DATA') size 1G;
+alter database add logfile thread 2 group 21('+REDO','+DATA') size 1G;
+alter database add logfile thread 2 group 22('+REDO','+DATA') size 1G;
+

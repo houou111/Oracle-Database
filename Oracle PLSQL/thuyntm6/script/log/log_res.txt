@@ -1,0 +1,79 @@
+ startup nomount pfile='/u01/app/oracle/db11/dbs/initesbres1.ora';
+
+ run{
+ allocate channel t1 device type 'sbt_tape';
+ send 'NB_ORA_CLIENT=dr-esb-db01-pub,NB_ORA_SERV=dr-backup-01';
+ restore controlfile from '/ctrl_esbdata2icrsth5q_s4684_p1_t936297658';
+ release channel t1;
+ }
+
+ --> +DATA01_DR/esbres/controlfile/current.364.938691211
+ 
+ 
+export NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS"
+export ORACLE_HOME=/u01/app/oracle/db11
+export PATH=$ORACLE_HOME/bin:$PATH
+export ORACLE_SID=esbres1
+rman TARGET / @/home/oracle/rman_esbres.rcv log /home/oracle/rman_esbres.log
+
+
+host 'date>>/home/oracle/time.log';
+run{
+set until time "to_date('2017-02-19:04:00:00', 'yyyy-mm-dd:hh24:mi:ss')";
+allocate channel t1 device type 'sbt_tape' ;
+allocate channel t2 device type 'sbt_tape' ;
+allocate channel t3 device type 'sbt_tape' ;
+allocate channel t4 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-esb-db01-pub,NB_ORA_SERV=dr-backup-01';
+send 'NB_ORA_CLIENT=dr-esb-db02-pub,NB_ORA_SERV=dr-backup-01';
+set newname for datafile 1 to '+RESTORE15';
+set newname for datafile 2 to '+RESTORE15';
+set newname for datafile 3 to '+RESTORE15';
+set newname for datafile 4 to '+RESTORE15';
+set newname for datafile 5 to '+RESTORE15';
+set newname for datafile 6 to '+RESTORE15';
+set newname for datafile 7 to '+RESTORE15';
+set newname for datafile 8 to '+RESTORE15';
+set newname for datafile 9 to '+RESTORE15';
+set newname for datafile 10 to '+RESTORE15';
+set newname for datafile 11 to '+RESTORE15';
+set newname for datafile 12 to '+RESTORE15';
+set newname for datafile 13 to '+RESTORE15';
+set newname for datafile 14 to '+RESTORE15';
+set newname for datafile 15 to '+RESTORE15';
+set newname for datafile 16 to '+RESTORE15';
+set newname for datafile 17 to '+RESTORE15';
+set newname for datafile 18 to '+RESTORE15';
+set newname for datafile 19 to '+RESTORE15';
+set newname for datafile 20 to '+RESTORE15';
+set newname for datafile 21 to '+RESTORE15';
+set newname for datafile 22 to '+RESTORE15';
+set newname for datafile 23 to '+DATA01_DR';
+set newname for datafile 24 to '+DATA01_DR';
+set newname for datafile 25 to '+DATA01_DR';
+set newname for datafile 26 to '+DATA01_DR';
+set newname for datafile 27 to '+DATA01_DR';
+set newname for datafile 28 to '+DATA01_DR';
+set newname for datafile 29 to '+DATA01_DR';
+set newname for datafile 30 to '+DATA01_DR';
+set newname for datafile 31 to '+DATA01_DR';
+set newname for datafile 32 to '+DATA01_DR';
+restore database;
+switch datafile all;
+release channel t1;
+release channel t2;
+release channel t3;
+release channel t4;
+}
+host 'date>>/home/oracle/time.log';
+
+
+start 13:47:38 -20170315 - end 14:40 -->dr-esb-db02
+
+
+run{
+allocate channel C1 device type 'sbt_tape' ;
+send 'NB_ORA_CLIENT=dr-esb-db02-pub,NB_ORA_SERV=dr-backup-01';
+restore datafile 1  ;
+release channel C1;
+}

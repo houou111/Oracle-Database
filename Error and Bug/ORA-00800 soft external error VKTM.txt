@@ -1,0 +1,1 @@
+ORA-00800: soft external error, arguments: [Set Priority Failed], [VKTM] ( Doc ID 2718971.1 )

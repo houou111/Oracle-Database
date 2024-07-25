@@ -1,0 +1,14 @@
+-- PL/SQL block to insert 100,000 rows into the table
+DECLARE
+  v_id NUMBER;
+  v_name VARCHAR2(255);
+BEGIN
+  FOR i IN 1..100000 LOOP
+    v_id := i;
+    v_name := 'Name' || i;
+
+    INSERT INTO your_table_name (id, name) VALUES (v_id, v_name);
+  END LOOP;
+  COMMIT;
+END;
+/

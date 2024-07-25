@@ -1,0 +1,330 @@
+
+1. Setting system
+--------------------------------------------------------------------------------------------
+ALTER SYSTEM SET SGA_TARGET=3G SCOPE=SPFILE;
+ALTER SYSTEM SET INMEMORY_SIZE=2G SCOPE=SPFILE;
+SHUTDOWN IMMEDIATE;
+STARTUP;
+
+ORACLE instance started.
+
+Total System Global Area 3221225472 bytes
+Fixed Size                  2929552 bytes
+Variable Size             419433584 bytes
+Database Buffers          637534208 bytes
+Redo Buffers               13844480 bytes
+In-Memory Area           2147483648 bytes
+Database mounted.
+Database opened.
+
+
+
+2. Check
+--------------------------------------------------------------------------------------------
+SQL> SHOW PARAMETER INMEMORY
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+inmemory_clause_default              string
+inmemory_force                       string      DEFAULT
+inmemory_max_populate_servers        integer     1
+inmemory_query                       string      ENABLE
+inmemory_size                        big integer 2G
+inmemory_trickle_repopulate_servers_ integer     1
+percent
+optimizer_inmemory_aware             boolean     TRUE
+
+
+
+3. Setting to pdb
+------------------------------------------------------------------------------------------------
+CONN sys@pdb1 AS SYSDBA
+-- Disable IM column store in the PDB
+ALTER SYSTEM SET INMEMORY_SIZE=0;
+-- OR
+ALTER SYSTEM RESET INMEMORY_SIZE;
+
+-- Assign a PDB-specific size.
+ALTER SYSTEM SET INMEMORY_SIZE=1G;
+
+
+
+4. Disable 
+---------------------------------------------------------------------------------------------------
+Disable In-Memory Column Store
+There are several ways to disable the IM column store, depending on what you are trying to achieve.
+
+Setting the INMEMORY_FORCE parameter to "OFF" means objects will not be maintained in the IM column store. Switching it back to "DEFAULT" returns to the default behaviour.
+
+-- System level
+ALTER SYSTEM SET INMEMORY_FORCE=OFF;
+ALTER SYSTEM SET INMEMORY_FORCE=DEFAULT;
+Setting the INMEMORY_QUERY parameter to "DISABLE" means the optimiser will not consider the IM column store to optimise queries. Switching it back to "ENABLE" reverts it to the default functionality.
+
+-- System level
+ALTER SYSTEM SET INMEMORY_QUERY=DISABLE;
+ALTER SYSTEM SET INMEMORY_QUERY=ENABLE;
+
+-- Session level
+ALTER SESSION SET INMEMORY_QUERY=DISABLE;
+ALTER SESSION SET INMEMORY_QUERY=ENABLE;
+
+To disable the IM column store completely and release the memory, reset the INMEMORY_SIZE parameter.
+
+ALTER SYSTEM RESET INMEMORY_SIZE SCOPE=SPFILE;
+SHUTDOWN IMMEDIATE;
+STARTUP;
+As described in the previous section, the PDB-specific settings can be altered without an instance or PDB restart.
+
+
+
+5.Managing Tables
+----------------------------------------------------------------------------------------------------------------
+CONN test/test@pdb1
+
+CREATE TABLE im_tab (
+  id  NUMBER
+) INMEMORY;
+
+CREATE TABLE noim_tab (
+  id  NUMBER
+) NO INMEMORY;
+
+CREATE TABLE default_tab (
+  id  NUMBER
+);
+
+
+
+SELECT table_name,
+       inmemory,
+       inmemory_priority,
+       inmemory_distribute,
+       inmemory_compression,
+       inmemory_duplicate  
+FROM   user_tables
+ORDER BY table_name;
+
+TABLE_NAME           INMEMORY INMEMORY INMEMORY_DISTRI INMEMORY_COMPRESS INMEMORY_DUPL
+-------------------- -------- -------- --------------- ----------------- -------------
+DEFAULT_TAB          DISABLED
+IM_TAB               ENABLED  NONE     AUTO            FOR QUERY LOW     NO DUPLICATE
+NOIM_TAB             DISABLED
+
+
+
+ALTER TABLE IM_TAB NO INMEMORY;
+ALTER TABLE NOIM_TAB INMEMORY MEMCOMPRESS FOR CAPACITY LOW;
+ALTER TABLE DEFAULT_TAB INMEMORY PRIORITY HIGH;
+
+SELECT table_name,
+       inmemory,
+       inmemory_priority,
+       inmemory_distribute,
+       inmemory_compression,
+       inmemory_duplicate  
+FROM   user_tables
+ORDER BY table_name;
+
+TABLE_NAME           INMEMORY INMEMORY INMEMORY_DISTRI INMEMORY_COMPRESS INMEMORY_DUPL
+-------------------- -------- -------- --------------- ----------------- -------------
+DEFAULT_TAB          ENABLED  HIGH     AUTO            FOR QUERY LOW     NO DUPLICATE
+IM_TAB               DISABLED
+NOIM_TAB             ENABLED  NONE     AUTO            FOR CAPACITY LOW  NO DUPLICATE
+
+
+
+CREATE TABLE im_col_tab (
+  id   NUMBER,
+  col1 NUMBER,
+  col2 NUMBER,
+  col3 NUMBER,
+  col4 NUMBER
+) INMEMORY
+INMEMORY MEMCOMPRESS FOR QUERY HIGH (col1, col2)
+INMEMORY MEMCOMPRESS FOR CAPACITY HIGH (col3)
+NO INMEMORY (id, col4);
+The column settings are displayed using the V$IM_COLUMN_LEVEL view.
+
+
+CONN sys@pdb1 AS SYSDBA
+
+
+SELECT table_name,
+       segment_column_id,
+       column_name,
+       inmemory_compression
+FROM   v$im_column_level
+WHERE  owner = 'TEST'
+and    table_name = 'IM_COL_TAB'
+ORDER BY segment_column_id;
+
+TABLE_NAME           SEGMENT_COLUMN_ID COLUMN_NAME                     INMEMORY_COMPRESSION
+-------------------- ----------------- ------------------------------- --------------------------
+IM_COL_TAB                           1 ID                              NO INMEMORY
+IM_COL_TAB                           2 COL1                            FOR QUERY HIGH
+IM_COL_TAB                           3 COL2                            FOR QUERY HIGH
+IM_COL_TAB                           4 COL3                            FOR CAPACITY HIGH
+IM_COL_TAB                           5 COL4                            NO INMEMORY
+
+
+
+
+CONN test/test@pdb1
+
+ALTER TABLE im_col_tab 
+NO INMEMORY (col1, col2)
+INMEMORY MEMCOMPRESS FOR CAPACITY HIGH (col3)
+NO INMEMORY (id, col4);
+
+CONN sys@pdb1 AS SYSDBA
+
+SELECT table_name,
+       segment_column_id,
+       column_name,
+       inmemory_compression
+FROM   v$im_column_level
+WHERE  owner = 'TEST'
+and    table_name = 'IM_COL_TAB'
+ORDER BY segment_column_id;
+
+TABLE_NAME           SEGMENT_COLUMN_ID COLUMN_NAME                     INMEMORY_COMPRESSION
+-------------------- ----------------- ------------------------------- --------------------------
+IM_COL_TAB                           1 ID                              NO INMEMORY
+IM_COL_TAB                           2 COL1                            NO INMEMORY
+IM_COL_TAB                           3 COL2                            NO INMEMORY
+IM_COL_TAB                           4 COL3                            FOR CAPACITY HIGH
+IM_COL_TAB                           5 COL4                            NO INMEMORY
+
+
+
+
+CREATE TABLE t1 AS
+  SELECT * FROM all_objects;
+
+CREATE MATERIALIZED VIEW t1_mv INMEMORY 
+  AS SELECT * FROM t1;
+
+SELECT table_name,
+       inmemory,
+       inmemory_priority,
+       inmemory_distribute,
+       inmemory_compression,
+       inmemory_duplicate  
+FROM   user_tables
+WHERE  table_name = 'T1_MV';
+
+TABLE_NAME           INMEMORY INMEMORY INMEMORY_DISTRI INMEMORY_COMPRESS INMEMORY_DUPL
+-------------------- -------- -------- --------------- ----------------- -------------
+T1_MV                ENABLED  NONE     AUTO            FOR QUERY LOW     NO DUPLICATE
+
+
+
+
+
+
+ALTER MATERIALIZED VIEW t1_mv
+  INMEMORY MEMCOMPRESS FOR CAPACITY HIGH PRIORITY HIGH;
+
+SELECT table_name,
+       inmemory,
+       inmemory_priority,
+       inmemory_distribute,
+       inmemory_compression,
+       inmemory_duplicate  
+FROM   user_tables
+WHERE  table_name = 'T1_MV';
+
+TABLE_NAME           INMEMORY INMEMORY INMEMORY_DISTRI INMEMORY_COMPRESS INMEMORY_DUPL
+-------------------- -------- -------- --------------- ----------------- -------------
+T1_MV                ENABLED  HIGH     AUTO            FOR CAPACITY HIGH NO DUPLICATE
+
+
+
+
+ALTER MATERIALIZED VIEW t1_mv NO INMEMORY;
+
+SELECT table_name,
+       inmemory,
+       inmemory_priority,
+       inmemory_distribute,
+       inmemory_compression,
+       inmemory_duplicate  
+FROM   user_tables
+WHERE  table_name = 'T1_MV';
+
+TABLE_NAME           INMEMORY INMEMORY INMEMORY_DISTRI INMEMORY_COMPRESS INMEMORY_DUPL
+-------------------- -------- -------- --------------- ----------------- -------------
+T1_MV                DISABLED
+
+
+
+6. Managing Tablespaces
+-----------------------------------------------------------------------------------------------
+
+CREATE TABLESPACE new_ts
+   DATAFILE '/u01/app/oracle/oradata/CDB1/datafile/pdb1/pdb1_new_ts.dbf' SIZE 10M 
+   DEFAULT INMEMORY;
+
+SELECT tablespace_name, 
+       def_inmemory,
+       def_inmemory_priority,
+       def_inmemory_distribute,
+       def_inmemory_compression,
+       def_inmemory_duplicate
+FROM   dba_tablespaces
+ORDER BY tablespace_name;
+
+TABLESPACE_NAME                DEF_INME DEF_INME DEF_INMEMORY_DI DEF_INMEMORY_COMP DEF_INMEMORY_
+------------------------------ -------- -------- --------------- ----------------- -------------
+NEW_TS                         ENABLED  NONE     AUTO            FOR QUERY LOW     NO DUPLICATE
+SYSAUX                         DISABLED
+SYSTEM                         DISABLED
+TEMP                           DISABLED
+USERS                          DISABLED
+
+
+
+ALTER TABLESPACE new_ts
+  DEFAULT INMEMORY MEMCOMPRESS FOR CAPACITY HIGH;
+
+SELECT tablespace_name, 
+       def_inmemory,
+       def_inmemory_priority,
+       def_inmemory_distribute,
+       def_inmemory_compression,
+       def_inmemory_duplicate
+FROM   dba_tablespaces
+ORDER BY tablespace_name;
+
+TABLESPACE_NAME                DEF_INME DEF_INME DEF_INMEMORY_DI DEF_INMEMORY_COMP DEF_INMEMORY_
+------------------------------ -------- -------- --------------- ----------------- -------------
+NEW_TS                         ENABLED  NONE     AUTO            FOR CAPACITY HIGH NO DUPLICATE
+SYSAUX                         DISABLED
+SYSTEM                         DISABLED
+TEMP                           DISABLED
+USERS                          DISABLED
+
+
+
+
+ALTER TABLESPACE new_ts
+  DEFAULT NO INMEMORY;
+
+SELECT tablespace_name, 
+       def_inmemory,
+       def_inmemory_priority,
+       def_inmemory_distribute,
+       def_inmemory_compression,
+       def_inmemory_duplicate
+FROM   dba_tablespaces
+ORDER BY tablespace_name;
+
+TABLESPACE_NAME                DEF_INME DEF_INME DEF_INMEMORY_DI DEF_INMEMORY_COMP DEF_INMEMORY_
+------------------------------ -------- -------- --------------- ----------------- -------------
+NEW_TS                         DISABLED
+SYSAUX                         DISABLED
+SYSTEM                         DISABLED
+TEMP                           DISABLED
+USERS                          DISABLED
+

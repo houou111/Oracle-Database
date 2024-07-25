@@ -1,0 +1,25 @@
+ON COMMIT DELETE ROWS
+
+as the syntax shows rows only exist in the table prior to the commit statement. In other words whenever you pass a commit statement all the rows in the table will be deleted.
+
+when you query the table before commit you will find data in it. Kindly update the procedure to get the data before commit and put that data into a permanent table and then you can check that permanent table later.
+in case permanent table insertion is not the option, you can only select that data and get the output before commit and you would find that data.
+
+But once you pass the commit statement no data will be found in the table.
+
+Thanks
+Rahul Kumar
+
+ 	 	 
+ 	
+ 
+ 
+DUONGPK@SSI.COM.VN	- Thursday		[Update from Customer]
+
+
+CREATE GLOBAL TEMPORARY TABLE TMP_RESULTSET
+(
+RESULT VARCHAR2(100 BYTE)
+)
+ON COMMIT DELETE ROWS
+NOCACHE;

@@ -1,0 +1,284 @@
+---------------------------------------------------------------------------
+/etc/hosts --all node --root
+---------------------------------------------------------------------------
+more /etc/resolv.conf
+nslookup racnode3.idevelopment.info
+nslookup 192.168.1.153
+nslookup racnode3
+nslookup racnode-cluster-scan
+
+vi /etc/hosts
+
+ping to all other node IP (physical, privs)
+---------------------------------------------------------------------------
+?????Config ntp server
+---------------------------------------------------------------------------
+vi /etc/sysconfig/ntpd
+#OPTIONS="-g"
+OPTIONS="-x -g -p /var/run/ntpd.pid"
+
+---------------------------------------------------------------------------
+KERNEL--ROOT
+---------------------------------------------------------------------------
++CONFIG KERNEL PARAMETERS:
+# vi /etc/sysctl.conf
+
+kernel.shmmax = 68610528000
+kernel.shmall = 16700000
+kernel.shmmni = 4096
+kernel.sem = 250 32000 100 128
+kernel.pid_max = 4000000
+fs.file-max = 6815744
+net.ipv4.ip_local_port_range = 9000 65500
+net.core.rmem_default=262144
+net.core.rmem_max=4194304
+net.core.wmem_default=262144
+net.core.wmem_max=1048576
+fs.aio-max-nr=1048576
+vm.dirty_background_ratio = 5
+vm.dirty_ratio = 10
+vm.nr_hugepages = 20480
+vm.hugetlb_shm_group=1100
+
++ACTIVE PARAMETER:
+# /sbin/sysctl -p
+---------------------------------------------------------------------------
+RESOURCE LIMITS--ROOT
+---------------------------------------------------------------------------
+# vi /etc/security/limits.conf
+oracle soft nproc 16000
+oracle hard nproc 32000
+oracle soft nofile 1024
+oracle hard nofile 65536
+
+* soft memlock 6500000000
+* hard memlock 6500000000
+
+# vi /etc/pam.d/login
+session    required     pam_limits.so
+
+# vi /etc/profile
+if [ \$USER = "oracle" ] || [ \$USER = "grid" ]; then
+     if [ \$SHELL = "/bin/ksh" ]; then
+         ulimit -p 16384
+         ulimit -n 65536
+     else
+         ulimit -u 16384 -n 65536
+     fi
+     umask 022
+fi
+
+# vi /etc/security/limits.d/20-nproc.conf
+*         	soft    nproc     16000
+
+---------------------------------------------------------------------------
+DISABLE FIREWALL--ROOT
+---------------------------------------------------------------------------
+# systemctl stop firewalld
+# systemctl disable firewalld
+
+---------------------------------------------------------------------------
+DISABLE SElinux--ROOT
+---------------------------------------------------------------------------
+# vi /etc/selinux/config 
+SELINUX=disabled
+
+---------------------------------------------------------------------------
+INSTALL PACKAGES-- ROOT
+---------------------------------------------------------------------------
++CREATE REPO:
+# mount /dev/cdrom /media/
+# cd /media/Packages
+# rpm -Uvh  deltarpm-*
+# rpm -Uvh  python-deltarpm-*
+# rpm -Uvh  createrepo-*
+# mkdir /u01/repo
+# cp * /u01/repo/
+# cd ..
+# rpm --import  RPM-GPG-KEY-redhat-beta  RPM-GPG-KEY-redhat-release
+# cd /u01/repo/
+# createrepo /u01/repo/
+
+
+# vi /etc/yum.repos.d/my_local.repo
+[localrepo]
+name=local_repo
+baseurl=file:///u01/repo/
+enabled=1
+gpgcheck=0
+
++INSTALL PACKAGE
+# cd /u01/repo/
+# yum install -y glibc-devel-i686 lftp tigervnc-server compat-libcap1 binutils gcc gcc-c++ gcc.i386 glibc-devel glibc.i686 libgcc libstdc++ make compat-db libXp ksh sysstat libaio-devel compat-libstdc++-33 elfutils-libelf-devel kmod-oracleasm oracleasmlib oracleasm-support
+
+---------------------------------------------------------------------------
+GROUP, USER, DIRECTORY:-- ROOT
+---------------------------------------------------------------------------
+--USER, GROUP:
+# groupadd -g 1100 oinstall
+# useradd -m -u 2000 -g oinstall -d /home/oracle -s /bin/bash oracle
+# passwd oracle
+
+--DIRECTORY
+# mkdir -p /u01/app/11.2.0/grid
+# mkdir -p /u01/app/oracle
+# mkdir -p /u01/app/grid
+# mkdir -p /u01/setup
+# mkdir -p /home/oracle/bin
+# chown oracle:oinstall /home/oracle/bin
+# chmod -R 775 /home/oracle/bin
+# chmod -R 775 /u01
+# chown oracle:oinstall -R  /u01
+
+--
+id oracle
+groupadd -g 1003 oinstall
+groupadd -g 1031 dba
+useradd -m -u 1101 -g oinstall -G dba -d /home/oracle -s /bin/bash -c "Oracle Software Owner" oracle
+
+passwd oracle
+su - oracle 
+
+--new node
+id nobody
+uid=99(nobody) gid=99(nobody) groups=99(nobody)
+--> /usr/sbin/useradd nobody
+
+--new node
+mkdir -p /u01/app/11.2.0/grid/
+mkdir -p /u01/app/oracle/
+chown -R root:oinstall /u01
+chown oracle:oinstall /u01/app/oracle
+chmod -R 775 /u01
+---------------------------------------------------
+--old node --grid --> home_grid
+---------------------------------------------
+[grid@racnode1 ~]$ $GRID_HOME/oui/bin/runSSHSetup.sh -user grid -hosts "racnode2 racnode3" -advanced -exverify
+[oracle@racnode1 ~]$ $ORACLE_HOME/oui/bin/runSSHSetup.sh -user oracle -hosts "test-card-db02" -advanced -exverify
+
+--> home oracle
+
+[oracle@racnode1 ~]$ $ORACLE_HOME/oui/bin/runSSHSetup.sh -user oracle -hosts "racnode2 racnode3" -advanced -exverify
+[oracle@racnode1 ~]$ $ORACLE_HOME/oui/bin/runSSHSetup.sh -user oracle -hosts "test-card-db02" -advanced -exverify
+
+---------------------------------------------------------------------------
+ ASMLIB --ROOT
+---------------------------------------------------------------------------
+vi /etc/sysconfig/oracleasm-_dev_oracleasm
+#
+# This is a configuration file for automatic loading of the Oracle
+# Automatic Storage Management library kernel driver.  It is generated
+# By running /etc/init.d/oracleasm configure.  Please use that method
+# to modify this file
+#
+
+# ORACLEASM_UID: Default user owning the /dev/oracleasm mount point.
+ORACLEASM_UID=oracle
+
+# ORACLEASM_GID: Default group owning the /dev/oracleasm mount point.
+ORACLEASM_GID=oinstall
+
+# ORACLEASM_SCANBOOT: 'true' means scan for ASM disks on boot.
+ORACLEASM_SCANBOOT=true
+
+# ORACLEASM_SCANORDER: Matching patterns to order disk scanning
+ORACLEASM_SCANORDER="mpath dm"
+
+# ORACLEASM_SCANEXCLUDE: Matching patterns to exclude disks from scan
+ORACLEASM_SCANEXCLUDE="sd"
+
+# ORACLEASM_USE_LOGICAL_BLOCK_SIZE: 'true' means use the logical block size
+# reported by the underlying disk instead of the physical. The default
+# is 'false'
+ORACLEASM_USE_LOGICAL_BLOCK_SIZE=false
+
+---------------------------------------------------------------------------
+SSH setup
+---------------------------------------------------------------------------
+in setup folder /grid/sshSetup
+./sshUserSetup.sh -user oracle -hosts "test-card-db01 test-card-db02" -noPromptPassphrase
+
+---------------------------------------------------------------------------
+check
+---------------------------------------------------------------------------
+[grid@racnode1 ~]$ $ORACLE_HOME/bin/cluvfy stage -post hwos -n test-card-db02
+[grid@racnode1 ~]$ $ORACLE_HOME/bin/cluvfy comp peer -refnode test-card-db01 -n test-card-db02 -orainv oinstall -osdba dba -verbose
+[grid@racnode1 ~]$ $ORACLE_HOME/bin/cluvfy stage -pre nodeadd -n test-card-db02 -fixup -verbose
+
+---------------------------------------------------------------------------
+****fix java parameter to run add node
+---------------------------------------------------------------------------
+vi $ORACLE_HOME/oui/oraparam.ini
+JRE_MEMORY_OPTIONS to " -Xmx2048m" or higher
+
+---------------------------------------------------------------------------
+add grid
+---------------------------------------------------------------------------
+[grid@racnode1 ~]$ cd $ORACLE_HOME/oui/bin
+[grid@racnode1 ~]$ export IGNORE_PREADDNODE_CHECKS=Y
+[grid@racnode1 bin]$ ./addNode.sh -silent "CLUSTER_NEW_NODES={test-card-db02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={test-card-db02-vip}" 
+-->  orainstRoot.sh & root.sh
+
+*************
+/u01/app/11.2.0/grid/root.sh 
+--7.2 error --> fix file 
+- As ROOT user
+
+vi /etc/systemd/system/ohasd.service
+
+[Unit]
+Description=Oracle High Availability Services
+After=syslog.target
+
+[Service]
+ExecStart=/etc/init.d/init.ohasd run >/dev/null 2>&1 Type=simple
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+- Run the following commands (as root):
+systemctl daemon-reload
+systemctl enable ohasd.service
+systemctl start ohasd.service
+*************
+
+[grid@racnode1 ~]$ $GRID_HOME/bin/cluvfy stage -post nodeadd -n racnode3 -verbose 
+[grid@racnode3 ~]$ crsctl check crs
+[grid@racnode3 ~]$ crs_stat -t -v
+
+---------------------------------------------------------------------------
+add oracle
+---------------------------------------------------------------------------
+[oracle@racnode1 ~]$ cd $ORACLE_HOME/oui/bin
+[oracle@racnode1 bin]$ ./addNode.sh -silent "CLUSTER_NEW_NODES={racnode3}" 
+./addNode.sh -silent "CLUSTER_NEW_NODES={test-card-db02}" "CLUSTER_NEW_VIRTUAL_HOSTNAMES={test-card-db02-vip}" 
+
+----------------
+alter database add logfile thread 2 group 4 ('+DATA01','+DATA01') size 50M, group 5 ('+DATA01','+DATA01') size 50M,group 6 ('+DATA01','+DATA01') size 50M  ;
+alter database enable public thread 2;
+alter system set thread = 1                         scope=spfile sid='twotest1';
+alter system set thread = 2                         scope=spfile sid='twotest2';
+
+create undo tablespace undotbs2 datafile '+DATA01' size 50M autoextend on next 10m maxsize 8g;
+alter system set undo_tablespace=undotbs2 scope=spfile sid='twfatest2';
+alter system set undo_tablespace=undotbs1 scope=spfile sid='twfatest1';
+
+alter system set instance_number=1 scope=spfile sid='twfatest1';
+alter system set instance_number=2 scope=spfile sid='twfatest2';
+alter system set instance_name = 'twotest2'     scope=spfile sid='twotest2';
+
+alter system set cluster_database_instances=2 scope=spfile sid='*';
+alter system set cluster_database=TRUE scope=spfile sid='*';
+
+----------------
+./srvctl config database -d twotest --> check
+./srvctl add instance -d twotest -i twotest2 -n test-card-db02
+
+[oracle@racnode3 ~]$ srvctl status database -d racdb -v
+
+
+srvctl stop database -d twotest
+srvctl start database -d twotest
+srvctl add instance -d twotest -i twotest2 -n test-card-db02
+srvctl start instance -d twotest -i orcl3
